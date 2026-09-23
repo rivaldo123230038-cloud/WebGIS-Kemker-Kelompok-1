@@ -1088,6 +1088,23 @@
             </label>
 
 
+            <!-- ORTHOPHOTO -->
+
+            <label class="layer-item">
+
+              <input
+                type="radio"
+                name="basemap"
+                id="orthoRadio"
+              >
+
+              <span>
+                Orthophoto
+              </span>
+
+            </label>
+
+
           </div>
 
 
@@ -1512,14 +1529,209 @@
 
 
     /* =====================================================
-       6. BASEMAP DEFAULT
+       6. ORTHOPHOTO ARCMAP EXPLODED TILE CACHE
+
+       SUMBER:
+       Fix_Ortho_web
+
+       STRUKTUR:
+
+       Fix_Ortho_web/
+       └── _alllayers/
+           ├── L12/
+           │   └── Rxxxxxxxx/
+           │       └── Cxxxxxxxx.png
+           ├── L13/
+           ├── L14/
+           ├── L15/
+           ├── L16/
+           └── L17/
+
+       CONTOH:
+       L12/R0000083f/C00000cad.png
+
+       TEST LEVEL:
+       L12 - L17
+       ===================================================== */
+
+    let orthoLoaded =
+      false;
+
+
+    let orthoErrorCount =
+      0;
+
+
+    const orthoLayer =
+      L.tileLayer(
+
+        '',
+
+        {
+
+          minZoom:
+            12,
+
+          maxZoom:
+            17,
+
+          minNativeZoom:
+            12,
+
+          maxNativeZoom:
+            17,
+
+          tileSize:
+            256,
+
+          noWrap:
+            true,
+
+          opacity:
+            1,
+
+          attribution:
+            'Orthophoto'
+
+        }
+
+      );
+
+
+    /* =====================================================
+       7. CUSTOM URL TILE ORTHOPHOTO
+
+       LEAFLET:
+       x = kolom
+       y = baris
+
+       ARCMAP:
+       C + HEX COLUMN
+       R + HEX ROW
+       ===================================================== */
+
+    orthoLayer.getTileUrl =
+      function(coords) {
+
+
+        const z =
+          coords.z;
+
+
+        const x =
+          coords.x;
+
+
+        const y =
+          coords.y;
+
+
+        /* ================================================
+           HANYA L12 - L17
+           ================================================ */
+
+        if (
+          z < 12 ||
+          z > 17
+        ) {
+
+          return '';
+
+        }
+
+
+        /* ================================================
+           CEGAH NILAI NEGATIF
+           ================================================ */
+
+        if (
+          x < 0 ||
+          y < 0
+        ) {
+
+          return '';
+
+        }
+
+
+        /* ================================================
+           KONVERSI ROW KE HEX
+
+           CONTOH:
+           2111 decimal
+           ->
+           83f hex
+           ->
+           0000083f
+           ================================================ */
+
+        const rowHex =
+          Math.floor(y)
+            .toString(16)
+            .padStart(
+              8,
+              '0'
+            )
+            .toLowerCase();
+
+
+        /* ================================================
+           KONVERSI COLUMN KE HEX
+
+           CONTOH:
+           3245 decimal
+           ->
+           cad hex
+           ->
+           00000cad
+           ================================================ */
+
+        const colHex =
+          Math.floor(x)
+            .toString(16)
+            .padStart(
+              8,
+              '0'
+            )
+            .toLowerCase();
+
+
+        /* ================================================
+           URL FINAL
+           ================================================ */
+
+        const url =
+
+          'Fix_Ortho_web/' +
+          '_alllayers/' +
+          'L' + z +
+          '/' +
+          'R' + rowHex +
+          '/' +
+          'C' + colHex +
+          '.png';
+
+
+        console.log(
+          'ORTHOPHOTO TILE:',
+          url
+        );
+
+
+        return url;
+
+      };
+
+
+    /* =====================================================
+       8. BASEMAP DEFAULT
        ===================================================== */
 
     satellite.addTo(map);
 
 
     /* =====================================================
-       7. STYLE GARIS PANTAI
+       9. STYLE GARIS PANTAI
        ===================================================== */
 
     const coastlineStyle = {
@@ -1537,7 +1749,7 @@
 
 
     /* =====================================================
-       8. VARIABEL GARIS PANTAI
+       10. VARIABEL GARIS PANTAI
        ===================================================== */
 
     let coastline =
@@ -1545,7 +1757,7 @@
 
 
     /* =====================================================
-       9. AUTO ZOOM TO LAYER
+       11. AUTO ZOOM TO LAYER
        ===================================================== */
 
     function zoomToCoastline() {
@@ -1602,7 +1814,7 @@
 
 
     /* =====================================================
-       10. AUTO ZOOM SIDEBAR
+       12. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -1625,7 +1837,7 @@
 
 
     /* =====================================================
-       11. CUSTOM AUTO ZOOM CONTROL
+       13. CUSTOM AUTO ZOOM CONTROL
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -1719,7 +1931,7 @@
 
 
     /* =====================================================
-       12. TAMBAHKAN AUTO ZOOM CONTROL
+       14. TAMBAHKAN AUTO ZOOM CONTROL
        ===================================================== */
 
     map.addControl(
@@ -1730,7 +1942,7 @@
 
 
     /* =====================================================
-       13. KONVERSI ESRI JSON
+       15. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(data) {
@@ -1976,7 +2188,7 @@
 
 
     /* =====================================================
-       14. LOAD GP_RT.JSON
+       16. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch('GP_RT.json')
@@ -2112,7 +2324,52 @@
 
 
     /* =====================================================
-       15. ESRI WORLD IMAGERY
+       17. FUNGSI HAPUS BASEMAP
+       ===================================================== */
+
+    function removeBasemaps() {
+
+
+      if (map.hasLayer(satellite)) {
+
+        map.removeLayer(
+          satellite
+        );
+
+      }
+
+
+      if (map.hasLayer(googleSatellite)) {
+
+        map.removeLayer(
+          googleSatellite
+        );
+
+      }
+
+
+      if (map.hasLayer(street)) {
+
+        map.removeLayer(
+          street
+        );
+
+      }
+
+
+      if (map.hasLayer(orthoLayer)) {
+
+        map.removeLayer(
+          orthoLayer
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       18. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2131,14 +2388,7 @@
           if (this.checked) {
 
 
-            map.removeLayer(
-              googleSatellite
-            );
-
-
-            map.removeLayer(
-              street
-            );
+            removeBasemaps();
 
 
             satellite.addTo(
@@ -2154,7 +2404,7 @@
 
 
     /* =====================================================
-       16. GOOGLE SATELLITE
+       19. GOOGLE SATELLITE
        ===================================================== */
 
     document
@@ -2173,14 +2423,7 @@
           if (this.checked) {
 
 
-            map.removeLayer(
-              satellite
-            );
-
-
-            map.removeLayer(
-              street
-            );
+            removeBasemaps();
 
 
             googleSatellite.addTo(
@@ -2196,7 +2439,7 @@
 
 
     /* =====================================================
-       17. ESRI WORLD STREET MAP
+       20. ESRI WORLD STREET MAP
        ===================================================== */
 
     document
@@ -2215,14 +2458,7 @@
           if (this.checked) {
 
 
-            map.removeLayer(
-              satellite
-            );
-
-
-            map.removeLayer(
-              googleSatellite
-            );
+            removeBasemaps();
 
 
             street.addTo(
@@ -2238,7 +2474,199 @@
 
 
     /* =====================================================
-       18. SCALE BAR
+       21. ORTHOPHOTO
+       
+       SATELLITE DIPAKAI SEBAGAI FALLBACK
+
+       Jadi:
+       Orthophoto ada  -> Orthophoto terlihat
+       Orthophoto gagal -> Satellite tetap terlihat
+
+       Ini mencegah peta menjadi abu-abu.
+       ===================================================== */
+
+    document
+
+      .getElementById(
+        'orthoRadio'
+      )
+
+      .addEventListener(
+
+        'change',
+
+        function() {
+
+
+          if (!this.checked) {
+
+            return;
+
+          }
+
+
+          /* ----------------------------------------------
+             RESET STATUS
+             ---------------------------------------------- */
+
+          orthoLoaded =
+            false;
+
+
+          orthoErrorCount =
+            0;
+
+
+          /* ----------------------------------------------
+             HAPUS BASEMAP LAIN
+             ---------------------------------------------- */
+
+          removeBasemaps();
+
+
+          /* ----------------------------------------------
+             ESRI SEBAGAI BACKGROUND
+
+             Orthophoto akan berada di atasnya.
+             ---------------------------------------------- */
+
+          satellite.addTo(
+            map
+          );
+
+
+          /* ----------------------------------------------
+             ORTHOPHOTO DI ATAS SATELLITE
+             ---------------------------------------------- */
+
+          orthoLayer.addTo(
+            map
+          );
+
+
+          orthoLayer.bringToFront();
+
+
+          console.log(
+            '==================================='
+          );
+
+
+          console.log(
+            'ORTHOPHOTO AKTIF'
+          );
+
+
+          console.log(
+            'CACHE: Fix_Ortho_web'
+          );
+
+
+          console.log(
+            'LEVEL: L12 - L17'
+          );
+
+
+          console.log(
+            '==================================='
+          );
+
+
+        }
+
+      );
+
+
+    /* =====================================================
+       22. ORTHOPHOTO TILE BERHASIL
+       ===================================================== */
+
+    orthoLayer.on(
+
+      'tileload',
+
+      function(e) {
+
+
+        console.log(
+          'ORTHOPHOTO TILE BERHASIL:',
+          e.coords
+        );
+
+
+        orthoLoaded =
+          true;
+
+
+      }
+
+    );
+
+
+    /* =====================================================
+       23. ORTHOPHOTO TILE ERROR
+       ===================================================== */
+
+    orthoLayer.on(
+
+      'tileerror',
+
+      function(e) {
+
+
+        orthoErrorCount++;
+
+
+        console.error(
+
+          'ORTHOPHOTO TILE GAGAL:',
+
+          e.coords
+
+        );
+
+
+        console.error(
+
+          'URL TILE DIDUGA:',
+
+          'L' +
+          e.coords.z +
+          '/R' +
+          Math.floor(e.coords.y)
+            .toString(16)
+            .padStart(8, '0')
+            .toLowerCase() +
+          '/C' +
+          Math.floor(e.coords.x)
+            .toString(16)
+            .padStart(8, '0')
+            .toLowerCase() +
+          '.png'
+
+        );
+
+
+        console.error(
+
+          'Jumlah tile gagal:',
+
+          orthoErrorCount
+
+        );
+
+
+        /*
+         * SATELLITE DIBIARKAN SEBAGAI FALLBACK.
+         */
+
+      }
+
+    );
+
+
+    /* =====================================================
+       24. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2256,7 +2684,7 @@
 
 
     /* =====================================================
-       19. LEGENDA KANAN BAWAH
+       25. LEGENDA KANAN BAWAH
        ===================================================== */
 
     const legend =
@@ -2318,7 +2746,7 @@
 
 
     /* =====================================================
-       20. KOORDINAT KURSOR
+       26. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
