@@ -9,6 +9,7 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
+
   <!-- =====================================================
        LEAFLET CSS
        ===================================================== -->
@@ -17,6 +18,7 @@
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
+
 
   <style>
 
@@ -94,7 +96,7 @@
 
 
     /* =====================================================
-       TOMBOL PANAH
+       TOMBOL PANAH SIDEBAR
        ===================================================== */
 
     .sidebar-toggle {
@@ -157,7 +159,12 @@
 
 
     /* =====================================================
-       4 LOGO SEJAJAR
+       4 LOGO SEJAJAR 1 BARIS
+       URUTAN:
+       1. ITERA
+       2. GEOMATIKA ITERA
+       3. GEOMATIKA 2023
+       4. KEMAH KERJA 2023
        ===================================================== */
 
     .logo-section {
@@ -327,7 +334,7 @@
 
 
     /* =====================================================
-       AUTO ZOOM BUTTON
+       TOMBOL AUTO ZOOM SIDEBAR
        ===================================================== */
 
     .zoom-layer-button {
@@ -465,7 +472,7 @@
 
 
     /* =====================================================
-       AUTO ZOOM CONTROL DI PETA
+       CUSTOM AUTO ZOOM DI PETA
        ===================================================== */
 
     .zoom-to-layer-control {
@@ -502,12 +509,83 @@
 
       box-shadow:
         0 1px 5px rgba(0, 0, 0, 0.25);
+
+      transition: 0.2s;
     }
 
 
     .zoom-to-layer-button-map:hover {
 
       background: #f0f5f9;
+    }
+
+
+    /* =====================================================
+       LEGENDA PETA - KANAN BAWAH
+       ===================================================== */
+
+    .map-legend {
+
+      background: rgba(255, 255, 255, 0.95);
+
+      padding: 10px 12px;
+
+      border-radius: 6px;
+
+      border: 1px solid #cccccc;
+
+      box-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.25);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      color: #333333;
+
+      min-width: 150px;
+
+      margin-right: 10px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .map-legend-title {
+
+      font-weight: bold;
+
+      font-size: 13px;
+
+      color: #17324d;
+
+      margin-bottom: 7px;
+
+      padding-bottom: 4px;
+
+      border-bottom: 1px solid #dddddd;
+    }
+
+
+    .legend-item {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+
+    .legend-line-coastline {
+
+      width: 28px;
+
+      height: 0;
+
+      border-top: 4px solid #00ffff;
+
+      flex-shrink: 0;
     }
 
 
@@ -560,6 +638,18 @@
       .title-section h1 {
 
         font-size: 18px;
+      }
+
+
+      .map-legend {
+
+        min-width: 135px;
+
+        font-size: 11px;
+
+        margin-right: 8px;
+
+        margin-bottom: 8px;
       }
 
     }
@@ -687,13 +777,13 @@
           >
 
           <span>
-
             Garis Pantai
-
           </span>
 
         </label>
 
+
+        <!-- AUTO ZOOM -->
 
         <button
           type="button"
@@ -723,7 +813,7 @@
       <div class="layer-control-box">
 
 
-        <!-- ESRI -->
+        <!-- ESRI WORLD IMAGERY -->
 
         <label class="layer-item">
 
@@ -741,7 +831,7 @@
         </label>
 
 
-        <!-- GOOGLE -->
+        <!-- GOOGLE SATELLITE -->
 
         <label class="layer-item">
 
@@ -758,7 +848,7 @@
         </label>
 
 
-        <!-- ESRI STREET -->
+        <!-- ESRI WORLD STREET MAP -->
 
         <label class="layer-item">
 
@@ -917,6 +1007,7 @@
 
   <!-- =====================================================
        GOOGLE MAPS JAVASCRIPT API
+       GANTI YOUR_GOOGLE_MAPS_API_KEY
        ===================================================== -->
 
   <script
@@ -937,7 +1028,34 @@
 
 
     /* =====================================================
-       1. SIDEBAR TOGGLE
+       1. INISIALISASI PETA
+       ===================================================== */
+
+    const map = L.map('map', {
+
+      center: [-5.45, 105.25],
+
+      zoom: 10,
+
+      minZoom: 0,
+
+      maxZoom: 23,
+
+      zoomControl: true,
+
+      scrollWheelZoom: true,
+
+      doubleClickZoom: true,
+
+      touchZoom: true,
+
+      boxZoom: true
+
+    });
+
+
+    /* =====================================================
+       2. SIDEBAR TOGGLE
        ===================================================== */
 
     const sidebar =
@@ -964,9 +1082,7 @@
         if (sidebarCollapsed) {
 
 
-          /* ---------------------------------------------
-             MINIMIZE SIDEBAR
-             --------------------------------------------- */
+          /* MINIMIZE */
 
           sidebar.classList.add(
             'collapsed'
@@ -992,10 +1108,6 @@
           );
 
 
-          /*
-             Peta diperbesar ke seluruh layar
-          */
-
           document
             .getElementById('map')
             .style.left = '0';
@@ -1007,12 +1119,11 @@
 
         }
 
+
         else {
 
 
-          /* ---------------------------------------------
-             TAMPILKAN SIDEBAR
-             --------------------------------------------- */
+          /* TAMPILKAN */
 
           sidebar.classList.remove(
             'collapsed'
@@ -1038,10 +1149,6 @@
           );
 
 
-          /*
-             Peta kembali ke posisi normal
-          */
-
           const sidebarWidth =
             window.innerWidth <= 800
               ? '280px'
@@ -1062,10 +1169,6 @@
         }
 
 
-        /* ---------------------------------------------
-           Perbarui ukuran Leaflet setelah animasi
-           --------------------------------------------- */
-
         setTimeout(
 
           function() {
@@ -1081,33 +1184,6 @@
       }
 
     );
-
-
-    /* =====================================================
-       2. INISIALISASI PETA
-       ===================================================== */
-
-    const map = L.map('map', {
-
-      center: [-5.45, 105.25],
-
-      zoom: 10,
-
-      minZoom: 0,
-
-      maxZoom: 23,
-
-      zoomControl: true,
-
-      scrollWheelZoom: true,
-
-      doubleClickZoom: true,
-
-      touchZoom: true,
-
-      boxZoom: true
-
-    });
 
 
     /* =====================================================
@@ -1200,7 +1276,7 @@
 
 
     /* =====================================================
-       9. AUTO ZOOM TO LAYER
+       9. FUNGSI AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -1241,6 +1317,7 @@
 
       }
 
+
       else {
 
 
@@ -1255,7 +1332,7 @@
 
 
     /* =====================================================
-       10. AUTO ZOOM SIDEBAR
+       10. TOMBOL AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -1278,7 +1355,7 @@
 
 
     /* =====================================================
-       11. CUSTOM CONTROL AUTO ZOOM DI PETA
+       11. CUSTOM CONTROL AUTO ZOOM
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -1319,8 +1396,7 @@
           button.type = 'button';
 
 
-          button.innerHTML =
-            '⌖';
+          button.innerHTML = '⌖';
 
 
           button.title =
@@ -1337,9 +1413,7 @@
 
 
           L.DomEvent.disableClickPropagation(
-
             container
-
           );
 
 
@@ -1435,14 +1509,12 @@
 
               /*
                 ESRI JSON:
-
                 [X,Y]
 
                 X = Longitude
                 Y = Latitude
 
                 Leaflet:
-
                 [Latitude,Longitude]
               */
 
@@ -1466,7 +1538,7 @@
 
 
               /* ==========================================
-                 GARIS
+                 GARIS PANTAI
                  ========================================== */
 
               const line =
@@ -1507,6 +1579,7 @@
 
               }
 
+
               else {
 
 
@@ -1529,9 +1602,7 @@
 
                     ) {
 
-
                       value = '-';
-
 
                     }
 
@@ -1609,11 +1680,9 @@
 
               coastlineGroup.addLayer(line);
 
-
             }
 
           );
-
 
         }
 
@@ -1711,6 +1780,7 @@
 
 
                 }
+
 
                 else {
 
@@ -1898,7 +1968,62 @@
 
 
     /* =====================================================
-       19. KOORDINAT KURSOR
+       19. LEGENDA KANAN BAWAH
+       ===================================================== */
+
+    const legend = L.control({
+
+      position: 'bottomright'
+
+    });
+
+
+    legend.onAdd = function(map) {
+
+
+      const div = L.DomUtil.create(
+
+        'div',
+
+        'map-legend'
+
+      );
+
+
+      div.innerHTML = `
+
+        <div class="map-legend-title">
+          Legenda
+        </div>
+
+        <div class="legend-item">
+
+          <span
+            class="legend-line-coastline">
+          </span>
+
+          <span>
+            Garis Pantai
+          </span>
+
+        </div>
+
+      `;
+
+
+      L.DomEvent.disableClickPropagation(div);
+
+
+      return div;
+
+    };
+
+
+    legend.addTo(map);
+
+
+    /* =====================================================
+       20. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
