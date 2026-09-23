@@ -1,2366 +1,1569 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
+    <title>WEBGIS KELOMPOK 1</title>
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <!-- LEAFLET -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
 
-  <title>WEBGIS KELOMPOK 1</title>
+    <style>
 
+        * {
+            box-sizing: border-box;
+        }
 
-  <!-- =====================================================
-       LEAFLET CSS
-       ===================================================== -->
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
+        /* ======================================================
+           MAP
+        ====================================================== */
 
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-  <style>
+        /* ======================================================
+           SIDEBAR
+        ====================================================== */
 
-    /* =====================================================
-       DASAR
-       ===================================================== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
 
-    * {
-      box-sizing: border-box;
-    }
+            width: 350px;
+            height: 100vh;
 
-    html,
-    body {
+            background: white;
 
-      margin: 0;
-      padding: 0;
+            z-index: 1000;
 
-      width: 100%;
-      height: 100%;
+            box-shadow: 3px 0 12px rgba(0,0,0,0.25);
 
-      font-family: Arial, Helvetica, sans-serif;
+            transition: transform 0.35s ease;
 
-      overflow: hidden;
-    }
+            overflow: visible;
+        }
 
+        .sidebar.collapsed {
+            transform: translateX(-350px);
+        }
 
-    /* =====================================================
-       PETA
-       ===================================================== */
+        /* ======================================================
+           LOGO AREA
+        ====================================================== */
 
-    #map {
+        .logo-section {
+            position: relative;
 
-      position: absolute;
+            width: 350px;
+            height: 108px;
 
-      left: 350px;
-      top: 0;
+            background: white;
 
-      width: calc(100% - 350px);
-      height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-      transition:
-        left 0.3s ease,
-        width 0.3s ease;
-    }
+            gap: 8px;
 
+            padding: 10px 12px;
 
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
+            z-index: 20;
+        }
 
-    .sidebar {
+        .logo-section img {
+            width: 72px;
+            height: 72px;
 
-      position: fixed;
+            object-fit: contain;
 
-      left: 0;
-      top: 0;
+            display: block;
+        }
 
-      width: 350px;
-      height: 100vh;
+        /* ======================================================
+           SIDEBAR BODY
+        ====================================================== */
 
-      background: #ffffff;
+        .sidebar-body {
+            position: relative;
 
-      box-shadow:
-        2px 0 12px rgba(0, 0, 0, 0.18);
+            width: 350px;
 
-      z-index: 2000;
+            height: calc(100vh - 108px);
 
-      overflow-y: auto;
+            overflow-y: auto;
 
-      transition:
-        transform 0.3s ease;
-    }
+            padding: 18px 18px 25px 18px;
 
+            z-index: 10;
+        }
 
-    /* =====================================================
-       SIDEBAR MINIMIZE
-       ===================================================== */
+        /* BACKGROUND FOTO */
+        .sidebar-body::before {
+            content: "";
 
-    .sidebar.collapsed {
+            position: fixed;
 
-      transform:
-        translateX(-350px);
-    }
+            top: 108px;
+            left: 0;
 
+            width: 350px;
+            height: calc(100vh - 108px);
 
-    /* =====================================================
-       TOMBOL PANAH SIDEBAR
-       ===================================================== */
+            background-image: url("bcg1.jpeg");
 
-    .sidebar-toggle {
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
 
-      position: fixed;
+            opacity: 0.20;
 
-      top: 50%;
-      left: 350px;
+            z-index: -2;
 
-      width: 34px;
-      height: 70px;
+            animation: backgroundSlide 18s infinite;
+        }
 
-      transform:
-        translateY(-50%);
+        /* WHITE OVERLAY */
+        .sidebar-body::after {
+            content: "";
 
-      border: none;
+            position: fixed;
 
-      border-radius:
-        0 8px 8px 0;
+            top: 108px;
+            left: 0;
 
-      background: #17324d;
+            width: 350px;
+            height: calc(100vh - 108px);
 
-      color: white;
+            background: rgba(255,255,255,0.78);
 
-      z-index: 3000;
+            z-index: -1;
 
-      cursor: pointer;
+            pointer-events: none;
+        }
 
-      display: flex;
+        @keyframes backgroundSlide {
 
-      align-items: center;
-      justify-content: center;
+            0% {
+                background-image: url("bcg1.jpeg");
+            }
 
-      font-size: 22px;
+            33% {
+                background-image: url("bcg1.jpeg");
+            }
 
-      font-weight: bold;
+            34% {
+                background-image: url("bcg2.jpeg");
+            }
 
-      box-shadow:
-        2px 0 8px rgba(0, 0, 0, 0.25);
+            66% {
+                background-image: url("bcg2.jpeg");
+            }
 
-      transition:
-        left 0.3s ease,
-        background 0.2s ease;
-    }
+            67% {
+                background-image: url("bcg3.jpeg");
+            }
 
+            99% {
+                background-image: url("bcg3.jpeg");
+            }
 
-    .sidebar-toggle:hover {
+            100% {
+                background-image: url("bcg1.jpeg");
+            }
+        }
 
-      background: #244e73;
-    }
+        /* ======================================================
+           SIDEBAR TOGGLE
+        ====================================================== */
 
+        .sidebar-toggle {
+            position: absolute;
 
-    .sidebar-toggle.collapsed {
+            top: 50%;
+            right: -34px;
 
-      left: 0;
+            width: 34px;
+            height: 70px;
 
-      border-radius:
-        0 8px 8px 0;
-    }
+            transform: translateY(-50%);
 
+            background: white;
 
-    /* =====================================================
-       4 LOGO SEJAJAR
-       URUTAN:
-       1. ITERA
-       2. GEOMATIKA ITERA
-       3. GEOMATIKA 2023
-       4. KEMAH KERJA 2023
+            border: none;
 
-       BAGIAN LOGO TIDAK TERKENA BACKGROUND FOTO
-       ===================================================== */
+            border-radius: 0 8px 8px 0;
 
-    .logo-section {
+            box-shadow: 3px 0 8px rgba(0,0,0,0.20);
 
-      position: relative;
+            cursor: pointer;
 
-      z-index: 10;
+            font-size: 22px;
+            font-weight: bold;
 
-      display: flex;
+            z-index: 2000;
+        }
 
-      flex-direction: row;
+        .sidebar-toggle:hover {
+            background: #f0f0f0;
+        }
 
-      justify-content: space-between;
+        /* ======================================================
+           JUDUL
+        ====================================================== */
 
-      align-items: center;
+        .webgis-title {
+            text-align: center;
 
-      width: 100%;
+            font-size: 22px;
+            font-weight: bold;
 
-      height: 108px;
+            margin: 2px 0 20px 0;
 
-      padding: 18px 10px;
+            color: #111;
+        }
 
-      gap: 5px;
+        /* ======================================================
+           SECTION
+        ====================================================== */
 
-      background: #ffffff;
+        .section {
+            background: rgba(255,255,255,0.88);
 
-      border-bottom:
-        1px solid #eeeeee;
-    }
+            border-radius: 8px;
 
+            padding: 13px 14px;
 
-    .logo-item {
+            margin-bottom: 14px;
 
-      flex: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
 
-      min-width: 0;
+        .section-title {
+            font-size: 15px;
 
-      height: 72px;
+            font-weight: bold;
 
-      display: flex;
+            margin-bottom: 10px;
 
-      align-items: center;
+            color: #222;
+        }
 
-      justify-content: center;
-    }
+        /* ======================================================
+           CHECKBOX / RADIO
+        ====================================================== */
 
+        .control-item {
+            display: flex;
 
-    .logo-item img {
+            align-items: center;
 
-      width: 100%;
-      height: 100%;
+            gap: 8px;
 
-      object-fit: contain;
+            margin: 8px 0;
 
-      display: block;
-    }
+            font-size: 14px;
 
+            cursor: pointer;
+        }
 
-    /* =====================================================
-       BAGIAN SIDEBAR YANG MEMAKAI BACKGROUND FOTO
-       ===================================================== */
+        .control-item input {
+            cursor: pointer;
+        }
 
-    .sidebar-body {
+        /* ======================================================
+           BUTTON
+        ====================================================== */
 
-      position: relative;
+        .zoom-button {
+            width: 100%;
 
-      min-height:
-        calc(100vh - 108px);
+            padding: 10px;
 
-      overflow-y: auto;
+            margin-top: 4px;
 
-      overflow-x: hidden;
-    }
+            border: none;
 
+            border-radius: 6px;
 
-    /* =====================================================
-       BACKGROUND FOTO
+            background: #198754;
 
-       FOTO:
-       bcg1.jpeg
-       bcg2.jpeg
-       bcg3.jpeg
+            color: white;
 
-       TAMPIL UTUH DENGAN contain
-       ===================================================== */
+            font-size: 14px;
 
-    .sidebar-body::before {
+            font-weight: bold;
 
-      content: "";
+            cursor: pointer;
+        }
 
-      position: fixed;
+        .zoom-button:hover {
+            background: #146c43;
+        }
 
-      left: 0;
-      top: 108px;
+        /* ======================================================
+           KOORDINAT
+        ====================================================== */
 
-      width: 350px;
+        .coordinate-box {
+            background: rgba(245,245,245,0.95);
 
-      height:
-        calc(100vh - 108px);
+            border-radius: 5px;
 
-      z-index: 0;
+            padding: 8px 10px;
 
-      background-color:
-        #ffffff;
+            font-size: 13px;
 
-      background-image:
-        url("bcg1.jpeg");
+            line-height: 1.6;
+        }
 
-      background-repeat:
-        no-repeat;
+        /* ======================================================
+           FOOTER
+        ====================================================== */
 
-      background-position:
-        center center;
+        .footer {
+            margin-top: 18px;
 
-      background-size:
-        contain;
+            text-align: center;
 
-      opacity:
-        0.20;
+            font-size: 11px;
 
-      animation:
-        backgroundSlide 18s infinite;
+            color: #444;
 
-      pointer-events: none;
-    }
+            line-height: 1.5;
+        }
 
+        /* ======================================================
+           LEAFLET CUSTOM AUTO ZOOM
+        ====================================================== */
 
-    /* =====================================================
-       OVERLAY AGAR BACKGROUND TIDAK TERLALU KUAT
-       ===================================================== */
+        .auto-zoom-control {
+            background: white;
 
-    .sidebar-body::after {
+            border-radius: 5px;
 
-      content: "";
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
 
-      position: fixed;
+            overflow: hidden;
+        }
 
-      left: 0;
-      top: 108px;
+        .auto-zoom-control button {
+            width: 40px;
+            height: 40px;
 
-      width: 350px;
+            border: none;
 
-      height:
-        calc(100vh - 108px);
+            background: white;
 
-      z-index: 1;
+            cursor: pointer;
 
-      background:
-        rgba(255, 255, 255, 0.18);
+            font-size: 20px;
+        }
 
-      pointer-events: none;
-    }
+        .auto-zoom-control button:hover {
+            background: #f0f0f0;
+        }
 
+        /* ======================================================
+           LEGEND
+        ====================================================== */
 
-    /* =====================================================
-       ANIMASI GANTI FOTO
-       ===================================================== */
+        .legend {
+            position: fixed;
 
-    @keyframes backgroundSlide {
+            right: 20px;
+            bottom: 25px;
 
-      0%,
-      28% {
+            background: rgba(255,255,255,0.94);
 
-        background-image:
-          url("bcg1.jpeg");
-      }
+            padding: 10px 13px;
 
+            border-radius: 6px;
 
-      33%,
-      61% {
+            box-shadow: 0 1px 6px rgba(0,0,0,0.25);
 
-        background-image:
-          url("bcg2.jpeg");
-      }
+            font-size: 13px;
 
+            z-index: 900;
+        }
 
-      66%,
-      94% {
+        .legend-title {
+            font-weight: bold;
 
-        background-image:
-          url("bcg3.jpeg");
-      }
+            margin-bottom: 7px;
+        }
 
+        .legend-line {
+            display: flex;
 
-      100% {
+            align-items: center;
 
-        background-image:
-          url("bcg1.jpeg");
-      }
+            gap: 8px;
+        }
 
-    }
+        .legend-symbol {
+            width: 35px;
+            height: 4px;
 
+            background: cyan;
+        }
 
-    /* =====================================================
-       ISI SIDEBAR DI ATAS BACKGROUND
-       ===================================================== */
+        /* ======================================================
+           RESPONSIVE
+        ====================================================== */
 
-    .sidebar-content {
+        @media (max-width: 600px) {
 
-      position: relative;
+            .sidebar {
+                width: 310px;
+            }
 
-      z-index: 2;
-    }
+            .sidebar.collapsed {
+                transform: translateX(-310px);
+            }
 
+            .sidebar-body,
+            .logo-section {
+                width: 310px;
+            }
 
-    /* =====================================================
-       JUDUL
-       ===================================================== */
+            .sidebar-body::before,
+            .sidebar-body::after {
+                width: 310px;
+            }
 
-    .title-section {
+            .sidebar-toggle {
+                right: -32px;
+                width: 32px;
+            }
 
-      padding:
-        18px 20px 16px;
+            .logo-section img {
+                width: 62px;
+                height: 62px;
+            }
+        }
 
-      text-align: center;
-
-      background:
-        rgba(255, 255, 255, 0.72);
-
-      border-bottom:
-        1px solid rgba(238, 238, 238, 0.9);
-    }
-
-
-    .title-section h1 {
-
-      margin: 0;
-
-      font-size: 22px;
-
-      font-weight: 700;
-
-      color: #17324d;
-
-      letter-spacing: 0.5px;
-    }
-
-
-    .title-section p {
-
-      margin:
-        7px 0 0;
-
-      font-size: 12px;
-
-      line-height: 1.4;
-
-      color: #555555;
-    }
-
-
-    /* =====================================================
-       PANEL
-       ===================================================== */
-
-    .panel-content {
-
-      padding:
-        18px 20px;
-    }
-
-
-    /* =====================================================
-       JUDUL BAGIAN
-       ===================================================== */
-
-    .section-title {
-
-      margin-top: 18px;
-
-      margin-bottom: 10px;
-
-      padding-bottom: 7px;
-
-      border-bottom:
-        2px solid #17324d;
-
-      color: #17324d;
-
-      font-size: 14px;
-
-      font-weight: bold;
-
-      text-transform: uppercase;
-    }
-
-
-    .section-title:first-child {
-
-      margin-top: 0;
-    }
-
-
-    /* =====================================================
-       KOTAK KONTROL
-       ===================================================== */
-
-    .layer-control-box {
-
-      background:
-        rgba(255, 255, 255, 0.84);
-
-      border-radius: 7px;
-
-      padding: 10px;
-
-      border:
-        1px solid rgba(225, 229, 232, 0.9);
-
-      box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-
-
-    .layer-item {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      padding: 8px 5px;
-
-      font-size: 13px;
-
-      cursor: pointer;
-    }
-
-
-    .layer-item input {
-
-      cursor: pointer;
-    }
-
-
-    /* =====================================================
-       TOMBOL AUTO ZOOM
-       ===================================================== */
-
-    .zoom-layer-button {
-
-      width: 100%;
-
-      margin-top: 10px;
-
-      padding: 10px 12px;
-
-      border: none;
-
-      border-radius: 6px;
-
-      background: #17324d;
-
-      color: white;
-
-      font-size: 13px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-    }
-
-
-    .zoom-layer-button:hover {
-
-      background: #244e73;
-    }
-
-
-    .zoom-layer-button:active {
-
-      transform:
-        scale(0.98);
-    }
-
-
-    /* =====================================================
-       SISTEM KOORDINAT
-       ===================================================== */
-
-    .coordinate-box {
-
-      background:
-        rgba(255, 255, 255, 0.84);
-
-      border:
-        1px solid rgba(225, 229, 232, 0.9);
-
-      border-radius: 7px;
-
-      padding: 12px;
-
-      box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-
-
-    .coordinate-box .label {
-
-      font-size: 11px;
-
-      color: #666666;
-
-      margin-bottom: 3px;
-    }
-
-
-    .coordinate-box .value {
-
-      font-size: 14px;
-
-      font-weight: bold;
-
-      color: #17324d;
-
-      margin-bottom: 10px;
-    }
-
-
-    /* =====================================================
-       KOORDINAT KURSOR
-       ===================================================== */
-
-    .cursor-box {
-
-      background:
-        rgba(23, 50, 77, 0.90);
-
-      color: white;
-
-      border-radius: 7px;
-
-      padding: 10px;
-
-      font-size: 11px;
-
-      line-height: 1.6;
-    }
-
-
-    /* =====================================================
-       FOOTER
-       ===================================================== */
-
-    .sidebar-footer {
-
-      margin-top: 25px;
-
-      padding:
-        15px 20px;
-
-      border-top:
-        1px solid rgba(238, 238, 238, 0.9);
-
-      text-align: center;
-
-      font-size: 10px;
-
-      color: #666666;
-
-      line-height: 1.5;
-
-      background:
-        rgba(255, 255, 255, 0.72);
-    }
-
-
-    /* =====================================================
-       POPUP
-       ===================================================== */
-
-    .popup-title {
-
-      font-size: 14px;
-
-      font-weight: bold;
-
-      color: #17324d;
-
-      margin-bottom: 7px;
-    }
-
-
-    /* =====================================================
-       AUTO ZOOM CONTROL DI PETA
-       ===================================================== */
-
-    .zoom-to-layer-control {
-
-      margin-top: 10px;
-    }
-
-
-    .zoom-to-layer-button-map {
-
-      width: 38px;
-      height: 38px;
-
-      background: white;
-
-      border:
-        2px solid rgba(0, 0, 0, 0.2);
-
-      border-radius: 4px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 19px;
-
-      font-weight: bold;
-
-      color: #17324d;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 1px 5px rgba(0, 0, 0, 0.25);
-
-      transition:
-        0.2s;
-    }
-
-
-    .zoom-to-layer-button-map:hover {
-
-      background:
-        #f0f5f9;
-    }
-
-
-    /* =====================================================
-       LEGENDA KANAN BAWAH
-       ===================================================== */
-
-    .map-legend {
-
-      background:
-        rgba(255, 255, 255, 0.95);
-
-      padding:
-        10px 12px;
-
-      border-radius: 6px;
-
-      border:
-        1px solid #cccccc;
-
-      box-shadow:
-        0 1px 5px rgba(0, 0, 0, 0.25);
-
-      font-size: 12px;
-
-      line-height: 1.5;
-
-      color: #333333;
-
-      min-width: 150px;
-
-      margin-right: 10px;
-
-      margin-bottom: 10px;
-    }
-
-
-    .map-legend-title {
-
-      font-weight: bold;
-
-      font-size: 13px;
-
-      color: #17324d;
-
-      margin-bottom: 7px;
-
-      padding-bottom: 4px;
-
-      border-bottom:
-        1px solid #dddddd;
-    }
-
-
-    .legend-item {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-    }
-
-
-    .legend-line-coastline {
-
-      width: 28px;
-
-      height: 0;
-
-      border-top:
-        4px solid #00ffff;
-
-      flex-shrink: 0;
-    }
-
-
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-
-    @media (max-width: 800px) {
-
-      .sidebar {
-
-        width: 280px;
-      }
-
-
-      .sidebar.collapsed {
-
-        transform:
-          translateX(-280px);
-      }
-
-
-      #map {
-
-        left: 280px;
-
-        width:
-          calc(100% - 280px);
-      }
-
-
-      .sidebar-toggle {
-
-        left: 280px;
-      }
-
-
-      .sidebar-body::before {
-
-        width: 280px;
-      }
-
-
-      .sidebar-body::after {
-
-        width: 280px;
-      }
-
-
-      .logo-section {
-
-        padding:
-          15px 6px;
-
-        gap: 3px;
-      }
-
-
-      .logo-item {
-
-        height: 58px;
-      }
-
-
-      .title-section h1 {
-
-        font-size: 18px;
-      }
-
-
-      .map-legend {
-
-        min-width: 135px;
-
-        font-size: 11px;
-
-        margin-right: 8px;
-
-        margin-bottom: 8px;
-      }
-
-    }
-
-  </style>
-
+    </style>
 </head>
-
 
 <body>
 
+    <!-- ======================================================
+         MAP
+    ====================================================== -->
 
-  <!-- =====================================================
-       SIDEBAR
-       ===================================================== -->
-
-  <div
-    class="sidebar"
-    id="sidebar"
-  >
+    <div id="map"></div>
 
 
-    <!-- ===================================================
-         4 LOGO
-         TIDAK TERKENA BACKGROUND
-         =================================================== -->
+    <!-- ======================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <div class="logo-section">
+    <div class="sidebar" id="sidebar">
 
+        <!-- LOGOS -->
+        <div class="logo-section">
 
-      <!-- 1. ITERA -->
+            <img src="ITERA.png" alt="ITERA">
 
-      <div class="logo-item">
+            <img src="Logo_GT.png" alt="Geomatika ITERA">
 
-        <img
-          src="ITERA.png"
-          alt="Logo ITERA"
-        >
+            <img src="LOGO_GT23.png" alt="Geomatika 2023">
 
-      </div>
-
-
-      <!-- 2. GEOMATIKA ITERA -->
-
-      <div class="logo-item">
-
-        <img
-          src="Logo_GT.png"
-          alt="Logo Teknik Geomatika ITERA"
-        >
-
-      </div>
-
-
-      <!-- 3. GEOMATIKA 2023 -->
-
-      <div class="logo-item">
-
-        <img
-          src="LOGO_GT23.png"
-          alt="Logo Teknik Geomatika Angkatan 2023"
-        >
-
-      </div>
-
-
-      <!-- 4. KEMAH KERJA 2023 -->
-
-      <div class="logo-item">
-
-        <img
-          src="LOGO_KEMKER.png"
-          alt="Logo Kemah Kerja 2023"
-        >
-
-      </div>
-
-
-    </div>
-
-
-    <!-- ===================================================
-         BAGIAN DENGAN BACKGROUND FOTO
-         =================================================== -->
-
-    <div class="sidebar-body">
-
-
-      <div class="sidebar-content">
-
-
-        <!-- ===============================================
-             JUDUL
-             =============================================== -->
-
-        <div class="title-section">
-
-          <h1>
-            WEBGIS KELOMPOK 1
-          </h1>
-
-          <p>
-            Pemetaan dan Visualisasi Garis Pantai
-          </p>
+            <img src="LOGO_KEMKER.png" alt="Kemah Kerja 2023">
 
         </div>
 
 
-        <!-- ===============================================
-             PANEL KONTROL
-             =============================================== -->
+        <!-- BODY -->
+        <div class="sidebar-body">
 
-        <div class="panel-content">
-
-
-          <!-- =============================================
-               GARIS PANTAI
-               ============================================= -->
-
-          <div class="section-title">
-
-            Garis Pantai
-
-          </div>
+            <div class="webgis-title">
+                WEBGIS KELOMPOK 1
+            </div>
 
 
-          <div class="layer-control-box">
+            <!-- ==================================================
+                 GARIS PANTAI
+            ================================================== -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    Data
+                </div>
+
+                <label class="control-item">
+
+                    <input
+                        type="checkbox"
+                        id="coastlineCheck"
+                        checked
+                    >
+
+                    Garis Pantai
+
+                </label>
+
+            </div>
 
 
-            <label class="layer-item">
+            <!-- ==================================================
+                 AUTO ZOOM
+            ================================================== -->
 
-              <input
-                type="checkbox"
-                id="coastlineCheck"
-                checked
-              >
+            <div class="section">
 
-              <span>
+                <div class="section-title">
+                    Navigasi
+                </div>
+
+                <button
+                    class="zoom-button"
+                    id="zoomToLayerButton"
+                >
+                    Auto Zoom to Layer
+                </button>
+
+            </div>
+
+
+            <!-- ==================================================
+                 BASEMAP
+            ================================================== -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    Base Map
+                </div>
+
+
+                <label class="control-item">
+
+                    <input
+                        type="radio"
+                        name="basemap"
+                        value="esri"
+                        checked
+                    >
+
+                    Esri World Imagery
+
+                </label>
+
+
+                <label class="control-item">
+
+                    <input
+                        type="radio"
+                        name="basemap"
+                        value="google"
+                    >
+
+                    Google Satellite
+
+                </label>
+
+
+                <label class="control-item">
+
+                    <input
+                        type="radio"
+                        name="basemap"
+                        value="street"
+                    >
+
+                    Esri World Street Map
+
+                </label>
+
+
+                <label class="control-item">
+
+                    <input
+                        type="radio"
+                        name="basemap"
+                        value="ortho"
+                    >
+
+                    Orthophoto
+
+                </label>
+
+            </div>
+
+
+            <!-- ==================================================
+                 SISTEM KOORDINAT
+            ================================================== -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    Sistem Koordinat
+                </div>
+
+                <div
+                    style="
+                    font-size:14px;
+                    line-height:1.6;
+                    "
+                >
+                    WGS 84<br>
+                    Geographic Coordinate System<br>
+                    EPSG:4326
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 KOORDINAT KURSOR
+            ================================================== -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    Koordinat Kursor
+                </div>
+
+                <div class="coordinate-box">
+
+                    <div>
+                        Latitude:
+                        <span id="latValue">-</span>
+                    </div>
+
+                    <div>
+                        Longitude:
+                        <span id="lngValue">-</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="footer">
+
+                WEBGIS Kelompok 1<br>
+                Program Studi Teknik Geomatika<br>
+                Institut Teknologi Sumatera
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR TOGGLE -->
+        <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            title="Tutup/Buka Sidebar"
+        >
+            ◀
+        </button>
+
+    </div>
+
+
+    <!-- ======================================================
+         LEGEND
+    ====================================================== -->
+
+    <div class="legend">
+
+        <div class="legend-title">
+            Legenda
+        </div>
+
+        <div class="legend-line">
+
+            <div class="legend-symbol"></div>
+
+            <span>
                 Garis Pantai
-              </span>
-
-            </label>
-
-
-            <button
-              type="button"
-              id="zoomLayerButton"
-              class="zoom-layer-button"
-            >
-
-              ⌖ Auto Zoom to Layer
-
-            </button>
-
-
-          </div>
-
-
-          <!-- =============================================
-               BASE MAP
-               ============================================= -->
-
-          <div class="section-title">
-
-            Base Map
-
-          </div>
-
-
-          <div class="layer-control-box">
-
-
-            <!-- ESRI WORLD IMAGERY -->
-
-            <label class="layer-item">
-
-              <input
-                type="radio"
-                name="basemap"
-                id="satelliteRadio"
-                checked
-              >
-
-              <span>
-                Esri World Imagery
-              </span>
-
-            </label>
-
-
-            <!-- GOOGLE SATELLITE -->
-
-            <label class="layer-item">
-
-              <input
-                type="radio"
-                name="basemap"
-                id="googleRadio"
-              >
-
-              <span>
-                Google Satellite
-              </span>
-
-            </label>
-
-
-            <!-- ESRI WORLD STREET MAP -->
-
-            <label class="layer-item">
-
-              <input
-                type="radio"
-                name="basemap"
-                id="streetRadio"
-              >
-
-              <span>
-                Esri World Street Map
-              </span>
-
-            </label>
-
-
-          </div>
-
-
-          <!-- =============================================
-               SISTEM KOORDINAT
-               ============================================= -->
-
-          <div class="section-title">
-
-            Sistem Koordinat
-
-          </div>
-
-
-          <div class="coordinate-box">
-
-
-            <div class="label">
-              Datum
-            </div>
-
-
-            <div class="value">
-              WGS 84
-            </div>
-
-
-            <div class="label">
-              Sistem Koordinat
-            </div>
-
-
-            <div class="value">
-              Geographic Coordinate System
-            </div>
-
-
-            <div class="label">
-              EPSG
-            </div>
-
-
-            <div class="value">
-              EPSG:4326
-            </div>
-
-
-          </div>
-
-
-          <!-- =============================================
-               KOORDINAT KURSOR
-               ============================================= -->
-
-          <div class="section-title">
-
-            Koordinat Kursor
-
-          </div>
-
-
-          <div class="cursor-box">
-
-
-            <div>
-
-              Latitude:
-
-              <span id="latitude">
-                -
-              </span>
-
-            </div>
-
-
-            <div>
-
-              Longitude:
-
-              <span id="longitude">
-                -
-              </span>
-
-            </div>
-
-
-          </div>
-
+            </span>
 
         </div>
-
-
-        <!-- ===============================================
-             FOOTER
-             =============================================== -->
-
-        <div class="sidebar-footer">
-
-          WEBGIS KELOMPOK 1
-
-          <br>
-
-          Teknik Geomatika ITERA
-
-          <br>
-
-          Kemah Kerja 2023
-
-        </div>
-
-
-      </div>
-
 
     </div>
 
 
-  </div>
+    <!-- ======================================================
+         LEAFLET
+    ====================================================== -->
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- =====================================================
-       TOMBOL PANAH SIDEBAR
-       ===================================================== -->
 
-  <button
-    id="sidebarToggle"
-    class="sidebar-toggle"
-    type="button"
-    title="Minimize Panel"
-    aria-label="Minimize Panel"
-  >
+    <!-- ======================================================
+         GOOGLE MUTANT
+    ====================================================== -->
 
-    ◀
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
 
-  </button>
+    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/Leaflet.GoogleMutant.js"></script>
 
 
-  <!-- =====================================================
-       PETA
-       ===================================================== -->
+    <script>
 
-  <div id="map"></div>
+        /* ======================================================
+           MAP INITIALIZATION
+        ====================================================== */
 
+        const map = L.map("map", {
 
-  <!-- =====================================================
-       LEAFLET JS
-       ===================================================== -->
+            center: [-5.4, 105.3],
 
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-  </script>
+            zoom: 10,
 
+            minZoom: 0,
 
-  <!-- =====================================================
-       GOOGLE MAPS JAVASCRIPT API
-       GANTI API KEY
-       ===================================================== -->
+            maxZoom: 23,
 
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&v=weekly">
-  </script>
+            zoomControl: true
 
+        });
 
-  <!-- =====================================================
-       GOOGLE MUTANT
-       ===================================================== -->
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js">
-  </script>
+        /* ======================================================
+           BASEMAP 1
+           ESRI WORLD IMAGERY
+        ====================================================== */
 
+        const esriImagery = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/" +
+            "World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            {
+                maxZoom: 19,
+                attribution:
+                    "Tiles &copy; Esri"
+            }
+        );
 
-  <script>
 
+        /* ======================================================
+           BASEMAP 2
+           GOOGLE SATELLITE
+        ====================================================== */
 
-    /* =====================================================
-       1. INISIALISASI PETA
-       ===================================================== */
+        const googleSatellite =
+            L.gridLayer.googleMutant({
 
-    const map = L.map(
-      'map',
-      {
+                type: "satellite",
 
-        center:
-          [-5.45, 105.25],
+                maxZoom: 23
 
-        zoom:
-          10,
+            });
 
-        minZoom:
-          0,
 
-        maxZoom:
-          23,
+        /* ======================================================
+           BASEMAP 3
+           ESRI STREET
+        ====================================================== */
 
-        zoomControl:
-          true,
+        const esriStreet = L.tileLayer(
 
-        scrollWheelZoom:
-          true,
+            "https://server.arcgisonline.com/ArcGIS/rest/services/" +
+            "World_Street_Map/MapServer/tile/{z}/{y}/{x}",
 
-        doubleClickZoom:
-          true,
+            {
+                maxZoom: 19,
 
-        touchZoom:
-          true,
-
-        boxZoom:
-          true
-
-      }
-    );
-
-
-    /* =====================================================
-       2. SIDEBAR TOGGLE
-       ===================================================== */
-
-    const sidebar =
-      document.getElementById(
-        'sidebar'
-      );
-
-
-    const sidebarToggle =
-      document.getElementById(
-        'sidebarToggle'
-      );
-
-
-    let sidebarCollapsed =
-      false;
-
-
-    sidebarToggle.addEventListener(
-
-      'click',
-
-      function() {
-
-
-        sidebarCollapsed =
-          !sidebarCollapsed;
-
-
-        if (sidebarCollapsed) {
-
-
-          /* MINIMIZE */
-
-          sidebar.classList.add(
-            'collapsed'
-          );
-
-
-          sidebarToggle.classList.add(
-            'collapsed'
-          );
-
-
-          sidebarToggle.innerHTML =
-            '▶';
-
-
-          sidebarToggle.title =
-            'Tampilkan Panel';
-
-
-          sidebarToggle.setAttribute(
-            'aria-label',
-            'Tampilkan Panel'
-          );
-
-
-          document
-            .getElementById('map')
-            .style.left =
-            '0';
-
-
-          document
-            .getElementById('map')
-            .style.width =
-            '100%';
-
-        }
-
-
-        else {
-
-
-          /* TAMPILKAN */
-
-          sidebar.classList.remove(
-            'collapsed'
-          );
-
-
-          sidebarToggle.classList.remove(
-            'collapsed'
-          );
-
-
-          sidebarToggle.innerHTML =
-            '◀';
-
-
-          sidebarToggle.title =
-            'Minimize Panel';
-
-
-          sidebarToggle.setAttribute(
-            'aria-label',
-            'Minimize Panel'
-          );
-
-
-          const sidebarWidth =
-            window.innerWidth <= 800
-              ? '280px'
-              : '350px';
-
-
-          document
-            .getElementById('map')
-            .style.left =
-            sidebarWidth;
-
-
-          document
-            .getElementById('map')
-            .style.width =
-            `calc(100% - ${sidebarWidth})`;
-
-        }
-
-
-        setTimeout(
-
-          function() {
-
-            map.invalidateSize();
-
-          },
-
-          320
+                attribution:
+                    "Tiles &copy; Esri"
+            }
 
         );
 
-      }
 
-    );
+        /* ======================================================
+           ORTHOPHOTO
+           
+           ARC MAP EXPLODED CACHE
+           
+           TEST:
+           L12
+           L13
+           L14
+           L15
+           L16
+           L17
+           
+           Struktur:
+           
+           Fix_Ortho_web/
+             _alllayers/
+               L12/
+                 Rxxxxxxxx/
+                   Cxxxxxxxx.png
+        ====================================================== */
 
-
-    /* =====================================================
-       3. ESRI WORLD IMAGERY
-       ===================================================== */
-
-    const satellite =
-      L.tileLayer(
-
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-
-        {
-
-          minZoom:
-            0,
-
-          maxZoom:
-            19,
-
-          attribution:
-            'Tiles &copy; Esri'
-
-        }
-
-      );
-
-
-    /* =====================================================
-       4. ESRI WORLD STREET MAP
-       ===================================================== */
-
-    const street =
-      L.tileLayer(
-
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
-
-        {
-
-          minZoom:
-            0,
-
-          maxZoom:
-            19,
-
-          attribution:
-            'Tiles &copy; Esri'
-
-        }
-
-      );
-
-
-    /* =====================================================
-       5. GOOGLE SATELLITE
-       ===================================================== */
-
-    const googleSatellite =
-      L.gridLayer.googleMutant({
-
-        type:
-          'satellite',
-
-        minZoom:
-          0,
-
-        maxZoom:
-          23
-
-      });
-
-
-    /* =====================================================
-       6. BASEMAP DEFAULT
-       ===================================================== */
-
-    satellite.addTo(map);
-
-
-    /* =====================================================
-       7. STYLE GARIS PANTAI
-       ===================================================== */
-
-    const coastlineStyle = {
-
-      color:
-        '#00ffff',
-
-      weight:
-        4,
-
-      opacity:
-        0.95
-
-    };
-
-
-    /* =====================================================
-       8. VARIABEL GARIS PANTAI
-       ===================================================== */
-
-    let coastline =
-      null;
-
-
-    /* =====================================================
-       9. AUTO ZOOM TO LAYER
-       ===================================================== */
-
-    function zoomToCoastline() {
-
-
-      if (
-
-        coastline &&
-
-        coastline.getLayers().length > 0
-
-      ) {
-
-
-        const bounds =
-          coastline.getBounds();
-
-
-        if (bounds.isValid()) {
-
-
-          map.fitBounds(
-
-            bounds,
-
+        const orthoLayer = L.tileLayer(
+            "Fix_Ortho_web/_alllayers/L{z}/R{y}/C{x}.png",
             {
 
-              padding:
-                [40, 40],
+                tileSize: 256,
 
-              maxZoom:
-                16
+                minZoom: 12,
+
+                maxZoom: 17,
+
+                minNativeZoom: 12,
+
+                maxNativeZoom: 17,
+
+                noWrap: true,
+
+                opacity: 1,
+
+                attribution:
+                    "Orthophoto"
+
+            }
+        );
+
+
+        /* ======================================================
+           KUSTOM URL ORTHOPHOTO ARC GIS
+
+           ArcMap menggunakan:
+           R + ROW HEX
+           C + COLUMN HEX
+
+           Contoh:
+           R0000083f
+           C00000cad.png
+        ====================================================== */
+
+        orthoLayer.getTileUrl = function(coords) {
+
+            const z = coords.z;
+
+            const x = coords.x;
+
+            const y = coords.y;
+
+
+            /*
+             * Hanya L12-L17
+             */
+
+            if (z < 12 || z > 17) {
+
+                return "";
 
             }
 
-          );
+
+            /*
+             * Jangan izinkan koordinat negatif
+             */
+
+            if (x < 0 || y < 0) {
+
+                return "";
+
+            }
 
 
-        }
+            /*
+             * Konversi angka ke HEX
+             *
+             * ArcMap:
+             * R0000083f
+             * C00000cad
+             */
 
-      }
-
-      else {
-
-
-        alert(
-          'Layer garis pantai belum tersedia.'
-        );
-
-
-      }
-
-    }
+            const rowHex =
+                Math.floor(y)
+                .toString(16)
+                .padStart(8, "0")
+                .toLowerCase();
 
 
-    /* =====================================================
-       10. AUTO ZOOM SIDEBAR
-       ===================================================== */
-
-    document
-
-      .getElementById(
-        'zoomLayerButton'
-      )
-
-      .addEventListener(
-
-        'click',
-
-        function() {
-
-          zoomToCoastline();
-
-        }
-
-      );
+            const colHex =
+                Math.floor(x)
+                .toString(16)
+                .padStart(8, "0")
+                .toLowerCase();
 
 
-    /* =====================================================
-       11. CUSTOM AUTO ZOOM CONTROL
-       ===================================================== */
+            return (
 
-    const ZoomToLayerControl =
-      L.Control.extend({
-
-        options: {
-
-          position:
-            'topright'
-
-        },
-
-
-        onAdd:
-          function() {
-
-
-            const container =
-              L.DomUtil.create(
-
-                'div',
-
-                'leaflet-bar zoom-to-layer-control'
-
-              );
-
-
-            const button =
-              L.DomUtil.create(
-
-                'button',
-
-                'zoom-to-layer-button-map',
-
-                container
-
-              );
-
-
-            button.type =
-              'button';
-
-
-            button.innerHTML =
-              '⌖';
-
-
-            button.title =
-              'Auto Zoom to Layer';
-
-
-            button.setAttribute(
-
-              'aria-label',
-
-              'Auto Zoom to Layer'
+                "Fix_Ortho_web/" +
+                "_alllayers/" +
+                "L" + z + "/" +
+                "R" + rowHex + "/" +
+                "C" + colHex + ".png"
 
             );
 
+        };
 
-            L.DomEvent.disableClickPropagation(
-              container
-            );
 
+        /* ======================================================
+           DEFAULT BASEMAP
+        ====================================================== */
 
-            L.DomEvent.on(
+        esriImagery.addTo(map);
 
-              button,
 
-              'click',
+        /* ======================================================
+           GARIS PANTAI
+        ====================================================== */
 
-              function(e) {
+        let coastlineLayer = L.layerGroup();
 
+        let coastlineBounds = null;
 
-                L.DomEvent.stopPropagation(e);
 
+        /* ======================================================
+           LOAD GP_RT.JSON
+        ====================================================== */
 
-                zoomToCoastline();
+        fetch("GP_RT.json")
 
+            .then(function(response) {
 
-              }
+                if (!response.ok) {
 
-            );
+                    throw new Error(
+                        "GP_RT.json tidak ditemukan"
+                    );
 
+                }
 
-            return container;
+                return response.json();
 
-          }
+            })
 
-      });
+            .then(function(data) {
 
 
-    /* =====================================================
-       12. TAMBAHKAN AUTO ZOOM CONTROL
-       ===================================================== */
+                if (
+                    !data ||
+                    !data.features ||
+                    data.features.length === 0
+                ) {
 
-    map.addControl(
+                    console.warn(
+                        "Tidak ada feature di GP_RT.json"
+                    );
 
-      new ZoomToLayerControl()
+                    return;
 
-    );
+                }
 
 
-    /* =====================================================
-       13. KONVERSI ESRI JSON
-       ===================================================== */
-
-    function convertEsriJSON(data) {
-
-
-      const coastlineGroup =
-        L.featureGroup();
-
-
-      if (!data.features) {
-
-
-        console.error(
-          'GP_RT.json tidak memiliki features.'
-        );
-
-
-        return coastlineGroup;
-
-      }
-
-
-      data.features.forEach(
-
-        function(feature) {
-
-
-          const geometry =
-            feature.geometry || {};
-
-
-          const attributes =
-            feature.attributes || {};
-
-
-          if (!geometry.paths) {
-
-
-            return;
-
-          }
-
-
-          geometry.paths.forEach(
-
-            function(path) {
-
-
-              /*
-                ESRI JSON:
-                [X,Y]
-
-                X = Longitude
-                Y = Latitude
-
-                Leaflet:
-                [Latitude,Longitude]
-              */
-
-
-              const latLngs =
-                path.map(
-
-                  function(point) {
-
-                    return [
-
-                      point[1],
-
-                      point[0]
-
-                    ];
-
-                  }
-
-                );
-
-
-              /* ==========================================
-                 BUAT GARIS
-                 ========================================== */
-
-              const line =
-                L.polyline(
-
-                  latLngs,
-
-                  coastlineStyle
-
-                );
-
-
-              /* ==========================================
-                 POPUP
-                 ========================================== */
-
-              let html =
-
-                '<div>' +
-
-                '<div class="popup-title">' +
-
-                'Informasi Garis Pantai' +
-
-                '</div>';
-
-
-              const keys =
-                Object.keys(
-                  attributes
-                );
-
-
-              if (keys.length === 0) {
-
-
-                html +=
-                  'Tidak terdapat atribut.';
-
-
-              }
-
-              else {
-
-
-                keys.forEach(
-
-                  function(key) {
-
-
-                    let value =
-                      attributes[key];
-
+                data.features.forEach(function(feature) {
 
                     if (
-
-                      value === null ||
-
-                      value === undefined ||
-
-                      value === ''
-
+                        !feature.geometry ||
+                        !feature.geometry.paths
                     ) {
 
-                      value = '-';
+                        return;
 
                     }
 
 
-                    html +=
+                    feature.geometry.paths.forEach(function(path) {
 
-                      '<b>' +
 
-                      key +
+                        /*
+                         * ESRI JSON
+                         * [X,Y]
+                         *
+                         * Leaflet:
+                         * [LAT,LNG]
+                         */
 
-                      '</b>: ' +
+                        const latLngs =
+                            path.map(function(point) {
 
-                      value +
+                                return [
+                                    point[1],
+                                    point[0]
+                                ];
 
-                      '<br>';
+                            });
 
-                  }
 
+                        const line =
+                            L.polyline(
+                                latLngs,
+                                {
+
+                                    color: "cyan",
+
+                                    weight: 3,
+
+                                    opacity: 1,
+
+                                    smoothFactor: 1
+
+                                }
+                            );
+
+
+                        /* ==================================================
+                           POPUP
+                        ================================================== */
+
+                        let popupHTML =
+                            "<div style='min-width:200px'>";
+
+                        popupHTML +=
+                            "<b>Garis Pantai</b><br><br>";
+
+
+                        if (feature.attributes) {
+
+                            Object.keys(
+                                feature.attributes
+                            ).forEach(function(key) {
+
+                                const value =
+                                    feature.attributes[key];
+
+                                popupHTML +=
+                                    "<b>" +
+                                    key +
+                                    ":</b> " +
+                                    value +
+                                    "<br>";
+
+                            });
+
+                        }
+
+
+                        popupHTML += "</div>";
+
+
+                        line.bindPopup(
+                            popupHTML
+                        );
+
+
+                        /* ==================================================
+                           HOVER
+                        ================================================== */
+
+                        line.on(
+                            "mouseover",
+                            function() {
+
+                                this.setStyle({
+
+                                    color: "red",
+
+                                    weight: 6
+
+                                });
+
+                            }
+                        );
+
+
+                        line.on(
+                            "mouseout",
+                            function() {
+
+                                this.setStyle({
+
+                                    color: "cyan",
+
+                                    weight: 3
+
+                                });
+
+                            }
+                        );
+
+
+                        coastlineLayer.addLayer(line);
+
+                    });
+
+                });
+
+
+                coastlineLayer.addTo(map);
+
+
+                /* ==================================================
+                   GET BOUNDS
+                ================================================== */
+
+                coastlineBounds =
+                    coastlineLayer.getBounds();
+
+
+                if (
+                    coastlineBounds &&
+                    coastlineBounds.isValid()
+                ) {
+
+                    map.fitBounds(
+
+                        coastlineBounds,
+
+                        {
+                            padding: [40, 40],
+
+                            maxZoom: 16
+                        }
+
+                    );
+
+                }
+
+            })
+
+            .catch(function(error) {
+
+                console.error(
+                    "Gagal membaca GP_RT.json:",
+                    error
+                );
+
+            });
+
+
+        /* ======================================================
+           CHECKBOX GARIS PANTAI
+        ====================================================== */
+
+        document
+            .getElementById("coastlineCheck")
+            .addEventListener(
+                "change",
+                function() {
+
+                    if (this.checked) {
+
+                        if (
+                            !map.hasLayer(
+                                coastlineLayer
+                            )
+                        ) {
+
+                            coastlineLayer.addTo(map);
+
+                        }
+
+                    }
+
+                    else {
+
+                        if (
+                            map.hasLayer(
+                                coastlineLayer
+                            )
+                        ) {
+
+                            map.removeLayer(
+                                coastlineLayer
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        /* ======================================================
+           AUTO ZOOM SIDEBAR
+        ====================================================== */
+
+        document
+            .getElementById("zoomToLayerButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        coastlineBounds &&
+                        coastlineBounds.isValid()
+                    ) {
+
+                        map.fitBounds(
+
+                            coastlineBounds,
+
+                            {
+                                padding: [40, 40],
+
+                                maxZoom: 16
+                            }
+
+                        );
+
+                    }
+
+                }
+            );
+
+
+        /* ======================================================
+           AUTO ZOOM MAP CONTROL
+        ====================================================== */
+
+        const AutoZoomControl =
+            L.Control.extend({
+
+                options: {
+
+                    position: "topright"
+
+                },
+
+
+                onAdd: function() {
+
+                    const container =
+                        L.DomUtil.create(
+                            "div",
+                            "auto-zoom-control"
+                        );
+
+
+                    const button =
+                        L.DomUtil.create(
+                            "button",
+                            "",
+                            container
+                        );
+
+
+                    button.innerHTML = "⌖";
+
+                    button.title =
+                        "Zoom ke Garis Pantai";
+
+
+                    L.DomEvent.disableClickPropagation(
+                        container
+                    );
+
+
+                    L.DomEvent.on(
+                        button,
+                        "click",
+                        function() {
+
+                            if (
+                                coastlineBounds &&
+                                coastlineBounds.isValid()
+                            ) {
+
+                                map.fitBounds(
+
+                                    coastlineBounds,
+
+                                    {
+                                        padding: [40, 40],
+
+                                        maxZoom: 16
+                                    }
+
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    return container;
+
+                }
+
+            });
+
+
+        map.addControl(
+            new AutoZoomControl()
+        );
+
+
+        /* ======================================================
+           BASEMAP SWITCHING
+        ====================================================== */
+
+        const allBaseMaps = [
+
+            esriImagery,
+
+            googleSatellite,
+
+            esriStreet,
+
+            orthoLayer
+
+        ];
+
+
+        function removeAllBaseMaps() {
+
+            allBaseMaps.forEach(
+                function(layer) {
+
+                    if (
+                        map.hasLayer(layer)
+                    ) {
+
+                        map.removeLayer(layer);
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(
+                'input[name="basemap"]'
+            )
+            .forEach(
+                function(radio) {
+
+                    radio.addEventListener(
+                        "change",
+                        function() {
+
+                            if (!this.checked) {
+
+                                return;
+
+                            }
+
+
+                            removeAllBaseMaps();
+
+
+                            /* ==============================================
+                               ESRI WORLD IMAGERY
+                            ============================================== */
+
+                            if (
+                                this.value === "esri"
+                            ) {
+
+                                esriImagery.addTo(
+                                    map
+                                );
+
+                            }
+
+
+                            /* ==============================================
+                               GOOGLE SATELLITE
+                            ============================================== */
+
+                            else if (
+                                this.value === "google"
+                            ) {
+
+                                googleSatellite.addTo(
+                                    map
+                                );
+
+                            }
+
+
+                            /* ==============================================
+                               ESRI STREET MAP
+                            ============================================== */
+
+                            else if (
+                                this.value === "street"
+                            ) {
+
+                                esriStreet.addTo(
+                                    map
+                                );
+
+                            }
+
+
+                            /* ==============================================
+                               ORTHOPHOTO
+                            ============================================== */
+
+                            else if (
+                                this.value === "ortho"
+                            ) {
+
+                                orthoLayer.addTo(
+                                    map
+                                );
+
+
+                                /*
+                                 * Debug information
+                                 */
+
+                                console.log(
+                                    "Orthophoto aktif - L12 sampai L17"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* ======================================================
+           KOORDINAT KURSOR
+        ====================================================== */
+
+        map.on(
+            "mousemove",
+            function(e) {
+
+                document
+                    .getElementById("latValue")
+                    .textContent =
+                    e.latlng.lat.toFixed(6);
+
+
+                document
+                    .getElementById("lngValue")
+                    .textContent =
+                    e.latlng.lng.toFixed(6);
+
+            }
+        );
+
+
+        /* ======================================================
+           SIDEBAR TOGGLE
+        ====================================================== */
+
+        const sidebar =
+            document.getElementById(
+                "sidebar"
+            );
+
+
+        const sidebarToggle =
+            document.getElementById(
+                "sidebarToggle"
+            );
+
+
+        sidebarToggle.addEventListener(
+            "click",
+            function() {
+
+                sidebar.classList.toggle(
+                    "collapsed"
                 );
 
 
-              }
-
-
-              html +=
-                '</div>';
-
-
-              line.bindPopup(
-                html
-              );
-
-
-              /* ==========================================
-                 HOVER
-                 ========================================== */
-
-              line.on(
-
-                'mouseover',
-
-                function() {
-
-
-                  this.setStyle({
-
-                    color:
-                      '#ff0000',
-
-                    weight:
-                      6
-
-                  });
-
-
-                }
-
-              );
-
-
-              line.on(
-
-                'mouseout',
-
-                function() {
-
-
-                  this.setStyle(
-
-                    coastlineStyle
-
-                  );
-
-
-                }
-
-              );
-
-
-              coastlineGroup.addLayer(
-                line
-              );
-
-
-            }
-
-          );
-
-
-        }
-
-      );
-
-
-      return coastlineGroup;
-
-    }
-
-
-    /* =====================================================
-       14. LOAD GP_RT.JSON
-       ===================================================== */
-
-    fetch('GP_RT.json')
-
-
-      .then(
-
-        function(response) {
-
-
-          if (!response.ok) {
-
-
-            throw new Error(
-              'GP_RT.json tidak ditemukan.'
-            );
-
-
-          }
-
-
-          return response.json();
-
-
-        }
-
-      )
-
-
-      .then(
-
-        function(data) {
-
-
-          console.log(
-
-            'GP_RT.json berhasil dimuat:',
-
-            data
-
-          );
-
-
-          coastline =
-            convertEsriJSON(
-              data
-            );
-
-
-          coastline.addTo(
-            map
-          );
-
-
-          zoomToCoastline();
-
-
-          /* =============================================
-             CHECKBOX GARIS PANTAI
-             ============================================= */
-
-          document
-
-            .getElementById(
-              'coastlineCheck'
-            )
-
-            .addEventListener(
-
-              'change',
-
-              function() {
-
-
-                if (this.checked) {
-
-
-                  coastline.addTo(
-                    map
-                  );
-
-
-                  zoomToCoastline();
-
+                if (
+                    sidebar.classList.contains(
+                        "collapsed"
+                    )
+                ) {
+
+                    sidebarToggle.innerHTML =
+                        "▶";
 
                 }
 
                 else {
 
-
-                  map.removeLayer(
-                    coastline
-                  );
-
+                    sidebarToggle.innerHTML =
+                        "◀";
 
                 }
 
 
-              }
+                /*
+                 * Beri waktu agar Leaflet
+                 * menyesuaikan ukuran map
+                 */
 
-            );
+                setTimeout(
+                    function() {
 
+                        map.invalidateSize();
 
-        }
+                    },
+                    350
+                );
 
-      )
+            }
+        );
 
 
-      .catch(
+        /* ======================================================
+           DEBUG ORTHOPHOTO
+        ====================================================== */
 
-        function(error) {
+        orthoLayer.on(
+            "tileerror",
+            function(e) {
 
+                console.warn(
+                    "Tile Orthophoto tidak ditemukan:",
+                    e.coords
+                );
 
-          console.error(
-            error
-          );
+            }
+        );
 
 
-          alert(
+        orthoLayer.on(
+            "tileload",
+            function(e) {
 
-            'Gagal membaca GP_RT.json.\n\n' +
+                console.log(
+                    "Tile Orthophoto berhasil:",
+                    e.coords
+                );
 
-            'Pastikan GP_RT.json berada ' +
+            }
+        );
 
-            'satu folder dengan index.html.'
-
-          );
-
-
-        }
-
-      );
-
-
-    /* =====================================================
-       15. ESRI WORLD IMAGERY
-       ===================================================== */
-
-    document
-
-      .getElementById(
-        'satelliteRadio'
-      )
-
-      .addEventListener(
-
-        'change',
-
-        function() {
-
-
-          if (this.checked) {
-
-
-            map.removeLayer(
-              googleSatellite
-            );
-
-
-            map.removeLayer(
-              street
-            );
-
-
-            satellite.addTo(
-              map
-            );
-
-
-          }
-
-        }
-
-      );
-
-
-    /* =====================================================
-       16. GOOGLE SATELLITE
-       ===================================================== */
-
-    document
-
-      .getElementById(
-        'googleRadio'
-      )
-
-      .addEventListener(
-
-        'change',
-
-        function() {
-
-
-          if (this.checked) {
-
-
-            map.removeLayer(
-              satellite
-            );
-
-
-            map.removeLayer(
-              street
-            );
-
-
-            googleSatellite.addTo(
-              map
-            );
-
-
-          }
-
-        }
-
-      );
-
-
-    /* =====================================================
-       17. ESRI WORLD STREET MAP
-       ===================================================== */
-
-    document
-
-      .getElementById(
-        'streetRadio'
-      )
-
-      .addEventListener(
-
-        'change',
-
-        function() {
-
-
-          if (this.checked) {
-
-
-            map.removeLayer(
-              satellite
-            );
-
-
-            map.removeLayer(
-              googleSatellite
-            );
-
-
-            street.addTo(
-              map
-            );
-
-
-          }
-
-        }
-
-      );
-
-
-    /* =====================================================
-       18. SCALE BAR
-       ===================================================== */
-
-    L.control.scale({
-
-      imperial:
-        false,
-
-      metric:
-        true,
-
-      position:
-        'bottomleft'
-
-    }).addTo(map);
-
-
-    /* =====================================================
-       19. LEGENDA KANAN BAWAH
-       ===================================================== */
-
-    const legend =
-      L.control({
-
-        position:
-          'bottomright'
-
-      });
-
-
-    legend.onAdd =
-      function(map) {
-
-
-        const div =
-          L.DomUtil.create(
-
-            'div',
-
-            'map-legend'
-
-          );
-
-
-        div.innerHTML = `
-
-          <div class="map-legend-title">
-            Legenda
-          </div>
-
-          <div class="legend-item">
-
-            <span
-              class="legend-line-coastline">
-            </span>
-
-            <span>
-              Garis Pantai
-            </span>
-
-          </div>
-
-        `;
-
-
-        L.DomEvent
-          .disableClickPropagation(
-            div
-          );
-
-
-        return div;
-
-      };
-
-
-    legend.addTo(map);
-
-
-    /* =====================================================
-       20. KOORDINAT KURSOR
-       ===================================================== */
-
-    map.on(
-
-      'mousemove',
-
-      function(e) {
-
-
-        document
-
-          .getElementById(
-            'latitude'
-          )
-
-          .innerHTML =
-
-          e.latlng
-            .lat
-            .toFixed(6);
-
-
-        document
-
-          .getElementById(
-            'longitude'
-          )
-
-          .innerHTML =
-
-          e.latlng
-            .lng
-            .toFixed(6);
-
-
-      }
-
-    );
-
-
-  </script>
+    </script>
 
 </body>
-
 </html>
