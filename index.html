@@ -170,13 +170,6 @@
 
     /* =====================================================
        4 LOGO SEJAJAR
-       URUTAN:
-       1. ITERA
-       2. GEOMATIKA ITERA
-       3. GEOMATIKA 2023
-       4. KEMAH KERJA 2023
-
-       BAGIAN LOGO TIDAK TERKENA BACKGROUND FOTO
        ===================================================== */
 
     .logo-section {
@@ -236,7 +229,7 @@
 
 
     /* =====================================================
-       BAGIAN SIDEBAR YANG MEMAKAI BACKGROUND FOTO
+       SIDEBAR BODY
        ===================================================== */
 
     .sidebar-body {
@@ -249,124 +242,136 @@
       overflow-y: auto;
 
       overflow-x: hidden;
+
+      background: #ffffff;
     }
 
 
     /* =====================================================
-       BACKGROUND FOTO
+       BACKGROUND SLIDESHOW
 
-       FOTO:
-       bcg1.jpeg
-       bcg2.jpeg
-       bcg3.jpeg
+       3 FOTO TAMPIL BERSAMAAN
 
-       TAMPIL UTUH DENGAN contain
+       POSISI:
+       FOTO 1 = ATAS
+       FOTO 2 = TENGAH
+       FOTO 3 = BAWAH
        ===================================================== */
 
-    .sidebar-body::before {
+    .background-slideshow {
 
-      content: "";
-
-      position: fixed;
+      position: absolute;
 
       left: 0;
-      top: 108px;
+      top: 0;
 
-      width: 350px;
+      width: 100%;
+      height: 100%;
 
-      height:
-        calc(100vh - 108px);
+      overflow: hidden;
 
       z-index: 0;
 
-      background-color:
-        #ffffff;
-
-      background-image:
-        url("bcg1.jpeg");
-
-      background-repeat:
-        no-repeat;
-
-      background-position:
-        center center;
-
-      background-size:
-        contain;
-
-      opacity:
-        0.20;
-
-      animation:
-        backgroundSlide 18s infinite;
-
       pointer-events: none;
     }
 
 
     /* =====================================================
-       OVERLAY AGAR BACKGROUND TIDAK TERLALU KUAT
+       FOTO BACKGROUND
        ===================================================== */
 
-    .sidebar-body::after {
+    .bg-photo {
+
+      position: absolute;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 33.333333%;
+
+      background-repeat: no-repeat;
+
+      background-position: center center;
+
+      background-size: contain;
+
+      background-color: #ffffff;
+
+      opacity: 0.20;
+
+      transition:
+        top 1.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.85s ease-in-out,
+        filter 0.85s ease-in-out;
+
+      filter:
+        brightness(1);
+    }
+
+
+    /* =====================================================
+       POSISI FOTO ATAS
+       ===================================================== */
+
+    .bg-photo.pos-top {
+
+      top: 0;
+    }
+
+
+    /* =====================================================
+       POSISI FOTO TENGAH
+       ===================================================== */
+
+    .bg-photo.pos-middle {
+
+      top: 33.333333%;
+    }
+
+
+    /* =====================================================
+       POSISI FOTO BAWAH
+       ===================================================== */
+
+    .bg-photo.pos-bottom {
+
+      top: 66.666666%;
+    }
+
+
+    /* =====================================================
+       EFEK KEDIP / FADE SAAT PERPINDAHAN
+       ===================================================== */
+
+    .background-slideshow.changing
+    .bg-photo {
+
+      opacity: 0.035;
+
+      filter:
+        brightness(1.12);
+    }
+
+
+    /* =====================================================
+       WHITE FADE OVERLAY
+       ===================================================== */
+
+    .background-slideshow::after {
 
       content: "";
 
-      position: fixed;
+      position: absolute;
 
-      left: 0;
-      top: 108px;
-
-      width: 350px;
-
-      height:
-        calc(100vh - 108px);
-
-      z-index: 1;
+      inset: 0;
 
       background:
-        rgba(255, 255, 255, 0.18);
+        rgba(255,255,255,0.10);
 
       pointer-events: none;
-    }
 
-
-    /* =====================================================
-       ANIMASI GANTI FOTO
-       ===================================================== */
-
-    @keyframes backgroundSlide {
-
-      0%,
-      28% {
-
-        background-image:
-          url("bcg1.jpeg");
-      }
-
-
-      33%,
-      61% {
-
-        background-image:
-          url("bcg2.jpeg");
-      }
-
-
-      66%,
-      94% {
-
-        background-image:
-          url("bcg3.jpeg");
-      }
-
-
-      100% {
-
-        background-image:
-          url("bcg1.jpeg");
-      }
-
+      z-index: 5;
     }
 
 
@@ -822,13 +827,7 @@
       }
 
 
-      .sidebar-body::before {
-
-        width: 280px;
-      }
-
-
-      .sidebar-body::after {
+      .background-slideshow {
 
         width: 280px;
       }
@@ -888,13 +887,10 @@
 
     <!-- ===================================================
          4 LOGO
-         TIDAK TERKENA BACKGROUND
          =================================================== -->
 
     <div class="logo-section">
 
-
-      <!-- 1. ITERA -->
 
       <div class="logo-item">
 
@@ -906,8 +902,6 @@
       </div>
 
 
-      <!-- 2. GEOMATIKA ITERA -->
-
       <div class="logo-item">
 
         <img
@@ -918,8 +912,6 @@
       </div>
 
 
-      <!-- 3. GEOMATIKA 2023 -->
-
       <div class="logo-item">
 
         <img
@@ -929,8 +921,6 @@
 
       </div>
 
-
-      <!-- 4. KEMAH KERJA 2023 -->
 
       <div class="logo-item">
 
@@ -946,11 +936,56 @@
 
 
     <!-- ===================================================
-         BAGIAN DENGAN BACKGROUND FOTO
+         BAGIAN DENGAN 3 FOTO BACKGROUND
          =================================================== -->
 
     <div class="sidebar-body">
 
+
+      <!-- =================================================
+           3 FOTO BACKGROUND
+           ================================================= -->
+
+      <div
+        class="background-slideshow"
+        id="backgroundSlideshow"
+      >
+
+        <div
+          class="bg-photo pos-top"
+          id="bgPhoto1"
+          style="
+            background-image:
+              url('bcg1.jpeg');
+          "
+        ></div>
+
+
+        <div
+          class="bg-photo pos-middle"
+          id="bgPhoto2"
+          style="
+            background-image:
+              url('bcg2.jpeg');
+          "
+        ></div>
+
+
+        <div
+          class="bg-photo pos-bottom"
+          id="bgPhoto3"
+          style="
+            background-image:
+              url('bcg3.jpeg');
+          "
+        ></div>
+
+      </div>
+
+
+      <!-- =================================================
+           ISI SIDEBAR
+           ================================================= -->
 
       <div class="sidebar-content">
 
@@ -1353,8 +1388,6 @@
         if (sidebarCollapsed) {
 
 
-          /* MINIMIZE */
-
           sidebar.classList.add(
             'collapsed'
           );
@@ -1395,8 +1428,6 @@
 
         else {
 
-
-          /* TAMPILKAN */
 
           sidebar.classList.remove(
             'collapsed'
@@ -1529,10 +1560,10 @@
 
 
     /* =====================================================
-       6. ORTHOPHOTO ARCMAP EXPLODED TILE CACHE
+       6. ORTHOPHOTO ARCMAP EXPLODED CACHE
 
-       SUMBER:
-       Fix_Ortho_web
+       LEVEL YANG DIPAKAI:
+       L12 - L17
 
        STRUKTUR:
 
@@ -1546,12 +1577,6 @@
            ├── L15/
            ├── L16/
            └── L17/
-
-       CONTOH:
-       L12/R0000083f/C00000cad.png
-
-       TEST LEVEL:
-       L12 - L17
        ===================================================== */
 
     let orthoLoaded =
@@ -1599,15 +1624,7 @@
 
 
     /* =====================================================
-       7. CUSTOM URL TILE ORTHOPHOTO
-
-       LEAFLET:
-       x = kolom
-       y = baris
-
-       ARCMAP:
-       C + HEX COLUMN
-       R + HEX ROW
+       7. URL TILE ORTHOPHOTO
        ===================================================== */
 
     orthoLayer.getTileUrl =
@@ -1627,7 +1644,7 @@
 
 
         /* ================================================
-           HANYA L12 - L17
+           BATASI L12-L17
            ================================================ */
 
         if (
@@ -1641,7 +1658,7 @@
 
 
         /* ================================================
-           CEGAH NILAI NEGATIF
+           CEGAH NEGATIF
            ================================================ */
 
         if (
@@ -1655,14 +1672,7 @@
 
 
         /* ================================================
-           KONVERSI ROW KE HEX
-
-           CONTOH:
-           2111 decimal
-           ->
-           83f hex
-           ->
-           0000083f
+           ROW HEX
            ================================================ */
 
         const rowHex =
@@ -1676,14 +1686,7 @@
 
 
         /* ================================================
-           KONVERSI COLUMN KE HEX
-
-           CONTOH:
-           3245 decimal
-           ->
-           cad hex
-           ->
-           00000cad
+           COLUMN HEX
            ================================================ */
 
         const colHex =
@@ -1757,7 +1760,7 @@
 
 
     /* =====================================================
-       11. AUTO ZOOM TO LAYER
+       11. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -1837,7 +1840,7 @@
 
 
     /* =====================================================
-       13. CUSTOM AUTO ZOOM CONTROL
+       13. CUSTOM AUTO ZOOM
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -1930,10 +1933,6 @@
       });
 
 
-    /* =====================================================
-       14. TAMBAHKAN AUTO ZOOM CONTROL
-       ===================================================== */
-
     map.addControl(
 
       new ZoomToLayerControl()
@@ -1942,7 +1941,7 @@
 
 
     /* =====================================================
-       15. KONVERSI ESRI JSON
+       14. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(data) {
@@ -1991,18 +1990,6 @@
             function(path) {
 
 
-              /*
-                ESRI JSON:
-                [X,Y]
-
-                X = Longitude
-                Y = Latitude
-
-                Leaflet:
-                [Latitude,Longitude]
-              */
-
-
               const latLngs =
                 path.map(
 
@@ -2021,10 +2008,6 @@
                 );
 
 
-              /* ==========================================
-                 BUAT GARIS
-                 ========================================== */
-
               const line =
                 L.polyline(
 
@@ -2034,10 +2017,6 @@
 
                 );
 
-
-              /* ==========================================
-                 POPUP
-                 ========================================== */
 
               let html =
 
@@ -2121,10 +2100,6 @@
               );
 
 
-              /* ==========================================
-                 HOVER
-                 ========================================== */
-
               line.on(
 
                 'mouseover',
@@ -2188,7 +2163,7 @@
 
 
     /* =====================================================
-       16. LOAD GP_RT.JSON
+       15. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch('GP_RT.json')
@@ -2245,10 +2220,6 @@
 
           zoomToCoastline();
 
-
-          /* =============================================
-             CHECKBOX GARIS PANTAI
-             ============================================= */
 
           document
 
@@ -2324,13 +2295,15 @@
 
 
     /* =====================================================
-       17. FUNGSI HAPUS BASEMAP
+       16. FUNGSI HAPUS SEMUA BASEMAP
        ===================================================== */
 
     function removeBasemaps() {
 
 
-      if (map.hasLayer(satellite)) {
+      if (
+        map.hasLayer(satellite)
+      ) {
 
         map.removeLayer(
           satellite
@@ -2339,7 +2312,9 @@
       }
 
 
-      if (map.hasLayer(googleSatellite)) {
+      if (
+        map.hasLayer(googleSatellite)
+      ) {
 
         map.removeLayer(
           googleSatellite
@@ -2348,7 +2323,9 @@
       }
 
 
-      if (map.hasLayer(street)) {
+      if (
+        map.hasLayer(street)
+      ) {
 
         map.removeLayer(
           street
@@ -2357,7 +2334,9 @@
       }
 
 
-      if (map.hasLayer(orthoLayer)) {
+      if (
+        map.hasLayer(orthoLayer)
+      ) {
 
         map.removeLayer(
           orthoLayer
@@ -2369,7 +2348,7 @@
 
 
     /* =====================================================
-       18. ESRI WORLD IMAGERY
+       17. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2404,7 +2383,7 @@
 
 
     /* =====================================================
-       19. GOOGLE SATELLITE
+       18. GOOGLE SATELLITE
        ===================================================== */
 
     document
@@ -2439,7 +2418,7 @@
 
 
     /* =====================================================
-       20. ESRI WORLD STREET MAP
+       19. ESRI STREET
        ===================================================== */
 
     document
@@ -2474,15 +2453,7 @@
 
 
     /* =====================================================
-       21. ORTHOPHOTO
-       
-       SATELLITE DIPAKAI SEBAGAI FALLBACK
-
-       Jadi:
-       Orthophoto ada  -> Orthophoto terlihat
-       Orthophoto gagal -> Satellite tetap terlihat
-
-       Ini mencegah peta menjadi abu-abu.
+       20. ORTHOPHOTO
        ===================================================== */
 
     document
@@ -2505,9 +2476,9 @@
           }
 
 
-          /* ----------------------------------------------
-             RESET STATUS
-             ---------------------------------------------- */
+          /* ================================================
+             RESET
+             ================================================ */
 
           orthoLoaded =
             false;
@@ -2517,27 +2488,27 @@
             0;
 
 
-          /* ----------------------------------------------
+          /* ================================================
              HAPUS BASEMAP LAIN
-             ---------------------------------------------- */
+             ================================================ */
 
           removeBasemaps();
 
 
-          /* ----------------------------------------------
-             ESRI SEBAGAI BACKGROUND
+          /* ================================================
+             ESRI SEBAGAI FALLBACK
 
-             Orthophoto akan berada di atasnya.
-             ---------------------------------------------- */
+             supaya tidak abu-abu
+             ================================================ */
 
           satellite.addTo(
             map
           );
 
 
-          /* ----------------------------------------------
-             ORTHOPHOTO DI ATAS SATELLITE
-             ---------------------------------------------- */
+          /* ================================================
+             ORTHOPHOTO DI ATAS ESRI
+             ================================================ */
 
           orthoLayer.addTo(
             map
@@ -2548,7 +2519,7 @@
 
 
           console.log(
-            '==================================='
+            '================================'
           );
 
 
@@ -2568,7 +2539,7 @@
 
 
           console.log(
-            '==================================='
+            '================================'
           );
 
 
@@ -2578,7 +2549,7 @@
 
 
     /* =====================================================
-       22. ORTHOPHOTO TILE BERHASIL
+       21. ORTHO TILE BERHASIL
        ===================================================== */
 
     orthoLayer.on(
@@ -2588,14 +2559,17 @@
       function(e) {
 
 
-        console.log(
-          'ORTHOPHOTO TILE BERHASIL:',
-          e.coords
-        );
-
-
         orthoLoaded =
           true;
+
+
+        console.log(
+
+          'ORTHOPHOTO TILE BERHASIL:',
+
+          e.coords
+
+        );
 
 
       }
@@ -2604,7 +2578,7 @@
 
 
     /* =====================================================
-       23. ORTHOPHOTO TILE ERROR
+       22. ORTHO TILE ERROR
        ===================================================== */
 
     orthoLayer.on(
@@ -2628,37 +2602,12 @@
 
         console.error(
 
-          'URL TILE DIDUGA:',
-
-          'L' +
-          e.coords.z +
-          '/R' +
-          Math.floor(e.coords.y)
-            .toString(16)
-            .padStart(8, '0')
-            .toLowerCase() +
-          '/C' +
-          Math.floor(e.coords.x)
-            .toString(16)
-            .padStart(8, '0')
-            .toLowerCase() +
-          '.png'
-
-        );
-
-
-        console.error(
-
-          'Jumlah tile gagal:',
+          'JUMLAH TILE GAGAL:',
 
           orthoErrorCount
 
         );
 
-
-        /*
-         * SATELLITE DIBIARKAN SEBAGAI FALLBACK.
-         */
 
       }
 
@@ -2666,7 +2615,7 @@
 
 
     /* =====================================================
-       24. SCALE BAR
+       23. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2684,7 +2633,7 @@
 
 
     /* =====================================================
-       25. LEGENDA KANAN BAWAH
+       24. LEGENDA
        ===================================================== */
 
     const legend =
@@ -2746,7 +2695,7 @@
 
 
     /* =====================================================
-       26. KOORDINAT KURSOR
+       25. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -2783,6 +2732,211 @@
 
 
       }
+
+    );
+
+
+    /* =====================================================
+       26. ROTASI 3 FOTO BACKGROUND
+       
+       AWAL:
+       bcg1 = ATAS
+       bcg2 = TENGAH
+       bcg3 = BAWAH
+
+       ROTASI:
+       bcg2 = ATAS
+       bcg3 = TENGAH
+       bcg1 = BAWAH
+
+       ROTASI:
+       bcg3 = ATAS
+       bcg1 = TENGAH
+       bcg2 = BAWAH
+
+       KEMBALI KE AWAL
+       ===================================================== */
+
+    const bgSlideshow =
+      document.getElementById(
+        'backgroundSlideshow'
+      );
+
+
+    const bgPhoto1 =
+      document.getElementById(
+        'bgPhoto1'
+      );
+
+
+    const bgPhoto2 =
+      document.getElementById(
+        'bgPhoto2'
+      );
+
+
+    const bgPhoto3 =
+      document.getElementById(
+        'bgPhoto3'
+      );
+
+
+    let bgStep =
+      0;
+
+
+    /* =====================================================
+       FUNGSI ROTASI BACKGROUND
+       ===================================================== */
+
+    function rotateBackgroundPhotos() {
+
+
+      /* -----------------------------------------------
+         FADE OUT / KEDIP
+         ----------------------------------------------- */
+
+      bgSlideshow.classList.add(
+        'changing'
+      );
+
+
+      /* -----------------------------------------------
+         TUNGGU SEBENTAR
+         ----------------------------------------------- */
+
+      setTimeout(
+
+        function() {
+
+
+          bgStep++;
+
+
+          /* =============================================
+             PUTARAN 1
+
+             bcg2 ATAS
+             bcg3 TENGAH
+             bcg1 BAWAH
+             ============================================= */
+
+          if (bgStep === 1) {
+
+
+            bgPhoto1.className =
+              'bg-photo pos-bottom';
+
+
+            bgPhoto2.className =
+              'bg-photo pos-top';
+
+
+            bgPhoto3.className =
+              'bg-photo pos-middle';
+
+
+          }
+
+
+          /* =============================================
+             PUTARAN 2
+
+             bcg3 ATAS
+             bcg1 TENGAH
+             bcg2 BAWAH
+             ============================================= */
+
+          else if (bgStep === 2) {
+
+
+            bgPhoto1.className =
+              'bg-photo pos-middle';
+
+
+            bgPhoto2.className =
+              'bg-photo pos-bottom';
+
+
+            bgPhoto3.className =
+              'bg-photo pos-top';
+
+
+          }
+
+
+          /* =============================================
+             PUTARAN 3
+
+             KEMBALI KE AWAL
+
+             bcg1 ATAS
+             bcg2 TENGAH
+             bcg3 BAWAH
+             ============================================= */
+
+          else {
+
+
+            bgStep =
+              0;
+
+
+            bgPhoto1.className =
+              'bg-photo pos-top';
+
+
+            bgPhoto2.className =
+              'bg-photo pos-middle';
+
+
+            bgPhoto3.className =
+              'bg-photo pos-bottom';
+
+
+          }
+
+
+          /* -----------------------------------------------
+             FADE IN
+             ----------------------------------------------- */
+
+          setTimeout(
+
+            function() {
+
+
+              bgSlideshow.classList.remove(
+                'changing'
+              );
+
+
+            },
+
+            180
+
+          );
+
+
+        },
+
+        550
+
+      );
+
+
+    }
+
+
+    /* =====================================================
+       27. JALANKAN ROTASI SETIAP 5 DETIK
+       ===================================================== */
+
+    setInterval(
+
+      rotateBackgroundPhotos,
+
+      5000
 
     );
 
