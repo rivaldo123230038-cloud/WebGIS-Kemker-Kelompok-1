@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebGIS Garis Pantai</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3yQvK9Yw8QmQfJxM2qf3fJ6J6J7J8="
+    crossorigin=""
+  />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .title-box {
+      position: absolute;
+      z-index: 1000;
+      top: 15px;
+      left: 60px;
+      background: rgba(255,255,255,.95);
+      padding: 12px 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+    }
+
+    .title-box h1 {
+      margin: 0;
+      font-size: 19px;
+      color: #17324d;
+    }
+
+    .title-box p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .info-panel {
+      position: absolute;
+      z-index: 1000;
+      right: 15px;
+      top: 15px;
+      width: 270px;
+      background: rgba(255,255,255,.96);
+      padding: 14px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+    }
+
+    .info-panel h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: #17324d;
+    }
+
+    .info-panel p {
+      margin: 5px 0;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .legend {
+      line-height: 20px;
+      color: #333;
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 28px;
+      height: 4px;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    .leaflet-control-layers {
+      border-radius: 7px;
+    }
+
+    @media (max-width: 700px) {
+      .title-box {
+        left: 55px;
+        right: 15px;
+      }
+
+      .title-box h1 {
+        font-size: 16px;
+      }
+
+      .info-panel {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="title-box">
+    <h1>WebGIS Garis Pantai</h1>
+    <p>Pemetaan dan visualisasi garis pantai</p>
+  </div>
+
+  <div class="info-panel">
+    <h3>Informasi</h3>
+    <p><b>Layer utama:</b> Garis Pantai</p>
+    <p>Klik garis pantai untuk melihat atribut data.</p>
+    <p>Gunakan kontrol layer untuk mengganti basemap.</p>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Leaflet -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+  </script>
+
+  <script>
+    // ==========================================================
+    // 1. INISIALISASI PETA
+    // ==========================================================
+    const map = L.map('map', {
+      center: [-5.45, 105.25],
+      zoom: 10,
+      zoomControl: true
+    });
+
+    // ==========================================================
+    // 2. BASEMAP
+    // ==========================================================
+    const osm = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }
+    );
+
+    const satellite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        maxZoom: 19,
+        attribution: 'Tiles &copy; Esri'
+      }
+    );
+
+    osm.addTo(map);
+
+    // ==========================================================
+    // 3. STYLE GARIS PANTAI
+    // ==========================================================
+    const coastlineStyle = {
+      color: '#0066ff',
+      weight: 4,
+      opacity: 0.95
+    };
+
+    // ==========================================================
+    // 4. POPUP ATRIBUT
+    // ==========================================================
+    function coastlinePopup(feature, layer) {
+      let html = '<div style="min-width:180px">';
+      html += '<b>Informasi Garis Pantai</b><hr style="margin:6px 0">';
+
+      if (feature.properties) {
+        const keys = Object.keys(feature.properties);
+
+        if (keys.length > 0) {
+          keys.forEach(function(key) {
+            let value = feature.properties[key];
+
+            if (value === null || value === undefined || value === '') {
+              value = '-';
+            }
+
+            html += '<b>' + key + '</b>: ' + value + '<br>';
+          });
+        } else {
+          html += 'Tidak terdapat atribut.';
+        }
+      }
+
+      html += '</div>';
+      layer.bindPopup(html);
+    }
+
+    // ==========================================================
+    // 5. LOAD DATA GARIS PANTAI
+    // ==========================================================
+    // Simpan file GeoJSON dengan nama:
+    // garis_pantai.geojson
+    //
+    // File harus berada satu folder dengan index.html.
+
+    fetch('garis_pantai.geojson')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('File garis_pantai.geojson tidak ditemukan.');
+        }
+        return response.json();
+      })
+      .then(data => {
+
+        const coastline = L.geoJSON(data, {
+          style: coastlineStyle,
+          onEachFeature: coastlinePopup
+        }).addTo(map);
+
+        // Zoom otomatis ke wilayah garis pantai
+        if (coastline.getBounds().isValid()) {
+          map.fitBounds(coastline.getBounds(), {
+            padding: [30, 30]
+          });
+        }
+
+        // Masukkan ke kontrol layer
+        overlayLayers['Garis Pantai'] = coastline;
+        layerControl.addOverlay(coastline, 'Garis Pantai');
+      })
+      .catch(error => {
+        console.error(error);
+        alert(
+          'Data garis pantai belum berhasil dimuat. ' +
+          'Pastikan file "garis_pantai.geojson" berada satu folder dengan index.html.'
+        );
+      });
+
+    // ==========================================================
+    // 6. KONTROL LAYER
+    // ==========================================================
+    const overlayLayers = {};
+
+    const baseMaps = {
+      "OpenStreetMap": osm,
+      "Satellite": satellite
+    };
+
+    const layerControl = L.control.layers(
+      baseMaps,
+      overlayLayers,
+      {
+        collapsed: false
+      }
+    ).addTo(map);
+
+    // ==========================================================
+    // 7. SKALA
+    // ==========================================================
+    L.control.scale({
+      imperial: false,
+      metric: true,
+      position: 'bottomleft'
+    }).addTo(map);
+
+    // ==========================================================
+    // 8. KOORDINAT KURSOR
+    // ==========================================================
+    const coordinateControl = L.control({position: 'bottomright'});
+
+    coordinateControl.onAdd = function(map) {
+      const div = L.DomUtil.create('div', 'leaflet-control');
+      div.style.background = 'rgba(255,255,255,.9)';
+      div.style.padding = '5px 8px';
+      div.style.borderRadius = '4px';
+      div.style.fontSize = '11px';
+      div.innerHTML = 'Lat: - | Lon: -';
+      return div;
+    };
+
+    coordinateControl.addTo(map);
+
+    map.on('mousemove', function(e) {
+      const lat = e.latlng.lat.toFixed(6);
+      const lon = e.latlng.lng.toFixed(6);
+
+      document.querySelector(
+        '.leaflet-control'
+      );
+
+      coordinateControl.getContainer().innerHTML =
+        'Lat: ' + lat + ' | Lon: ' + lon;
+    });
+
+    // ==========================================================
+    // 9. LEGENDA
+    // ==========================================================
+    const legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function(map) {
+      const div = L.DomUtil.create('div', 'info legend');
+      div.style.background = 'rgba(255,255,255,.92)';
+      div.style.padding = '7px 10px';
+      div.style.borderRadius = '5px';
+      div.style.boxShadow = '0 1px 5px rgba(0,0,0,.2)';
+
+      div.innerHTML =
+        '<b>Legenda</b><br>' +
+        '<i style="background:#0066ff"></i> Garis Pantai';
+
+      return div;
+    };
+
+    legend.addTo(map);
+
+  </script>
+
+</body>
+</html>
