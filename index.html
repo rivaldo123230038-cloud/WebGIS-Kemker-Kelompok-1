@@ -9,12 +9,17 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
+  <!-- LEAFLET CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
 
   <style>
+
+    /* =====================================================
+       DASAR
+       ===================================================== */
 
     * {
       box-sizing: border-box;
@@ -51,6 +56,7 @@
       position: fixed;
       left: 0;
       top: 0;
+
       width: 350px;
       height: 100vh;
 
@@ -65,8 +71,7 @@
 
 
     /* =====================================================
-       LOGO
-       4 LOGO SEJAJAR 1 BARIS
+       4 LOGO SEJAJAR
        ===================================================== */
 
     .logo-section {
@@ -148,7 +153,7 @@
 
 
     /* =====================================================
-       PANEL CONTENT
+       PANEL
        ===================================================== */
 
     .panel-content {
@@ -216,6 +221,45 @@
 
     .layer-item input {
       cursor: pointer;
+    }
+
+
+    /* =====================================================
+       TOMBOL AUTO ZOOM DI SIDEBAR
+       ===================================================== */
+
+    .zoom-layer-button {
+      width: 100%;
+
+      margin-top: 10px;
+
+      padding: 10px 12px;
+
+      border: none;
+
+      border-radius: 6px;
+
+      background: #17324d;
+
+      color: white;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+
+    .zoom-layer-button:hover {
+      background: #244e73;
+    }
+
+
+    .zoom-layer-button:active {
+      transform: scale(0.98);
     }
 
 
@@ -310,9 +354,51 @@
 
 
     /* =====================================================
+       CUSTOM CONTROL AUTO ZOOM
+       ===================================================== */
+
+    .zoom-to-layer-control {
+      margin-top: 10px;
+    }
+
+
+    .zoom-to-layer-button-map {
+      width: 38px;
+      height: 38px;
+
+      background: white;
+
+      border: 2px solid rgba(0, 0, 0, 0.2);
+
+      border-radius: 4px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 19px;
+
+      font-weight: bold;
+
+      color: #17324d;
+
+      cursor: pointer;
+
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+
+      transition: 0.2s;
+    }
+
+
+    .zoom-to-layer-button-map:hover {
+      background: #f0f5f9;
+    }
+
+
+    /* =====================================================
        RESPONSIVE
-       Tetap sejajar 4 logo pada desktop.
-       Pada layar sangat kecil, ukuran logonya mengecil.
        ===================================================== */
 
     @media (max-width: 800px) {
@@ -357,7 +443,7 @@
 
 
     <!-- ===================================================
-         4 LOGO
+         LOGO
          =================================================== -->
 
     <div class="logo-section">
@@ -375,13 +461,13 @@
       </div>
 
 
-      <!-- LOGO TEKNIK GEOMATIKA ITERA -->
+      <!-- LOGO TEKNIK GEOMATIKA -->
 
       <div class="logo-item">
 
         <img
           src="Logo_GT.png"
-          alt="Logo Teknik Geomatika ITERA"
+          alt="Logo Teknik Geomatika"
         >
 
       </div>
@@ -393,7 +479,7 @@
 
         <img
           src="LOGO_KEMKER.png"
-          alt="Logo Kemah Kerja 2026"
+          alt="Logo Kemah Kerja"
         >
 
       </div>
@@ -449,6 +535,7 @@
 
       <div class="layer-control-box">
 
+
         <label class="layer-item">
 
           <input
@@ -462,6 +549,18 @@
           </span>
 
         </label>
+
+
+        <!-- TOMBOL AUTO ZOOM -->
+
+        <button
+          type="button"
+          id="zoomLayerButton"
+          class="zoom-layer-button"
+        >
+          ⌖ Auto Zoom to Layer
+        </button>
+
 
       </div>
 
@@ -569,15 +668,18 @@
 
       <div class="cursor-box">
 
+
         <div>
           Latitude:
           <span id="latitude">-</span>
         </div>
 
+
         <div>
           Longitude:
           <span id="longitude">-</span>
         </div>
+
 
       </div>
 
@@ -640,7 +742,7 @@
 
 
     /* =====================================================
-       2. ESRI WORLD IMAGERY
+       2. BASEMAP ESRI WORLD IMAGERY
        ===================================================== */
 
     const satellite = L.tileLayer(
@@ -658,7 +760,7 @@
 
 
     /* =====================================================
-       3. ESRI WORLD STREET MAP
+       3. BASEMAP ESRI WORLD STREET MAP
        ===================================================== */
 
     const street = L.tileLayer(
@@ -698,7 +800,166 @@
 
 
     /* =====================================================
-       6. KONVERSI ESRI JSON
+       6. VARIABEL GLOBAL GARIS PANTAI
+       ===================================================== */
+
+    let coastline = null;
+
+
+    /* =====================================================
+       7. FUNGSI AUTO ZOOM TO LAYER
+       ===================================================== */
+
+    function zoomToCoastline() {
+
+      if (
+        coastline &&
+        coastline.getLayers().length > 0
+      ) {
+
+        const bounds =
+          coastline.getBounds();
+
+
+        if (bounds.isValid()) {
+
+          map.fitBounds(
+            bounds,
+            {
+              padding: [40, 40],
+              maxZoom: 16
+            }
+          );
+
+        }
+
+      }
+
+      else {
+
+        alert(
+          'Layer garis pantai belum tersedia.'
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       8. TOMBOL AUTO ZOOM DI SIDEBAR
+       ===================================================== */
+
+    document
+
+      .getElementById(
+        'zoomLayerButton'
+      )
+
+      .addEventListener(
+
+        'click',
+
+        function() {
+
+          zoomToCoastline();
+
+        }
+
+      );
+
+
+    /* =====================================================
+       9. CUSTOM LEAFLET CONTROL
+       TOMBOL AUTO ZOOM DI PETA
+       ===================================================== */
+
+    const ZoomToLayerControl =
+      L.Control.extend({
+
+        options: {
+          position: 'topright'
+        },
+
+
+        onAdd: function(map) {
+
+
+          const container =
+            L.DomUtil.create(
+              'div',
+              'leaflet-bar zoom-to-layer-control'
+            );
+
+
+          const button =
+            L.DomUtil.create(
+              'button',
+              'zoom-to-layer-button-map',
+              container
+            );
+
+
+          button.type = 'button';
+
+
+          button.innerHTML = '⌖';
+
+
+          button.title =
+            'Auto Zoom to Layer';
+
+
+          button.setAttribute(
+            'aria-label',
+            'Auto Zoom to Layer'
+          );
+
+
+          /* ---------------------------------------------
+             Cegah klik tombol mengganggu peta
+             --------------------------------------------- */
+
+          L.DomEvent.disableClickPropagation(
+            container
+          );
+
+
+          L.DomEvent.on(
+
+            button,
+
+            'click',
+
+            function(e) {
+
+              L.DomEvent.stopPropagation(e);
+
+              zoomToCoastline();
+
+            }
+
+          );
+
+
+          return container;
+
+        }
+
+      });
+
+
+    /* =====================================================
+       10. TAMBAHKAN TOOL KE PETA
+       ===================================================== */
+
+    map.addControl(
+      new ZoomToLayerControl()
+    );
+
+
+    /* =====================================================
+       11. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(data) {
@@ -707,6 +968,10 @@
       const coastlineGroup =
         L.featureGroup();
 
+
+      /* -----------------------------------------------
+         CEK FEATURES
+         ----------------------------------------------- */
 
       if (!data.features) {
 
@@ -718,6 +983,10 @@
 
       }
 
+
+      /* -----------------------------------------------
+         LOOP FEATURES
+         ----------------------------------------------- */
 
       data.features.forEach(
 
@@ -732,12 +1001,20 @@
             feature.attributes || {};
 
 
+          /* ---------------------------------------------
+             CEK PATH
+             --------------------------------------------- */
+
           if (!geometry.paths) {
 
             return;
 
           }
 
+
+          /* ---------------------------------------------
+             LOOP PATH
+             --------------------------------------------- */
 
           geometry.paths.forEach(
 
@@ -746,12 +1023,14 @@
 
               /*
                 ESRI JSON:
+
                 [X,Y]
 
                 X = Longitude
                 Y = Latitude
 
                 Leaflet:
+
                 [Latitude,Longitude]
               */
 
@@ -771,9 +1050,9 @@
                 );
 
 
-              /* ==========================================
-                 GARIS PANTAI
-                 ========================================== */
+              /* -----------------------------------------
+                 BUAT GARIS
+                 ----------------------------------------- */
 
               const line =
 
@@ -786,9 +1065,9 @@
                 );
 
 
-              /* ==========================================
+              /* -----------------------------------------
                  POPUP
-                 ========================================== */
+                 ----------------------------------------- */
 
               let html =
 
@@ -805,7 +1084,9 @@
                 Object.keys(attributes);
 
 
-              if (keys.length === 0) {
+              if (
+                keys.length === 0
+              ) {
 
                 html +=
                   'Tidak terdapat atribut.';
@@ -856,9 +1137,9 @@
               line.bindPopup(html);
 
 
-              /* ==========================================
+              /* -----------------------------------------
                  HOVER
-                 ========================================== */
+                 ----------------------------------------- */
 
               line.on(
 
@@ -894,6 +1175,10 @@
               );
 
 
+              /* -----------------------------------------
+                 MASUKKAN KE GROUP
+                 ----------------------------------------- */
+
               coastlineGroup.addLayer(line);
 
 
@@ -913,10 +1198,11 @@
 
 
     /* =====================================================
-       7. LOAD GP_RT.JSON
+       12. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch('GP_RT.json')
+
 
       .then(
 
@@ -951,45 +1237,26 @@
           );
 
 
-          const coastline =
+          /* -----------------------------------------------
+             KONVERSI
+             ----------------------------------------------- */
+
+          coastline =
             convertEsriJSON(data);
 
 
           /* -----------------------------------------------
-             TAMBAHKAN GARIS PANTAI
+             TAMBAHKAN KE PETA
              ----------------------------------------------- */
 
           coastline.addTo(map);
 
 
           /* -----------------------------------------------
-             ZOOM OTOMATIS
+             AUTO ZOOM SAAT PERTAMA DIMUAT
              ----------------------------------------------- */
 
-          if (
-            coastline.getLayers().length > 0
-          ) {
-
-
-            const bounds =
-              coastline.getBounds();
-
-
-            if (bounds.isValid()) {
-
-              map.fitBounds(
-
-                bounds,
-
-                {
-                  padding: [30, 30]
-                }
-
-              );
-
-            }
-
-          }
+          zoomToCoastline();
 
 
           /* -----------------------------------------------
@@ -1012,6 +1279,13 @@
                 if (this.checked) {
 
                   coastline.addTo(map);
+
+                  /*
+                    Setelah layer dinyalakan kembali,
+                    otomatis zoom ke layer.
+                  */
+
+                  zoomToCoastline();
 
                 }
 
@@ -1059,7 +1333,7 @@
 
 
     /* =====================================================
-       8. BASemap WORLD IMAGERY
+       13. BASemap WORLD IMAGERY
        ===================================================== */
 
     document
@@ -1095,7 +1369,7 @@
 
 
     /* =====================================================
-       9. BASEMAP WORLD STREET MAP
+       14. BASEMAP WORLD STREET MAP
        ===================================================== */
 
     document
@@ -1131,7 +1405,7 @@
 
 
     /* =====================================================
-       10. SCALE BAR
+       15. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -1146,7 +1420,7 @@
 
 
     /* =====================================================
-       11. KOORDINAT KURSOR
+       16. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
