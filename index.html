@@ -5,7 +5,8 @@
 
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
   <title>WEBGIS KELOMPOK 1</title>
 
@@ -32,6 +33,7 @@
 
     html,
     body {
+
       margin: 0;
       padding: 0;
 
@@ -98,7 +100,8 @@
 
     .sidebar.collapsed {
 
-      transform: translateX(-350px);
+      transform:
+        translateX(-350px);
     }
 
 
@@ -111,13 +114,13 @@
       position: fixed;
 
       top: 50%;
-
       left: 350px;
 
       width: 34px;
       height: 70px;
 
-      transform: translateY(-50%);
+      transform:
+        translateY(-50%);
 
       border: none;
 
@@ -166,8 +169,14 @@
 
 
     /* =====================================================
-       LOGO
-       TETAP PUTIH, TIDAK TERKENA BACKGROUND FOTO
+       4 LOGO SEJAJAR
+       URUTAN:
+       1. ITERA
+       2. GEOMATIKA ITERA
+       3. GEOMATIKA 2023
+       4. KEMAH KERJA 2023
+
+       BAGIAN LOGO TIDAK TERKENA BACKGROUND FOTO
        ===================================================== */
 
     .logo-section {
@@ -185,6 +194,8 @@
       align-items: center;
 
       width: 100%;
+
+      height: 108px;
 
       padding: 18px 10px;
 
@@ -225,8 +236,7 @@
 
 
     /* =====================================================
-       BAGIAN BAWAH SIDEBAR
-       BACKGROUND FOTO HANYA DI SINI
+       BAGIAN SIDEBAR YANG MEMAKAI BACKGROUND FOTO
        ===================================================== */
 
     .sidebar-body {
@@ -236,68 +246,96 @@
       min-height:
         calc(100vh - 108px);
 
-      overflow: hidden;
+      overflow-y: auto;
+
+      overflow-x: hidden;
     }
 
 
     /* =====================================================
-       SLIDESHOW BACKGROUND
+       BACKGROUND FOTO
+
+       FOTO:
+       bcg1.jpeg
+       bcg2.jpeg
+       bcg3.jpeg
+
+       TAMPIL UTUH DENGAN contain
        ===================================================== */
 
     .sidebar-body::before {
 
       content: "";
 
-      position: absolute;
+      position: fixed;
 
-      inset: 0;
+      left: 0;
+      top: 108px;
+
+      width: 350px;
+
+      height:
+        calc(100vh - 108px);
 
       z-index: 0;
+
+      background-color:
+        #ffffff;
 
       background-image:
         url("bcg1.jpeg");
 
-      background-size: cover;
+      background-repeat:
+        no-repeat;
 
-      background-position: center;
+      background-position:
+        center center;
 
-      background-repeat: no-repeat;
+      background-size:
+        contain;
 
-      opacity: 0.18;
+      opacity:
+        0.20;
 
       animation:
-        sidebarBackground 15s infinite;
+        backgroundSlide 18s infinite;
 
       pointer-events: none;
     }
 
 
     /* =====================================================
-       OVERLAY PUTIH AGAR FOTO TIDAK TERLALU KUAT
+       OVERLAY AGAR BACKGROUND TIDAK TERLALU KUAT
        ===================================================== */
 
     .sidebar-body::after {
 
       content: "";
 
-      position: absolute;
+      position: fixed;
 
-      inset: 0;
+      left: 0;
+      top: 108px;
+
+      width: 350px;
+
+      height:
+        calc(100vh - 108px);
 
       z-index: 1;
 
       background:
-        rgba(255, 255, 255, 0.30);
+        rgba(255, 255, 255, 0.18);
 
       pointer-events: none;
     }
 
 
     /* =====================================================
-       ANIMASI 3 FOTO
+       ANIMASI GANTI FOTO
        ===================================================== */
 
-    @keyframes sidebarBackground {
+    @keyframes backgroundSlide {
 
       0%,
       28% {
@@ -333,7 +371,7 @@
 
 
     /* =====================================================
-       SEMUA ISI DI ATAS BACKGROUND
+       ISI SIDEBAR DI ATAS BACKGROUND
        ===================================================== */
 
     .sidebar-content {
@@ -476,7 +514,7 @@
 
 
     /* =====================================================
-       AUTO ZOOM BUTTON
+       TOMBOL AUTO ZOOM
        ===================================================== */
 
     .zoom-layer-button {
@@ -501,8 +539,7 @@
 
       cursor: pointer;
 
-      transition:
-        0.2s;
+      transition: 0.2s;
     }
 
 
@@ -639,7 +676,6 @@
     .zoom-to-layer-button-map {
 
       width: 38px;
-
       height: 38px;
 
       background: white;
@@ -665,12 +701,16 @@
 
       box-shadow:
         0 1px 5px rgba(0, 0, 0, 0.25);
+
+      transition:
+        0.2s;
     }
 
 
     .zoom-to-layer-button-map:hover {
 
-      background: #f0f5f9;
+      background:
+        #f0f5f9;
     }
 
 
@@ -782,6 +822,18 @@
       }
 
 
+      .sidebar-body::before {
+
+        width: 280px;
+      }
+
+
+      .sidebar-body::after {
+
+        width: 280px;
+      }
+
+
       .logo-section {
 
         padding:
@@ -836,7 +888,7 @@
 
     <!-- ===================================================
          4 LOGO
-         BAGIAN INI TIDAK MEMAKAI BACKGROUND FOTO
+         TIDAK TERKENA BACKGROUND
          =================================================== -->
 
     <div class="logo-section">
@@ -903,9 +955,9 @@
       <div class="sidebar-content">
 
 
-        <!-- =================================================
+        <!-- ===============================================
              JUDUL
-             ================================================= -->
+             =============================================== -->
 
         <div class="title-section">
 
@@ -920,16 +972,16 @@
         </div>
 
 
-        <!-- =================================================
-             PANEL
-             ================================================= -->
+        <!-- ===============================================
+             PANEL KONTROL
+             =============================================== -->
 
         <div class="panel-content">
 
 
-          <!-- ===============================================
+          <!-- =============================================
                GARIS PANTAI
-               =============================================== -->
+               ============================================= -->
 
           <div class="section-title">
 
@@ -970,9 +1022,9 @@
           </div>
 
 
-          <!-- ===============================================
+          <!-- =============================================
                BASE MAP
-               =============================================== -->
+               ============================================= -->
 
           <div class="section-title">
 
@@ -1039,9 +1091,9 @@
           </div>
 
 
-          <!-- ===============================================
+          <!-- =============================================
                SISTEM KOORDINAT
-               =============================================== -->
+               ============================================= -->
 
           <div class="section-title">
 
@@ -1086,9 +1138,9 @@
           </div>
 
 
-          <!-- ===============================================
+          <!-- =============================================
                KOORDINAT KURSOR
-               =============================================== -->
+               ============================================= -->
 
           <div class="section-title">
 
@@ -1128,9 +1180,9 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- ===============================================
              FOOTER
-             ================================================= -->
+             =============================================== -->
 
         <div class="sidebar-footer">
 
@@ -1191,6 +1243,7 @@
 
   <!-- =====================================================
        GOOGLE MAPS JAVASCRIPT API
+       GANTI API KEY
        ===================================================== -->
 
   <script
@@ -1214,36 +1267,39 @@
        1. INISIALISASI PETA
        ===================================================== */
 
-    const map = L.map('map', {
+    const map = L.map(
+      'map',
+      {
 
-      center:
-        [-5.45, 105.25],
+        center:
+          [-5.45, 105.25],
 
-      zoom:
-        10,
+        zoom:
+          10,
 
-      minZoom:
-        0,
+        minZoom:
+          0,
 
-      maxZoom:
-        23,
+        maxZoom:
+          23,
 
-      zoomControl:
-        true,
+        zoomControl:
+          true,
 
-      scrollWheelZoom:
-        true,
+        scrollWheelZoom:
+          true,
 
-      doubleClickZoom:
-        true,
+        doubleClickZoom:
+          true,
 
-      touchZoom:
-        true,
+        touchZoom:
+          true,
 
-      boxZoom:
-        true
+        boxZoom:
+          true
 
-    });
+      }
+    );
 
 
     /* =====================================================
@@ -1280,9 +1336,7 @@
         if (sidebarCollapsed) {
 
 
-          /* ===============================================
-             MINIMIZE
-             =============================================== */
+          /* MINIMIZE */
 
           sidebar.classList.add(
             'collapsed'
@@ -1321,12 +1375,11 @@
 
         }
 
+
         else {
 
 
-          /* ===============================================
-             TAMPILKAN
-             =============================================== */
+          /* TAMPILKAN */
 
           sidebar.classList.remove(
             'collapsed'
@@ -1354,8 +1407,8 @@
 
           const sidebarWidth =
             window.innerWidth <= 800
-            ? '280px'
-            : '350px';
+              ? '280px'
+              : '350px';
 
 
           document
@@ -1394,7 +1447,6 @@
        ===================================================== */
 
     const satellite =
-
       L.tileLayer(
 
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -1420,7 +1472,6 @@
        ===================================================== */
 
     const street =
-
       L.tileLayer(
 
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
@@ -1446,7 +1497,6 @@
        ===================================================== */
 
     const googleSatellite =
-
       L.gridLayer.googleMutant({
 
         type:
@@ -1552,7 +1602,7 @@
 
 
     /* =====================================================
-       10. TOMBOL AUTO ZOOM SIDEBAR
+       10. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -1575,7 +1625,7 @@
 
 
     /* =====================================================
-       11. CUSTOM CONTROL AUTO ZOOM DI PETA
+       11. CUSTOM AUTO ZOOM CONTROL
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -1636,10 +1686,9 @@
             );
 
 
-            L.DomEvent
-              .disableClickPropagation(
-                container
-              );
+            L.DomEvent.disableClickPropagation(
+              container
+            );
 
 
             L.DomEvent.on(
@@ -1651,8 +1700,7 @@
               function(e) {
 
 
-                L.DomEvent
-                  .stopPropagation(e);
+                L.DomEvent.stopPropagation(e);
 
 
                 zoomToCoastline();
@@ -1696,9 +1744,7 @@
 
 
         console.error(
-
           'GP_RT.json tidak memiliki features.'
-
         );
 
 
@@ -1746,7 +1792,6 @@
 
 
               const latLngs =
-
                 path.map(
 
                   function(point) {
@@ -1765,7 +1810,7 @@
 
 
               /* ==========================================
-                 GARIS
+                 BUAT GARIS
                  ========================================== */
 
               const line =
@@ -1799,9 +1844,7 @@
                 );
 
 
-              if (
-                keys.length === 0
-              ) {
+              if (keys.length === 0) {
 
 
                 html +=
@@ -1948,9 +1991,7 @@
 
 
             throw new Error(
-
               'GP_RT.json tidak ditemukan.'
-
             );
 
 
@@ -2000,9 +2041,7 @@
           document
 
             .getElementById(
-
               'coastlineCheck'
-
             )
 
             .addEventListener(
@@ -2012,9 +2051,7 @@
               function() {
 
 
-                if (
-                  this.checked
-                ) {
+                if (this.checked) {
 
 
                   coastline.addTo(
@@ -2091,9 +2128,7 @@
         function() {
 
 
-          if (
-            this.checked
-          ) {
+          if (this.checked) {
 
 
             map.removeLayer(
@@ -2135,9 +2170,7 @@
         function() {
 
 
-          if (
-            this.checked
-          ) {
+          if (this.checked) {
 
 
             map.removeLayer(
@@ -2179,9 +2212,7 @@
         function() {
 
 
-          if (
-            this.checked
-          ) {
+          if (this.checked) {
 
 
             map.removeLayer(
@@ -2229,7 +2260,6 @@
        ===================================================== */
 
     const legend =
-
       L.control({
 
         position:
@@ -2239,7 +2269,6 @@
 
 
     legend.onAdd =
-
       function(map) {
 
 
