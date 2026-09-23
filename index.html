@@ -75,6 +75,11 @@
 
     /* =====================================================
        4 LOGO SEJAJAR 1 BARIS
+       URUTAN:
+       1. ITERA
+       2. GEOMATIKA ITERA
+       3. GEOMATIKA 2023
+       4. KEMAH KERJA 2023
        ===================================================== */
 
     .logo-section {
@@ -452,7 +457,7 @@
     <div class="logo-section">
 
 
-      <!-- LOGO ITERA -->
+      <!-- 1. LOGO ITERA -->
 
       <div class="logo-item">
 
@@ -464,37 +469,37 @@
       </div>
 
 
-      <!-- LOGO TEKNIK GEOMATIKA -->
+      <!-- 2. LOGO TEKNIK GEOMATIKA ITERA -->
 
       <div class="logo-item">
 
         <img
           src="Logo_GT.png"
-          alt="Logo Teknik Geomatika"
+          alt="Logo Teknik Geomatika ITERA"
         >
 
       </div>
 
 
-      <!-- LOGO KEMAH KERJA -->
-
-      <div class="logo-item">
-
-        <img
-          src="LOGO_KEMKER.png"
-          alt="Logo Kemah Kerja 2026"
-        >
-
-      </div>
-
-
-      <!-- LOGO TEKNIK GEOMATIKA ANGKATAN 2023 -->
+      <!-- 3. LOGO TEKNIK GEOMATIKA ANGKATAN 2023 -->
 
       <div class="logo-item">
 
         <img
           src="LOGO_GT23.png"
           alt="Logo Teknik Geomatika Angkatan 2023"
+        >
+
+      </div>
+
+
+      <!-- 4. LOGO KEMAH KERJA 2023 -->
+
+      <div class="logo-item">
+
+        <img
+          src="LOGO_KEMKER.png"
+          alt="Logo Kemah Kerja 2023"
         >
 
       </div>
@@ -701,7 +706,7 @@
       Teknik Geomatika ITERA
       <br>
 
-      Kemah Kerja 2026
+      Kemah Kerja 2023
 
     </div>
 
@@ -889,7 +894,7 @@
         },
 
 
-        onAdd: function(map) {
+        onAdd: function() {
 
 
           const container =
@@ -934,8 +939,6 @@
 
           );
 
-
-          /* Mencegah klik tombol mengganggu map */
 
           L.DomEvent.disableClickPropagation(
             container
@@ -988,10 +991,6 @@
         L.featureGroup();
 
 
-      /* ---------------------------------------------------
-         CEK FEATURES
-         --------------------------------------------------- */
-
       if (!data.features) {
 
         console.error(
@@ -1002,10 +1001,6 @@
 
       }
 
-
-      /* ---------------------------------------------------
-         LOOP FEATURES
-         --------------------------------------------------- */
 
       data.features.forEach(
 
@@ -1020,20 +1015,12 @@
             feature.attributes || {};
 
 
-          /* ------------------------------------------------
-             CEK PATH
-             ------------------------------------------------ */
-
           if (!geometry.paths) {
 
             return;
 
           }
 
-
-          /* ------------------------------------------------
-             LOOP PATH
-             ------------------------------------------------ */
 
           geometry.paths.forEach(
 
@@ -1042,14 +1029,12 @@
 
               /*
                 ESRI JSON:
-
                 [X,Y]
 
                 X = Longitude
                 Y = Latitude
 
                 Leaflet:
-
                 [Latitude,Longitude]
               */
 
@@ -1103,7 +1088,6 @@
 
 
               const keys =
-
                 Object.keys(attributes);
 
 
@@ -1315,8 +1299,6 @@
                   coastline.addTo(map);
 
 
-                  /* Auto zoom setelah layer diaktifkan */
-
                   zoomToCoastline();
 
 
@@ -1370,7 +1352,7 @@
 
 
     /* =====================================================
-       13. BASemap WORLD IMAGERY
+       13. BASEMAP WORLD IMAGERY
        ===================================================== */
 
     document
