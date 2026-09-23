@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>WebGIS Garis Pantai</title>
 
-  <!-- Leaflet -->
+  <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIINfQ3yQvK9Yw8QmQfJxM2qf3fJ6J6J7J8="
-    crossorigin=""
-  />
+  >
+
   <style>
     * {
       box-sizing: border-box;
     }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -23,6 +24,7 @@
       height: 100%;
       font-family: Arial, Helvetica, sans-serif;
     }
+
     #map {
       width: 100%;
       height: 100vh;
@@ -36,16 +38,18 @@
       z-index: 1000;
       top: 15px;
       left: 60px;
-      background: rgba(255,255,255,.95);
+      background: rgba(255,255,255,0.95);
       padding: 12px 18px;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
     }
+
     .title-box h1 {
       margin: 0;
       font-size: 19px;
       color: #17324d;
     }
+
     .title-box p {
       margin: 4px 0 0;
       font-size: 12px;
@@ -61,16 +65,18 @@
       right: 15px;
       top: 15px;
       width: 270px;
-      background: rgba(255,255,255,.96);
+      background: rgba(255,255,255,0.96);
       padding: 14px;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
     }
+
     .info-panel h3 {
       margin: 0 0 8px;
       font-size: 15px;
       color: #17324d;
     }
+
     .info-panel p {
       margin: 5px 0;
       font-size: 12px;
@@ -84,6 +90,7 @@
       line-height: 20px;
       color: #333;
     }
+
     .legend i {
       display: inline-block;
       width: 28px;
@@ -100,19 +107,23 @@
        MOBILE
        ========================= */
     @media (max-width: 700px) {
+
       .title-box {
         left: 55px;
         right: 15px;
       }
+
       .title-box h1 {
         font-size: 16px;
       }
+
       .info-panel {
         display: none;
       }
     }
   </style>
 </head>
+
 <body>
 
   <!-- =========================
@@ -128,39 +139,37 @@
        ========================= -->
   <div class="info-panel">
     <h3>Informasi</h3>
+
     <p>
-      <b>Layer utama:</b>
+      <b>Layer utama:</b><br>
       Garis Pantai
     </p>
+
     <p>
-      <b>Data:</b>
+      <b>Data:</b><br>
       GP_RT.json
     </p>
+
     <p>
-      <b>CRS:</b>
+      <b>CRS:</b><br>
       WGS 84 (EPSG:4326)
     </p>
+
     <p>
       Klik garis pantai untuk melihat atribut data.
     </p>
+
     <p>
       Gunakan kontrol layer untuk mengganti basemap.
     </p>
   </div>
 
-  <!-- =========================
-       MAP
-       ========================= -->
+  <!-- MAP -->
   <div id="map"></div>
 
-  <!-- =========================
-       LEAFLET JS
-       ========================= -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin="">
-  </script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
 
     // ==========================================================
@@ -173,9 +182,11 @@
       zoomControl: true
     });
 
+
     // ==========================================================
-    // 2. BASEMAP
+    // 2. BASEMAP ESRI
     // ==========================================================
+
     const satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -183,6 +194,7 @@
         attribution: 'Tiles &copy; Esri'
       }
     );
+
     const street = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
       {
@@ -190,28 +202,33 @@
         attribution: 'Tiles &copy; Esri'
       }
     );
+
+    // Basemap awal
     satellite.addTo(map);
+
 
     // ==========================================================
     // 3. STYLE GARIS PANTAI
     // ==========================================================
 
     const coastlineStyle = {
-      color: '#0066ff',
+      color: '#00ffff',
       weight: 4,
       opacity: 0.95
     };
+
 
     // ==========================================================
     // 4. KONTROL LAYER
     // ==========================================================
 
     const baseMaps = {
-  "Esri World Imagery": satellite,
-  "Esri World Street Map": street
-};
+      "Esri World Imagery": satellite,
+      "Esri World Street Map": street
     };
+
     const overlayLayers = {};
+
     const layerControl = L.control.layers(
       baseMaps,
       overlayLayers,
@@ -221,21 +238,30 @@
       }
     ).addTo(map);
 
+
     // ==========================================================
     // 5. FUNGSI POPUP ATRIBUT
     // ==========================================================
 
     function coastlinePopup(attributes) {
+
       let html =
         '<div style="min-width:200px">' +
         '<b>Informasi Garis Pantai</b>' +
         '<hr style="margin:6px 0">';
+
       const keys = Object.keys(attributes);
+
       if (keys.length === 0) {
+
         html += 'Tidak terdapat atribut.';
+
       } else {
+
         keys.forEach(function(key) {
+
           let value = attributes[key];
+
           if (
             value === null ||
             value === undefined ||
@@ -243,6 +269,7 @@
           ) {
             value = '-';
           }
+
           html +=
             '<b>' +
             key +
@@ -250,150 +277,161 @@
             value +
             '<br>';
         });
-
       }
+
       html += '</div>';
+
       return html;
     }
+
 
     // ==========================================================
     // 6. KONVERSI ESRI JSON → LEAFLET
     // ==========================================================
 
     function convertEsriJSON(data) {
+
       const coastlineGroup = L.featureGroup();
-      // Pastikan data memiliki features
+
       if (!data.features) {
 
         console.error(
           'GP_RT.json tidak memiliki objek features.'
         );
+
         return coastlineGroup;
       }
+
+
       // Loop setiap feature
       data.features.forEach(function(feature) {
+
         const geometry =
           feature.geometry || {};
+
         const attributes =
           feature.attributes || {};
 
-        // ======================================================
-        // Esri JSON Polyline menggunakan:
-        //
-        // geometry.paths
-        //
-        // Contoh:
-        //
-        // paths: [
-        //   [
-        //     [longitude, latitude],
-        //     [longitude, latitude]
-        //   ]
-        // ]
-        // ======================================================
 
+        // Pastikan memiliki paths
         if (!geometry.paths) {
+
           console.warn(
             'Feature tidak memiliki geometry.paths.'
           );
+
           return;
         }
+
+
         // Loop setiap path
         geometry.paths.forEach(function(path) {
 
-          // ====================================================
           // Esri JSON:
-          //
-          // [X,Y]
-          //
-          // X = Longitude
-          // Y = Latitude
+          // [Longitude, Latitude]
           //
           // Leaflet:
-          //
           // [Latitude, Longitude]
-          // ====================================================
 
           const latLngs = path.map(function(point) {
+
             return [
               point[1],
               point[0]
             ];
+
           });
+
+
           // Buat garis
           const line = L.polyline(
             latLngs,
             coastlineStyle
           );
 
-          // ====================================================
-          // POPUP
-          // ====================================================
 
+          // Popup
           line.bindPopup(
             coastlinePopup(attributes)
           );
 
-          // ====================================================
-          // EFEK SAAT KURSOR DI ATAS GARIS
-          // ====================================================
 
+          // Mouseover
           line.on('mouseover', function() {
+
             this.setStyle({
               color: '#ff0000',
               weight: 6
             });
+
           });
+
+
+          // Mouseout
           line.on('mouseout', function() {
+
             this.setStyle(
               coastlineStyle
             );
+
           });
+
+
           // Masukkan ke group
           coastlineGroup.addLayer(line);
+
         });
+
       });
+
       return coastlineGroup;
     }
+
 
     // ==========================================================
     // 7. MEMBACA GP_RT.json
     // ==========================================================
 
     fetch('GP_RT.json')
+
       .then(function(response) {
+
         if (!response.ok) {
+
           throw new Error(
             'GP_RT.json tidak ditemukan.'
           );
+
         }
+
         return response.json();
+
       })
+
       .then(function(data) {
+
         console.log(
           'GP_RT.json berhasil dimuat:',
           data
         );
 
-        // ======================================================
-        // Konversi Esri JSON
-        // ======================================================
 
+        // Konversi Esri JSON
         const coastline =
           convertEsriJSON(data);
+
+
         // Tambahkan ke peta
         coastline.addTo(map);
 
-        // ======================================================
-        // Zoom otomatis ke garis pantai
-        // ======================================================
 
+        // Zoom otomatis
         if (
           coastline.getLayers().length > 0
         ) {
+
           const bounds =
             coastline.getBounds();
-
 
           if (bounds.isValid()) {
 
@@ -403,9 +441,11 @@
                 padding: [30, 30]
               }
             );
+
           }
 
         } else {
+
           alert(
             'GP_RT.json berhasil dibaca, ' +
             'tetapi geometry garis tidak ditemukan.'
@@ -413,24 +453,27 @@
 
         }
 
-        // ======================================================
-        // Masukkan ke kontrol layer
-        // ======================================================
 
+        // Masukkan ke kontrol layer
         layerControl.addOverlay(
           coastline,
           'Garis Pantai'
         );
 
       })
+
       .catch(function(error) {
+
         console.error(error);
+
         alert(
           'Gagal membaca GP_RT.json.\n\n' +
           'Pastikan file GP_RT.json berada ' +
           'satu folder dengan index.html.'
         );
+
       });
+
 
     // ==========================================================
     // 8. SKALA PETA
@@ -451,34 +494,49 @@
       L.control({
         position: 'bottomright'
       });
+
+
     coordinateControl.onAdd =
       function(map) {
+
         const div =
           L.DomUtil.create(
             'div',
             'leaflet-control'
           );
+
         div.style.background =
           'rgba(255,255,255,.9)';
+
         div.style.padding =
           '5px 8px';
+
         div.style.borderRadius =
           '4px';
+
         div.style.fontSize =
           '11px';
+
         div.innerHTML =
           'Lat: - | Lon: -';
+
         return div;
       };
+
+
     coordinateControl.addTo(map);
+
+
     map.on(
       'mousemove',
       function(e) {
 
         const lat =
           e.latlng.lat.toFixed(6);
+
         const lon =
           e.latlng.lng.toFixed(6);
+
         coordinateControl
           .getContainer()
           .innerHTML =
@@ -489,35 +547,50 @@
       }
     );
 
+
     // ==========================================================
     // 10. LEGENDA
     // ==========================================================
+
     const legend =
       L.control({
         position: 'bottomright'
       });
+
+
     legend.onAdd =
       function(map) {
+
         const div =
           L.DomUtil.create(
             'div',
             'info legend'
           );
+
         div.style.background =
           'rgba(255,255,255,.92)';
+
         div.style.padding =
           '7px 10px';
+
         div.style.borderRadius =
           '5px';
+
         div.style.boxShadow =
           '0 1px 5px rgba(0,0,0,.2)';
+
         div.innerHTML =
           '<b>Legenda</b><br>' +
-          '<i style="background:#0066ff"></i>' +
+          '<i style="background:#00ffff"></i>' +
           ' Garis Pantai';
+
         return div;
       };
+
+
     legend.addTo(map);
+
   </script>
+
 </body>
 </html>
