@@ -10,6 +10,7 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
+  <!-- LEAFLET CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -17,22 +18,31 @@
 
   <style>
 
+    /* =====================================================
+       DASAR
+       ===================================================== */
+
     * {
       box-sizing: border-box;
     }
 
     html,
     body {
+
       margin: 0;
       padding: 0;
+
       width: 100%;
       height: 100%;
+
       font-family: Arial, Helvetica, sans-serif;
+
     }
 
-    /* ================================
+
+    /* =====================================================
        PETA
-       ================================ */
+       ===================================================== */
 
     #map {
 
@@ -46,9 +56,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        SIDEBAR
-       ================================ */
+       ===================================================== */
 
     .sidebar {
 
@@ -71,31 +82,33 @@
 
     }
 
-    /* ================================
-       LOGO
-       ================================ */
+
+    /* =====================================================
+       BAGIAN LOGO
+       ===================================================== */
 
     .logo-section {
 
       display: grid;
 
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
 
       justify-items: center;
       align-items: center;
 
-      gap: 8px;
+      gap: 10px;
 
-      padding: 18px 12px 14px;
+      padding: 20px 30px 16px;
 
       border-bottom: 1px solid #eeeeee;
 
     }
 
+
     .logo-item {
 
-      width: 68px;
-      height: 68px;
+      width: 105px;
+      height: 80px;
 
       display: flex;
 
@@ -104,9 +117,8 @@
 
       text-align: center;
 
-      flex-shrink: 0;
-
     }
+
 
     .logo-item img {
 
@@ -117,9 +129,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        JUDUL
-       ================================ */
+       ===================================================== */
 
     .title-section {
 
@@ -130,6 +143,7 @@
       border-bottom: 1px solid #eeeeee;
 
     }
+
 
     .title-section h1 {
 
@@ -145,6 +159,7 @@
 
     }
 
+
     .title-section p {
 
       margin: 7px 0 0;
@@ -157,9 +172,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        PANEL CONTENT
-       ================================ */
+       ===================================================== */
 
     .panel-content {
 
@@ -167,9 +183,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        JUDUL BAGIAN
-       ================================ */
+       ===================================================== */
 
     .section-title {
 
@@ -191,15 +208,17 @@
 
     }
 
+
     .section-title:first-child {
 
       margin-top: 0;
 
     }
 
-    /* ================================
-       KONTROL LAYER
-       ================================ */
+
+    /* =====================================================
+       KOTAK KONTROL
+       ===================================================== */
 
     .layer-control-box {
 
@@ -212,6 +231,7 @@
       border: 1px solid #e1e5e8;
 
     }
+
 
     .layer-item {
 
@@ -229,15 +249,17 @@
 
     }
 
+
     .layer-item input {
 
       cursor: pointer;
 
     }
 
-    /* ================================
+
+    /* =====================================================
        SISTEM KOORDINAT
-       ================================ */
+       ===================================================== */
 
     .coordinate-box {
 
@@ -251,6 +273,7 @@
 
     }
 
+
     .coordinate-box .label {
 
       font-size: 11px;
@@ -260,6 +283,7 @@
       margin-bottom: 3px;
 
     }
+
 
     .coordinate-box .value {
 
@@ -273,9 +297,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        KOORDINAT KURSOR
-       ================================ */
+       ===================================================== */
 
     .cursor-box {
 
@@ -293,9 +318,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        FOOTER
-       ================================ */
+       ===================================================== */
 
     .sidebar-footer {
 
@@ -315,25 +341,10 @@
 
     }
 
-    /* ================================
-       LEAFLET
-       ================================ */
 
-    .leaflet-control-zoom {
-
-      margin-right: 15px !important;
-
-    }
-
-    .leaflet-control-scale {
-
-      margin-left: 15px !important;
-
-    }
-
-    /* ================================
+    /* =====================================================
        POPUP
-       ================================ */
+       ===================================================== */
 
     .popup-title {
 
@@ -347,9 +358,10 @@
 
     }
 
-    /* ================================
+
+    /* =====================================================
        RESPONSIVE
-       ================================ */
+       ===================================================== */
 
     @media (max-width: 800px) {
 
@@ -369,17 +381,16 @@
 
       .logo-section {
 
-        grid-template-columns: repeat(2, 1fr);
+        padding: 15px 20px;
 
-        gap: 10px;
+        gap: 8px;
 
       }
 
       .logo-item {
 
-        width: 65px;
-
-        height: 65px;
+        width: 85px;
+        height: 70px;
 
       }
 
@@ -398,47 +409,28 @@
 
 <body>
 
+
   <!-- =====================================================
        SIDEBAR
        ===================================================== -->
 
   <div class="sidebar">
 
-    <!-- ================= LOGO ================= -->
+
+    <!-- ===================================================
+         4 LOGO
+         =================================================== -->
 
     <div class="logo-section">
+
 
       <!-- LOGO ITERA -->
 
       <div class="logo-item">
 
         <img
-          src="logo-itera.png"
+          src="ITERA.jpeg"
           alt="Logo ITERA"
-        >
-
-      </div>
-
-
-      <!-- LOGO TEKNIK GEOMATIKA -->
-
-      <div class="logo-item">
-
-        <img
-          src="logo-teknik-geomatika.png"
-          alt="Logo Teknik Geomatika ITERA"
-        >
-
-      </div>
-
-
-      <!-- LOGO KEMAH KERJA 2026 -->
-
-      <div class="logo-item">
-
-        <img
-          src="logo-kemah-kerja-2026.png"
-          alt="Logo Kemah Kerja 2026"
         >
 
       </div>
@@ -449,16 +441,43 @@
       <div class="logo-item">
 
         <img
-          src="logo-teknik-geomatika-2023.png"
+          src="LOGO_GT23.png"
           alt="Logo Teknik Geomatika Angkatan 2023"
         >
 
       </div>
 
+
+      <!-- LOGO KEMAH KERJA -->
+
+      <div class="logo-item">
+
+        <img
+          src="LOGO_KEMKER.png"
+          alt="Logo Kemah Kerja"
+        >
+
+      </div>
+
+
+      <!-- LOGO TEKNIK GEOMATIKA -->
+
+      <div class="logo-item">
+
+        <img
+          src="Logo_GT.png"
+          alt="Logo Teknik Geomatika"
+        >
+
+      </div>
+
+
     </div>
 
 
-    <!-- ================= JUDUL ================= -->
+    <!-- ===================================================
+         JUDUL
+         =================================================== -->
 
     <div class="title-section">
 
@@ -473,15 +492,23 @@
     </div>
 
 
-    <!-- ================= PANEL ================= -->
+    <!-- ===================================================
+         PANEL KONTROL
+         =================================================== -->
 
     <div class="panel-content">
 
-      <!-- ================= GARIS PANTAI ================= -->
+
+      <!-- =================================================
+           GARIS PANTAI
+           ================================================= -->
 
       <div class="section-title">
+
         Garis Pantai
+
       </div>
+
 
       <div class="layer-control-box">
 
@@ -502,13 +529,21 @@
       </div>
 
 
-      <!-- ================= BASE MAP ================= -->
+      <!-- =================================================
+           BASE MAP
+           ================================================= -->
 
       <div class="section-title">
+
         Base Map
+
       </div>
 
+
       <div class="layer-control-box">
+
+
+        <!-- WORLD IMAGERY -->
 
         <label class="layer-item">
 
@@ -526,6 +561,8 @@
         </label>
 
 
+        <!-- WORLD STREET MAP -->
+
         <label class="layer-item">
 
           <input
@@ -540,90 +577,133 @@
 
         </label>
 
+
       </div>
 
 
-      <!-- ================= SISTEM KOORDINAT ================= -->
+      <!-- =================================================
+           SISTEM KOORDINAT
+           ================================================= -->
 
       <div class="section-title">
+
         Sistem Koordinat
+
       </div>
+
 
       <div class="coordinate-box">
 
+
         <div class="label">
+
           Datum
+
         </div>
 
+
         <div class="value">
+
           WGS 84
+
         </div>
 
 
         <div class="label">
+
           Sistem Koordinat
+
         </div>
 
+
         <div class="value">
+
           Geographic Coordinate System
+
         </div>
 
 
         <div class="label">
+
           EPSG
+
         </div>
 
+
         <div class="value">
+
           EPSG:4326
+
         </div>
+
 
       </div>
 
 
-      <!-- ================= KOORDINAT KURSOR ================= -->
+      <!-- =================================================
+           KOORDINAT KURSOR
+           ================================================= -->
 
       <div class="section-title">
+
         Koordinat Kursor
+
       </div>
+
 
       <div class="cursor-box">
 
+
         <div>
+
           Latitude:
+
           <span id="latitude">
             -
           </span>
+
         </div>
 
+
         <div>
+
           Longitude:
+
           <span id="longitude">
             -
           </span>
+
         </div>
 
+
       </div>
+
 
     </div>
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- ===================================================
+         FOOTER
+         =================================================== -->
 
     <div class="sidebar-footer">
 
-      WEBGIS KELOMPOK 1<br>
+      WEBGIS KELOMPOK 1
+      <br>
 
-      Teknik Geomatika ITERA<br>
+      Teknik Geomatika ITERA
+      <br>
 
       Kemah Kerja 2026
 
     </div>
 
+
   </div>
 
 
   <!-- =====================================================
-       PETA
+       MAP
        ===================================================== -->
 
   <div id="map"></div>
@@ -640,9 +720,10 @@
 
   <script>
 
-    // =====================================================
-    // 1. INISIALISASI PETA
-    // =====================================================
+
+    /* =====================================================
+       1. INISIALISASI PETA
+       ===================================================== */
 
     const map = L.map('map', {
 
@@ -655,9 +736,9 @@
     });
 
 
-    // =====================================================
-    // 2. BASEMAP ESRI WORLD IMAGERY
-    // =====================================================
+    /* =====================================================
+       2. ESRI WORLD IMAGERY
+       ===================================================== */
 
     const satellite = L.tileLayer(
 
@@ -675,9 +756,9 @@
     );
 
 
-    // =====================================================
-    // 3. BASEMAP ESRI WORLD STREET MAP
-    // =====================================================
+    /* =====================================================
+       3. ESRI WORLD STREET MAP
+       ===================================================== */
 
     const street = L.tileLayer(
 
@@ -695,16 +776,16 @@
     );
 
 
-    // =====================================================
-    // 4. BASEMAP AWAL
-    // =====================================================
+    /* =====================================================
+       4. BASEMAP DEFAULT
+       ===================================================== */
 
     satellite.addTo(map);
 
 
-    // =====================================================
-    // 5. STYLE GARIS PANTAI
-    // =====================================================
+    /* =====================================================
+       5. STYLE GARIS PANTAI
+       ===================================================== */
 
     const coastlineStyle = {
 
@@ -717,15 +798,20 @@
     };
 
 
-    // =====================================================
-    // 6. KONVERSI ESRI JSON
-    // =====================================================
+    /* =====================================================
+       6. KONVERSI ESRI JSON
+       ===================================================== */
 
     function convertEsriJSON(data) {
+
 
       const coastlineGroup =
         L.featureGroup();
 
+
+      /* ---------------------------------------------------
+         CEK FEATURES
+         --------------------------------------------------- */
 
       if (!data.features) {
 
@@ -738,15 +824,26 @@
       }
 
 
+      /* ---------------------------------------------------
+         LOOP FEATURES
+         --------------------------------------------------- */
+
       data.features.forEach(
+
         function(feature) {
+
 
           const geometry =
             feature.geometry || {};
 
+
           const attributes =
             feature.attributes || {};
 
+
+          /* ------------------------------------------------
+             CEK PATH
+             ------------------------------------------------ */
 
           if (!geometry.paths) {
 
@@ -755,20 +852,35 @@
           }
 
 
+          /* ------------------------------------------------
+             LOOP PATH
+             ------------------------------------------------ */
+
           geometry.paths.forEach(
+
             function(path) {
 
-              // ESRI JSON:
-              // [X,Y]
-              //
-              // X = Longitude
-              // Y = Latitude
-              //
-              // Leaflet:
-              // [Latitude,Longitude]
+
+              /* ==========================================
+                 KONVERSI KOORDINAT
+                 ==========================================
+
+                 ESRI JSON:
+
+                 [X,Y]
+
+                 X = Longitude
+                 Y = Latitude
+
+                 Leaflet:
+
+                 [Latitude,Longitude]
+              ========================================== */
 
               const latLngs =
+
                 path.map(
+
                   function(point) {
 
                     return [
@@ -780,14 +892,16 @@
                     ];
 
                   }
+
                 );
 
 
-              // =================================================
-              // BUAT GARIS
-              // =================================================
+              /* ==========================================
+                 BUAT GARIS
+                 ========================================== */
 
               const line =
+
                 L.polyline(
 
                   latLngs,
@@ -797,9 +911,9 @@
                 );
 
 
-              // =================================================
-              // POPUP
-              // =================================================
+              /* ==========================================
+                 POPUP
+                 ========================================== */
 
               let html =
 
@@ -813,29 +927,40 @@
 
 
               const keys =
+
                 Object.keys(attributes);
 
 
               if (keys.length === 0) {
 
+
                 html +=
+
                   'Tidak terdapat atribut.';
+
 
               }
 
               else {
 
+
                 keys.forEach(
+
                   function(key) {
+
 
                     let value =
                       attributes[key];
 
 
                     if (
+
                       value === null ||
+
                       value === undefined ||
+
                       value === ''
+
                     ) {
 
                       value = '-';
@@ -856,27 +981,30 @@
                       '<br>';
 
                   }
+
                 );
 
               }
 
 
               html +=
+
                 '</div>';
 
 
               line.bindPopup(html);
 
 
-              // =================================================
-              // HOVER
-              // =================================================
+              /* ==========================================
+                 HOVER GARIS
+                 ========================================== */
 
               line.on(
 
                 'mouseover',
 
                 function() {
+
 
                   this.setStyle({
 
@@ -885,6 +1013,7 @@
                     weight: 6
 
                   });
+
 
                 }
 
@@ -897,21 +1026,33 @@
 
                 function() {
 
+
                   this.setStyle(
+
                     coastlineStyle
+
                   );
+
 
                 }
 
               );
 
 
+              /* ==========================================
+                 TAMBAHKAN KE GROUP
+                 ========================================== */
+
               coastlineGroup.addLayer(line);
 
+
             }
+
           );
 
+
         }
+
       );
 
 
@@ -920,20 +1061,28 @@
     }
 
 
-    // =====================================================
-    // 7. LOAD GP_RT.JSON
-    // =====================================================
+    /* =====================================================
+       7. LOAD GP_RT.JSON
+       ===================================================== */
 
     fetch('GP_RT.json')
+
 
       .then(
 
         function(response) {
 
+
+          /* -----------------------------------------------
+             CEK FILE
+             ----------------------------------------------- */
+
           if (!response.ok) {
 
             throw new Error(
+
               'GP_RT.json tidak ditemukan.'
+
             );
 
           }
@@ -941,44 +1090,60 @@
 
           return response.json();
 
+
         }
 
       )
+
 
       .then(
 
         function(data) {
 
+
           console.log(
+
             'GP_RT.json berhasil dimuat:',
+
             data
+
           );
 
 
+          /* -----------------------------------------------
+             KONVERSI DATA
+             ----------------------------------------------- */
+
           const coastline =
+
             convertEsriJSON(data);
 
 
-          // =================================================
-          // TAMBAHKAN GARIS PANTAI
-          // =================================================
+          /* -----------------------------------------------
+             TAMBAHKAN KE PETA
+             ----------------------------------------------- */
 
           coastline.addTo(map);
 
 
-          // =================================================
-          // ZOOM OTOMATIS
-          // =================================================
+          /* -----------------------------------------------
+             ZOOM OTOMATIS
+             ----------------------------------------------- */
 
           if (
+
             coastline.getLayers().length > 0
+
           ) {
 
+
             const bounds =
+
               coastline.getBounds();
 
 
             if (bounds.isValid()) {
+
 
               map.fitBounds(
 
@@ -986,25 +1151,35 @@
 
                 {
 
-                  padding: [30, 30]
+                  padding: [
+
+                    30,
+
+                    30
+
+                  ]
 
                 }
 
               );
 
+
             }
+
 
           }
 
 
-          // =================================================
-          // CHECKBOX GARIS PANTAI
-          // =================================================
+          /* -----------------------------------------------
+             CHECKBOX GARIS PANTAI
+             ----------------------------------------------- */
 
           document
 
             .getElementById(
+
               'coastlineCheck'
+
             )
 
             .addEventListener(
@@ -1013,31 +1188,42 @@
 
               function() {
 
+
                 if (this.checked) {
 
+
                   coastline.addTo(map);
+
 
                 }
 
                 else {
 
+
                   map.removeLayer(
+
                     coastline
+
                   );
 
+
                 }
+
 
               }
 
             );
 
+
         }
 
       )
 
+
       .catch(
 
         function(error) {
+
 
           console.error(error);
 
@@ -1046,25 +1232,28 @@
 
             'Gagal membaca GP_RT.json.\n\n' +
 
-            'Pastikan GP_RT.json berada ' +
+            'Pastikan file GP_RT.json berada ' +
 
             'satu folder dengan index.html.'
 
           );
 
+
         }
 
       );
 
 
-    // =====================================================
-    // 8. GANTI BASEMAP KE IMAGERY
-    // =====================================================
+    /* =====================================================
+       8. GANTI KE WORLD IMAGERY
+       ===================================================== */
 
     document
 
       .getElementById(
+
         'satelliteRadio'
+
       )
 
       .addEventListener(
@@ -1073,29 +1262,38 @@
 
         function() {
 
+
           if (this.checked) {
 
+
             map.removeLayer(
+
               street
+
             );
+
 
             satellite.addTo(map);
 
+
           }
+
 
         }
 
       );
 
 
-    // =====================================================
-    // 9. GANTI BASEMAP KE STREET MAP
-    // =====================================================
+    /* =====================================================
+       9. GANTI KE WORLD STREET MAP
+       ===================================================== */
 
     document
 
       .getElementById(
+
         'streetRadio'
+
       )
 
       .addEventListener(
@@ -1104,24 +1302,31 @@
 
         function() {
 
+
           if (this.checked) {
 
+
             map.removeLayer(
+
               satellite
+
             );
+
 
             street.addTo(map);
 
+
           }
+
 
         }
 
       );
 
 
-    // =====================================================
-    // 10. SCALE BAR
-    // =====================================================
+    /* =====================================================
+       10. SCALE BAR
+       ===================================================== */
 
     L.control.scale({
 
@@ -1134,9 +1339,9 @@
     }).addTo(map);
 
 
-    // =====================================================
-    // 11. KOORDINAT KURSOR
-    // =====================================================
+    /* =====================================================
+       11. KOORDINAT KURSOR
+       ===================================================== */
 
     map.on(
 
@@ -1144,30 +1349,40 @@
 
       function(e) {
 
+
         document
 
           .getElementById(
+
             'latitude'
+
           )
 
           .innerHTML =
+
           e.latlng.lat.toFixed(6);
 
 
         document
 
           .getElementById(
+
             'longitude'
+
           )
 
           .innerHTML =
+
           e.latlng.lng.toFixed(6);
+
 
       }
 
     );
 
+
   </script>
+
 
 </body>
 
