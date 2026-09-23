@@ -9,7 +9,10 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
-  <!-- LEAFLET CSS -->
+  <!-- =====================================================
+       LEAFLET CSS
+       ===================================================== -->
+
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -71,7 +74,7 @@
 
 
     /* =====================================================
-       4 LOGO SEJAJAR
+       4 LOGO SEJAJAR 1 BARIS
        ===================================================== */
 
     .logo-section {
@@ -354,7 +357,7 @@
 
 
     /* =====================================================
-       CUSTOM CONTROL AUTO ZOOM
+       CUSTOM TOOL AUTO ZOOM DI PETA
        ===================================================== */
 
     .zoom-to-layer-control {
@@ -375,7 +378,6 @@
       display: flex;
 
       align-items: center;
-
       justify-content: center;
 
       font-size: 19px;
@@ -399,6 +401,7 @@
 
     /* =====================================================
        RESPONSIVE
+       4 LOGO TETAP SEJAJAR
        ===================================================== */
 
     @media (max-width: 800px) {
@@ -443,7 +446,7 @@
 
 
     <!-- ===================================================
-         LOGO
+         4 LOGO
          =================================================== -->
 
     <div class="logo-section">
@@ -454,7 +457,7 @@
       <div class="logo-item">
 
         <img
-          src="ITERA.jpeg"
+          src="ITERA.png"
           alt="Logo ITERA"
         >
 
@@ -479,13 +482,13 @@
 
         <img
           src="LOGO_KEMKER.png"
-          alt="Logo Kemah Kerja"
+          alt="Logo Kemah Kerja 2026"
         >
 
       </div>
 
 
-      <!-- LOGO TEKNIK GEOMATIKA 2023 -->
+      <!-- LOGO TEKNIK GEOMATIKA ANGKATAN 2023 -->
 
       <div class="logo-item">
 
@@ -518,7 +521,7 @@
 
 
     <!-- ===================================================
-         PANEL
+         PANEL KONTROL
          =================================================== -->
 
     <div class="panel-content">
@@ -536,6 +539,8 @@
       <div class="layer-control-box">
 
 
+        <!-- CHECKBOX GARIS PANTAI -->
+
         <label class="layer-item">
 
           <input
@@ -551,7 +556,7 @@
         </label>
 
 
-        <!-- TOMBOL AUTO ZOOM -->
+        <!-- AUTO ZOOM -->
 
         <button
           type="button"
@@ -668,18 +673,15 @@
 
       <div class="cursor-box">
 
-
         <div>
           Latitude:
           <span id="latitude">-</span>
         </div>
 
-
         <div>
           Longitude:
           <span id="longitude">-</span>
         </div>
-
 
       </div>
 
@@ -742,7 +744,7 @@
 
 
     /* =====================================================
-       2. BASEMAP ESRI WORLD IMAGERY
+       2. ESRI WORLD IMAGERY
        ===================================================== */
 
     const satellite = L.tileLayer(
@@ -760,7 +762,7 @@
 
 
     /* =====================================================
-       3. BASEMAP ESRI WORLD STREET MAP
+       3. ESRI WORLD STREET MAP
        ===================================================== */
 
     const street = L.tileLayer(
@@ -824,11 +826,14 @@
         if (bounds.isValid()) {
 
           map.fitBounds(
+
             bounds,
+
             {
               padding: [40, 40],
               maxZoom: 16
             }
+
           );
 
         }
@@ -870,15 +875,17 @@
 
 
     /* =====================================================
-       9. CUSTOM LEAFLET CONTROL
-       TOMBOL AUTO ZOOM DI PETA
+       9. CUSTOM CONTROL AUTO ZOOM DI PETA
        ===================================================== */
 
     const ZoomToLayerControl =
+
       L.Control.extend({
 
         options: {
+
           position: 'topright'
+
         },
 
 
@@ -886,17 +893,26 @@
 
 
           const container =
+
             L.DomUtil.create(
+
               'div',
+
               'leaflet-bar zoom-to-layer-control'
+
             );
 
 
           const button =
+
             L.DomUtil.create(
+
               'button',
+
               'zoom-to-layer-button-map',
+
               container
+
             );
 
 
@@ -911,14 +927,15 @@
 
 
           button.setAttribute(
+
             'aria-label',
+
             'Auto Zoom to Layer'
+
           );
 
 
-          /* ---------------------------------------------
-             Cegah klik tombol mengganggu peta
-             --------------------------------------------- */
+          /* Mencegah klik tombol mengganggu map */
 
           L.DomEvent.disableClickPropagation(
             container
@@ -950,11 +967,13 @@
 
 
     /* =====================================================
-       10. TAMBAHKAN TOOL KE PETA
+       10. TAMBAHKAN TOOL AUTO ZOOM
        ===================================================== */
 
     map.addControl(
+
       new ZoomToLayerControl()
+
     );
 
 
@@ -969,9 +988,9 @@
         L.featureGroup();
 
 
-      /* -----------------------------------------------
+      /* ---------------------------------------------------
          CEK FEATURES
-         ----------------------------------------------- */
+         --------------------------------------------------- */
 
       if (!data.features) {
 
@@ -984,9 +1003,9 @@
       }
 
 
-      /* -----------------------------------------------
+      /* ---------------------------------------------------
          LOOP FEATURES
-         ----------------------------------------------- */
+         --------------------------------------------------- */
 
       data.features.forEach(
 
@@ -1001,9 +1020,9 @@
             feature.attributes || {};
 
 
-          /* ---------------------------------------------
+          /* ------------------------------------------------
              CEK PATH
-             --------------------------------------------- */
+             ------------------------------------------------ */
 
           if (!geometry.paths) {
 
@@ -1012,9 +1031,9 @@
           }
 
 
-          /* ---------------------------------------------
+          /* ------------------------------------------------
              LOOP PATH
-             --------------------------------------------- */
+             ------------------------------------------------ */
 
           geometry.paths.forEach(
 
@@ -1041,8 +1060,11 @@
                   function(point) {
 
                     return [
+
                       point[1],
+
                       point[0]
+
                     ];
 
                   }
@@ -1050,9 +1072,9 @@
                 );
 
 
-              /* -----------------------------------------
+              /* ==========================================
                  BUAT GARIS
-                 ----------------------------------------- */
+                 ========================================== */
 
               const line =
 
@@ -1065,9 +1087,9 @@
                 );
 
 
-              /* -----------------------------------------
+              /* ==========================================
                  POPUP
-                 ----------------------------------------- */
+                 ========================================== */
 
               let html =
 
@@ -1081,6 +1103,7 @@
 
 
               const keys =
+
                 Object.keys(attributes);
 
 
@@ -1137,9 +1160,9 @@
               line.bindPopup(html);
 
 
-              /* -----------------------------------------
+              /* ==========================================
                  HOVER
-                 ----------------------------------------- */
+                 ========================================== */
 
               line.on(
 
@@ -1167,7 +1190,9 @@
                 function() {
 
                   this.setStyle(
+
                     coastlineStyle
+
                   );
 
                 }
@@ -1175,9 +1200,9 @@
               );
 
 
-              /* -----------------------------------------
-                 MASUKKAN KE GROUP
-                 ----------------------------------------- */
+              /* ==========================================
+                 TAMBAHKAN KE GROUP
+                 ========================================== */
 
               coastlineGroup.addLayer(line);
 
@@ -1212,7 +1237,9 @@
           if (!response.ok) {
 
             throw new Error(
+
               'GP_RT.json tidak ditemukan.'
+
             );
 
           }
@@ -1232,16 +1259,20 @@
 
 
           console.log(
+
             'GP_RT.json berhasil dimuat:',
+
             data
+
           );
 
 
           /* -----------------------------------------------
-             KONVERSI
+             KONVERSI DATA
              ----------------------------------------------- */
 
           coastline =
+
             convertEsriJSON(data);
 
 
@@ -1253,7 +1284,7 @@
 
 
           /* -----------------------------------------------
-             AUTO ZOOM SAAT PERTAMA DIMUAT
+             AUTO ZOOM SAAT DATA SELESAI DIMUAT
              ----------------------------------------------- */
 
           zoomToCoastline();
@@ -1266,7 +1297,9 @@
           document
 
             .getElementById(
+
               'coastlineCheck'
+
             )
 
             .addEventListener(
@@ -1278,22 +1311,26 @@
 
                 if (this.checked) {
 
+
                   coastline.addTo(map);
 
-                  /*
-                    Setelah layer dinyalakan kembali,
-                    otomatis zoom ke layer.
-                  */
+
+                  /* Auto zoom setelah layer diaktifkan */
 
                   zoomToCoastline();
+
 
                 }
 
                 else {
 
+
                   map.removeLayer(
+
                     coastline
+
                   );
+
 
                 }
 
@@ -1339,7 +1376,9 @@
     document
 
       .getElementById(
+
         'satelliteRadio'
+
       )
 
       .addEventListener(
@@ -1353,7 +1392,9 @@
 
 
             map.removeLayer(
+
               street
+
             );
 
 
@@ -1375,7 +1416,9 @@
     document
 
       .getElementById(
+
         'streetRadio'
+
       )
 
       .addEventListener(
@@ -1389,7 +1432,9 @@
 
 
             map.removeLayer(
+
               satellite
+
             );
 
 
@@ -1433,20 +1478,26 @@
         document
 
           .getElementById(
+
             'latitude'
+
           )
 
           .innerHTML =
+
           e.latlng.lat.toFixed(6);
 
 
         document
 
           .getElementById(
+
             'longitude'
+
           )
 
           .innerHTML =
+
           e.latlng.lng.toFixed(6);
 
 
