@@ -9,7 +9,6 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
-
   <!-- =====================================================
        LEAFLET CSS
        ===================================================== -->
@@ -18,7 +17,6 @@
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
-
 
   <style>
 
@@ -37,6 +35,7 @@
       width: 100%;
       height: 100%;
       font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
     }
 
 
@@ -46,11 +45,16 @@
 
     #map {
       position: absolute;
+
       left: 350px;
       top: 0;
 
       width: calc(100% - 350px);
       height: 100vh;
+
+      transition:
+        left 0.3s ease,
+        width 0.3s ease;
     }
 
 
@@ -74,16 +78,86 @@
       z-index: 2000;
 
       overflow-y: auto;
+
+      transition:
+        transform 0.3s ease;
+    }
+
+
+    /* =====================================================
+       SIDEBAR SAAT DIMINIMIZE
+       ===================================================== */
+
+    .sidebar.collapsed {
+      transform: translateX(-350px);
+    }
+
+
+    /* =====================================================
+       TOMBOL PANAH
+       ===================================================== */
+
+    .sidebar-toggle {
+      position: fixed;
+
+      top: 50%;
+
+      left: 350px;
+
+      width: 34px;
+      height: 70px;
+
+      transform: translateY(-50%);
+
+      border: none;
+
+      border-radius: 0 8px 8px 0;
+
+      background: #17324d;
+
+      color: white;
+
+      z-index: 3000;
+
+      cursor: pointer;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      box-shadow:
+        2px 0 8px rgba(0, 0, 0, 0.25);
+
+      transition:
+        left 0.3s ease,
+        background 0.2s ease;
+    }
+
+
+    .sidebar-toggle:hover {
+      background: #244e73;
+    }
+
+
+    /* =====================================================
+       SAAT SIDEBAR MINIMIZE
+       ===================================================== */
+
+    .sidebar-toggle.collapsed {
+      left: 0;
+
+      border-radius: 0 8px 8px 0;
     }
 
 
     /* =====================================================
        4 LOGO SEJAJAR
-       URUTAN:
-       1. ITERA
-       2. GEOMATIKA ITERA
-       3. GEOMATIKA 2023
-       4. KEMAH KERJA 2023
        ===================================================== */
 
     .logo-section {
@@ -253,7 +327,7 @@
 
 
     /* =====================================================
-       TOMBOL AUTO ZOOM SIDEBAR
+       AUTO ZOOM BUTTON
        ===================================================== */
 
     .zoom-layer-button {
@@ -391,7 +465,7 @@
 
 
     /* =====================================================
-       CUSTOM AUTO ZOOM DI PETA
+       AUTO ZOOM CONTROL DI PETA
        ===================================================== */
 
     .zoom-to-layer-control {
@@ -426,9 +500,8 @@
 
       cursor: pointer;
 
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-
-      transition: 0.2s;
+      box-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.25);
     }
 
 
@@ -449,12 +522,26 @@
         width: 280px;
       }
 
+
+      .sidebar.collapsed {
+
+        transform: translateX(-280px);
+      }
+
+
       #map {
 
         left: 280px;
 
         width: calc(100% - 280px);
       }
+
+
+      .sidebar-toggle {
+
+        left: 280px;
+      }
+
 
       .logo-section {
 
@@ -463,10 +550,12 @@
         gap: 3px;
       }
 
+
       .logo-item {
 
         height: 58px;
       }
+
 
       .title-section h1 {
 
@@ -487,7 +576,10 @@
        SIDEBAR
        ===================================================== -->
 
-  <div class="sidebar">
+  <div
+    class="sidebar"
+    id="sidebar"
+  >
 
 
     <!-- ===================================================
@@ -544,6 +636,7 @@
 
       </div>
 
+
     </div>
 
 
@@ -565,7 +658,7 @@
 
 
     <!-- ===================================================
-         PANEL
+         PANEL KONTROL
          =================================================== -->
 
     <div class="panel-content">
@@ -602,8 +695,6 @@
         </label>
 
 
-        <!-- AUTO ZOOM -->
-
         <button
           type="button"
           id="zoomLayerButton"
@@ -632,7 +723,7 @@
       <div class="layer-control-box">
 
 
-        <!-- ESRI WORLD IMAGERY -->
+        <!-- ESRI -->
 
         <label class="layer-item">
 
@@ -644,15 +735,13 @@
           >
 
           <span>
-
             Esri World Imagery
-
           </span>
 
         </label>
 
 
-        <!-- GOOGLE SATELLITE -->
+        <!-- GOOGLE -->
 
         <label class="layer-item">
 
@@ -663,15 +752,13 @@
           >
 
           <span>
-
             Google Satellite
-
           </span>
 
         </label>
 
 
-        <!-- ESRI WORLD STREET MAP -->
+        <!-- ESRI STREET -->
 
         <label class="layer-item">
 
@@ -682,9 +769,7 @@
           >
 
           <span>
-
             Esri World Street Map
-
           </span>
 
         </label>
@@ -708,44 +793,29 @@
 
 
         <div class="label">
-
           Datum
-
         </div>
 
-
         <div class="value">
-
           WGS 84
-
         </div>
 
 
         <div class="label">
-
           Sistem Koordinat
-
         </div>
 
-
         <div class="value">
-
           Geographic Coordinate System
-
         </div>
 
 
         <div class="label">
-
           EPSG
-
         </div>
 
-
         <div class="value">
-
           EPSG:4326
-
         </div>
 
 
@@ -765,15 +835,12 @@
 
       <div class="cursor-box">
 
-
         <div>
 
           Latitude:
 
           <span id="latitude">
-
             -
-
           </span>
 
         </div>
@@ -784,13 +851,10 @@
           Longitude:
 
           <span id="longitude">
-
             -
-
           </span>
 
         </div>
-
 
       </div>
 
@@ -821,6 +885,21 @@
 
 
   <!-- =====================================================
+       TOMBOL PANAH SIDEBAR
+       ===================================================== -->
+
+  <button
+    id="sidebarToggle"
+    class="sidebar-toggle"
+    type="button"
+    title="Minimize Panel"
+    aria-label="Minimize Panel"
+  >
+    ◀
+  </button>
+
+
+  <!-- =====================================================
        PETA
        ===================================================== -->
 
@@ -838,9 +917,6 @@
 
   <!-- =====================================================
        GOOGLE MAPS JAVASCRIPT API
-
-       GANTI YOUR_GOOGLE_MAPS_API_KEY
-       DENGAN API KEY GOOGLE MAPS KAMU
        ===================================================== -->
 
   <script
@@ -861,7 +937,154 @@
 
 
     /* =====================================================
-       1. INISIALISASI PETA
+       1. SIDEBAR TOGGLE
+       ===================================================== */
+
+    const sidebar =
+      document.getElementById('sidebar');
+
+    const sidebarToggle =
+      document.getElementById('sidebarToggle');
+
+
+    let sidebarCollapsed = false;
+
+
+    sidebarToggle.addEventListener(
+
+      'click',
+
+      function() {
+
+
+        sidebarCollapsed =
+          !sidebarCollapsed;
+
+
+        if (sidebarCollapsed) {
+
+
+          /* ---------------------------------------------
+             MINIMIZE SIDEBAR
+             --------------------------------------------- */
+
+          sidebar.classList.add(
+            'collapsed'
+          );
+
+
+          sidebarToggle.classList.add(
+            'collapsed'
+          );
+
+
+          sidebarToggle.innerHTML =
+            '▶';
+
+
+          sidebarToggle.title =
+            'Tampilkan Panel';
+
+
+          sidebarToggle.setAttribute(
+            'aria-label',
+            'Tampilkan Panel'
+          );
+
+
+          /*
+             Peta diperbesar ke seluruh layar
+          */
+
+          document
+            .getElementById('map')
+            .style.left = '0';
+
+
+          document
+            .getElementById('map')
+            .style.width = '100%';
+
+        }
+
+        else {
+
+
+          /* ---------------------------------------------
+             TAMPILKAN SIDEBAR
+             --------------------------------------------- */
+
+          sidebar.classList.remove(
+            'collapsed'
+          );
+
+
+          sidebarToggle.classList.remove(
+            'collapsed'
+          );
+
+
+          sidebarToggle.innerHTML =
+            '◀';
+
+
+          sidebarToggle.title =
+            'Minimize Panel';
+
+
+          sidebarToggle.setAttribute(
+            'aria-label',
+            'Minimize Panel'
+          );
+
+
+          /*
+             Peta kembali ke posisi normal
+          */
+
+          const sidebarWidth =
+            window.innerWidth <= 800
+              ? '280px'
+              : '350px';
+
+
+          document
+            .getElementById('map')
+            .style.left =
+            sidebarWidth;
+
+
+          document
+            .getElementById('map')
+            .style.width =
+            `calc(100% - ${sidebarWidth})`;
+
+        }
+
+
+        /* ---------------------------------------------
+           Perbarui ukuran Leaflet setelah animasi
+           --------------------------------------------- */
+
+        setTimeout(
+
+          function() {
+
+            map.invalidateSize();
+
+          },
+
+          320
+
+        );
+
+      }
+
+    );
+
+
+    /* =====================================================
+       2. INISIALISASI PETA
        ===================================================== */
 
     const map = L.map('map', {
@@ -888,7 +1111,7 @@
 
 
     /* =====================================================
-       2. ESRI WORLD IMAGERY
+       3. ESRI WORLD IMAGERY
        ===================================================== */
 
     const satellite = L.tileLayer(
@@ -910,7 +1133,7 @@
 
 
     /* =====================================================
-       3. ESRI WORLD STREET MAP
+       4. ESRI WORLD STREET MAP
        ===================================================== */
 
     const street = L.tileLayer(
@@ -932,29 +1155,30 @@
 
 
     /* =====================================================
-       4. GOOGLE SATELLITE
+       5. GOOGLE SATELLITE
        ===================================================== */
 
-    const googleSatellite = L.gridLayer.googleMutant({
+    const googleSatellite =
+      L.gridLayer.googleMutant({
 
-      type: 'satellite',
+        type: 'satellite',
 
-      minZoom: 0,
+        minZoom: 0,
 
-      maxZoom: 23
+        maxZoom: 23
 
-    });
+      });
 
 
     /* =====================================================
-       5. BASEMAP DEFAULT
+       6. BASEMAP DEFAULT
        ===================================================== */
 
     satellite.addTo(map);
 
 
     /* =====================================================
-       6. STYLE GARIS PANTAI
+       7. STYLE GARIS PANTAI
        ===================================================== */
 
     const coastlineStyle = {
@@ -969,17 +1193,18 @@
 
 
     /* =====================================================
-       7. VARIABEL GARIS PANTAI
+       8. VARIABEL GARIS PANTAI
        ===================================================== */
 
     let coastline = null;
 
 
     /* =====================================================
-       8. FUNGSI AUTO ZOOM
+       9. AUTO ZOOM TO LAYER
        ===================================================== */
 
     function zoomToCoastline() {
+
 
       if (
 
@@ -989,10 +1214,13 @@
 
       ) {
 
+
         const bounds =
           coastline.getBounds();
 
+
         if (bounds.isValid()) {
+
 
           map.fitBounds(
 
@@ -1008,15 +1236,18 @@
 
           );
 
+
         }
 
       }
 
       else {
 
+
         alert(
           'Layer garis pantai belum tersedia.'
         );
+
 
       }
 
@@ -1024,7 +1255,7 @@
 
 
     /* =====================================================
-       9. AUTO ZOOM DARI SIDEBAR
+       10. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -1047,88 +1278,100 @@
 
 
     /* =====================================================
-       10. CUSTOM CONTROL AUTO ZOOM DI PETA
+       11. CUSTOM CONTROL AUTO ZOOM DI PETA
        ===================================================== */
 
-    const ZoomToLayerControl = L.Control.extend({
+    const ZoomToLayerControl =
+      L.Control.extend({
 
-      options: {
+        options: {
 
-        position: 'topright'
+          position: 'topright'
 
-      },
-
-
-      onAdd: function() {
-
-        const container = L.DomUtil.create(
-
-          'div',
-
-          'leaflet-bar zoom-to-layer-control'
-
-        );
+        },
 
 
-        const button = L.DomUtil.create(
-
-          'button',
-
-          'zoom-to-layer-button-map',
-
-          container
-
-        );
+        onAdd: function() {
 
 
-        button.type = 'button';
+          const container =
+            L.DomUtil.create(
 
-        button.innerHTML = '⌖';
+              'div',
 
-        button.title = 'Auto Zoom to Layer';
+              'leaflet-bar zoom-to-layer-control'
 
-        button.setAttribute(
-
-          'aria-label',
-
-          'Auto Zoom to Layer'
-
-        );
+            );
 
 
-        L.DomEvent.disableClickPropagation(
+          const button =
+            L.DomUtil.create(
 
-          container
+              'button',
 
-        );
+              'zoom-to-layer-button-map',
 
+              container
 
-        L.DomEvent.on(
-
-          button,
-
-          'click',
-
-          function(e) {
-
-            L.DomEvent.stopPropagation(e);
-
-            zoomToCoastline();
-
-          }
-
-        );
+            );
 
 
-        return container;
+          button.type = 'button';
 
-      }
 
-    });
+          button.innerHTML =
+            '⌖';
+
+
+          button.title =
+            'Auto Zoom to Layer';
+
+
+          button.setAttribute(
+
+            'aria-label',
+
+            'Auto Zoom to Layer'
+
+          );
+
+
+          L.DomEvent.disableClickPropagation(
+
+            container
+
+          );
+
+
+          L.DomEvent.on(
+
+            button,
+
+            'click',
+
+            function(e) {
+
+
+              L.DomEvent.stopPropagation(e);
+
+
+              zoomToCoastline();
+
+
+            }
+
+          );
+
+
+          return container;
+
+        }
+
+      });
 
 
     /* =====================================================
-       11. TAMBAHKAN CONTROL AUTO ZOOM
+       12. TAMBAHKAN AUTO ZOOM CONTROL
        ===================================================== */
 
     map.addControl(
@@ -1139,10 +1382,11 @@
 
 
     /* =====================================================
-       12. KONVERSI ESRI JSON
+       13. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(data) {
+
 
       const coastlineGroup =
         L.featureGroup();
@@ -1150,11 +1394,13 @@
 
       if (!data.features) {
 
+
         console.error(
 
           'GP_RT.json tidak memiliki features.'
 
         );
+
 
         return coastlineGroup;
 
@@ -1165,14 +1411,17 @@
 
         function(feature) {
 
+
           const geometry =
             feature.geometry || {};
+
 
           const attributes =
             feature.attributes || {};
 
 
           if (!geometry.paths) {
+
 
             return;
 
@@ -1183,34 +1432,51 @@
 
             function(path) {
 
-              const latLngs = path.map(
 
-                function(point) {
+              /*
+                ESRI JSON:
 
-                  return [
+                [X,Y]
 
-                    point[1],
+                X = Longitude
+                Y = Latitude
 
-                    point[0]
+                Leaflet:
 
-                  ];
+                [Latitude,Longitude]
+              */
 
-                }
+              const latLngs =
 
-              );
+                path.map(
+
+                  function(point) {
+
+                    return [
+
+                      point[1],
+
+                      point[0]
+
+                    ];
+
+                  }
+
+                );
 
 
               /* ==========================================
                  GARIS
                  ========================================== */
 
-              const line = L.polyline(
+              const line =
+                L.polyline(
 
-                latLngs,
+                  latLngs,
 
-                coastlineStyle
+                  coastlineStyle
 
-              );
+                );
 
 
               /* ==========================================
@@ -1234,16 +1500,20 @@
 
               if (keys.length === 0) {
 
+
                 html +=
                   'Tidak terdapat atribut.';
+
 
               }
 
               else {
 
+
                 keys.forEach(
 
                   function(key) {
+
 
                     let value =
                       attributes[key];
@@ -1259,7 +1529,9 @@
 
                     ) {
 
+
                       value = '-';
+
 
                     }
 
@@ -1280,10 +1552,12 @@
 
                 );
 
+
               }
 
 
-              html += '</div>';
+              html +=
+                '</div>';
 
 
               line.bindPopup(html);
@@ -1299,6 +1573,7 @@
 
                 function() {
 
+
                   this.setStyle({
 
                     color: '#ff0000',
@@ -1306,6 +1581,7 @@
                     weight: 6
 
                   });
+
 
                 }
 
@@ -1318,11 +1594,13 @@
 
                 function() {
 
+
                   this.setStyle(
 
                     coastlineStyle
 
                   );
+
 
                 }
 
@@ -1331,9 +1609,11 @@
 
               coastlineGroup.addLayer(line);
 
+
             }
 
           );
+
 
         }
 
@@ -1346,16 +1626,19 @@
 
 
     /* =====================================================
-       13. LOAD GP_RT.JSON
+       14. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch('GP_RT.json')
+
 
       .then(
 
         function(response) {
 
+
           if (!response.ok) {
+
 
             throw new Error(
 
@@ -1363,9 +1646,12 @@
 
             );
 
+
           }
 
+
           return response.json();
+
 
         }
 
@@ -1375,6 +1661,7 @@
       .then(
 
         function(data) {
+
 
           console.log(
 
@@ -1402,7 +1689,9 @@
           document
 
             .getElementById(
+
               'coastlineCheck'
+
             )
 
             .addEventListener(
@@ -1411,15 +1700,20 @@
 
               function() {
 
+
                 if (this.checked) {
+
 
                   coastline.addTo(map);
 
+
                   zoomToCoastline();
+
 
                 }
 
                 else {
+
 
                   map.removeLayer(
 
@@ -1427,11 +1721,14 @@
 
                   );
 
+
                 }
+
 
               }
 
             );
+
 
         }
 
@@ -1441,6 +1738,7 @@
       .catch(
 
         function(error) {
+
 
           console.error(error);
 
@@ -1455,13 +1753,14 @@
 
           );
 
+
         }
 
       );
 
 
     /* =====================================================
-       14. ESRI WORLD IMAGERY
+       15. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -1476,23 +1775,25 @@
 
         function() {
 
+
           if (this.checked) {
 
-            map.removeLayer(
 
+            map.removeLayer(
               googleSatellite
-
             );
+
 
             map.removeLayer(
-
               street
-
             );
+
 
             satellite.addTo(map);
 
+
           }
+
 
         }
 
@@ -1500,7 +1801,7 @@
 
 
     /* =====================================================
-       15. GOOGLE SATELLITE
+       16. GOOGLE SATELLITE
        ===================================================== */
 
     document
@@ -1515,23 +1816,25 @@
 
         function() {
 
+
           if (this.checked) {
 
-            map.removeLayer(
 
+            map.removeLayer(
               satellite
-
             );
+
 
             map.removeLayer(
-
               street
-
             );
+
 
             googleSatellite.addTo(map);
 
+
           }
+
 
         }
 
@@ -1539,7 +1842,7 @@
 
 
     /* =====================================================
-       16. ESRI WORLD STREET MAP
+       17. ESRI WORLD STREET MAP
        ===================================================== */
 
     document
@@ -1554,23 +1857,25 @@
 
         function() {
 
+
           if (this.checked) {
 
-            map.removeLayer(
 
+            map.removeLayer(
               satellite
-
             );
+
 
             map.removeLayer(
-
               googleSatellite
-
             );
+
 
             street.addTo(map);
 
+
           }
+
 
         }
 
@@ -1578,7 +1883,7 @@
 
 
     /* =====================================================
-       17. SCALE BAR
+       18. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -1593,7 +1898,7 @@
 
 
     /* =====================================================
-       18. KOORDINAT KURSOR
+       19. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -1601,6 +1906,7 @@
       'mousemove',
 
       function(e) {
+
 
         document
 
@@ -1621,9 +1927,11 @@
           .innerHTML =
           e.latlng.lng.toFixed(6);
 
+
       }
 
     );
+
 
   </script>
 
