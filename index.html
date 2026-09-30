@@ -10,16 +10,10 @@
 
   <title>WEBGIS KELOMPOK 1</title>
 
-
-  <!-- =====================================================
-       LEAFLET CSS
-       ===================================================== -->
-
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
-
 
   <style>
 
@@ -91,7 +85,7 @@
 
       box-shadow:
         2px 0 12px
-        rgba(0, 0, 0, 0.18);
+        rgba(0,0,0,0.18);
 
       z-index: 2000;
 
@@ -110,7 +104,7 @@
 
 
     /* =====================================================
-       TOMBOL PANAH SIDEBAR
+       TOMBOL PANAH
        ===================================================== */
 
     .sidebar-toggle {
@@ -159,7 +153,7 @@
 
       box-shadow:
         2px 0 8px
-        rgba(0, 0, 0, 0.25);
+        rgba(0,0,0,0.25);
 
       transition:
         left 0.3s ease,
@@ -182,7 +176,7 @@
 
 
     /* =====================================================
-       4 LOGO
+       AREA 4 LOGO
        ORANGE BATA
        ===================================================== */
 
@@ -192,7 +186,7 @@
         relative;
 
       z-index:
-        10;
+        100;
 
       display:
         flex;
@@ -213,28 +207,37 @@
         108px;
 
       padding:
-        18px 10px;
+        14px 10px;
 
       gap:
-        5px;
+        6px;
 
       /*
        * ORANGE BATA
+       * PAKAI !important AGAR TIDAK
+       * DITIMPA STYLE LAIN
        */
 
+      background-color:
+        #B65F3A !important;
+
       background:
-        #B65F3A;
+        #B65F3A !important;
 
       border-bottom:
-        1px solid
-        #9D4D2E;
+        2px solid #8F4529;
 
       flex-shrink:
         0;
     }
 
 
-    .logo-item {
+    /*
+     * Pastikan div pembungkus logo
+     * tidak punya background putih.
+     */
+
+    .logo-section .logo-item {
 
       flex:
         1;
@@ -243,7 +246,7 @@
         0;
 
       height:
-        72px;
+        80px;
 
       display:
         flex;
@@ -254,20 +257,18 @@
       justify-content:
         center;
 
-      /*
-       * Sedikit ruang agar logo
-       * tetap rapi di dalam kotak.
-       */
-
       padding:
-        4px;
+        3px;
 
-      border-radius:
-        6px;
+      background:
+        transparent !important;
+
+      border:
+        none;
     }
 
 
-    .logo-item img {
+    .logo-section .logo-item img {
 
       width:
         100%;
@@ -280,6 +281,9 @@
 
       display:
         block;
+
+      background:
+        transparent !important;
     }
 
 
@@ -314,12 +318,6 @@
 
     /* =====================================================
        BACKGROUND 3 FOTO
-
-       ATAS
-       TENGAH
-       BAWAH
-
-       TIDAK IKUT SCROLL
        ===================================================== */
 
     .background-slideshow {
@@ -401,29 +399,19 @@
 
 
     .bg-photo.pos-top {
-
-      top:
-        0;
+      top: 0;
     }
 
 
     .bg-photo.pos-middle {
-
-      top:
-        33.333333%;
+      top: 33.333333%;
     }
 
 
     .bg-photo.pos-bottom {
-
-      top:
-        66.666666%;
+      top: 66.666666%;
     }
 
-
-    /* =====================================================
-       EFEK FADE
-       ===================================================== */
 
     .background-slideshow.changing
     .bg-photo {
@@ -688,7 +676,7 @@
 
 
     /* =====================================================
-       KOORDINAT
+       SISTEM KOORDINAT
        ===================================================== */
 
     .coordinate-box {
@@ -755,6 +743,10 @@
         10px;
     }
 
+
+    /* =====================================================
+       KOORDINAT KURSOR
+       ===================================================== */
 
     .cursor-box {
 
@@ -847,7 +839,7 @@
 
 
     /* =====================================================
-       AUTO ZOOM CONTROL
+       AUTO ZOOM CONTROL MAP
        ===================================================== */
 
     .zoom-to-layer-control {
@@ -1069,7 +1061,7 @@
       }
 
 
-      .logo-item {
+      .logo-section .logo-item {
 
         height:
           58px;
@@ -1106,7 +1098,11 @@
          4 LOGO
          =================================================== -->
 
-    <div class="logo-section">
+    <div
+      class="logo-section"
+      id="logoSection"
+    >
+
 
       <div class="logo-item">
 
@@ -1146,6 +1142,7 @@
         >
 
       </div>
+
 
     </div>
 
@@ -1207,9 +1204,7 @@
       <div class="sidebar-content">
 
 
-        <!-- ===============================================
-             JUDUL
-             =============================================== -->
+        <!-- JUDUL -->
 
         <div class="title-section">
 
@@ -1223,6 +1218,8 @@
 
         </div>
 
+
+        <!-- PANEL -->
 
         <div class="panel-content">
 
@@ -1458,7 +1455,7 @@
 
 
   <!-- =====================================================
-       SIDEBAR TOGGLE
+       TOMBOL PANAH
        ===================================================== -->
 
   <button
@@ -1492,7 +1489,7 @@
 
 
     /* =====================================================
-       1. INITIAL MAP
+       1. INISIALISASI MAP
        ===================================================== */
 
     const map =
@@ -1676,7 +1673,7 @@
 
 
     /* =====================================================
-       4. ESRI WORLD STREET MAP
+       4. ESRI STREET MAP
        ===================================================== */
 
     const street =
@@ -1703,15 +1700,14 @@
     /* =====================================================
        5. ORTHOPHOTO LAYER
 
-       VERSI LANGSUNG TILE ARCMAP
+       DIRECT TILE
 
        L12 - L18
 
-       TANPA CANVAS
-       TANPA MULTIPLY
-
-       INI VERSI YANG MEMANG
-       SEBELUMNYA BERHASIL MUNCUL.
+       TANPA:
+       - CANVAS
+       - MULTIPLY
+       - GOOGLE
        ===================================================== */
 
     const ORTHO_OPACITY =
@@ -1768,18 +1764,12 @@
         const z =
           coords.z;
 
-
         const x =
           coords.x;
-
 
         const y =
           coords.y;
 
-
-        /* -----------------------------------------------
-           HANYA L12-L18
-           ----------------------------------------------- */
 
         if (
           z < 12 ||
@@ -1791,10 +1781,6 @@
         }
 
 
-        /* -----------------------------------------------
-           TIDAK BOLEH NEGATIF
-           ----------------------------------------------- */
-
         if (
           x < 0 ||
           y < 0
@@ -1804,14 +1790,6 @@
 
         }
 
-
-        /* -----------------------------------------------
-           ROW ARCMAP
-
-           Leaflet Y
-           -> HEX
-           -> Rxxxxxxxx
-           ----------------------------------------------- */
 
         const rowHex =
           Math.floor(y)
@@ -1823,14 +1801,6 @@
             .toLowerCase();
 
 
-        /* -----------------------------------------------
-           COLUMN ARCMAP
-
-           Leaflet X
-           -> HEX
-           -> Cxxxxxxxx
-           ----------------------------------------------- */
-
         const colHex =
           Math.floor(x)
             .toString(16)
@@ -1840,10 +1810,6 @@
             )
             .toLowerCase();
 
-
-        /* -----------------------------------------------
-           URL
-           ----------------------------------------------- */
 
         const url =
 
@@ -1876,7 +1842,7 @@
 
 
         console.log(
-          'ORTHOPHOTO TILE:',
+          'ORTHOPHOTO REQUEST:',
           url
         );
 
@@ -1887,9 +1853,7 @@
 
 
     /* =====================================================
-       7. TILE LOAD / ERROR
-
-       UNTUK DEBUG
+       7. DEBUG TILE
        ===================================================== */
 
     orthoLayer.on(
@@ -1898,12 +1862,9 @@
 
       function(e) {
 
-
         console.log(
-
           'ORTHOPHOTO BERHASIL:',
           e.coords
-
         );
 
       }
@@ -1919,77 +1880,10 @@
 
 
         console.error(
-
           'ORTHOPHOTO GAGAL:',
-
           e.coords
-
         );
 
-
-        if (
-          e.coords
-        ) {
-
-
-          const rowHex =
-            Math.floor(
-              e.coords.y
-            )
-              .toString(16)
-              .padStart(
-                8,
-                '0'
-              )
-              .toLowerCase();
-
-
-          const colHex =
-            Math.floor(
-              e.coords.x
-            )
-              .toString(16)
-              .padStart(
-                8,
-                '0'
-              )
-              .toLowerCase();
-
-
-          console.error(
-
-            'URL TILE GAGAL:',
-
-            'https://raw.githubusercontent.com/' +
-
-            'rivaldo123230038-cloud/' +
-
-            'WebGIS-Kemker-Kelompok-1/' +
-
-            'main/' +
-
-            'Fix_Ortho_web/' +
-
-            '_alllayers/' +
-
-            'L' +
-            e.coords.z +
-
-            '/' +
-
-            'R' +
-            rowHex +
-
-            '/' +
-
-            'C' +
-            colHex +
-
-            '.png'
-
-          );
-
-        }
 
       }
 
@@ -2006,9 +1900,7 @@
 
 
     /* =====================================================
-       9. AKTIFKAN ORTHOPHOTO SEJAK AWAL
-
-       KARENA CHECKBOX DEFAULT = CHECKED
+       9. ORTHOPHOTO DEFAULT ON
        ===================================================== */
 
     orthoLayer.addTo(
@@ -2034,16 +1926,12 @@
     };
 
 
-    /* =====================================================
-       11. VARIABEL GARIS PANTAI
-       ===================================================== */
-
     let coastline =
       null;
 
 
     /* =====================================================
-       12. AUTO ZOOM
+       11. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -2091,7 +1979,7 @@
 
 
     /* =====================================================
-       13. AUTO ZOOM SIDEBAR
+       12. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -2114,7 +2002,7 @@
 
 
     /* =====================================================
-       14. AUTO ZOOM MAP CONTROL
+       13. AUTO ZOOM MAP CONTROL
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -2195,14 +2083,12 @@
 
 
     map.addControl(
-
       new ZoomToLayerControl()
-
     );
 
 
     /* =====================================================
-       15. KONVERSI ESRI JSON
+       14. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(
@@ -2256,11 +2142,8 @@
                   function(point) {
 
                     return [
-
                       point[1],
-
                       point[0]
-
                     ];
 
                   }
@@ -2270,11 +2153,8 @@
 
               const line =
                 L.polyline(
-
                   latLngs,
-
                   coastlineStyle
-
                 );
 
 
@@ -2320,9 +2200,7 @@
                     if (
 
                       value === null ||
-
                       value === undefined ||
-
                       value === ''
 
                     ) {
@@ -2357,14 +2235,11 @@
               );
 
 
-              /* HOVER */
-
               line.on(
 
                 'mouseover',
 
                 function() {
-
 
                   this.setStyle({
 
@@ -2386,7 +2261,6 @@
                 'mouseout',
 
                 function() {
-
 
                   this.setStyle(
                     coastlineStyle
@@ -2416,7 +2290,7 @@
 
 
     /* =====================================================
-       16. LOAD GP_RT.JSON
+       15. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch(
@@ -2483,7 +2357,7 @@
 
 
     /* =====================================================
-       17. CHECKBOX GARIS PANTAI
+       16. CHECKBOX GARIS PANTAI
        ===================================================== */
 
     document
@@ -2525,7 +2399,7 @@
 
 
     /* =====================================================
-       18. HAPUS BASEMAP
+       17. HAPUS BASEMAP
        ===================================================== */
 
     function removeBasemaps() {
@@ -2560,7 +2434,7 @@
 
 
     /* =====================================================
-       19. ESRI WORLD IMAGERY
+       18. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2597,7 +2471,6 @@
                 .checked
             ) {
 
-
               orthoLayer.bringToFront();
 
             }
@@ -2610,7 +2483,7 @@
 
 
     /* =====================================================
-       20. ESRI WORLD STREET MAP
+       19. ESRI STREET
        ===================================================== */
 
     document
@@ -2647,7 +2520,6 @@
                 .checked
             ) {
 
-
               orthoLayer.bringToFront();
 
             }
@@ -2660,7 +2532,7 @@
 
 
     /* =====================================================
-       21. ORTHOPHOTO CHECKBOX
+       20. ORTHOPHOTO ON / OFF
        ===================================================== */
 
     document
@@ -2681,11 +2553,6 @@
           ) {
 
 
-            /*
-             * Jika zoom terlalu rendah,
-             * naikkan ke L12.
-             */
-
             if (
               map.getZoom() < 12
             ) {
@@ -2696,11 +2563,6 @@
 
             }
 
-
-            /*
-             * Jika zoom terlalu tinggi,
-             * batasi sampai L18.
-             */
 
             if (
               map.getZoom() > 18
@@ -2713,39 +2575,21 @@
             }
 
 
-            /*
-             * Tambahkan Orthophoto
-             */
-
             orthoLayer.addTo(
               map
             );
 
 
-            /*
-             * Pastikan di atas basemap
-             */
-
             orthoLayer.bringToFront();
-
 
           }
 
           else {
 
 
-            if (
-              map.hasLayer(
-                orthoLayer
-              )
-            ) {
-
-
-              map.removeLayer(
-                orthoLayer
-              );
-
-            }
+            map.removeLayer(
+              orthoLayer
+            );
 
           }
 
@@ -2755,7 +2599,7 @@
 
 
     /* =====================================================
-       22. SCALE BAR
+       21. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2775,7 +2619,7 @@
 
 
     /* =====================================================
-       23. LEGENDA
+       22. LEGENDA
        ===================================================== */
 
     const legend =
@@ -2833,7 +2677,7 @@
 
 
     /* =====================================================
-       24. KOORDINAT KURSOR
+       23. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -2850,6 +2694,7 @@
           )
 
           .innerHTML =
+
           e.latlng
             .lat
             .toFixed(6);
@@ -2862,6 +2707,7 @@
           )
 
           .innerHTML =
+
           e.latlng
             .lng
             .toFixed(6);
@@ -2872,7 +2718,7 @@
 
 
     /* =====================================================
-       25. BACKGROUND 3 FOTO
+       24. BACKGROUND 3 FOTO
        ===================================================== */
 
     const bgSlideshow =
@@ -2904,7 +2750,7 @@
 
 
     /* =====================================================
-       26. ROTASI BACKGROUND
+       25. ROTASI BACKGROUND
        ===================================================== */
 
     function rotateBackgroundPhotos() {
@@ -2922,10 +2768,6 @@
 
           bgStep++;
 
-
-          /* ===============================================
-             PUTARAN 1
-             =============================================== */
 
           if (
             bgStep === 1
@@ -2945,11 +2787,6 @@
 
           }
 
-
-          /* ===============================================
-             PUTARAN 2
-             =============================================== */
-
           else if (
             bgStep === 2
           ) {
@@ -2967,11 +2804,6 @@
               'bg-photo pos-top';
 
           }
-
-
-          /* ===============================================
-             PUTARAN 3
-             =============================================== */
 
           else {
 
@@ -2998,11 +2830,9 @@
 
             function() {
 
-
               bgSlideshow.classList.remove(
                 'changing'
               );
-
 
             },
 
@@ -3021,7 +2851,7 @@
 
 
     /* =====================================================
-       27. INTERVAL BACKGROUND
+       26. INTERVAL BACKGROUND
        ===================================================== */
 
     setInterval(
