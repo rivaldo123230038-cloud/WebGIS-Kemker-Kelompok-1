@@ -300,12 +300,6 @@
 
     /* =====================================================
        BACKGROUND 3 FOTO
-
-       FOTO 1 = ATAS
-       FOTO 2 = TENGAH
-       FOTO 3 = BAWAH
-
-       TIDAK IKUT SCROLL
        ===================================================== */
 
     .background-slideshow {
@@ -335,10 +329,6 @@
         none;
     }
 
-
-    /* =====================================================
-       FOTO BACKGROUND
-       ===================================================== */
 
     .bg-photo {
 
@@ -1572,7 +1562,32 @@
 
 
     /* =====================================================
-       2. SIDEBAR TOGGLE
+       2. PANE KHUSUS ORTHOPHOTO
+
+       Inilah bagian untuk membuat
+       putih pada tile Orthophoto
+       menyatu dengan basemap.
+       ===================================================== */
+
+    map.createPane(
+      'orthoPane'
+    );
+
+
+    map.getPane(
+      'orthoPane'
+    ).style.zIndex =
+      450;
+
+
+    map.getPane(
+      'orthoPane'
+    ).style.mixBlendMode =
+      'multiply';
+
+
+    /* =====================================================
+       3. SIDEBAR TOGGLE
        ===================================================== */
 
     const sidebar =
@@ -1708,7 +1723,7 @@
 
 
     /* =====================================================
-       3. ESRI WORLD IMAGERY
+       4. ESRI WORLD IMAGERY
        ===================================================== */
 
     const satellite =
@@ -1733,7 +1748,7 @@
 
 
     /* =====================================================
-       4. ESRI WORLD STREET MAP
+       5. ESRI WORLD STREET MAP
        ===================================================== */
 
     const street =
@@ -1758,27 +1773,16 @@
 
 
     /* =====================================================
-       5. ORTHOPHOTO SEBAGAI LAYER
-
-       BUKAN BASEMAP
+       6. ORTHOPHOTO SEBAGAI LAYER
 
        LEVEL:
        L12 - L18
 
-       STRUKTUR:
-       Fix_Ortho_web/
-       └── _alllayers/
-           ├── L12/
-           ├── L13/
-           ├── L14/
-           ├── L15/
-           ├── L16/
-           ├── L17/
-           └── L18/
+       SUMBER:
+       RAW GITHUB
 
        FORMAT:
-       Rxxxxxxxx/
-       Cxxxxxxxx.png
+       Rxxxxxxxx/Cxxxxxxxx.png
        ===================================================== */
 
     let orthoErrorCount =
@@ -1813,8 +1817,8 @@
           opacity:
             1,
 
-          zIndex:
-            500,
+          pane:
+            'orthoPane',
 
           attribution:
             'Orthophoto'
@@ -1825,13 +1829,7 @@
 
 
     /* =====================================================
-       6. URL TILE ORTHOPHOTO
-
-       RAW GITHUB
-
-       Lxx/
-       Rxxxxxxxx/
-       Cxxxxxxxx.png
+       7. URL TILE ORTHOPHOTO
        ===================================================== */
 
     orthoLayer.getTileUrl =
@@ -1952,7 +1950,7 @@
 
 
     /* =====================================================
-       7. DEFAULT BASEMAP
+       8. DEFAULT BASEMAP
        ===================================================== */
 
     satellite.addTo(
@@ -1961,7 +1959,7 @@
 
 
     /* =====================================================
-       8. STYLE GARIS PANTAI
+       9. STYLE GARIS PANTAI
        ===================================================== */
 
     const coastlineStyle = {
@@ -1979,7 +1977,7 @@
 
 
     /* =====================================================
-       9. COASTLINE VARIABLE
+       10. VARIABEL GARIS PANTAI
        ===================================================== */
 
     let coastline =
@@ -1987,7 +1985,7 @@
 
 
     /* =====================================================
-       10. AUTO ZOOM
+       11. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -2045,7 +2043,7 @@
 
 
     /* =====================================================
-       11. AUTO ZOOM SIDEBAR
+       12. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -2068,7 +2066,7 @@
 
 
     /* =====================================================
-       12. AUTO ZOOM MAP
+       13. AUTO ZOOM MAP
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -2162,7 +2160,7 @@
 
 
     /* =====================================================
-       13. KONVERSI ESRI JSON
+       14. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(
@@ -2244,8 +2242,6 @@
 
                 );
 
-
-              /* POPUP */
 
               let html =
 
@@ -2392,7 +2388,7 @@
 
 
     /* =====================================================
-       14. LOAD GP_RT.JSON
+       15. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch(
@@ -2471,7 +2467,6 @@
                     map
                   );
 
-
                 }
 
                 else {
@@ -2517,7 +2512,7 @@
 
 
     /* =====================================================
-       15. FUNGSI HAPUS BASEMAP
+       16. HAPUS SEMUA BASEMAP
        ===================================================== */
 
     function removeBasemaps() {
@@ -2552,7 +2547,7 @@
 
 
     /* =====================================================
-       16. ESRI WORLD IMAGERY
+       17. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2581,15 +2576,12 @@
             );
 
 
-            /*
-             * Orthophoto tetap aktif kalau
-             * checkbox Orthophoto dicentang.
-             */
-
             if (
-              document.getElementById(
-                'orthoCheck'
-              ).checked
+              document
+                .getElementById(
+                  'orthoCheck'
+                )
+                .checked
             ) {
 
               orthoLayer.bringToFront();
@@ -2604,7 +2596,7 @@
 
 
     /* =====================================================
-       17. ESRI WORLD STREET MAP
+       18. ESRI WORLD STREET MAP
        ===================================================== */
 
     document
@@ -2633,14 +2625,12 @@
             );
 
 
-            /*
-             * Orthophoto tetap menjadi layer overlay.
-             */
-
             if (
-              document.getElementById(
-                'orthoCheck'
-              ).checked
+              document
+                .getElementById(
+                  'orthoCheck'
+                )
+                .checked
             ) {
 
               orthoLayer.bringToFront();
@@ -2655,17 +2645,7 @@
 
 
     /* =====================================================
-       18. ORTHOPHOTO CHECKBOX
-
-       ORTHOPHOTO = LAYER
-
-       BUKAN BASEMAP
-
-       Saat ON:
-       Orthophoto ditambahkan di atas basemap.
-
-       Saat OFF:
-       Orthophoto dilepas.
+       19. ORTHOPHOTO SEBAGAI LAYER
        ===================================================== */
 
     document
@@ -2682,7 +2662,7 @@
 
 
           /* ===============================================
-             ON
+             ORTHOPHOTO ON
              =============================================== */
 
           if (
@@ -2695,8 +2675,8 @@
 
 
             /*
-             * Kalau zoom < 12,
-             * naikkan ke L12 agar tile bisa dicoba.
+             * Pastikan zoom berada pada
+             * level cache L12-L18.
              */
 
             if (
@@ -2709,11 +2689,6 @@
 
             }
 
-
-            /*
-             * Kalau zoom > 18,
-             * turunkan ke L18.
-             */
 
             if (
               map.getZoom() > 18
@@ -2736,7 +2711,7 @@
 
 
             /*
-             * Pastikan di atas basemap
+             * Taruh di atas basemap
              */
 
             orthoLayer.bringToFront();
@@ -2753,7 +2728,12 @@
 
 
             console.log(
-              'LEVEL: L12 - L18'
+              'LEVEL L12 - L18'
+            );
+
+
+            console.log(
+              'BLEND MODE: MULTIPLY'
             );
 
 
@@ -2765,7 +2745,7 @@
 
 
           /* ===============================================
-             OFF
+             ORTHOPHOTO OFF
              =============================================== */
 
           else {
@@ -2796,7 +2776,7 @@
 
 
     /* =====================================================
-       19. ORTHOPHOTO TILE LOAD
+       20. TILELOAD
        ===================================================== */
 
     orthoLayer.on(
@@ -2820,7 +2800,7 @@
 
 
     /* =====================================================
-       20. ORTHOPHOTO TILE ERROR
+       21. TILEERROR
        ===================================================== */
 
     orthoLayer.on(
@@ -2926,7 +2906,7 @@
 
 
     /* =====================================================
-       21. SCALE BAR
+       22. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2946,7 +2926,7 @@
 
 
     /* =====================================================
-       22. LEGENDA
+       23. LEGENDA
        ===================================================== */
 
     const legend =
@@ -2959,7 +2939,7 @@
 
 
     legend.onAdd =
-      function() {
+      function(map) {
 
 
         const div =
@@ -3010,7 +2990,7 @@
 
 
     /* =====================================================
-       23. KOORDINAT KURSOR
+       24. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -3051,7 +3031,7 @@
 
 
     /* =====================================================
-       24. BACKGROUND 3 FOTO
+       25. BACKGROUND 3 FOTO
        ===================================================== */
 
     const bgSlideshow =
@@ -3083,7 +3063,7 @@
 
 
     /* =====================================================
-       25. ROTASI BACKGROUND
+       26. ROTASI BACKGROUND
        ===================================================== */
 
     function rotateBackgroundPhotos() {
@@ -3104,10 +3084,6 @@
 
           /* ===============================================
              PUTARAN 1
-
-             FOTO 2 = ATAS
-             FOTO 3 = TENGAH
-             FOTO 1 = BAWAH
              =============================================== */
 
           if (
@@ -3131,10 +3107,6 @@
 
           /* ===============================================
              PUTARAN 2
-
-             FOTO 3 = ATAS
-             FOTO 1 = TENGAH
-             FOTO 2 = BAWAH
              =============================================== */
 
           else if (
@@ -3206,7 +3178,7 @@
 
 
     /* =====================================================
-       26. INTERVAL BACKGROUND
+       27. INTERVAL BACKGROUND
        ===================================================== */
 
     setInterval(
