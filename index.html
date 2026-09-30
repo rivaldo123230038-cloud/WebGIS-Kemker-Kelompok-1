@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -12,21 +11,15 @@
 
 <title>WEBGIS KELOMPOK 1</title>
 
-
-<!-- =========================================================
-     LEAFLET CSS
-========================================================= -->
-
 <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-
+>
 
 <style>
 
 /* =========================================================
-   GLOBAL
+   DASAR
 ========================================================= */
 
 *{
@@ -36,11 +29,11 @@
 html,
 body{
 
-    width:100%;
-    height:100%;
-
     margin:0;
     padding:0;
+
+    width:100%;
+    height:100%;
 
     overflow:hidden;
 
@@ -49,27 +42,29 @@ body{
         Helvetica,
         sans-serif;
 
-    background:#eeeeeb;
+    background:#e9e9e6;
 
-    color:#20262a;
+    color:#222;
 }
 
 
 /* =========================================================
-   MAP
+   PETA
 ========================================================= */
 
 #map{
 
-    position:fixed;
+    position:absolute;
 
-    left:0;
+    left:350px;
     top:0;
 
-    width:100%;
-    height:100%;
+    width:calc(100% - 350px);
+    height:100vh;
 
-    z-index:1;
+    transition:
+        left .3s ease,
+        width .3s ease;
 }
 
 
@@ -77,267 +72,263 @@ body{
    SIDEBAR
 ========================================================= */
 
-#sidebar{
+.sidebar{
 
     position:fixed;
 
     left:0;
     top:0;
-    bottom:0;
 
-    width:360px;
+    width:350px;
+    height:100vh;
 
-    background:#f8f8f6;
-
-    border-right:1px solid #cfcfca;
+    background:#fff;
 
     box-shadow:
-        4px 0 14px rgba(0,0,0,0.14);
+        2px 0 12px rgba(0,0,0,.18);
 
     z-index:2000;
 
-    display:flex;
-    flex-direction:column;
+    overflow:hidden;
 
     transition:
-        transform 0.35s ease;
-
+        transform .3s ease;
 }
 
 
-#sidebar.closed{
+.sidebar.collapsed{
 
     transform:
-        translateX(-360px);
+        translateX(-350px);
 
 }
 
 
 /* =========================================================
-   TOP AREA
+   TOMBOL SIDEBAR
 ========================================================= */
 
-.sidebar-top{
+.sidebar-toggle{
 
-    flex:none;
+    position:fixed;
 
-    background:#ffffff;
+    top:50%;
+    left:350px;
 
-    border-bottom:1px solid #d6d6d1;
+    width:34px;
+    height:70px;
 
-}
+    transform:
+        translateY(-50%);
 
+    border:none;
 
-/* =========================================================
-   LOGOS
-========================================================= */
+    border-radius:
+        0 8px 8px 0;
 
-.logo-row{
+    background:#17324d;
 
-    height:78px;
+    color:#fff;
+
+    z-index:3000;
+
+    cursor:pointer;
 
     display:flex;
 
     align-items:center;
+    justify-content:center;
 
-    justify-content:flex-start;
+    font-size:22px;
 
-    padding:
-        10px 20px;
+    font-weight:bold;
 
-    gap:20px;
+    box-shadow:
+        2px 0 8px rgba(0,0,0,.25);
 
-    background:#ffffff;
+    transition:
+        left .3s ease,
+        background .2s ease;
+}
 
+
+.sidebar-toggle:hover{
+
+    background:#244e73;
+
+}
+
+
+.sidebar-toggle.collapsed{
+
+    left:0;
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-section{
+
+    position:relative;
+
+    z-index:10;
+
+    display:flex;
+
+    flex-direction:row;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    width:100%;
+    height:108px;
+
+    padding:18px 10px;
+
+    gap:5px;
+
+    background:#fff;
+
+    border-bottom:
+        1px solid #eee;
+
+    flex-shrink:0;
 }
 
 
 .logo-item{
 
-    height:55px;
+    flex:1;
+
+    min-width:0;
+
+    height:72px;
 
     display:flex;
 
     align-items:center;
 
     justify-content:center;
-
 }
 
 
 .logo-item img{
 
-    display:block;
-
-    width:auto;
-    height:auto;
-
-    max-width:62px;
-    max-height:50px;
-
-    object-fit:contain;
-
-}
-
-
-/* =========================================================
-   TITLE
-========================================================= */
-
-.title-area{
-
-    position:relative;
-
-    min-height:134px;
-
-    padding:
-        17px 24px 20px;
-
-    background:#23313b;
-
-    color:#ffffff;
-
-    overflow:hidden;
-
-}
-
-
-.title-area::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:6px;
-    height:100%;
-
-    background:#b86443;
-
-}
-
-
-.title-area::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:24px;
-    bottom:0;
-
-    width:80px;
-    height:3px;
-
-    background:#c87452;
-
-}
-
-
-.title-kicker{
-
-    margin:0 0 8px;
-
-    font-size:9px;
-
-    font-weight:bold;
-
-    letter-spacing:2px;
-
-    color:#d6a28e;
-
-    text-transform:uppercase;
-
-}
-
-
-.title-main{
-
-    position:relative;
-
-    z-index:2;
-
-    margin:0;
-
-    width:70%;
-
-    font-size:21px;
-
-    line-height:1.17;
-
-    font-weight:bold;
-
-}
-
-
-.title-sub{
-
-    position:relative;
-
-    z-index:2;
-
-    margin:
-        9px 0 0;
-
-    width:73%;
-
-    font-size:11px;
-
-    line-height:1.5;
-
-    color:#d1d7da;
-
-}
-
-
-/* =========================================================
-   HEADER PHOTOS
-========================================================= */
-
-.title-photos{
-
-    position:absolute;
-
-    right:0;
-    top:0;
-
-    width:42%;
-    height:100%;
-
-    overflow:hidden;
-
-    opacity:0.20;
-
-    pointer-events:none;
-
-}
-
-
-.title-photos img{
-
-    position:absolute;
-
-    left:0;
-    top:0;
-
     width:100%;
     height:100%;
 
-    object-fit:cover;
+    object-fit:contain;
 
-    opacity:0;
-
-    transition:
-        opacity 1.2s ease;
+    display:block;
 
 }
 
 
-.title-photos img.active{
+/* =========================================================
+   SIDEBAR BODY
+========================================================= */
 
-    opacity:1;
+.sidebar-body{
+
+    position:relative;
+
+    height:
+        calc(100vh - 108px);
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    background:transparent;
+}
+
+
+/* =========================================================
+   BACKGROUND 3 FOTO
+========================================================= */
+
+.background-slideshow{
+
+    position:fixed;
+
+    left:0;
+    top:108px;
+
+    width:350px;
+
+    height:
+        calc(100vh - 108px);
+
+    overflow:hidden;
+
+    z-index:0;
+
+    pointer-events:none;
+}
+
+
+.bg-photo{
+
+    position:absolute;
+
+    left:0;
+
+    width:100%;
+    height:33.333333%;
+
+    margin:0;
+    padding:0;
+
+    background-repeat:no-repeat;
+
+    background-position:center center;
+
+    background-size:cover;
+
+    background-color:#fff;
+
+    opacity:.16;
+
+    transition:
+        top 1.35s cubic-bezier(.4,0,.2,1),
+        opacity .85s ease-in-out,
+        filter .85s ease-in-out;
+}
+
+
+.bg-photo.pos-top{
+
+    top:0;
+
+}
+
+
+.bg-photo.pos-middle{
+
+    top:33.333333%;
+
+}
+
+
+.bg-photo.pos-bottom{
+
+    top:66.666666%;
+
+}
+
+
+.background-slideshow.changing .bg-photo{
+
+    opacity:.035;
+
+    filter:
+        brightness(1.08);
 
 }
 
@@ -348,48 +339,68 @@ body{
 
 .sidebar-content{
 
-    flex:1;
+    position:relative;
 
-    overflow-y:auto;
-    overflow-x:hidden;
+    z-index:2;
 
-    padding:
-        18px 22px 30px;
-
-}
-
-
-.sidebar-content::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-
-.sidebar-content::-webkit-scrollbar-track{
-
-    background:#eeeeeb;
-
-}
-
-
-.sidebar-content::-webkit-scrollbar-thumb{
-
-    background:#babbb6;
-
-    border-radius:2px;
-
+    min-height:100%;
 }
 
 
 /* =========================================================
-   SECTION
+   JUDUL
 ========================================================= */
 
-.section{
+.title-section{
 
-    margin-bottom:22px;
+    padding:
+        18px 20px 16px;
 
+    text-align:center;
+
+    background:
+        rgba(255,255,255,.80);
+
+    border-bottom:
+        1px solid rgba(238,238,238,.9);
+}
+
+
+.title-section h1{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#17324d;
+
+    letter-spacing:.5px;
+}
+
+
+.title-section p{
+
+    margin:
+        7px 0 0;
+
+    font-size:12px;
+
+    line-height:1.4;
+
+    color:#555;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel-content{
+
+    padding:
+        18px 20px;
 }
 
 
@@ -399,169 +410,72 @@ body{
 
 .section-title{
 
-    display:flex;
+    margin-top:18px;
 
-    align-items:center;
+    margin-bottom:10px;
 
-    min-height:27px;
-
-    margin-bottom:2px;
+    padding-bottom:7px;
 
     border-bottom:
-        1px solid #d4d4ce;
+        2px solid #17324d;
 
-}
+    color:#17324d;
 
-
-.section-number{
-
-    width:28px;
-    height:22px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    margin-right:9px;
-
-    background:#23313b;
-
-    color:#ffffff;
-
-    font-size:9px;
+    font-size:14px;
 
     font-weight:bold;
-
-}
-
-
-.section-name{
-
-    font-size:11px;
-
-    font-weight:bold;
-
-    letter-spacing:1px;
-
-    color:#3d464b;
 
     text-transform:uppercase;
+}
+
+
+.section-title:first-child{
+
+    margin-top:0;
 
 }
 
 
 /* =========================================================
-   LAYER
+   KOTAK KONTROL
 ========================================================= */
 
-.layer-row{
+.layer-control-box{
 
-    min-height:44px;
+    background:
+        rgba(255,255,255,.88);
+
+    border-radius:6px;
+
+    padding:10px;
+
+    border:
+        1px solid rgba(225,229,232,.95);
+
+    box-shadow:
+        0 1px 4px rgba(0,0,0,.08);
+}
+
+
+.layer-item{
 
     display:flex;
 
     align-items:center;
 
-    border-bottom:
-        1px solid #e1e1dc;
+    gap:8px;
 
-}
-
-
-.layer-name{
-
-    flex:1;
+    padding:8px 5px;
 
     font-size:13px;
 
-    color:#30373b;
-
+    cursor:pointer;
 }
 
 
-/* =========================================================
-   SWITCH
-========================================================= */
-
-.switch{
-
-    position:relative;
-
-    width:40px;
-    height:20px;
-
-    display:block;
-
-}
-
-
-.switch input{
-
-    display:none;
-
-}
-
-
-.switch-track{
-
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:40px;
-    height:20px;
-
-    background:#c3c4bf;
+.layer-item input{
 
     cursor:pointer;
-
-    border-radius:10px;
-
-    transition:
-        background .2s ease;
-
-}
-
-
-.switch-track::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:3px;
-    top:3px;
-
-    width:14px;
-    height:14px;
-
-    background:#ffffff;
-
-    border-radius:50%;
-
-    box-shadow:
-        0 1px 2px rgba(0,0,0,.25);
-
-    transition:
-        left .2s ease;
-
-}
-
-
-.switch input:checked
-+ .switch-track{
-
-    background:#b76444;
-
-}
-
-
-.switch input:checked
-+ .switch-track::after{
-
-    left:23px;
 
 }
 
@@ -570,249 +484,109 @@ body{
    AUTO ZOOM
 ========================================================= */
 
-.autozoom{
+.zoom-layer-button{
 
     width:100%;
-
-    height:38px;
 
     margin-top:10px;
 
     padding:
-        0 12px;
+        10px 12px;
 
-    background:#ffffff;
+    border:none;
 
-    border:
-        1px solid #bfc0bb;
+    border-radius:5px;
 
-    color:#30393e;
+    background:#17324d;
 
-    font-size:11px;
+    color:#fff;
+
+    font-size:13px;
 
     font-weight:bold;
 
-    text-align:left;
-
     cursor:pointer;
 
-    transition:
-        background .2s ease,
-        color .2s ease,
-        border .2s ease;
+    transition:.2s;
+}
+
+
+.zoom-layer-button:hover{
+
+    background:#244e73;
 
 }
 
 
-.autozoom:hover{
+.zoom-layer-button:active{
 
-    background:#23313b;
-
-    color:#ffffff;
-
-    border-color:#23313b;
-
-}
-
-
-.autozoom-arrow{
-
-    float:right;
-
-    font-size:16px;
-
-    color:#b76444;
-
-}
-
-
-.autozoom:hover
-.autozoom-arrow{
-
-    color:#ffffff;
+    transform:
+        scale(.98);
 
 }
 
 
 /* =========================================================
-   BASE MAP
-========================================================= */
-
-.base-row{
-
-    min-height:41px;
-
-    display:flex;
-
-    align-items:center;
-
-    border-bottom:
-        1px solid #e1e1dc;
-
-}
-
-
-.base-row input{
-
-    appearance:none;
-
-    width:15px;
-    height:15px;
-
-    margin:
-        0 10px 0 2px;
-
-    border:
-        1px solid #969791;
-
-    border-radius:50%;
-
-    background:#ffffff;
-
-    position:relative;
-
-    cursor:pointer;
-
-}
-
-
-.base-row input:checked{
-
-    border-color:#b76444;
-
-}
-
-
-.base-row input:checked::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:7px;
-    height:7px;
-
-    left:3px;
-    top:3px;
-
-    background:#b76444;
-
-    border-radius:50%;
-
-}
-
-
-.base-row label{
-
-    font-size:12px;
-
-    color:#333b3f;
-
-    cursor:pointer;
-
-}
-
-
-/* =========================================================
-   COORDINATE SYSTEM
-========================================================= */
-
-.info-row{
-
-    min-height:39px;
-
-    display:flex;
-
-    align-items:center;
-
-    border-bottom:
-        1px solid #e1e1dc;
-
-}
-
-
-.info-label{
-
-    width:105px;
-
-    flex:none;
-
-    font-size:9px;
-
-    color:#85867f;
-
-    text-transform:uppercase;
-
-    letter-spacing:.5px;
-
-    font-weight:bold;
-
-}
-
-
-.info-value{
-
-    flex:1;
-
-    font-size:12px;
-
-    color:#343d42;
-
-    font-weight:600;
-
-    line-height:1.4;
-
-}
-
-
-/* =========================================================
-   COORDINATE DISPLAY
+   SISTEM KOORDINAT
 ========================================================= */
 
 .coordinate-box{
 
-    margin-top:11px;
+    background:
+        rgba(255,255,255,.88);
 
-    padding:
-        12px 14px;
+    border:
+        1px solid rgba(225,229,232,.95);
 
-    background:#23313b;
+    border-radius:6px;
 
-    border-left:
-        4px solid #b76444;
+    padding:12px;
 
+    box-shadow:
+        0 1px 4px rgba(0,0,0,.08);
 }
 
 
-.coordinate-label{
+.coordinate-box .label{
 
-    margin-bottom:7px;
+    font-size:11px;
 
-    font-size:8px;
+    color:#666;
+
+    margin-bottom:3px;
+}
+
+
+.coordinate-box .value{
+
+    font-size:14px;
 
     font-weight:bold;
 
-    color:#aab3b8;
+    color:#17324d;
 
-    letter-spacing:1px;
-
-    text-transform:uppercase;
-
+    margin-bottom:10px;
 }
 
 
-.coordinate-value{
+/* =========================================================
+   KOORDINAT KURSOR
+========================================================= */
 
-    font-family:
-        "Courier New",
-        monospace;
+.cursor-box{
 
-    font-size:11.5px;
+    background:
+        rgba(23,50,77,.92);
 
-    line-height:1.8;
+    color:#fff;
 
-    color:#ffffff;
+    border-radius:6px;
 
+    padding:10px;
+
+    font-size:11px;
+
+    line-height:1.6;
 }
 
 
@@ -820,177 +594,141 @@ body{
    FOOTER
 ========================================================= */
 
-.footer{
+.sidebar-footer{
 
-    margin-top:23px;
-
-    padding-top:12px;
-
-    border-top:
-        1px solid #d4d4ce;
-
-    font-size:9px;
-
-    line-height:1.6;
-
-    color:#888a85;
-
-}
-
-
-.footer strong{
-
-    color:#4d5559;
-
-}
-
-
-/* =========================================================
-   SIDEBAR TOGGLE
-========================================================= */
-
-#toggleSidebar{
-
-    position:absolute;
-
-    right:-36px;
-
-    top:50%;
-
-    transform:
-        translateY(-50%);
-
-    width:36px;
-    height:70px;
-
-    border:
-        1px solid #c8c8c3;
-
-    border-left:none;
-
-    background:#f8f8f6;
-
-    color:#303a3f;
-
-    font-size:21px;
-
-    cursor:pointer;
-
-    box-shadow:
-        4px 0 10px rgba(0,0,0,.10);
-
-}
-
-
-#toggleSidebar:hover{
-
-    background:#23313b;
-
-    color:#ffffff;
-
-}
-
-
-/* =========================================================
-   MAP TOOL
-========================================================= */
-
-.map-tool{
-
-    position:fixed;
-
-    top:15px;
-    right:15px;
-
-    z-index:1500;
-
-}
-
-
-.map-tool button{
-
-    height:37px;
+    margin-top:25px;
 
     padding:
-        0 14px;
+        15px 20px;
 
-    border:
-        1px solid #c8c8c3;
+    border-top:
+        1px solid rgba(238,238,238,.9);
 
-    background:#ffffff;
+    text-align:center;
 
-    color:#29343a;
+    font-size:10px;
 
-    font-size:11px;
+    color:#666;
+
+    line-height:1.5;
+
+    background:
+        rgba(255,255,255,.78);
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup-title{
+
+    font-size:14px;
 
     font-weight:bold;
 
-    cursor:pointer;
+    color:#17324d;
 
-    box-shadow:
-        0 2px 9px rgba(0,0,0,.15);
+    margin-bottom:7px;
+}
+
+
+/* =========================================================
+   AUTO ZOOM MAP CONTROL
+========================================================= */
+
+.zoom-to-layer-control{
+
+    margin-top:10px;
 
 }
 
 
-.map-tool button:hover{
+.zoom-to-layer-button-map{
 
-    background:#23313b;
+    width:38px;
+    height:38px;
 
-    color:#ffffff;
+    background:#fff;
+
+    border:
+        2px solid rgba(0,0,0,.2);
+
+    border-radius:4px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    color:#17324d;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 1px 5px rgba(0,0,0,.25);
+}
+
+
+.zoom-to-layer-button-map:hover{
+
+    background:#f0f5f9;
 
 }
 
 
 /* =========================================================
-   LEGEND
+   LEGENDA
 ========================================================= */
 
-.legend{
-
-    position:fixed;
-
-    right:18px;
-    bottom:18px;
-
-    min-width:160px;
+.map-legend{
 
     background:
-        rgba(255,255,255,.94);
-
-    border:
-        1px solid #cfcfc9;
+        rgba(255,255,255,.95);
 
     padding:
         10px 12px;
 
-    z-index:1500;
+    border-radius:6px;
+
+    border:
+        1px solid #ccc;
 
     box-shadow:
-        0 2px 9px rgba(0,0,0,.13);
+        0 1px 5px rgba(0,0,0,.25);
 
+    font-size:12px;
+
+    line-height:1.5;
+
+    color:#333;
+
+    min-width:165px;
+
+    margin-right:10px;
+
+    margin-bottom:10px;
 }
 
 
-.legend-title{
-
-    margin-bottom:8px;
-
-    padding-bottom:6px;
-
-    border-bottom:
-        1px solid #ddddda;
-
-    font-size:10px;
+.map-legend-title{
 
     font-weight:bold;
 
-    color:#323b40;
+    font-size:13px;
 
-    text-transform:uppercase;
+    color:#17324d;
 
-    letter-spacing:.8px;
+    margin-bottom:7px;
 
+    padding-bottom:4px;
+
+    border-bottom:
+        1px solid #ddd;
 }
 
 
@@ -1001,15 +739,10 @@ body{
     align-items:center;
 
     gap:8px;
-
-    font-size:10.5px;
-
-    color:#454c50;
-
 }
 
 
-.legend-symbol{
+.legend-line-coastline{
 
     width:28px;
 
@@ -1018,107 +751,76 @@ body{
     border-top:
         4px solid #00ffff;
 
+    flex-shrink:0;
 }
 
 
 /* =========================================================
-   LEAFLET
+   RESPONSIVE
 ========================================================= */
 
-.leaflet-control-zoom a{
+@media(max-width:800px){
 
-    background:#ffffff !important;
+    .sidebar{
 
-    color:#27343a !important;
-
-    border-color:#d0d0cb !important;
-
-}
-
-
-.leaflet-control-zoom a:hover{
-
-    background:#23313b !important;
-
-    color:#ffffff !important;
-
-}
-
-
-.leaflet-popup-content{
-
-    font-size:11px;
-
-    line-height:1.6;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:700px){
-
-    #sidebar{
-
-        width:340px;
+        width:280px;
 
     }
 
-
-    #sidebar.closed{
+    .sidebar.collapsed{
 
         transform:
-            translateX(-340px);
+            translateX(-280px);
 
     }
 
+    #map{
 
-    .logo-row{
-
-        gap:12px;
-
-        padding-left:16px;
-        padding-right:16px;
-
-    }
-
-
-    .logo-item img{
-
-        max-width:54px;
-        max-height:45px;
-
-    }
-
-
-    .legend{
-
-        right:10px;
-        bottom:10px;
-
-    }
-
-}
-
-
-@media(max-width:420px){
-
-    #sidebar{
+        left:280px;
 
         width:
-            calc(100% - 12px);
+            calc(100% - 280px);
 
     }
 
+    .sidebar-toggle{
 
-    #sidebar.closed{
+        left:280px;
 
-        transform:
-            translateX(
-                calc(-100% - 2px)
-            );
+    }
+
+    .background-slideshow{
+
+        width:280px;
+
+    }
+
+    .logo-section{
+
+        padding:
+            15px 6px;
+
+        gap:3px;
+
+    }
+
+    .logo-item{
+
+        height:58px;
+
+    }
+
+    .title-section h1{
+
+        font-size:18px;
+
+    }
+
+    .map-legend{
+
+        min-width:145px;
+
+        font-size:11px;
 
     }
 
@@ -1132,523 +834,432 @@ body{
 <body>
 
 
-<!-- =========================================================
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<div
+    class="sidebar"
+    id="sidebar"
+>
+
+
+    <!-- =================================================
+         LOGO
+    ================================================== -->
+
+    <div class="logo-section">
+
+
+        <div class="logo-item">
+
+            <img
+                src="ITERA.png"
+                alt="Logo ITERA"
+            >
+
+        </div>
+
+
+        <div class="logo-item">
+
+            <img
+                src="Logo_GT.png"
+                alt="Logo Teknik Geomatika ITERA"
+            >
+
+        </div>
+
+
+        <div class="logo-item">
+
+            <img
+                src="LOGO_GT23.png"
+                alt="Logo Teknik Geomatika Angkatan 2023"
+            >
+
+        </div>
+
+
+        <div class="logo-item">
+
+            <img
+                src="LOGO_KEMKER.png"
+                alt="Logo Kemah Kerja 2023"
+            >
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         SIDEBAR BODY
+    ================================================== -->
+
+    <div class="sidebar-body">
+
+
+        <!-- =================================================
+             BACKGROUND
+        ================================================== -->
+
+        <div
+            class="background-slideshow"
+            id="backgroundSlideshow"
+        >
+
+
+            <div
+                class="bg-photo pos-top"
+                id="bgPhoto1"
+                style="
+                    background-image:
+                    url('bcg1.jpeg')
+                "
+            ></div>
+
+
+            <div
+                class="bg-photo pos-middle"
+                id="bgPhoto2"
+                style="
+                    background-image:
+                    url('bcg2.jpeg')
+                "
+            ></div>
+
+
+            <div
+                class="bg-photo pos-bottom"
+                id="bgPhoto3"
+                style="
+                    background-image:
+                    url('bcg3.jpeg')
+                "
+            ></div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <div class="sidebar-content">
+
+
+            <!-- =============================================
+                 JUDUL
+            ============================================== -->
+
+            <div class="title-section">
+
+                <h1>
+                    WEBGIS KELOMPOK 1
+                </h1>
+
+                <p>
+                    Pemetaan dan Visualisasi Garis Pantai
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 PANEL
+            ============================================== -->
+
+            <div class="panel-content">
+
+
+                <!-- =========================================
+                     LAYER
+                ========================================== -->
+
+                <div class="section-title">
+
+                    Layer
+
+                </div>
+
+
+                <div class="layer-control-box">
+
+
+                    <!-- GARIS PANTAI RTK -->
+
+                    <label class="layer-item">
+
+
+                        <input
+                            type="checkbox"
+                            id="coastlineCheck"
+                            checked
+                        >
+
+
+                        <span>
+                            Garis Pantai RTK
+                        </span>
+
+
+                    </label>
+
+
+                    <!-- ORTHOPHOTO -->
+
+                    <label class="layer-item">
+
+
+                        <input
+                            type="checkbox"
+                            id="orthoCheck"
+                        >
+
+
+                        <span>
+                            Orthophoto
+                        </span>
+
+
+                    </label>
+
+
+                    <!-- AUTO ZOOM -->
+
+                    <button
+                        type="button"
+                        id="zoomLayerButton"
+                        class="zoom-layer-button"
+                    >
+
+                        ⌖ Auto Zoom to Layer
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     BASE MAP
+                ========================================== -->
+
+                <div class="section-title">
+
+                    Base Map
+
+                </div>
+
+
+                <div class="layer-control-box">
+
+
+                    <!-- ESRI WORLD IMAGERY -->
+
+                    <label class="layer-item">
+
+
+                        <input
+                            type="radio"
+                            name="basemap"
+                            id="satelliteRadio"
+                            checked
+                        >
+
+
+                        <span>
+                            Esri World Imagery
+                        </span>
+
+
+                    </label>
+
+
+                    <!-- ESRI STREET -->
+
+                    <label class="layer-item">
+
+
+                        <input
+                            type="radio"
+                            name="basemap"
+                            id="streetRadio"
+                        >
+
+
+                        <span>
+                            Esri World Street Map
+                        </span>
+
+
+                    </label>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     SISTEM KOORDINAT
+                ========================================== -->
+
+                <div class="section-title">
+
+                    Sistem Koordinat
+
+                </div>
+
+
+                <div class="coordinate-box">
+
+
+                    <div class="label">
+                        Datum
+                    </div>
+
+
+                    <div class="value">
+                        WGS 84
+                    </div>
+
+
+                    <div class="label">
+                        Sistem Koordinat
+                    </div>
+
+
+                    <div class="value">
+                        Geographic Coordinate System
+                    </div>
+
+
+                    <div class="label">
+                        EPSG
+                    </div>
+
+
+                    <div class="value">
+                        EPSG:4326
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     KOORDINAT KURSOR
+                ========================================== -->
+
+                <div class="section-title">
+
+                    Koordinat Kursor
+
+                </div>
+
+
+                <div class="cursor-box">
+
+
+                    <div>
+
+                        Latitude:
+
+                        <span
+                            id="latitude"
+                        >
+                            -
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        Longitude:
+
+                        <span
+                            id="longitude"
+                        >
+                            -
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     FOOTER
+                ========================================== -->
+
+                <div class="sidebar-footer">
+
+                    WEBGIS KELOMPOK 1
+
+                    <br>
+
+                    Program Studi Teknik Geomatika
+
+                    <br>
+
+                    Institut Teknologi Sumatera
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     TOGGLE SIDEBAR
+===================================================== -->
+
+<button
+    id="sidebarToggle"
+    class="sidebar-toggle"
+    type="button"
+    title="Minimize Panel"
+>
+
+    ◀
+
+</button>
+
+
+<!-- =====================================================
      MAP
-========================================================= -->
+===================================================== -->
 
 <div id="map"></div>
 
 
-<!-- =========================================================
-     SIDEBAR
-========================================================= -->
-
-<aside id="sidebar">
-
-
-    <!-- =====================================================
-         TOP
-    ====================================================== -->
-
-    <div class="sidebar-top">
-
-
-        <!-- LOGO -->
-
-        <div class="logo-row">
-
-
-            <div class="logo-item">
-
-                <img
-                    src="ITERA.png"
-                    alt="ITERA"
-                >
-
-            </div>
-
-
-            <div class="logo-item">
-
-                <img
-                    src="Logo_GT.png"
-                    alt="Teknik Geomatika"
-                >
-
-            </div>
-
-
-            <div class="logo-item">
-
-                <img
-                    src="LOGO_GT23.png"
-                    alt="GT23"
-                >
-
-            </div>
-
-
-            <div class="logo-item">
-
-                <img
-                    src="LOGO_KEMKER.png"
-                    alt="Kemah Kerja"
-                >
-
-            </div>
-
-
-        </div>
-
-
-        <!-- TITLE -->
-
-        <div class="title-area">
-
-
-            <div class="title-kicker">
-                WEBGIS KELOMPOK 1
-            </div>
-
-
-            <h1 class="title-main">
-
-                Pemetaan dan
-                Visualisasi Garis Pantai
-
-            </h1>
-
-
-            <p class="title-sub">
-
-                Sistem informasi geografis
-                untuk visualisasi data garis
-                pantai secara interaktif.
-
-            </p>
-
-
-            <!-- FOTO -->
-
-            <div class="title-photos">
-
-
-                <img
-                    src="bcg1.jpeg"
-                    class="active"
-                    alt=""
-                >
-
-
-                <img
-                    src="bcg2.jpeg"
-                    alt=""
-                >
-
-
-                <img
-                    src="bcg3.jpeg"
-                    alt=""
-                >
-
-
-            </div>
-
-
-        </div>
-
-
-    </div>
-
-
-    <!-- =====================================================
-         CONTENT
-    ====================================================== -->
-
-    <div class="sidebar-content">
-
-
-        <!-- =================================================
-             LAYER
-        ================================================== -->
-
-        <section class="section">
-
-
-            <div class="section-title">
-
-                <div class="section-number">
-                    01
-                </div>
-
-                <div class="section-name">
-                    Layer
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 GARIS PANTAI RTK
-            ========================== -->
-
-            <div class="layer-row">
-
-
-                <div class="layer-name">
-                    Garis Pantai RTK
-                </div>
-
-
-                <label class="switch">
-
-                    <input
-                        type="checkbox"
-                        id="coastlineCheck"
-                        checked
-                    >
-
-                    <span class="switch-track"></span>
-
-                </label>
-
-
-            </div>
-
-
-            <!-- =========================
-                 ORTHOPHOTO
-            ========================== -->
-
-            <div class="layer-row">
-
-
-                <div class="layer-name">
-                    Orthophoto
-                </div>
-
-
-                <label class="switch">
-
-                    <input
-                        type="checkbox"
-                        id="orthoCheck"
-                    >
-
-                    <span class="switch-track"></span>
-
-                </label>
-
-
-            </div>
-
-
-            <!-- =========================
-                 AUTO ZOOM
-            ========================== -->
-
-            <button
-                class="autozoom"
-                id="zoomLayerBtn"
-            >
-
-                Auto Zoom to Layer
-
-                <span class="autozoom-arrow">
-                    →
-                </span>
-
-            </button>
-
-
-        </section>
-
-
-        <!-- =================================================
-             BASEMAP
-        ================================================== -->
-
-        <section class="section">
-
-
-            <div class="section-title">
-
-                <div class="section-number">
-                    02
-                </div>
-
-                <div class="section-name">
-                    Base Map
-                </div>
-
-            </div>
-
-
-            <!-- ESRI IMAGERY -->
-
-            <div class="base-row">
-
-
-                <input
-                    type="radio"
-                    name="basemap"
-                    id="satelliteRadio"
-                    checked
-                >
-
-
-                <label
-                    for="satelliteRadio"
-                >
-                    Esri World Imagery
-                </label>
-
-
-            </div>
-
-
-            <!-- ESRI STREET -->
-
-            <div class="base-row">
-
-
-                <input
-                    type="radio"
-                    name="basemap"
-                    id="streetRadio"
-                >
-
-
-                <label
-                    for="streetRadio"
-                >
-                    Esri World Street Map
-                </label>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             SISTEM KOORDINAT
-        ================================================== -->
-
-        <section class="section">
-
-
-            <div class="section-title">
-
-                <div class="section-number">
-                    03
-                </div>
-
-                <div class="section-name">
-                    Sistem Koordinat
-                </div>
-
-            </div>
-
-
-            <div class="info-row">
-
-
-                <div class="info-label">
-                    Datum
-                </div>
-
-
-                <div class="info-value">
-                    WGS 84
-                </div>
-
-
-            </div>
-
-
-            <div class="info-row">
-
-
-                <div class="info-label">
-                    Sistem
-                </div>
-
-
-                <div class="info-value">
-                    Geographic Coordinate System
-                </div>
-
-
-            </div>
-
-
-            <div class="info-row">
-
-
-                <div class="info-label">
-                    EPSG
-                </div>
-
-
-                <div class="info-value">
-                    EPSG:4326
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             KOORDINAT KURSOR
-        ================================================== -->
-
-        <section class="section">
-
-
-            <div class="section-title">
-
-                <div class="section-number">
-                    04
-                </div>
-
-                <div class="section-name">
-                    Koordinat Kursor
-                </div>
-
-            </div>
-
-
-            <div class="coordinate-box">
-
-
-                <div class="coordinate-label">
-                    Posisi Kursor
-                </div>
-
-
-                <div
-                    id="cursorCoordinates"
-                    class="coordinate-value"
-                >
-
-                    Latitude&nbsp;&nbsp; : -
-
-                    <br>
-
-                    Longitude : -
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <div class="footer">
-
-
-            <strong>
-                WEBGIS KELOMPOK 1
-            </strong>
-
-            <br>
-
-            Program Studi Teknik Geomatika
-
-            <br>
-
-            Institut Teknologi Sumatera
-
-
-        </div>
-
-
-    </div>
-
-
-    <!-- =====================================================
-         SIDEBAR TOGGLE
-    ====================================================== -->
-
-    <button
-        id="toggleSidebar"
-        title="Buka/Tutup Sidebar"
-    >
-        ‹
-    </button>
-
-
-</aside>
-
-
-<!-- =========================================================
-     FLOATING AUTO ZOOM
-========================================================= -->
-
-<div class="map-tool">
-
-    <button
-        id="floatingZoomBtn"
-    >
-        Auto Zoom
-    </button>
-
-</div>
-
-
-<!-- =========================================================
-     LEGEND
-========================================================= -->
-
-<div class="legend">
-
-
-    <div class="legend-title">
-        Legenda
-    </div>
-
-
-    <div class="legend-item">
-
-
-        <div class="legend-symbol"></div>
-
-
-        <span>
-            Garis Pantai RTK
-        </span>
-
-
-    </div>
-
-
-</div>
-
-
-<!-- =========================================================
-     LEAFLET JS
-========================================================= -->
+<!-- =====================================================
+     LEAFLET
+===================================================== -->
 
 <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+>
 </script>
 
 
 <script>
 
 /* =========================================================
-   MAP INITIALIZATION
+   INITIAL MAP
 ========================================================= */
 
 const map =
@@ -1663,14 +1274,132 @@ const map =
 
             zoom:10,
 
+            minZoom:0,
+
+            maxZoom:23,
+
             zoomControl:true,
 
-            attributionControl:true,
+            scrollWheelZoom:true,
 
-            preferCanvas:true
+            doubleClickZoom:true,
+
+            touchZoom:true,
+
+            boxZoom:true
 
         }
     );
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        'sidebar'
+    );
+
+
+const sidebarToggle =
+    document.getElementById(
+        'sidebarToggle'
+    );
+
+
+let sidebarCollapsed =
+    false;
+
+
+sidebarToggle.addEventListener(
+    'click',
+    function(){
+
+        sidebarCollapsed =
+            !sidebarCollapsed;
+
+
+        if(
+            sidebarCollapsed
+        ){
+
+            sidebar.classList.add(
+                'collapsed'
+            );
+
+            sidebarToggle.classList.add(
+                'collapsed'
+            );
+
+            sidebarToggle.innerHTML =
+                '▶';
+
+            sidebarToggle.title =
+                'Tampilkan Panel';
+
+
+            document
+                .getElementById('map')
+                .style.left =
+                '0';
+
+
+            document
+                .getElementById('map')
+                .style.width =
+                '100%';
+
+        }
+
+        else{
+
+            sidebar.classList.remove(
+                'collapsed'
+            );
+
+            sidebarToggle.classList.remove(
+                'collapsed'
+            );
+
+            sidebarToggle.innerHTML =
+                '◀';
+
+            sidebarToggle.title =
+                'Minimize Panel';
+
+
+            const sidebarWidth =
+                window.innerWidth <= 800
+                    ? '280px'
+                    : '350px';
+
+
+            document
+                .getElementById('map')
+                .style.left =
+                sidebarWidth;
+
+
+            document
+                .getElementById('map')
+                .style.width =
+                `calc(100% - ${sidebarWidth})`;
+
+        }
+
+
+        setTimeout(
+            function(){
+
+                map.invalidateSize();
+
+            },
+            320
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -1691,10 +1420,8 @@ const satellite =
 
             maxZoom:19,
 
-            maxNativeZoom:19,
-
             attribution:
-                'Tiles © Esri'
+                'Tiles &copy; Esri'
 
         }
 
@@ -1702,7 +1429,7 @@ const satellite =
 
 
 /* =========================================================
-   ESRI WORLD STREET MAP
+   ESRI STREET
 ========================================================= */
 
 const street =
@@ -1719,19 +1446,15 @@ const street =
 
             maxZoom:19,
 
-            maxNativeZoom:19,
-
             attribution:
-                'Tiles © Esri'
+                'Tiles &copy; Esri'
 
         }
 
     );
 
 
-/* =========================================================
-   DEFAULT BASEMAP
-========================================================= */
+/* DEFAULT */
 
 satellite.addTo(
     map
@@ -1740,83 +1463,10 @@ satellite.addTo(
 
 /* =========================================================
    ORTHOPHOTO
+   L12-L18
 ========================================================= */
 
-/*
-   GitHub:
-
-   rivaldo123230038-cloud
-   WebGIS-Kemker-Kelompok-1
-
-   Folder:
-
-   Fix_Ortho_web/
-   └── _alllayers/
-       ├── L12/
-       ├── L13/
-       ├── L14/
-       ├── L15/
-       ├── L16/
-       ├── L17/
-       └── L18/
-
-   Struktur:
-
-   L17/
-   Rxxxxxxxx/
-   Cxxxxxxxx.png
-*/
-
-
-/* =========================================================
-   HEX FORMAT
-========================================================= */
-
-function toHex8(
-    value
-){
-
-    return Math
-        .abs(
-            Math.floor(
-                value
-            )
-        )
-        .toString(16)
-        .toUpperCase()
-        .padStart(
-            8,
-            '0'
-        );
-
-}
-
-
-/* =========================================================
-   ORTHOPHOTO BASE URL
-========================================================= */
-
-const ORTHO_URL =
-
-    'https://raw.githubusercontent.com/' +
-
-    'rivaldo123230038-cloud/' +
-
-    'WebGIS-Kemker-Kelompok-1/' +
-
-    'main/' +
-
-    'Fix_Ortho_web/' +
-
-    '_alllayers/';
-
-
-/* =========================================================
-   ORTHOPHOTO LAYER
-========================================================= */
-
-const ortho =
-
+const orthoLayer =
     L.tileLayer(
         '',
         {
@@ -1831,154 +1481,185 @@ const ortho =
 
             tileSize:256,
 
-            opacity:1,
-
             noWrap:true,
 
-            updateWhenZooming:true,
-
-            updateWhenIdle:true,
-
-            keepBuffer:3,
+            opacity:1,
 
             attribution:
-                'Orthophoto Kelompok 1'
+                'Orthophoto'
 
         }
     );
 
 
 /* =========================================================
-   ORTHOPHOTO TILE URL
+   ORTHOPHOTO URL
 ========================================================= */
 
-ortho.getTileUrl =
+orthoLayer.getTileUrl =
     function(
         coords
     ){
 
         const z =
-            Math.floor(
-                coords.z
-            );
+            coords.z;
 
-        const y =
-            Math.floor(
-                coords.y
-            );
 
         const x =
-            Math.floor(
-                coords.x
-            );
+            coords.x;
+
+
+        const y =
+            coords.y;
+
+
+        if(
+            z < 12 ||
+            z > 18 ||
+            x < 0 ||
+            y < 0
+        ){
+
+            return '';
+
+        }
 
 
         const rowHex =
-            y
-            .toString(16)
-            .padStart(
-                8,
-                '0'
-            )
-            .toUpperCase();
+
+            Math
+                .floor(y)
+                .toString(16)
+                .padStart(
+                    8,
+                    '0'
+                )
+                .toLowerCase();
 
 
         const colHex =
-            x
-            .toString(16)
-            .padStart(
-                8,
-                '0'
-            )
-            .toUpperCase();
+
+            Math
+                .floor(x)
+                .toString(16)
+                .padStart(
+                    8,
+                    '0'
+                )
+                .toLowerCase();
 
 
-        const url =
+        return
 
-            ORTHO_URL +
+            'https://raw.githubusercontent.com/' +
 
-            'L' +
-            z +
+            'rivaldo123230038-cloud/' +
 
-            '/R' +
-            rowHex +
+            'WebGIS-Kemker-Kelompok-1/' +
 
-            '/C' +
-            colHex +
+            'main/' +
+
+            'Fix_Ortho_web/' +
+
+            '_alllayers/' +
+
+            'L' + z +
+
+            '/' +
+
+            'R' + rowHex +
+
+            '/' +
+
+            'C' + colHex +
 
             '.png';
 
-
-        return url;
-
     };
+
+
+/* =========================================================
+   ORTHOPHOTO DEBUG
+========================================================= */
+
+orthoLayer.on(
+    'tileload',
+    function(e){
+
+        console.log(
+            'ORTHOPHOTO BERHASIL:',
+            e.coords
+        );
+
+    }
+);
+
+
+orthoLayer.on(
+    'tileerror',
+    function(e){
+
+        console.error(
+            'ORTHOPHOTO GAGAL:',
+            e.coords
+        );
+
+    }
+);
 
 
 /* =========================================================
    GARIS PANTAI RTK
 ========================================================= */
 
-let coastline = null;
+const coastlineStyle = {
 
-let coastlineReady = false;
+    color:
+        '#00ffff',
+
+    weight:
+        4,
+
+    opacity:
+        0.95,
+
+    lineCap:
+        'round',
+
+    lineJoin:
+        'round'
+
+};
 
 
-/* =========================================================
-   STYLE
-========================================================= */
+let coastline =
+    null;
 
-function coastlineStyle(){
 
-    return {
-
-        color:
-            '#00ffff',
-
-        weight:
-            4,
-
-        opacity:
-            0.95,
-
-        lineCap:
-            'round',
-
-        lineJoin:
-            'round'
-
-    };
-
-}
+let coastlineReady =
+    false;
 
 
 /* =========================================================
-   POPUP
+   POPUP GARIS PANTAI RTK
 ========================================================= */
 
-function createPopup(
+function createRTKPopup(
     properties
 ){
 
     let html =
 
         '<div style="' +
-        'font-size:11px;' +
-        'line-height:1.6;' +
-        'min-width:170px;' +
+        'min-width:190px;' +
+        'line-height:1.55;' +
         '">';
 
 
     html +=
 
-        '<div style="' +
-        'font-weight:bold;' +
-        'font-size:13px;' +
-        'margin-bottom:7px;' +
-        'color:#23313b;' +
-        '">' +
-
+        '<div class="popup-title">' +
         'Garis Pantai RTK' +
-
         '</div>';
 
 
@@ -1998,28 +1679,34 @@ function createPopup(
                     properties[key];
 
 
+                const cleanValue =
+
+                    value === null ||
+                    value === undefined ||
+                    value === ''
+
+                        ? '-'
+
+                        : value;
+
+
                 html +=
 
                     '<b>' +
                     key +
                     '</b>: ' +
-
-                    (
-
-                        value === null ||
-                        value === undefined ||
-                        value === ''
-
-                            ? '-'
-
-                            : value
-
-                    ) +
-
+                    cleanValue +
                     '<br>';
 
             }
         );
+
+    }
+
+    else{
+
+        html +=
+            'Data atribut tidak tersedia.';
 
     }
 
@@ -2034,19 +1721,13 @@ function createPopup(
 
 
 /* =========================================================
-   LOAD FILE GARIS PANTAI RTK
+   LOAD FILE RTK
+   FILE:
+   Garis_Pantai_RTK.geojson
 ========================================================= */
 
-/*
-   FILE YANG DIGUNAKAN:
-
-   Garis Pantai RTK.geojson
-
-   BUKAN GP_RT.json
-*/
-
 fetch(
-    'Garis Pantai RTK.geojson'
+    'Garis_Pantai_RTK.geojson'
 )
 
 .then(
@@ -2057,7 +1738,7 @@ fetch(
         ){
 
             throw new Error(
-                'File Garis Pantai RTK.geojson tidak ditemukan.'
+                'Garis_Pantai_RTK.geojson tidak ditemukan.'
             );
 
         }
@@ -2071,25 +1752,6 @@ fetch(
 .then(
     function(data){
 
-        /* =================================================
-           VALIDASI
-        ================================================== */
-
-        if(
-            !data
-        ){
-
-            throw new Error(
-                'Data GeoJSON kosong.'
-            );
-
-        }
-
-
-        /* =================================================
-           GEOJSON
-        ================================================== */
-
         coastline =
 
             L.geoJSON(
@@ -2097,12 +1759,8 @@ fetch(
                 {
 
                     style:
-                        coastlineStyle(),
+                        coastlineStyle,
 
-
-                    /* =====================================
-                       SETIAP FEATURE
-                    ====================================== */
 
                     onEachFeature:
                         function(
@@ -2114,7 +1772,7 @@ fetch(
 
                             layer.bindPopup(
 
-                                createPopup(
+                                createRTKPopup(
                                     feature.properties
                                 )
 
@@ -2134,7 +1792,7 @@ fetch(
                                         this.setStyle({
 
                                             color:
-                                                '#ff5037',
+                                                '#ff0000',
 
                                             weight:
                                                 6,
@@ -2150,7 +1808,7 @@ fetch(
                             );
 
 
-                            /* KELUAR HOVER */
+                            /* HOVER KELUAR */
 
                             layer.on(
                                 'mouseout',
@@ -2161,7 +1819,7 @@ fetch(
                                     ){
 
                                         this.setStyle(
-                                            coastlineStyle()
+                                            coastlineStyle
                                         );
 
                                     }
@@ -2175,10 +1833,6 @@ fetch(
             );
 
 
-        /* =================================================
-           ADD TO MAP
-        ================================================== */
-
         coastline.addTo(
             map
         );
@@ -2188,19 +1842,7 @@ fetch(
             true;
 
 
-        /* =================================================
-           AUTO ZOOM AWAL
-        ================================================== */
-
-        setTimeout(
-            function(){
-
-                zoomToCoastline();
-
-            },
-            400
-        );
-
+        zoomToCoastline();
 
     }
 )
@@ -2209,7 +1851,7 @@ fetch(
     function(error){
 
         console.error(
-            'ERROR GARIS PANTAI RTK:',
+            'Gagal membaca Garis_Pantai_RTK.geojson:',
             error
         );
 
@@ -2218,9 +1860,9 @@ fetch(
 
             'Garis Pantai RTK tidak dapat dimuat.\n\n' +
 
-            'Pastikan file di GitHub bernama persis:\n' +
+            'Pastikan file di GitHub bernama tepat:\n' +
 
-            'Garis Pantai RTK.geojson'
+            'Garis_Pantai_RTK.geojson'
 
         );
 
@@ -2229,18 +1871,19 @@ fetch(
 
 
 /* =========================================================
-   AUTO ZOOM GARIS PANTAI RTK
+   AUTO ZOOM
 ========================================================= */
 
 function zoomToCoastline(){
 
     if(
         !coastline ||
-        !coastlineReady
+        !coastlineReady ||
+        coastline.getLayers().length === 0
     ){
 
         alert(
-            'Garis Pantai RTK masih dimuat...'
+            'Layer Garis Pantai RTK belum tersedia.'
         );
 
         return;
@@ -2253,7 +1896,6 @@ function zoomToCoastline(){
 
 
     if(
-        !bounds ||
         !bounds.isValid()
     ){
 
@@ -2270,32 +1912,24 @@ function zoomToCoastline(){
 
 
     map.fitBounds(
-
         bounds,
-
         {
 
-            paddingTopLeft:[
-                60,
-                60
-            ],
-
-            paddingBottomRight:[
-                60,
-                60
+            padding:[
+                40,
+                40
             ],
 
             maxZoom:
-                17,
+                16,
 
             animate:
                 true,
 
             duration:
-                1.2
+                1.1
 
         }
-
     );
 
 }
@@ -2307,15 +1941,11 @@ function zoomToCoastline(){
 
 document
     .getElementById(
-        'zoomLayerBtn'
+        'zoomLayerButton'
     )
     .addEventListener(
         'click',
-        function(){
-
-            zoomToCoastline();
-
-        }
+        zoomToCoastline
     );
 
 
@@ -2323,22 +1953,80 @@ document
    AUTO ZOOM MAP
 ========================================================= */
 
-document
-    .getElementById(
-        'floatingZoomBtn'
-    )
-    .addEventListener(
-        'click',
-        function(){
+const ZoomToLayerControl =
+    L.Control.extend({
 
-            zoomToCoastline();
+        options:{
+            position:
+                'topright'
+        },
 
-        }
-    );
+
+        onAdd:
+            function(){
+
+                const container =
+                    L.DomUtil.create(
+                        'div',
+                        'leaflet-bar zoom-to-layer-control'
+                    );
+
+
+                const button =
+                    L.DomUtil.create(
+                        'button',
+                        'zoom-to-layer-button-map',
+                        container
+                    );
+
+
+                button.type =
+                    'button';
+
+
+                button.innerHTML =
+                    '⌖';
+
+
+                button.title =
+                    'Auto Zoom ke Garis Pantai RTK';
+
+
+                L.DomEvent
+                    .disableClickPropagation(
+                        container
+                    );
+
+
+                L.DomEvent.on(
+                    button,
+                    'click',
+                    function(e){
+
+                        L.DomEvent
+                            .stopPropagation(e);
+
+
+                        zoomToCoastline();
+
+                    }
+                );
+
+
+                return container;
+
+            }
+
+    });
+
+
+map.addControl(
+    new ZoomToLayerControl()
+);
 
 
 /* =========================================================
-   TOGGLE GARIS PANTAI RTK
+   CHECKBOX GARIS PANTAI RTK
 ========================================================= */
 
 document
@@ -2350,38 +2038,29 @@ document
         function(){
 
             if(
+                !coastline
+            ){
+
+                return;
+
+            }
+
+
+            if(
                 this.checked
             ){
 
-                if(
-                    coastline &&
-                    !map.hasLayer(
-                        coastline
-                    )
-                ){
-
-                    coastline.addTo(
-                        map
-                    );
-
-                }
+                coastline.addTo(
+                    map
+                );
 
             }
 
             else{
 
-                if(
-                    coastline &&
-                    map.hasLayer(
-                        coastline
-                    )
-                ){
-
-                    map.removeLayer(
-                        coastline
-                    );
-
-                }
+                map.removeLayer(
+                    coastline
+                );
 
             }
 
@@ -2390,7 +2069,7 @@ document
 
 
 /* =========================================================
-   TOGGLE ORTHOPHOTO
+   CHECKBOX ORTHOPHOTO
 ========================================================= */
 
 document
@@ -2406,24 +2085,6 @@ document
             ){
 
                 if(
-                    !map.hasLayer(
-                        ortho
-                    )
-                ){
-
-                    ortho.addTo(
-                        map
-                    );
-
-                }
-
-
-                /*
-                   Orthophoto tersedia
-                   mulai L12.
-                */
-
-                if(
                     map.getZoom() < 12
                 ){
 
@@ -2433,26 +2094,71 @@ document
 
                 }
 
+
+                if(
+                    map.getZoom() > 18
+                ){
+
+                    map.setZoom(
+                        18
+                    );
+
+                }
+
+
+                orthoLayer.addTo(
+                    map
+                );
+
+
+                orthoLayer.bringToFront();
+
             }
 
             else{
 
-                if(
-                    map.hasLayer(
-                        ortho
-                    )
-                ){
-
-                    map.removeLayer(
-                        ortho
-                    );
-
-                }
+                map.removeLayer(
+                    orthoLayer
+                );
 
             }
 
         }
     );
+
+
+/* =========================================================
+   BASEMAP
+========================================================= */
+
+function removeBaseMaps(){
+
+    if(
+        map.hasLayer(
+            satellite
+        )
+    ){
+
+        map.removeLayer(
+            satellite
+        );
+
+    }
+
+
+    if(
+        map.hasLayer(
+            street
+        )
+    ){
+
+        map.removeLayer(
+            street
+        );
+
+    }
+
+}
 
 
 /* =========================================================
@@ -2476,30 +2182,12 @@ document
             }
 
 
-            if(
-                map.hasLayer(
-                    street
-                )
-            ){
-
-                map.removeLayer(
-                    street
-                );
-
-            }
+            removeBaseMaps();
 
 
-            if(
-                !map.hasLayer(
-                    satellite
-                )
-            ){
-
-                satellite.addTo(
-                    map
-                );
-
-            }
+            satellite.addTo(
+                map
+            );
 
         }
     );
@@ -2526,30 +2214,12 @@ document
             }
 
 
-            if(
-                map.hasLayer(
-                    satellite
-                )
-            ){
-
-                map.removeLayer(
-                    satellite
-                );
-
-            }
+            removeBaseMaps();
 
 
-            if(
-                !map.hasLayer(
-                    street
-                )
-            ){
-
-                street.addTo(
-                    map
-                );
-
-            }
+            street.addTo(
+                map
+            );
 
         }
     );
@@ -2563,138 +2233,217 @@ map.on(
     'mousemove',
     function(e){
 
-        const latitude =
+        document
+            .getElementById(
+                'latitude'
+            )
+            .textContent =
+
             e.latlng.lat.toFixed(6);
-
-
-        const longitude =
-            e.latlng.lng.toFixed(6);
 
 
         document
             .getElementById(
-                'cursorCoordinates'
+                'longitude'
             )
-            .innerHTML =
+            .textContent =
 
-                'Latitude&nbsp;&nbsp; : ' +
-                latitude +
-
-                '<br>' +
-
-                'Longitude : ' +
-                longitude;
+            e.latlng.lng.toFixed(6);
 
     }
 );
 
 
 /* =========================================================
-   SIDEBAR TOGGLE
+   SCALE
 ========================================================= */
 
-const sidebar =
-    document.getElementById(
-        'sidebar'
-    );
+L.control.scale({
+
+    imperial:false,
+
+    metric:true,
+
+    position:
+        'bottomleft'
+
+}).addTo(
+    map
+);
 
 
-const toggleButton =
-    document.getElementById(
-        'toggleSidebar'
-    );
+/* =========================================================
+   LEGENDA
+========================================================= */
+
+const legend =
+    L.control({
+
+        position:
+            'bottomright'
+
+    });
 
 
-let sidebarOpen =
-    true;
-
-
-toggleButton.addEventListener(
-    'click',
+legend.onAdd =
     function(){
 
-        sidebarOpen =
-            !sidebarOpen;
-
-
-        if(
-            sidebarOpen
-        ){
-
-            sidebar.classList.remove(
-                'closed'
+        const div =
+            L.DomUtil.create(
+                'div',
+                'map-legend'
             );
 
 
-            toggleButton.innerHTML =
-                '‹';
+        div.innerHTML =
 
-        }
+            '<div class="map-legend-title">' +
+            'Legenda' +
+            '</div>' +
 
-        else{
+            '<div class="legend-item">' +
 
-            sidebar.classList.add(
-                'closed'
+            '<span ' +
+            'class="legend-line-coastline">' +
+            '</span>' +
+
+            '<span>' +
+            'Garis Pantai RTK' +
+            '</span>' +
+
+            '</div>';
+
+
+        L.DomEvent
+            .disableClickPropagation(
+                div
             );
 
 
-            toggleButton.innerHTML =
-                '›';
+        return div;
 
-        }
+    };
 
 
-        setTimeout(
-            function(){
-
-                map.invalidateSize();
-
-            },
-            400
-        );
-
-    }
+legend.addTo(
+    map
 );
 
 
 /* =========================================================
-   BACKGROUND PHOTO SLIDESHOW
+   BACKGROUND 3 FOTO
 ========================================================= */
 
-const photos =
-    document.querySelectorAll(
-        '.title-photos img'
+const bgSlideshow =
+    document.getElementById(
+        'backgroundSlideshow'
     );
 
 
-let photoIndex =
+const bgPhoto1 =
+    document.getElementById(
+        'bgPhoto1'
+    );
+
+
+const bgPhoto2 =
+    document.getElementById(
+        'bgPhoto2'
+    );
+
+
+const bgPhoto3 =
+    document.getElementById(
+        'bgPhoto3'
+    );
+
+
+let bgStep =
     0;
 
 
+function rotateBackgroundPhotos(){
+
+    bgSlideshow.classList.add(
+        'changing'
+    );
+
+
+    setTimeout(
+        function(){
+
+            bgStep++;
+
+
+            if(
+                bgStep === 1
+            ){
+
+                bgPhoto1.className =
+                    'bg-photo pos-bottom';
+
+                bgPhoto2.className =
+                    'bg-photo pos-top';
+
+                bgPhoto3.className =
+                    'bg-photo pos-middle';
+
+            }
+
+
+            else if(
+                bgStep === 2
+            ){
+
+                bgPhoto1.className =
+                    'bg-photo pos-middle';
+
+                bgPhoto2.className =
+                    'bg-photo pos-bottom';
+
+                bgPhoto3.className =
+                    'bg-photo pos-top';
+
+            }
+
+
+            else{
+
+                bgStep =
+                    0;
+
+                bgPhoto1.className =
+                    'bg-photo pos-top';
+
+                bgPhoto2.className =
+                    'bg-photo pos-middle';
+
+                bgPhoto3.className =
+                    'bg-photo pos-bottom';
+
+            }
+
+
+            setTimeout(
+                function(){
+
+                    bgSlideshow.classList.remove(
+                        'changing'
+                    );
+
+                },
+                180
+            );
+
+        },
+        550
+    );
+
+}
+
+
 setInterval(
-    function(){
-
-        photos[
-            photoIndex
-        ].classList.remove(
-            'active'
-        );
-
-
-        photoIndex =
-            (
-                photoIndex + 1
-            ) %
-            photos.length;
-
-
-        photos[
-            photoIndex
-        ].classList.add(
-            'active'
-        );
-
-    },
+    rotateBackgroundPhotos,
     5000
 );
 
@@ -2707,6 +2456,30 @@ window.addEventListener(
     'resize',
     function(){
 
+        if(
+            !sidebarCollapsed
+        ){
+
+            const sidebarWidth =
+                window.innerWidth <= 800
+                    ? '280px'
+                    : '350px';
+
+
+            document
+                .getElementById('map')
+                .style.left =
+                sidebarWidth;
+
+
+            document
+                .getElementById('map')
+                .style.width =
+                `calc(100% - ${sidebarWidth})`;
+
+        }
+
+
         map.invalidateSize();
 
     }
@@ -2715,5 +2488,4 @@ window.addEventListener(
 </script>
 
 </body>
-
 </html>
