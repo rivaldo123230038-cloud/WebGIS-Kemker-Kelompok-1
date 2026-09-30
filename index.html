@@ -4,17 +4,14 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>WEBGIS KELOMPOK 1</title>
 
 <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
->
+/>
 
 <style>
 
@@ -28,13 +25,10 @@
 
 html,
 body{
-
     margin:0;
     padding:0;
-
     width:100%;
     height:100%;
-
     overflow:hidden;
 
     font-family:
@@ -43,13 +37,12 @@ body{
         sans-serif;
 
     background:#e9e9e6;
-
     color:#222;
 }
 
 
 /* =========================================================
-   PETA
+   MAP
 ========================================================= */
 
 #map{
@@ -105,7 +98,7 @@ body{
 
 
 /* =========================================================
-   TOMBOL SIDEBAR
+   SIDEBAR TOGGLE
 ========================================================= */
 
 .sidebar-toggle{
@@ -224,7 +217,6 @@ body{
     object-fit:contain;
 
     display:block;
-
 }
 
 
@@ -242,7 +234,6 @@ body{
     min-height:0;
 
     overflow-y:auto;
-
     overflow-x:hidden;
 
     background:transparent;
@@ -250,7 +241,7 @@ body{
 
 
 /* =========================================================
-   BACKGROUND 3 FOTO
+   BACKGROUND SLIDESHOW
 ========================================================= */
 
 .background-slideshow{
@@ -348,7 +339,7 @@ body{
 
 
 /* =========================================================
-   JUDUL
+   TITLE
 ========================================================= */
 
 .title-section{
@@ -437,7 +428,7 @@ body{
 
 
 /* =========================================================
-   KOTAK KONTROL
+   LAYER BOX
 ========================================================= */
 
 .layer-control-box{
@@ -481,7 +472,7 @@ body{
 
 
 /* =========================================================
-   AUTO ZOOM
+   BUTTON
 ========================================================= */
 
 .zoom-layer-button{
@@ -527,7 +518,7 @@ body{
 
 
 /* =========================================================
-   SISTEM KOORDINAT
+   COORDINATE
 ========================================================= */
 
 .coordinate-box{
@@ -570,7 +561,7 @@ body{
 
 
 /* =========================================================
-   KOORDINAT KURSOR
+   CURSOR
 ========================================================= */
 
 .cursor-box{
@@ -634,7 +625,7 @@ body{
 
 
 /* =========================================================
-   AUTO ZOOM MAP CONTROL
+   MAP ZOOM BUTTON
 ========================================================= */
 
 .zoom-to-layer-control{
@@ -682,7 +673,7 @@ body{
 
 
 /* =========================================================
-   LEGENDA
+   LEGEND
 ========================================================= */
 
 .map-legend{
@@ -844,9 +835,7 @@ body{
 >
 
 
-    <!-- =================================================
-         LOGO
-    ================================================== -->
+    <!-- LOGO -->
 
     <div class="logo-section">
 
@@ -875,7 +864,7 @@ body{
 
             <img
                 src="LOGO_GT23.png"
-                alt="Logo Teknik Geomatika Angkatan 2023"
+                alt="Logo Teknik Geomatika 2023"
             >
 
         </div>
@@ -885,7 +874,7 @@ body{
 
             <img
                 src="LOGO_KEMKER.png"
-                alt="Logo Kemah Kerja 2023"
+                alt="Logo Kemah Kerja"
             >
 
         </div>
@@ -894,16 +883,12 @@ body{
     </div>
 
 
-    <!-- =================================================
-         SIDEBAR BODY
-    ================================================== -->
+    <!-- SIDEBAR BODY -->
 
     <div class="sidebar-body">
 
 
-        <!-- =================================================
-             BACKGROUND
-        ================================================== -->
+        <!-- BACKGROUND -->
 
         <div
             class="background-slideshow"
@@ -944,16 +929,12 @@ body{
         </div>
 
 
-        <!-- =================================================
-             CONTENT
-        ================================================== -->
+        <!-- CONTENT -->
 
         <div class="sidebar-content">
 
 
-            <!-- =============================================
-                 JUDUL
-            ============================================== -->
+            <!-- TITLE -->
 
             <div class="title-section">
 
@@ -968,16 +949,10 @@ body{
             </div>
 
 
-            <!-- =============================================
-                 PANEL
-            ============================================== -->
-
             <div class="panel-content">
 
 
-                <!-- =========================================
-                     LAYER
-                ========================================== -->
+                <!-- LAYER -->
 
                 <div class="section-title">
 
@@ -993,18 +968,15 @@ body{
 
                     <label class="layer-item">
 
-
                         <input
                             type="checkbox"
                             id="coastlineCheck"
                             checked
                         >
 
-
                         <span>
                             Garis Pantai RTK
                         </span>
-
 
                     </label>
 
@@ -1013,17 +985,14 @@ body{
 
                     <label class="layer-item">
 
-
                         <input
                             type="checkbox"
                             id="orthoCheck"
                         >
 
-
                         <span>
                             Orthophoto
                         </span>
-
 
                     </label>
 
@@ -1044,9 +1013,7 @@ body{
                 </div>
 
 
-                <!-- =========================================
-                     BASE MAP
-                ========================================== -->
+                <!-- BASEMAP -->
 
                 <div class="section-title">
 
@@ -1058,10 +1025,7 @@ body{
                 <div class="layer-control-box">
 
 
-                    <!-- ESRI WORLD IMAGERY -->
-
                     <label class="layer-item">
-
 
                         <input
                             type="radio"
@@ -1070,19 +1034,14 @@ body{
                             checked
                         >
 
-
                         <span>
                             Esri World Imagery
                         </span>
 
-
                     </label>
 
 
-                    <!-- ESRI STREET -->
-
                     <label class="layer-item">
-
 
                         <input
                             type="radio"
@@ -1090,11 +1049,9 @@ body{
                             id="streetRadio"
                         >
 
-
                         <span>
                             Esri World Street Map
                         </span>
-
 
                     </label>
 
@@ -1102,9 +1059,7 @@ body{
                 </div>
 
 
-                <!-- =========================================
-                     SISTEM KOORDINAT
-                ========================================== -->
+                <!-- SISTEM KOORDINAT -->
 
                 <div class="section-title">
 
@@ -1120,7 +1075,6 @@ body{
                         Datum
                     </div>
 
-
                     <div class="value">
                         WGS 84
                     </div>
@@ -1129,7 +1083,6 @@ body{
                     <div class="label">
                         Sistem Koordinat
                     </div>
-
 
                     <div class="value">
                         Geographic Coordinate System
@@ -1140,7 +1093,6 @@ body{
                         EPSG
                     </div>
 
-
                     <div class="value">
                         EPSG:4326
                     </div>
@@ -1149,9 +1101,7 @@ body{
                 </div>
 
 
-                <!-- =========================================
-                     KOORDINAT KURSOR
-                ========================================== -->
+                <!-- KOORDINAT KURSOR -->
 
                 <div class="section-title">
 
@@ -1167,9 +1117,7 @@ body{
 
                         Latitude:
 
-                        <span
-                            id="latitude"
-                        >
+                        <span id="latitude">
                             -
                         </span>
 
@@ -1180,9 +1128,7 @@ body{
 
                         Longitude:
 
-                        <span
-                            id="longitude"
-                        >
+                        <span id="longitude">
                             -
                         </span>
 
@@ -1192,9 +1138,7 @@ body{
                 </div>
 
 
-                <!-- =========================================
-                     FOOTER
-                ========================================== -->
+                <!-- FOOTER -->
 
                 <div class="sidebar-footer">
 
@@ -1213,19 +1157,14 @@ body{
 
             </div>
 
-
         </div>
 
-
     </div>
-
 
 </div>
 
 
-<!-- =====================================================
-     TOGGLE SIDEBAR
-===================================================== -->
+<!-- SIDEBAR TOGGLE -->
 
 <button
     id="sidebarToggle"
@@ -1239,21 +1178,16 @@ body{
 </button>
 
 
-<!-- =====================================================
-     MAP
-===================================================== -->
+<!-- MAP -->
 
 <div id="map"></div>
 
 
-<!-- =====================================================
-     LEAFLET
-===================================================== -->
+<!-- LEAFLET -->
 
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
->
-</script>
+></script>
 
 
 <script>
@@ -1429,7 +1363,7 @@ const satellite =
 
 
 /* =========================================================
-   ESRI STREET
+   ESRI STREET MAP
 ========================================================= */
 
 const street =
@@ -1454,7 +1388,7 @@ const street =
     );
 
 
-/* DEFAULT */
+/* DEFAULT BASEMAP */
 
 satellite.addTo(
     map
@@ -1463,7 +1397,6 @@ satellite.addTo(
 
 /* =========================================================
    ORTHOPHOTO
-   L12-L18
 ========================================================= */
 
 const orthoLayer =
@@ -1504,10 +1437,8 @@ orthoLayer.getTileUrl =
         const z =
             coords.z;
 
-
         const x =
             coords.x;
-
 
         const y =
             coords.y;
@@ -1579,7 +1510,7 @@ orthoLayer.getTileUrl =
 
 
 /* =========================================================
-   ORTHOPHOTO DEBUG
+   ORTHOPHOTO LOG
 ========================================================= */
 
 orthoLayer.on(
@@ -1610,6 +1541,7 @@ orthoLayer.on(
 
 /* =========================================================
    GARIS PANTAI RTK
+   FILE: Garis_Pantai_RTK.geojson
 ========================================================= */
 
 const coastlineStyle = {
@@ -1641,7 +1573,7 @@ let coastlineReady =
 
 
 /* =========================================================
-   POPUP GARIS PANTAI RTK
+   POPUP
 ========================================================= */
 
 function createRTKPopup(
@@ -1721,9 +1653,7 @@ function createRTKPopup(
 
 
 /* =========================================================
-   LOAD FILE RTK
-   FILE:
-   Garis_Pantai_RTK.geojson
+   LOAD GARIS_PANTAI_RTK.GEOJSON
 ========================================================= */
 
 fetch(
@@ -1768,8 +1698,6 @@ fetch(
                             layer
                         ){
 
-                            /* POPUP */
-
                             layer.bindPopup(
 
                                 createRTKPopup(
@@ -1778,8 +1706,6 @@ fetch(
 
                             );
 
-
-                            /* HOVER */
 
                             layer.on(
                                 'mouseover',
@@ -1807,8 +1733,6 @@ fetch(
                                 }
                             );
 
-
-                            /* HOVER KELUAR */
 
                             layer.on(
                                 'mouseout',
@@ -1842,7 +1766,14 @@ fetch(
             true;
 
 
-        zoomToCoastline();
+        setTimeout(
+            function(){
+
+                zoomToCoastline();
+
+            },
+            300
+        );
 
     }
 )
@@ -1860,7 +1791,7 @@ fetch(
 
             'Garis Pantai RTK tidak dapat dimuat.\n\n' +
 
-            'Pastikan file di GitHub bernama tepat:\n' +
+            'Pastikan nama file tepat:\n' +
 
             'Garis_Pantai_RTK.geojson'
 
@@ -1871,19 +1802,18 @@ fetch(
 
 
 /* =========================================================
-   AUTO ZOOM
+   AUTO ZOOM GARIS PANTAI RTK
 ========================================================= */
 
 function zoomToCoastline(){
 
     if(
         !coastline ||
-        !coastlineReady ||
-        coastline.getLayers().length === 0
+        !coastlineReady
     ){
 
         alert(
-            'Layer Garis Pantai RTK belum tersedia.'
+            'Garis Pantai RTK masih dimuat.'
         );
 
         return;
@@ -1915,19 +1845,24 @@ function zoomToCoastline(){
         bounds,
         {
 
-            padding:[
-                40,
-                40
+            paddingTopLeft:[
+                60,
+                60
+            ],
+
+            paddingBottomRight:[
+                60,
+                60
             ],
 
             maxZoom:
-                16,
+                17,
 
             animate:
                 true,
 
             duration:
-                1.1
+                1.2
 
         }
     );
@@ -1936,7 +1871,7 @@ function zoomToCoastline(){
 
 
 /* =========================================================
-   AUTO ZOOM SIDEBAR
+   BUTTON AUTO ZOOM SIDEBAR
 ========================================================= */
 
 document
@@ -2128,7 +2063,7 @@ document
 
 
 /* =========================================================
-   BASEMAP
+   REMOVE BASEMAP
 ========================================================= */
 
 function removeBaseMaps(){
@@ -2162,7 +2097,7 @@ function removeBaseMaps(){
 
 
 /* =========================================================
-   ESRI WORLD IMAGERY
+   SATELLITE
 ========================================================= */
 
 document
@@ -2194,7 +2129,7 @@ document
 
 
 /* =========================================================
-   ESRI WORLD STREET MAP
+   STREET
 ========================================================= */
 
 document
@@ -2273,7 +2208,7 @@ L.control.scale({
 
 
 /* =========================================================
-   LEGENDA
+   LEGEND
 ========================================================= */
 
 const legend =
@@ -2331,7 +2266,7 @@ legend.addTo(
 
 
 /* =========================================================
-   BACKGROUND 3 FOTO
+   BACKGROUND SLIDESHOW
 ========================================================= */
 
 const bgSlideshow =
