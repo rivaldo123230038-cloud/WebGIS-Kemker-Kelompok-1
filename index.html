@@ -6,9 +6,6 @@
 
 <title>WEBGIS KELOMPOK 1</title>
 
-<!-- =========================================================
-     LEAFLET
-========================================================= -->
 <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -26,18 +23,20 @@
 
 html,
 body{
-    width:100%;
-    height:100%;
     margin:0;
     padding:0;
+    width:100%;
+    height:100%;
     overflow:hidden;
+
     font-family:
         "Segoe UI",
         Arial,
         Helvetica,
         sans-serif;
-    background:#e8e6e1;
-    color:#1f252a;
+
+    background:#e9e7e2;
+    color:#20282e;
 }
 
 
@@ -64,164 +63,164 @@ body{
 
     position:fixed;
 
-    top:0;
     left:0;
+    top:0;
     bottom:0;
 
-    width:370px;
+    width:355px;
 
-    z-index:2000;
+    background:#f5f3ee;
 
-    background:#f7f6f2;
-
-    border-right:1px solid #d5d1ca;
+    border-right:1px solid #d3d0c9;
 
     box-shadow:
-        8px 0 28px rgba(0,0,0,0.12);
+        7px 0 22px rgba(0,0,0,.13);
+
+    z-index:2000;
 
     display:flex;
     flex-direction:column;
 
     transition:
-        transform 0.42s cubic-bezier(.22,.61,.36,1);
+        transform .4s ease;
 
-    overflow:visible;
 }
 
 
 #sidebar.closed{
 
     transform:
-        translateX(-370px);
+        translateX(-355px);
+
 }
 
 
 /* =========================================================
-   TOP BRAND AREA
+   BRAND
 ========================================================= */
 
-.sidebar-top{
-
-    position:relative;
+.brand{
 
     flex:none;
 
-    background:#f7f6f2;
+    background:#ffffff;
 
-    border-bottom:1px solid #d8d4ce;
+    border-bottom:1px solid #d8d4cc;
+
 }
 
 
 /* =========================================================
-   LOGOS
+   LOGO ROW
 ========================================================= */
 
 .logo-row{
 
-    height:76px;
-
-    padding:
-        10px 24px;
+    height:74px;
 
     display:flex;
     align-items:center;
-    justify-content:flex-start;
+
+    padding:9px 22px;
 
     gap:18px;
 
     background:#ffffff;
 
-    border-bottom:1px solid #dedbd5;
 }
 
 
 .logo-item{
 
+    height:55px;
+
     display:flex;
     align-items:center;
     justify-content:center;
 
-    width:auto;
-    height:54px;
-
-    background:transparent;
 }
 
 
 .logo-item img{
 
-    display:block;
-
-    max-width:62px;
+    max-width:61px;
     max-height:50px;
 
     width:auto;
     height:auto;
 
+    display:block;
+
     object-fit:contain;
+
 }
 
 
 /* =========================================================
-   PROJECT HEADER
+   TITLE AREA
 ========================================================= */
 
-.project-header{
+.title-area{
 
     position:relative;
 
     padding:
-        20px 24px 18px;
+        17px 23px 19px;
 
     background:#1c2933;
 
     color:#ffffff;
 
     overflow:hidden;
+
 }
 
 
-/* thin orange line */
+/* accent line */
 
-.project-header::after{
+.title-area::after{
 
     content:"";
 
     position:absolute;
 
-    left:24px;
+    left:23px;
     bottom:0;
 
-    width:68px;
+    width:74px;
     height:4px;
 
-    background:#c46c46;
+    background:#be6847;
+
 }
 
 
-/* small label */
+/* small heading */
 
-.project-kicker{
+.title-small{
 
-    margin:0 0 7px 0;
+    margin:0 0 6px;
 
-    font-size:10px;
+    font-size:9px;
 
-    font-weight:700;
+    font-weight:800;
 
-    letter-spacing:1.8px;
+    letter-spacing:2px;
+
+    color:#d6a18b;
 
     text-transform:uppercase;
 
-    color:#d6a48d;
 }
 
 
-/* main title */
+/* title */
 
-.project-title{
+.title-main{
 
     margin:0;
+
+    max-width:260px;
 
     font-size:21px;
 
@@ -229,47 +228,52 @@ body{
 
     font-weight:750;
 
-    letter-spacing:.3px;
+    letter-spacing:.2px;
+
 }
 
 
-.project-subtitle{
+/* subtitle */
 
-    margin:8px 0 0;
+.title-sub{
 
-    font-size:11.5px;
+    margin:9px 0 0;
 
-    line-height:1.5;
+    max-width:270px;
 
-    color:#cbd2d7;
+    font-size:11px;
 
-    max-width:280px;
+    line-height:1.55;
+
+    color:#c7d0d5;
+
 }
 
 
 /* =========================================================
-   BACKGROUND PHOTO STRIP
+   PHOTO SLIDESHOW
 ========================================================= */
 
-.header-photo-strip{
+.title-photo{
 
     position:absolute;
 
-    right:0;
     top:0;
+    right:0;
 
     width:43%;
     height:100%;
 
     overflow:hidden;
 
-    opacity:.16;
+    opacity:.18;
 
     pointer-events:none;
+
 }
 
 
-.header-photo{
+.title-photo img{
 
     position:absolute;
 
@@ -285,58 +289,53 @@ body{
     transition:
         opacity 1.2s ease;
 
-    filter:
-        grayscale(15%)
-        contrast(105%);
 }
 
 
-.header-photo.active{
+.title-photo img.active{
 
     opacity:1;
+
 }
 
 
 /* =========================================================
-   CONTENT AREA
+   SIDEBAR CONTENT
 ========================================================= */
 
 .sidebar-content{
 
-    position:relative;
-
     flex:1;
 
     overflow-y:auto;
-
     overflow-x:hidden;
 
-    padding:18px 21px 26px;
+    padding:
+        18px 22px 28px;
+
 }
 
-
-/* scrollbar */
 
 .sidebar-content::-webkit-scrollbar{
 
     width:6px;
+
 }
+
 
 .sidebar-content::-webkit-scrollbar-track{
 
     background:transparent;
+
 }
+
 
 .sidebar-content::-webkit-scrollbar-thumb{
 
-    background:#c6c1b9;
+    background:#c5c0b8;
 
-    border-radius:10px;
-}
+    border-radius:8px;
 
-.sidebar-content::-webkit-scrollbar-thumb:hover{
-
-    background:#aaa39a;
 }
 
 
@@ -346,49 +345,66 @@ body{
 
 .section{
 
-    margin-bottom:21px;
+    margin-bottom:22px;
+
 }
 
 
-/* section heading */
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
-.section-heading{
+.section-title{
 
     display:flex;
-    align-items:baseline;
-    justify-content:space-between;
+    align-items:center;
 
-    margin-bottom:10px;
+    margin-bottom:9px;
 
     padding-bottom:7px;
 
-    border-bottom:1px solid #d8d4cc;
+    border-bottom:1px solid #d5d1c9;
+
 }
 
 
-.section-heading-main{
+.section-number{
 
-    font-size:11px;
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:25px;
+    height:19px;
+
+    margin-right:8px;
+
+    background:#1c2933;
+
+    color:#ffffff;
+
+    font-size:8px;
 
     font-weight:800;
 
-    letter-spacing:1.2px;
+    letter-spacing:.5px;
 
-    text-transform:uppercase;
-
-    color:#33424c;
 }
 
 
-.section-heading-number{
+.section-name{
 
-    font-size:9px;
+    font-size:10px;
 
-    color:#9a938a;
+    font-weight:800;
 
-    font-weight:700;
+    letter-spacing:1.4px;
 
-    letter-spacing:1px;
+    color:#36434b;
+
+    text-transform:uppercase;
+
 }
 
 
@@ -398,20 +414,14 @@ body{
 
 .layer-row{
 
-    min-height:43px;
-
     display:flex;
+
     align-items:center;
 
-    padding:4px 2px;
+    min-height:42px;
 
-    border-bottom:1px solid #e2ded7;
-}
+    border-bottom:1px solid #e0ddd6;
 
-
-.layer-row:last-of-type{
-
-    border-bottom:none;
 }
 
 
@@ -419,55 +429,56 @@ body{
 
     flex:1;
 
-    font-size:13px;
-
-    color:#333b41;
+    font-size:12.5px;
 
     font-weight:500;
+
+    color:#30393e;
+
 }
 
 
-/* checkbox */
+/* =========================================================
+   TOGGLE
+========================================================= */
 
-.switch{
+.toggle{
 
     position:relative;
-
-    display:inline-flex;
 
     width:39px;
     height:21px;
 
-    flex:none;
+    display:block;
+
 }
 
 
-.switch input{
+.toggle input{
 
-    opacity:0;
+    display:none;
 
-    width:0;
-    height:0;
 }
 
 
-.slider{
+.toggle-track{
 
     position:absolute;
 
     inset:0;
 
-    cursor:pointer;
-
-    background:#c8c5bf;
+    background:#bdb9b2;
 
     border-radius:20px;
 
-    transition:.25s;
+    cursor:pointer;
+
+    transition:.2s;
+
 }
 
 
-.slider::before{
+.toggle-track::after{
 
     content:"";
 
@@ -476,30 +487,35 @@ body{
     width:15px;
     height:15px;
 
-    left:3px;
     top:3px;
+    left:3px;
 
-    background:white;
+    background:#ffffff;
 
     border-radius:50%;
 
     box-shadow:
-        0 1px 3px rgba(0,0,0,.25);
+        0 1px 2px rgba(0,0,0,.28);
 
-    transition:.25s;
+    transition:.2s;
+
 }
 
 
-.switch input:checked + .slider{
+.toggle input:checked +
+.toggle-track{
 
-    background:#bf6947;
+    background:#ba6545;
+
 }
 
 
-.switch input:checked + .slider::before{
+.toggle input:checked +
+.toggle-track::after{
 
     transform:
         translateX(18px);
+
 }
 
 
@@ -507,116 +523,109 @@ body{
    AUTO ZOOM BUTTON
 ========================================================= */
 
-.zoom-button{
+.autozoom{
 
     width:100%;
 
-    margin-top:11px;
+    margin-top:10px;
 
-    padding:11px 13px;
-
-    border:1px solid #bcb6ad;
+    padding:10px 12px;
 
     background:#ffffff;
 
-    color:#2e3940;
+    border:1px solid #beb9b0;
 
-    font-family:inherit;
-
-    font-size:11.5px;
-
-    font-weight:700;
+    border-radius:3px;
 
     text-align:left;
 
+    font-size:11px;
+
+    font-weight:700;
+
+    color:#37434a;
+
     cursor:pointer;
 
-    border-radius:4px;
+    transition:.2s;
 
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease;
 }
 
 
-.zoom-button:hover{
+.autozoom:hover{
 
     background:#1c2933;
 
+    color:#ffffff;
+
     border-color:#1c2933;
 
-    color:#ffffff;
 }
 
 
-.zoom-button span{
+.autozoom span{
 
     float:right;
 
-    font-size:15px;
+    color:#ba6545;
 
-    line-height:11px;
+    font-size:16px;
 
-    color:#bd6947;
 }
 
 
-.zoom-button:hover span{
+.autozoom:hover span{
 
     color:#ffffff;
+
 }
 
 
 /* =========================================================
-   BASEMAP ROW
+   BASEMAP
 ========================================================= */
 
-.basemap-row{
+.base-row{
 
     display:flex;
+
     align-items:center;
 
-    min-height:43px;
+    min-height:40px;
 
-    border-bottom:1px solid #e2ded7;
+    border-bottom:1px solid #e0ddd6;
 
     cursor:pointer;
+
 }
 
 
-.basemap-row:last-child{
-
-    border-bottom:none;
-}
-
-
-.basemap-row input{
+.base-row input{
 
     appearance:none;
 
-    width:16px;
-    height:16px;
+    width:15px;
+    height:15px;
 
-    margin:0 11px 0 1px;
+    margin:0 10px 0 2px;
 
-    border:1.5px solid #9f9a91;
+    border:1.5px solid #94918a;
 
     border-radius:50%;
 
     position:relative;
 
-    cursor:pointer;
 }
 
 
-.basemap-row input:checked{
+.base-row input:checked{
 
-    border-color:#bd6947;
+    border-color:#ba6545;
+
 }
 
 
-.basemap-row input:checked::after{
+.base-row input:checked::after{
 
     content:"";
 
@@ -625,68 +634,65 @@ body{
     width:7px;
     height:7px;
 
-    background:#bd6947;
+    left:3px;
+    top:3px;
+
+    background:#ba6545;
 
     border-radius:50%;
 
-    left:3px;
-    top:3px;
 }
 
 
-.basemap-row label{
+.base-row label{
 
-    flex:1;
+    font-size:12px;
 
-    font-size:12.5px;
-
-    color:#3a4247;
+    color:#333b40;
 
     cursor:pointer;
+
 }
 
 
 /* =========================================================
-   INFO BLOCK
+   INFO
 ========================================================= */
 
-.info-list{
+.info-table{
 
-    border-top:1px solid #e2ded7;
+    border-top:1px solid #ddd9d1;
+
 }
 
 
-.info-line{
+.info-row{
 
     display:flex;
 
-    align-items:flex-start;
+    padding:9px 0;
 
-    gap:16px;
+    border-bottom:1px solid #ddd9d1;
 
-    padding:10px 2px;
-
-    border-bottom:1px solid #e2ded7;
 }
 
 
 .info-label{
 
-    width:112px;
+    width:108px;
 
     flex:none;
 
-    font-size:10px;
+    font-size:9px;
 
-    color:#8c877f;
+    font-weight:800;
 
-    line-height:1.5;
+    letter-spacing:.7px;
+
+    color:#8d887f;
 
     text-transform:uppercase;
 
-    letter-spacing:.6px;
-
-    font-weight:700;
 }
 
 
@@ -694,61 +700,63 @@ body{
 
     flex:1;
 
-    font-size:12px;
-
-    color:#343d43;
-
-    line-height:1.5;
+    font-size:11.5px;
 
     font-weight:600;
+
+    color:#374147;
+
+    line-height:1.45;
+
 }
 
 
 /* =========================================================
-   CURSOR COORDINATE
+   COORDINATE
 ========================================================= */
 
-.coordinate-panel{
-
-    background:#1c2933;
-
-    color:#ffffff;
-
-    padding:13px 14px;
+.coordinate-box{
 
     margin-top:2px;
 
-    border-left:4px solid #c16b48;
+    padding:12px 13px;
+
+    background:#1c2933;
+
+    border-left:4px solid #ba6545;
+
 }
 
 
 .coordinate-label{
 
-    margin-bottom:7px;
+    margin-bottom:6px;
 
-    font-size:9px;
+    color:#aab5bb;
 
-    text-transform:uppercase;
+    font-size:8px;
+
+    font-weight:800;
 
     letter-spacing:1.3px;
 
-    color:#aeb8be;
+    text-transform:uppercase;
 
-    font-weight:700;
 }
 
 
 .coordinate-value{
 
+    color:#ffffff;
+
     font-family:
         "Courier New",
         monospace;
 
-    font-size:12px;
+    font-size:11.5px;
 
     line-height:1.8;
 
-    color:#f6f4ef;
 }
 
 
@@ -756,77 +764,64 @@ body{
    FOOTER
 ========================================================= */
 
-.sidebar-footer{
-
-    padding-top:8px;
+.footer{
 
     margin-top:22px;
 
-    border-top:1px solid #d8d4cc;
+    padding-top:11px;
 
-    color:#878279;
+    border-top:1px solid #d5d1c9;
 
-    font-size:9.5px;
+    font-size:9px;
+
+    color:#88837a;
 
     line-height:1.6;
 
-    text-align:left;
 }
 
 
-.sidebar-footer strong{
+.footer strong{
 
-    color:#465159;
+    color:#49545a;
 
-    font-weight:700;
 }
 
 
 /* =========================================================
-   SIDEBAR TOGGLE
+   SIDEBAR BUTTON
 ========================================================= */
 
 #toggleSidebar{
 
     position:absolute;
 
-    right:-38px;
+    right:-37px;
 
     top:50%;
 
     transform:translateY(-50%);
 
-    width:38px;
-    height:74px;
+    width:37px;
+    height:73px;
 
-    border:1px solid #d1ccc4;
+    border:1px solid #cec9c1;
 
     border-left:none;
 
-    border-radius:0 5px 5px 0;
+    border-radius:0 4px 4px 0;
 
-    background:#f7f6f2;
+    background:#f5f3ee;
 
-    color:#33424c;
-
-    box-shadow:
-        5px 0 14px rgba(0,0,0,.10);
-
-    cursor:pointer;
+    color:#37434a;
 
     font-size:20px;
 
-    font-weight:300;
+    cursor:pointer;
 
-    display:flex;
+    box-shadow:
+        5px 0 13px rgba(0,0,0,.10);
 
-    justify-content:center;
-
-    align-items:center;
-
-    transition:
-        background .2s ease,
-        color .2s ease;
 }
 
 
@@ -835,77 +830,74 @@ body{
     background:#1c2933;
 
     color:#ffffff;
+
 }
 
 
 /* =========================================================
-   FLOATING MAP BUTTON
+   MAP BUTTON
 ========================================================= */
 
-.map-tools{
+.map-control{
 
     position:fixed;
 
-    top:18px;
-    right:18px;
+    top:16px;
+    right:16px;
 
     z-index:1500;
+
 }
 
 
-.map-tool-button{
+.map-control button{
 
-    height:39px;
+    height:38px;
 
     padding:
-        0 14px;
-
-    border:1px solid rgba(0,0,0,.13);
-
-    border-radius:4px;
+        0 13px;
 
     background:#ffffff;
 
-    color:#28343c;
+    border:1px solid #cbc7c0;
 
-    box-shadow:
-        0 3px 12px rgba(0,0,0,.14);
+    border-radius:3px;
 
-    font-family:inherit;
+    color:#29353c;
 
-    font-size:11px;
+    font-size:10.5px;
 
-    font-weight:700;
-
-    letter-spacing:.2px;
+    font-weight:800;
 
     cursor:pointer;
 
-    transition:
-        background .2s ease,
-        color .2s ease;
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.15);
+
 }
 
 
-.map-tool-button:hover{
+.map-control button:hover{
 
     background:#1c2933;
 
     color:#ffffff;
+
 }
 
 
 /* =========================================================
-   LEAFLET CUSTOMIZATION
+   LEAFLET
 ========================================================= */
 
 .leaflet-control-zoom a{
 
-    color:#26343d !important;
-
     background:#ffffff !important;
 
-    border-color:#d6d2cb !important;
+    color:#26343d !important;
+
+    border-color:#d4d0c9 !important;
+
 }
 
 
@@ -914,23 +906,7 @@ body{
     background:#1c2933 !important;
 
     color:#ffffff !important;
-}
 
-
-.leaflet-control-attribution{
-
-    font-size:9px;
-}
-
-
-/* popup */
-
-.leaflet-popup-content-wrapper{
-
-    border-radius:4px;
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.17);
 }
 
 
@@ -938,7 +914,8 @@ body{
 
     font-size:11.5px;
 
-    line-height:1.55;
+    line-height:1.5;
+
 }
 
 
@@ -951,59 +928,48 @@ body{
     #sidebar{
 
         width:340px;
-    }
 
+    }
 
     #sidebar.closed{
 
         transform:
             translateX(-340px);
-    }
 
+    }
 
     .logo-row{
 
-        padding-left:18px;
-        padding-right:18px;
-
-        gap:13px;
-    }
-
-
-    .project-header{
-
-        padding-left:19px;
-        padding-right:19px;
-    }
-
-
-    .sidebar-content{
+        gap:12px;
 
         padding-left:17px;
+
         padding-right:17px;
+
     }
 
+    .logo-item img{
 
-    .map-tools{
+        max-width:55px;
 
-        top:10px;
-        right:10px;
+        max-height:46px;
+
     }
 
 }
 
 
 /* =========================================================
-   VERY SMALL SCREEN
+   SMALL MOBILE
 ========================================================= */
 
 @media(max-width:420px){
 
     #sidebar{
 
-        width:calc(100% - 18px);
-    }
+        width:calc(100% - 12px);
 
+    }
 
     #sidebar.closed{
 
@@ -1011,25 +977,7 @@ body{
             translateX(
                 calc(-100% - 2px)
             );
-    }
 
-
-    .logo-row{
-
-        gap:8px;
-    }
-
-
-    .logo-item img{
-
-        max-width:54px;
-        max-height:45px;
-    }
-
-
-    .project-title{
-
-        font-size:19px;
     }
 
 }
@@ -1056,15 +1004,13 @@ body{
 
 
     <!-- =====================================================
-         TOP
+         BRAND AREA
     ====================================================== -->
 
-    <div class="sidebar-top">
+    <div class="brand">
 
 
-        <!-- =================================================
-             LOGOS
-        ================================================== -->
+        <!-- LOGOS -->
 
         <div class="logo-row">
 
@@ -1085,7 +1031,7 @@ body{
             <div class="logo-item">
                 <img
                     src="LOGO_GT23.png"
-                    alt="GT23"
+                    alt="GT 23"
                 >
             </div>
 
@@ -1099,49 +1045,43 @@ body{
         </div>
 
 
-        <!-- =================================================
-             PROJECT HEADER
-        ================================================== -->
+        <!-- TITLE -->
 
-        <div class="project-header">
+        <div class="title-area">
 
-
-            <div class="project-kicker">
+            <div class="title-small">
                 WEBGIS • KELOMPOK 1
             </div>
 
-
-            <h1 class="project-title">
-                Pemetaan dan Visualisasi
-                Garis Pantai
+            <h1 class="title-main">
+                Pemetaan dan
+                Visualisasi Garis Pantai
             </h1>
 
-
-            <p class="project-subtitle">
-                Sistem informasi geografis untuk
-                menampilkan dan memvisualisasikan
-                data garis pantai secara interaktif.
+            <p class="title-sub">
+                Visualisasi spasial interaktif
+                untuk mendukung penyajian
+                informasi garis pantai.
             </p>
 
 
-            <!-- BACKGROUND PHOTO -->
-            <div class="header-photo-strip">
+            <!-- PHOTO -->
+
+            <div class="title-photo">
 
                 <img
                     src="bcg1.jpeg"
-                    class="header-photo active"
+                    class="active"
                     alt=""
                 >
 
                 <img
                     src="bcg2.jpeg"
-                    class="header-photo"
                     alt=""
                 >
 
                 <img
                     src="bcg3.jpeg"
-                    class="header-photo"
                     alt=""
                 >
 
@@ -1166,14 +1106,14 @@ body{
         <section class="section">
 
 
-            <div class="section-heading">
+            <div class="section-title">
 
-                <span class="section-heading-main">
-                    Layer
+                <span class="section-number">
+                    01
                 </span>
 
-                <span class="section-heading-number">
-                    01
+                <span class="section-name">
+                    Layer
                 </span>
 
             </div>
@@ -1187,7 +1127,7 @@ body{
                     Garis Pantai
                 </span>
 
-                <label class="switch">
+                <label class="toggle">
 
                     <input
                         type="checkbox"
@@ -1195,7 +1135,7 @@ body{
                         checked
                     >
 
-                    <span class="slider"></span>
+                    <span class="toggle-track"></span>
 
                 </label>
 
@@ -1210,14 +1150,14 @@ body{
                     Orthophoto
                 </span>
 
-                <label class="switch">
+                <label class="toggle">
 
                     <input
                         type="checkbox"
                         id="orthoCheck"
                     >
 
-                    <span class="slider"></span>
+                    <span class="toggle-track"></span>
 
                 </label>
 
@@ -1227,7 +1167,7 @@ body{
             <!-- AUTO ZOOM -->
 
             <button
-                class="zoom-button"
+                class="autozoom"
                 id="zoomLayerBtn"
             >
 
@@ -1243,28 +1183,26 @@ body{
 
 
         <!-- =================================================
-             BASE MAP
+             BASEMAP
         ================================================== -->
 
         <section class="section">
 
 
-            <div class="section-heading">
+            <div class="section-title">
 
-                <span class="section-heading-main">
-                    Base Map
+                <span class="section-number">
+                    02
                 </span>
 
-                <span class="section-heading-number">
-                    02
+                <span class="section-name">
+                    Base Map
                 </span>
 
             </div>
 
 
-            <!-- ESRI WORLD IMAGERY -->
-
-            <div class="basemap-row">
+            <div class="base-row">
 
                 <input
                     type="radio"
@@ -1273,18 +1211,14 @@ body{
                     checked
                 >
 
-                <label
-                    for="satelliteRadio"
-                >
+                <label for="satelliteRadio">
                     Esri World Imagery
                 </label>
 
             </div>
 
 
-            <!-- ESRI WORLD STREET -->
-
-            <div class="basemap-row">
+            <div class="base-row">
 
                 <input
                     type="radio"
@@ -1292,9 +1226,7 @@ body{
                     id="streetRadio"
                 >
 
-                <label
-                    for="streetRadio"
-                >
+                <label for="streetRadio">
                     Esri World Street Map
                 </label>
 
@@ -1310,23 +1242,23 @@ body{
         <section class="section">
 
 
-            <div class="section-heading">
+            <div class="section-title">
 
-                <span class="section-heading-main">
-                    Sistem Koordinat
+                <span class="section-number">
+                    03
                 </span>
 
-                <span class="section-heading-number">
-                    03
+                <span class="section-name">
+                    Sistem Koordinat
                 </span>
 
             </div>
 
 
-            <div class="info-list">
+            <div class="info-table">
 
 
-                <div class="info-line">
+                <div class="info-row">
 
                     <div class="info-label">
                         Datum
@@ -1339,10 +1271,10 @@ body{
                 </div>
 
 
-                <div class="info-line">
+                <div class="info-row">
 
                     <div class="info-label">
-                        Coordinate System
+                        Sistem
                     </div>
 
                     <div class="info-value">
@@ -1352,7 +1284,7 @@ body{
                 </div>
 
 
-                <div class="info-line">
+                <div class="info-row">
 
                     <div class="info-label">
                         EPSG
@@ -1363,6 +1295,7 @@ body{
                     </div>
 
                 </div>
+
 
             </div>
 
@@ -1376,30 +1309,29 @@ body{
         <section class="section">
 
 
-            <div class="section-heading">
+            <div class="section-title">
 
-                <span class="section-heading-main">
-                    Koordinat Kursor
+                <span class="section-number">
+                    04
                 </span>
 
-                <span class="section-heading-number">
-                    04
+                <span class="section-name">
+                    Koordinat Kursor
                 </span>
 
             </div>
 
 
-            <div class="coordinate-panel">
-
+            <div class="coordinate-box">
 
                 <div class="coordinate-label">
-                    Latitude / Longitude
+                    Posisi Kursor
                 </div>
 
 
                 <div
-                    class="coordinate-value"
                     id="cursorCoordinates"
+                    class="coordinate-value"
                 >
 
                     Latitude&nbsp;&nbsp; : -
@@ -1419,7 +1351,7 @@ body{
              FOOTER
         ================================================== -->
 
-        <footer class="sidebar-footer">
+        <div class="footer">
 
             <strong>
                 WEBGIS KELOMPOK 1
@@ -1428,20 +1360,16 @@ body{
             <br>
 
             Program Studi Teknik Geomatika
-
             <br>
-
             Institut Teknologi Sumatera
 
-        </footer>
+        </div>
 
 
     </div>
 
 
-    <!-- =====================================================
-         SIDEBAR TOGGLE
-    ====================================================== -->
+    <!-- SIDEBAR BUTTON -->
 
     <button
         id="toggleSidebar"
@@ -1455,13 +1383,12 @@ body{
 
 
 <!-- =========================================================
-     FLOATING MAP TOOL
+     MAP AUTO ZOOM
 ========================================================= -->
 
-<div class="map-tools">
+<div class="map-control">
 
     <button
-        class="map-tool-button"
         id="floatingZoomBtn"
     >
         Auto Zoom
@@ -1497,9 +1424,7 @@ const map = L.map(
 
         zoomControl:true,
 
-        attributionControl:true,
-
-        preferCanvas:true
+        attributionControl:true
     }
 );
 
@@ -1518,8 +1443,6 @@ const satellite = L.tileLayer(
 
         maxZoom:19,
 
-        maxNativeZoom:19,
-
         attribution:
             'Tiles © Esri'
     }
@@ -1537,8 +1460,6 @@ const street = L.tileLayer(
 
         maxZoom:19,
 
-        maxNativeZoom:19,
-
         attribution:
             'Tiles © Esri'
     }
@@ -1552,21 +1473,33 @@ satellite.addTo(map);
 
 
 /* =========================================================
-   ORTHOPHOTO SOURCE
+   ORTHOPHOTO
+   DIRECT TILE METHOD
 ========================================================= */
 
-const ORTHO_URL_BASE =
+/*
+    STRUKTUR GITHUB:
 
-    'https://cdn.jsdelivr.net/gh/' +
-    'rivaldo123230038/' +
-    'WebGIS-Kemker-Kelompok-1@main/' +
-    'Fix_Ortho_web/' +
-    '_alllayers/';
+    Fix_Ortho_web/
+    └── _alllayers/
+        ├── L12/
+        ├── L13/
+        ├── L14/
+        ├── L15/
+        ├── L16/
+        ├── L17/
+        └── L18/
 
+    Contoh:
 
-/* =========================================================
-   HEX CONVERSION
-========================================================= */
+    L17/
+    R0000083f/
+    C00000cad.png
+
+    Karena ArcMap memakai nama R/C dalam HEX 8 digit,
+    koordinat Leaflet harus diubah ke format tersebut.
+*/
+
 
 function toHex8(value){
 
@@ -1579,463 +1512,82 @@ function toHex8(value){
 
 
 /* =========================================================
-   ORTHOPHOTO CUSTOM GRID LAYER
+   ORTHOPHOTO URL
 ========================================================= */
 
-const OrthoGridLayer =
-    L.GridLayer.extend({
+const ORTHO_URL =
+    'https://raw.githubusercontent.com/' +
+    'rivaldo123230038/' +
+    'WebGIS-Kemker-Kelompok-1/' +
+    'main/' +
+    'Fix_Ortho_web/' +
+    '_alllayers/';
 
-        options:{
 
-            minZoom:12,
+/* =========================================================
+   CUSTOM TILE LAYER
+========================================================= */
 
-            maxZoom:18,
+const ortho = L.tileLayer(
 
-            minNativeZoom:12,
+    ORTHO_URL +
+    'L{z}/R{y}/C{x}.png',
 
-            maxNativeZoom:18,
+    {
+        minZoom:12,
 
-            tileSize:256,
+        maxZoom:18,
 
-            opacity:0.88,
+        minNativeZoom:12,
 
-            noWrap:true,
+        maxNativeZoom:18,
 
-            zIndex:500
-        },
+        tileSize:256,
 
+        opacity:1,
 
-        createTile:function(
-            coords,
-            done
-        ){
+        noWrap:true,
 
-            const tile =
-                document.createElement(
-                    'canvas'
-                );
+        updateWhenZooming:true,
 
+        updateWhenIdle:true,
 
-            tile.width = 256;
-            tile.height = 256;
+        keepBuffer:3,
 
+        attribution:
+            'Orthophoto Kelompok 1',
 
-            const ctx =
-                tile.getContext(
-                    '2d'
-                );
+        errorTileUrl:''
+    }
 
+);
 
-            const img =
-                new Image();
 
+/*
+    Karena nama row/column harus HEX,
+    kita override URL tile Leaflet.
+*/
 
-            img.crossOrigin =
-                'anonymous';
+ortho.getTileUrl = function(
+    coords
+){
 
+    return (
+        ORTHO_URL +
 
-            const row =
-                'R' +
-                toHex8(
-                    coords.y
-                );
+        'L' +
+        coords.z +
 
+        '/R' +
+        toHex8(coords.y) +
 
-            const col =
-                'C' +
-                toHex8(
-                    coords.x
-                );
+        '/C' +
+        toHex8(coords.x) +
 
+        '.png'
+    );
 
-            const level =
-                'L' +
-                coords.z;
-
-
-            img.src =
-                ORTHO_URL_BASE +
-                level +
-                '/' +
-                row +
-                '/' +
-                col +
-                '.png';
-
-
-            img.onload =
-                function(){
-
-                    try{
-
-                        /* -------------------------------------
-                           DRAW IMAGE
-                        ------------------------------------- */
-
-                        ctx.clearRect(
-                            0,
-                            0,
-                            256,
-                            256
-                        );
-
-
-                        ctx.drawImage(
-                            img,
-                            0,
-                            0,
-                            256,
-                            256
-                        );
-
-
-                        /* -------------------------------------
-                           READ PIXEL
-                        ------------------------------------- */
-
-                        const imageData =
-                            ctx.getImageData(
-                                0,
-                                0,
-                                256,
-                                256
-                            );
-
-
-                        const data =
-                            imageData.data;
-
-
-                        const visited =
-                            new Uint8Array(
-                                256 * 256
-                            );
-
-
-                        const queue = [];
-
-
-                        /* -------------------------------------
-                           BACKGROUND DETECTION
-                        ------------------------------------- */
-
-                        function isBackground(
-                            index
-                        ){
-
-                            const r =
-                                data[index];
-
-                            const g =
-                                data[index + 1];
-
-                            const b =
-                                data[index + 2];
-
-                            const a =
-                                data[index + 3];
-
-
-                            if(
-                                a === 0
-                            ){
-
-                                return true;
-
-                            }
-
-
-                            const max =
-                                Math.max(
-                                    r,
-                                    g,
-                                    b
-                                );
-
-
-                            const min =
-                                Math.min(
-                                    r,
-                                    g,
-                                    b
-                                );
-
-
-                            const brightness =
-                                (
-                                    r +
-                                    g +
-                                    b
-                                ) / 3;
-
-
-                            const chroma =
-                                max - min;
-
-
-                            /* WHITE */
-
-                            if(
-                                brightness >= 235 &&
-                                chroma <= 35
-                            ){
-
-                                return true;
-
-                            }
-
-
-                            /* BLACK */
-
-                            if(
-                                brightness <= 25 &&
-                                chroma <= 30
-                            ){
-
-                                return true;
-
-                            }
-
-
-                            return false;
-
-                        }
-
-
-                        /* -------------------------------------
-                           ADD EDGE PIXEL
-                        ------------------------------------- */
-
-                        function pushPixel(
-                            x,
-                            y
-                        ){
-
-                            if(
-                                x < 0 ||
-                                x >= 256 ||
-                                y < 0 ||
-                                y >= 256
-                            ){
-
-                                return;
-
-                            }
-
-
-                            const p =
-                                y * 256 + x;
-
-
-                            if(
-                                visited[p]
-                            ){
-
-                                return;
-
-                            }
-
-
-                            const index =
-                                p * 4;
-
-
-                            if(
-                                !isBackground(
-                                    index
-                                )
-                            ){
-
-                                return;
-
-                            }
-
-
-                            visited[p] = 1;
-
-
-                            queue.push(
-                                p
-                            );
-
-                        }
-
-
-                        /* -------------------------------------
-                           BORDER PIXELS
-                        ------------------------------------- */
-
-                        for(
-                            let x = 0;
-                            x < 256;
-                            x++
-                        ){
-
-                            pushPixel(
-                                x,
-                                0
-                            );
-
-                            pushPixel(
-                                x,
-                                255
-                            );
-
-                        }
-
-
-                        for(
-                            let y = 0;
-                            y < 256;
-                            y++
-                        ){
-
-                            pushPixel(
-                                0,
-                                y
-                            );
-
-                            pushPixel(
-                                255,
-                                y
-                            );
-
-                        }
-
-
-                        /* -------------------------------------
-                           FLOOD FILL
-                        ------------------------------------- */
-
-                        let q = 0;
-
-
-                        while(
-                            q < queue.length
-                        ){
-
-                            const p =
-                                queue[q++];
-
-
-                            const x =
-                                p % 256;
-
-
-                            const y =
-                                Math.floor(
-                                    p / 256
-                                );
-
-
-                            const index =
-                                p * 4;
-
-
-                            data[
-                                index + 3
-                            ] = 0;
-
-
-                            pushPixel(
-                                x + 1,
-                                y
-                            );
-
-
-                            pushPixel(
-                                x - 1,
-                                y
-                            );
-
-
-                            pushPixel(
-                                x,
-                                y + 1
-                            );
-
-
-                            pushPixel(
-                                x,
-                                y - 1
-                            );
-
-                        }
-
-
-                        /* -------------------------------------
-                           APPLY
-                        ------------------------------------- */
-
-                        ctx.putImageData(
-                            imageData,
-                            0,
-                            0
-                        );
-
-
-                        done(
-                            null,
-                            tile
-                        );
-
-                    }
-
-                    catch(error){
-
-                        /*
-                           Bila browser tidak mengizinkan
-                           pembacaan Canvas, tile tetap
-                           ditampilkan normal.
-                        */
-
-                        ctx.clearRect(
-                            0,
-                            0,
-                            256,
-                            256
-                        );
-
-
-                        ctx.drawImage(
-                            img,
-                            0,
-                            0,
-                            256,
-                            256
-                        );
-
-
-                        done(
-                            null,
-                            tile
-                        );
-
-                    }
-
-                };
-
-
-            img.onerror =
-                function(){
-
-                    done(
-                        null,
-                        tile
-                    );
-
-                };
-
-
-            return tile;
-
-        }
-
-    });
-
-
-const ortho =
-    new OrthoGridLayer();
+};
 
 
 /* =========================================================
@@ -2061,7 +1613,7 @@ fetch(
         if(!response.ok){
 
             throw new Error(
-                'GP_RT.json gagal dimuat.'
+                'GP_RT.json gagal dimuat'
             );
 
         }
@@ -2074,7 +1626,7 @@ fetch(
 .then(
     function(data){
 
-        const lines = [];
+        const layers = [];
 
 
         if(
@@ -2085,6 +1637,7 @@ fetch(
         ){
 
             data.features.forEach(
+
                 function(feature){
 
                     if(
@@ -2098,6 +1651,7 @@ fetch(
 
 
                     feature.geometry.paths.forEach(
+
                         function(path){
 
                             const latlngs =
@@ -2133,10 +1687,10 @@ fetch(
 
                                         opacity:.95,
 
-                                        lineJoin:
+                                        lineCap:
                                             'round',
 
-                                        lineCap:
+                                        lineJoin:
                                             'round'
                                     }
                                 );
@@ -2148,10 +1702,10 @@ fetch(
                                 feature.attributes
                             ){
 
-                                let popupHTML =
+                                let popup =
                                     '<div style="' +
-                                    'font-size:11.5px;' +
-                                    'line-height:1.6;' +
+                                    'font-size:11px;' +
+                                    'line-height:1.55;' +
                                     '">';
 
 
@@ -2162,11 +1716,11 @@ fetch(
 
                                         const value =
                                             feature
-                                                .attributes
-                                                [key];
+                                            .attributes
+                                            [key];
 
 
-                                        popupHTML +=
+                                        popup +=
                                             '<b>' +
                                             key +
                                             '</b>: ' +
@@ -2183,12 +1737,12 @@ fetch(
                                 );
 
 
-                                popupHTML +=
+                                popup +=
                                     '</div>';
 
 
                                 line.bindPopup(
-                                    popupHTML
+                                    popup
                                 );
 
                             }
@@ -2203,7 +1757,7 @@ fetch(
                                     this.setStyle({
 
                                         color:
-                                            '#ff5538',
+                                            '#ff4f35',
 
                                         weight:6
 
@@ -2230,14 +1784,16 @@ fetch(
                             );
 
 
-                            lines.push(
+                            layers.push(
                                 line
                             );
 
                         }
+
                     );
 
                 }
+
             );
 
         }
@@ -2245,7 +1801,7 @@ fetch(
 
         coastline =
             L.featureGroup(
-                lines
+                layers
             );
 
 
@@ -2258,12 +1814,8 @@ fetch(
 
 
         setTimeout(
-            function(){
-
-                zoomToCoastline();
-
-            },
-            350
+            zoomToCoastline,
+            300
         );
 
     }
@@ -2273,7 +1825,6 @@ fetch(
     function(error){
 
         console.error(
-            'GP_RT.json:',
             error
         );
 
@@ -2330,20 +1881,21 @@ function zoomToCoastline(){
         {
 
             paddingTopLeft:[
-                55,
-                55
+                60,
+                60
             ],
 
             paddingBottomRight:[
-                55,
-                55
+                60,
+                60
             ],
 
             maxZoom:17,
 
             animate:true,
 
-            duration:1.15
+            duration:1.2
+
         }
     );
 
@@ -2351,7 +1903,7 @@ function zoomToCoastline(){
 
 
 /* =========================================================
-   SIDEBAR AUTO ZOOM
+   AUTO ZOOM BUTTONS
 ========================================================= */
 
 document
@@ -2364,10 +1916,6 @@ document
     );
 
 
-/* =========================================================
-   FLOATING AUTO ZOOM
-========================================================= */
-
 document
     .getElementById(
         'floatingZoomBtn'
@@ -2379,7 +1927,7 @@ document
 
 
 /* =========================================================
-   GARIS PANTAI TOGGLE
+   COASTLINE TOGGLE
 ========================================================= */
 
 document
@@ -2408,6 +1956,7 @@ document
                 }
 
             }
+
             else{
 
                 if(
@@ -2445,6 +1994,8 @@ document
                 this.checked
             ){
 
+                /* TAMBAHKAN ORTHO */
+
                 if(
                     !map.hasLayer(
                         ortho
@@ -2457,7 +2008,24 @@ document
 
                 }
 
+
+                /*
+                   Kalau zoom masih terlalu kecil,
+                   naikkan ke minimum zoom Orthophoto.
+                */
+
+                if(
+                    map.getZoom() < 12
+                ){
+
+                    map.setZoom(
+                        12
+                    );
+
+                }
+
             }
+
             else{
 
                 if(
@@ -2479,7 +2047,7 @@ document
 
 
 /* =========================================================
-   BASEMAP - SATELLITE
+   SATELLITE
 ========================================================= */
 
 document
@@ -2526,7 +2094,7 @@ document
 
 
 /* =========================================================
-   BASEMAP - STREET
+   STREET
 ========================================================= */
 
 document
@@ -2596,6 +2164,7 @@ map.on(
 
             'Latitude&nbsp;&nbsp; : ' +
             lat +
+
             '<br>' +
 
             'Longitude : ' +
@@ -2606,7 +2175,7 @@ map.on(
 
 
 /* =========================================================
-   SIDEBAR TOGGLE
+   SIDEBAR
 ========================================================= */
 
 const sidebar =
@@ -2615,7 +2184,7 @@ const sidebar =
     );
 
 
-const toggleSidebar =
+const toggle =
     document.getElementById(
         'toggleSidebar'
     );
@@ -2624,7 +2193,7 @@ const toggleSidebar =
 let sidebarOpen = true;
 
 
-toggleSidebar.addEventListener(
+toggle.addEventListener(
     'click',
     function(){
 
@@ -2640,19 +2209,18 @@ toggleSidebar.addEventListener(
                 'closed'
             );
 
-
-            toggleSidebar.innerHTML =
+            toggle.innerHTML =
                 '‹';
 
         }
+
         else{
 
             sidebar.classList.add(
                 'closed'
             );
 
-
-            toggleSidebar.innerHTML =
+            toggle.innerHTML =
                 '›';
 
         }
@@ -2672,12 +2240,12 @@ toggleSidebar.addEventListener(
 
 
 /* =========================================================
-   HEADER BACKGROUND SLIDESHOW
+   HEADER PHOTO SLIDESHOW
 ========================================================= */
 
-const headerPhotos =
+const photos =
     document.querySelectorAll(
-        '.header-photo'
+        '.title-photo img'
     );
 
 
@@ -2687,7 +2255,7 @@ let photoIndex = 0;
 setInterval(
     function(){
 
-        headerPhotos[
+        photos[
             photoIndex
         ].classList.remove(
             'active'
@@ -2695,11 +2263,13 @@ setInterval(
 
 
         photoIndex =
-            (photoIndex + 1) %
-            headerPhotos.length;
+            (
+                photoIndex + 1
+            ) %
+            photos.length;
 
 
-        headerPhotos[
+        photos[
             photoIndex
         ].classList.add(
             'active'
