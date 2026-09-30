@@ -178,14 +178,11 @@
 
       left:
         0;
-
-      border-radius:
-        0 8px 8px 0;
     }
 
 
     /* =====================================================
-       4 LOGO SEJAJAR
+       4 LOGO
        ===================================================== */
 
     .logo-section {
@@ -350,9 +347,6 @@
       padding:
         0;
 
-      border:
-        none;
-
       background-repeat:
         no-repeat;
 
@@ -368,17 +362,11 @@
       opacity:
         0.20;
 
-      filter:
-        brightness(1);
-
       transition:
         top 1.35s
-        cubic-bezier(0.4, 0, 0.2, 1),
+        cubic-bezier(0.4,0,0.2,1),
 
         opacity 0.85s
-        ease-in-out,
-
-        filter 0.85s
         ease-in-out;
     }
 
@@ -413,9 +401,6 @@
 
       opacity:
         0.035;
-
-      filter:
-        brightness(1.10);
     }
 
 
@@ -512,10 +497,6 @@
         18px 20px;
     }
 
-
-    /* =====================================================
-       JUDUL BAGIAN
-       ===================================================== */
 
     .section-title {
 
@@ -678,7 +659,7 @@
 
 
     /* =====================================================
-       SISTEM KOORDINAT
+       KOORDINAT
        ===================================================== */
 
     .coordinate-box {
@@ -745,10 +726,6 @@
         10px;
     }
 
-
-    /* =====================================================
-       KOORDINAT KURSOR
-       ===================================================== */
 
     .cursor-box {
 
@@ -841,7 +818,7 @@
 
 
     /* =====================================================
-       AUTO ZOOM CONTROL MAP
+       AUTO ZOOM CONTROL
        ===================================================== */
 
     .zoom-to-layer-control {
@@ -903,13 +880,6 @@
           0,
           0.25
         );
-    }
-
-
-    .zoom-to-layer-button-map:hover {
-
-      background:
-        #f0f5f9;
     }
 
 
@@ -1013,9 +983,6 @@
       border-top:
         4px solid
         #00ffff;
-
-      flex-shrink:
-        0;
     }
 
 
@@ -1086,22 +1053,6 @@
           18px;
       }
 
-
-      .map-legend {
-
-        min-width:
-          135px;
-
-        font-size:
-          11px;
-
-        margin-right:
-          8px;
-
-        margin-bottom:
-          8px;
-      }
-
     }
 
   </style>
@@ -1122,72 +1073,55 @@
   >
 
 
-    <!-- ===================================================
-         4 LOGO
-         =================================================== -->
+    <!-- LOGO -->
 
     <div class="logo-section">
 
-
       <div class="logo-item">
-
         <img
           src="ITERA.png"
           alt="Logo ITERA"
         >
-
       </div>
 
 
       <div class="logo-item">
-
         <img
           src="Logo_GT.png"
           alt="Logo Teknik Geomatika ITERA"
         >
-
       </div>
 
 
       <div class="logo-item">
-
         <img
           src="LOGO_GT23.png"
-          alt="Logo Teknik Geomatika Angkatan 2023"
+          alt="Logo Teknik Geomatika 2023"
         >
-
       </div>
 
 
       <div class="logo-item">
-
         <img
           src="LOGO_KEMKER.png"
           alt="Logo Kemah Kerja 2023"
         >
-
       </div>
-
 
     </div>
 
 
-    <!-- ===================================================
-         SIDEBAR BODY
-         =================================================== -->
+    <!-- SIDEBAR BODY -->
 
     <div class="sidebar-body">
 
 
-      <!-- =================================================
-           BACKGROUND 3 FOTO
-           ================================================= -->
+      <!-- BACKGROUND 3 FOTO -->
 
       <div
         class="background-slideshow"
         id="backgroundSlideshow"
       >
-
 
         <div
           class="bg-photo pos-top"
@@ -1218,20 +1152,15 @@
           "
         ></div>
 
-
       </div>
 
 
-      <!-- =================================================
-           SIDEBAR CONTENT
-           ================================================= -->
+      <!-- SIDEBAR CONTENT -->
 
       <div class="sidebar-content">
 
 
-        <!-- ===============================================
-             JUDUL
-             =============================================== -->
+        <!-- JUDUL -->
 
         <div class="title-section">
 
@@ -1246,21 +1175,15 @@
         </div>
 
 
-        <!-- ===============================================
-             PANEL
-             =============================================== -->
-
         <div class="panel-content">
 
 
-          <!-- =============================================
+          <!-- ===========================================
                LAYER
-               ============================================= -->
+          ============================================ -->
 
           <div class="section-title">
-
             Layer
-
           </div>
 
 
@@ -1307,30 +1230,26 @@
               id="zoomLayerButton"
               class="zoom-layer-button"
             >
-
               ⌖ Auto Zoom to Layer
-
             </button>
 
 
           </div>
 
 
-          <!-- =============================================
-               BASE MAP
-               ============================================= -->
+          <!-- ===========================================
+               BASEMAP
+          ============================================ -->
 
           <div class="section-title">
-
             Base Map
-
           </div>
 
 
           <div class="layer-control-box">
 
 
-            <!-- ESRI WORLD IMAGERY -->
+            <!-- ESRI -->
 
             <label class="layer-item">
 
@@ -1348,7 +1267,7 @@
             </label>
 
 
-            <!-- ESRI WORLD STREET MAP -->
+            <!-- STREET -->
 
             <label class="layer-item">
 
@@ -1368,66 +1287,54 @@
           </div>
 
 
-          <!-- =============================================
+          <!-- ===========================================
                SISTEM KOORDINAT
-               ============================================= -->
+          ============================================ -->
 
           <div class="section-title">
-
             Sistem Koordinat
-
           </div>
 
 
           <div class="coordinate-box">
 
-
             <div class="label">
               Datum
             </div>
-
 
             <div class="value">
               WGS 84
             </div>
 
-
             <div class="label">
               Sistem Koordinat
             </div>
-
 
             <div class="value">
               Geographic Coordinate System
             </div>
 
-
             <div class="label">
               EPSG
             </div>
-
 
             <div class="value">
               EPSG:4326
             </div>
 
-
           </div>
 
 
-          <!-- =============================================
+          <!-- ===========================================
                KOORDINAT KURSOR
-               ============================================= -->
+          ============================================ -->
 
           <div class="section-title">
-
             Koordinat Kursor
-
           </div>
 
 
           <div class="cursor-box">
-
 
             <div>
 
@@ -1450,16 +1357,13 @@
 
             </div>
 
-
           </div>
 
 
         </div>
 
 
-        <!-- ===============================================
-             FOOTER
-             =============================================== -->
+        <!-- FOOTER -->
 
         <div class="sidebar-footer">
 
@@ -1478,23 +1382,19 @@
 
       </div>
 
-
     </div>
-
 
   </div>
 
 
   <!-- =====================================================
-       TOMBOL PANAH
+       SIDEBAR TOGGLE
        ===================================================== -->
 
   <button
     id="sidebarToggle"
     class="sidebar-toggle"
     type="button"
-    title="Minimize Panel"
-    aria-label="Minimize Panel"
   >
 
     ◀
@@ -1510,7 +1410,7 @@
 
 
   <!-- =====================================================
-       LEAFLET JS
+       LEAFLET
        ===================================================== -->
 
   <script
@@ -1562,32 +1462,7 @@
 
 
     /* =====================================================
-       2. PANE KHUSUS ORTHOPHOTO
-
-       Inilah bagian untuk membuat
-       putih pada tile Orthophoto
-       menyatu dengan basemap.
-       ===================================================== */
-
-    map.createPane(
-      'orthoPane'
-    );
-
-
-    map.getPane(
-      'orthoPane'
-    ).style.zIndex =
-      450;
-
-
-    map.getPane(
-      'orthoPane'
-    ).style.mixBlendMode =
-      'multiply';
-
-
-    /* =====================================================
-       3. SIDEBAR TOGGLE
+       2. SIDEBAR
        ===================================================== */
 
     const sidebar =
@@ -1617,7 +1492,9 @@
           !sidebarCollapsed;
 
 
-        if (sidebarCollapsed) {
+        if (
+          sidebarCollapsed
+        ) {
 
 
           sidebar.classList.add(
@@ -1634,29 +1511,22 @@
             '▶';
 
 
-          sidebarToggle.title =
-            'Tampilkan Panel';
-
-
-          sidebarToggle.setAttribute(
-            'aria-label',
-            'Tampilkan Panel'
-          );
-
-
           document
-            .getElementById('map')
+            .getElementById(
+              'map'
+            )
             .style.left =
             '0';
 
 
           document
-            .getElementById('map')
+            .getElementById(
+              'map'
+            )
             .style.width =
             '100%';
 
         }
-
 
         else {
 
@@ -1675,32 +1545,20 @@
             '◀';
 
 
-          sidebarToggle.title =
-            'Minimize Panel';
-
-
-          sidebarToggle.setAttribute(
-            'aria-label',
-            'Minimize Panel'
-          );
-
-
-          const sidebarWidth =
-            window.innerWidth <= 800
-              ? '280px'
-              : '350px';
-
-
           document
-            .getElementById('map')
+            .getElementById(
+              'map'
+            )
             .style.left =
-            sidebarWidth;
+            '350px';
 
 
           document
-            .getElementById('map')
+            .getElementById(
+              'map'
+            )
             .style.width =
-            `calc(100% - ${sidebarWidth})`;
+            'calc(100% - 350px)';
 
         }
 
@@ -1723,7 +1581,7 @@
 
 
     /* =====================================================
-       4. ESRI WORLD IMAGERY
+       3. ESRI WORLD IMAGERY
        ===================================================== */
 
     const satellite =
@@ -1733,9 +1591,6 @@
 
         {
 
-          minZoom:
-            0,
-
           maxZoom:
             19,
 
@@ -1748,7 +1603,7 @@
 
 
     /* =====================================================
-       5. ESRI WORLD STREET MAP
+       4. ESRI STREET
        ===================================================== */
 
     const street =
@@ -1758,9 +1613,6 @@
 
         {
 
-          minZoom:
-            0,
-
           maxZoom:
             19,
 
@@ -1773,184 +1625,394 @@
 
 
     /* =====================================================
-       6. ORTHOPHOTO SEBAGAI LAYER
+       5. ORTHOPHOTO LAYER
+       =====================================================
 
-       LEVEL:
        L12 - L18
 
-       SUMBER:
        RAW GITHUB
 
-       FORMAT:
-       Rxxxxxxxx/Cxxxxxxxx.png
-       ===================================================== */
+       Struktur:
 
-    let orthoErrorCount =
-      0;
+       Fix_Ortho_web/
+       └── _alllayers/
+           ├── L12/
+           ├── L13/
+           ├── L14/
+           ├── L15/
+           ├── L16/
+           ├── L17/
+           └── L18/
+
+       Rxxxxxxxx/
+       Cxxxxxxxx.png
+       ===================================================== */
 
 
     const orthoLayer =
-      L.tileLayer(
+      L.gridLayer({
 
-        '',
+        minZoom:
+          12,
 
-        {
+        maxZoom:
+          18,
 
-          minZoom:
-            12,
+        minNativeZoom:
+          12,
 
-          maxZoom:
-            18,
+        maxNativeZoom:
+          18,
 
-          minNativeZoom:
-            12,
+        tileSize:
+          256,
 
-          maxNativeZoom:
-            18,
+        noWrap:
+          true,
 
-          tileSize:
-            256,
+        zIndex:
+          500
 
-          noWrap:
-            true,
-
-          opacity:
-            1,
-
-          pane:
-            'orthoPane',
-
-          attribution:
-            'Orthophoto'
-
-        }
-
-      );
+      });
 
 
     /* =====================================================
-       7. URL TILE ORTHOPHOTO
+       6. URL TILE ORTHOPHOTO
        ===================================================== */
 
-    orthoLayer.getTileUrl =
-      function(coords) {
+    function getOrthoTileUrl(
+      coords
+    ) {
 
 
-        const z =
-          coords.z;
+      const z =
+        coords.z;
 
 
-        const x =
-          coords.x;
+      const x =
+        coords.x;
 
 
-        const y =
-          coords.y;
+      const y =
+        coords.y;
 
 
-        /* -----------------------------------------------
-           HANYA L12-L18
-           ----------------------------------------------- */
+      if (
+        z < 12 ||
+        z > 18
+      ) {
 
-        if (
-          z < 12 ||
-          z > 18
-        ) {
+        return null;
 
-          return '';
+      }
+
+
+      if (
+        x < 0 ||
+        y < 0
+      ) {
+
+        return null;
+
+      }
+
+
+      const rowHex =
+        Math.floor(y)
+          .toString(16)
+          .padStart(
+            8,
+            '0'
+          )
+          .toLowerCase();
+
+
+      const colHex =
+        Math.floor(x)
+          .toString(16)
+          .padStart(
+            8,
+            '0'
+          )
+          .toLowerCase();
+
+
+      return
+
+        'https://raw.githubusercontent.com/' +
+
+        'rivaldo123230038-cloud/' +
+
+        'WebGIS-Kemker-Kelompok-1/' +
+
+        'main/' +
+
+        'Fix_Ortho_web/' +
+
+        '_alllayers/' +
+
+        'L' +
+        z +
+
+        '/' +
+
+        'R' +
+        rowHex +
+
+        '/' +
+
+        'C' +
+        colHex +
+
+        '.png';
+
+    }
+
+
+    /* =====================================================
+       7. CUSTOM TILE PROCESSING
+
+       PUTIH/HITAM BACKGROUND
+       DIBUAT TRANSPARAN
+
+       ORTHOPHOTO TETAP DI ATAS BASEMAP
+       ===================================================== */
+
+    orthoLayer.createTile =
+      function(
+        coords,
+        done
+      ) {
+
+
+        const canvas =
+          document.createElement(
+            'canvas'
+          );
+
+
+        canvas.width =
+          256;
+
+
+        canvas.height =
+          256;
+
+
+        const ctx =
+          canvas.getContext(
+            '2d',
+            {
+              willReadFrequently:
+                true
+            }
+          );
+
+
+        const img =
+          new Image();
+
+
+        img.crossOrigin =
+          'anonymous';
+
+
+        img.onload =
+          function() {
+
+
+            try {
+
+
+              /* -----------------------------------------
+                 GAMBAR TILE
+              ------------------------------------------ */
+
+              ctx.clearRect(
+                0,
+                0,
+                256,
+                256
+              );
+
+
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                256,
+                256
+              );
+
+
+              /* -----------------------------------------
+                 BACA PIXEL
+              ------------------------------------------ */
+
+              const imageData =
+                ctx.getImageData(
+                  0,
+                  0,
+                  256,
+                  256
+                );
+
+
+              const data =
+                imageData.data;
+
+
+              /* -----------------------------------------
+                 TRANSPARANSI
+
+                 HITAM:
+                 RGB < 12
+
+                 PUTIH:
+                 RGB > 245
+              ------------------------------------------ */
+
+              for (
+                let i = 0;
+                i < data.length;
+                i += 4
+              ) {
+
+
+                const r =
+                  data[i];
+
+
+                const g =
+                  data[i + 1];
+
+
+                const b =
+                  data[i + 2];
+
+
+                const blackPixel =
+
+                  r < 12 &&
+                  g < 12 &&
+                  b < 12;
+
+
+                const whitePixel =
+
+                  r > 245 &&
+                  g > 245 &&
+                  b > 245;
+
+
+                if (
+                  blackPixel ||
+                  whitePixel
+                ) {
+
+                  data[i + 3] =
+                    0;
+
+                }
+
+              }
+
+
+              /* -----------------------------------------
+                 KEMBALIKAN KE CANVAS
+              ------------------------------------------ */
+
+              ctx.putImageData(
+                imageData,
+                0,
+                0
+              );
+
+
+              done(
+                null,
+                canvas
+              );
+
+
+            }
+
+            catch (error) {
+
+
+              console.error(
+                'Gagal memproses tile:',
+                error
+              );
+
+
+              done(
+                error,
+                canvas
+              );
+
+            }
+
+          };
+
+
+        img.onerror =
+          function(error) {
+
+
+            console.error(
+              'Tile Orthophoto gagal:',
+              coords
+            );
+
+
+            done(
+              error,
+              canvas
+            );
+
+          };
+
+
+        const tileUrl =
+          getOrthoTileUrl(
+            coords
+          );
+
+
+        if (!tileUrl) {
+
+
+          done(
+            new Error(
+              'Tile URL tidak tersedia'
+            ),
+            canvas
+          );
+
+
+          return canvas;
 
         }
-
-
-        /* -----------------------------------------------
-           CEGAH NEGATIF
-           ----------------------------------------------- */
-
-        if (
-          x < 0 ||
-          y < 0
-        ) {
-
-          return '';
-
-        }
-
-
-        /* -----------------------------------------------
-           ROW HEX
-           ----------------------------------------------- */
-
-        const rowHex =
-          Math.floor(y)
-            .toString(16)
-            .padStart(
-              8,
-              '0'
-            )
-            .toLowerCase();
-
-
-        /* -----------------------------------------------
-           COLUMN HEX
-           ----------------------------------------------- */
-
-        const colHex =
-          Math.floor(x)
-            .toString(16)
-            .padStart(
-              8,
-              '0'
-            )
-            .toLowerCase();
-
-
-        /* -----------------------------------------------
-           URL RAW GITHUB
-           ----------------------------------------------- */
-
-        const url =
-
-          'https://raw.githubusercontent.com/' +
-
-          'rivaldo123230038-cloud/' +
-
-          'WebGIS-Kemker-Kelompok-1/' +
-
-          'main/' +
-
-          'Fix_Ortho_web/' +
-
-          '_alllayers/' +
-
-          'L' +
-          z +
-
-          '/' +
-
-          'R' +
-          rowHex +
-
-          '/' +
-
-          'C' +
-          colHex +
-
-          '.png';
 
 
         console.log(
-          'ORTHOPHOTO REQUEST:',
-          url
+          'ORTHOPHOTO TILE:',
+          tileUrl
         );
 
 
-        return url;
+        img.src =
+          tileUrl;
+
+
+        return canvas;
 
       };
 
 
     /* =====================================================
-       8. DEFAULT BASEMAP
+       8. BASEMAP DEFAULT
        ===================================================== */
 
     satellite.addTo(
@@ -1976,16 +2038,12 @@
     };
 
 
-    /* =====================================================
-       10. VARIABEL GARIS PANTAI
-       ===================================================== */
-
     let coastline =
       null;
 
 
     /* =====================================================
-       11. AUTO ZOOM
+       10. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -2029,22 +2087,8 @@
 
       }
 
-
-      else {
-
-
-        alert(
-          'Layer garis pantai belum tersedia.'
-        );
-
-      }
-
     }
 
-
-    /* =====================================================
-       12. AUTO ZOOM SIDEBAR
-       ===================================================== */
 
     document
 
@@ -2066,7 +2110,7 @@
 
 
     /* =====================================================
-       13. AUTO ZOOM MAP
+       11. AUTO ZOOM MAP CONTROL
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -2106,10 +2150,6 @@
               );
 
 
-            button.type =
-              'button';
-
-
             button.innerHTML =
               '⌖';
 
@@ -2118,9 +2158,10 @@
               'Auto Zoom to Layer';
 
 
-            L.DomEvent.disableClickPropagation(
-              container
-            );
+            L.DomEvent
+              .disableClickPropagation(
+                container
+              );
 
 
             L.DomEvent.on(
@@ -2129,16 +2170,9 @@
 
               'click',
 
-              function(e) {
-
-
-                L.DomEvent.stopPropagation(
-                  e
-                );
-
+              function() {
 
                 zoomToCoastline();
-
 
               }
 
@@ -2160,7 +2194,7 @@
 
 
     /* =====================================================
-       14. KONVERSI ESRI JSON
+       12. GARIS PANTAI DARI GP_RT.JSON
        ===================================================== */
 
     function convertEsriJSON(
@@ -2168,7 +2202,7 @@
     ) {
 
 
-      const coastlineGroup =
+      const group =
         L.featureGroup();
 
 
@@ -2176,13 +2210,7 @@
         !data.features
       ) {
 
-
-        console.error(
-          'GP_RT.json tidak memiliki features.'
-        );
-
-
-        return coastlineGroup;
+        return group;
 
       }
 
@@ -2219,7 +2247,6 @@
 
                   function(point) {
 
-
                     return [
 
                       point[1],
@@ -2254,68 +2281,40 @@
                 '</div>';
 
 
-              const keys =
-                Object.keys(
-                  attributes
-                );
+              Object.keys(
+                attributes
+              ).forEach(
+
+                function(key) {
 
 
-              if (
-                keys.length === 0
-              ) {
+                  let value =
+                    attributes[key];
 
 
-                html +=
-                  'Tidak terdapat atribut.';
+                  if (
+                    value === null ||
+                    value === undefined ||
+                    value === ''
+                  ) {
 
-              }
-
-
-              else {
-
-
-                keys.forEach(
-
-                  function(key) {
-
-
-                    let value =
-                      attributes[key];
-
-
-                    if (
-
-                      value === null ||
-
-                      value === undefined ||
-
-                      value === ''
-
-                    ) {
-
-                      value =
-                        '-';
-
-                    }
-
-
-                    html +=
-
-                      '<b>' +
-
-                      key +
-
-                      '</b>: ' +
-
-                      value +
-
-                      '<br>';
+                    value =
+                      '-';
 
                   }
 
-                );
 
-              }
+                  html +=
+
+                    '<b>' +
+                    key +
+                    '</b>: ' +
+                    value +
+                    '<br>';
+
+                }
+
+              );
 
 
               html +=
@@ -2327,19 +2326,16 @@
               );
 
 
-              /* HOVER */
-
               line.on(
 
                 'mouseover',
 
                 function() {
 
-
                   this.setStyle({
 
                     color:
-                      '#ff0000',
+                      'red',
 
                     weight:
                       6
@@ -2357,7 +2353,6 @@
 
                 function() {
 
-
                   this.setStyle(
                     coastlineStyle
                   );
@@ -2367,28 +2362,26 @@
               );
 
 
-              coastlineGroup.addLayer(
+              group.addLayer(
                 line
               );
-
 
             }
 
           );
-
 
         }
 
       );
 
 
-      return coastlineGroup;
+      return group;
 
     }
 
 
     /* =====================================================
-       15. LOAD GP_RT.JSON
+       13. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch(
@@ -2399,18 +2392,15 @@
 
         function(response) {
 
-
           if (
             !response.ok
           ) {
-
 
             throw new Error(
               'GP_RT.json tidak ditemukan.'
             );
 
           }
-
 
           return response.json();
 
@@ -2421,12 +2411,6 @@
       .then(
 
         function(data) {
-
-
-          console.log(
-            'GP_RT.json berhasil dimuat:',
-            data
-          );
 
 
           coastline =
@@ -2443,45 +2427,6 @@
           zoomToCoastline();
 
 
-          /* CHECKBOX GARIS PANTAI */
-
-          document
-
-            .getElementById(
-              'coastlineCheck'
-            )
-
-            .addEventListener(
-
-              'change',
-
-              function() {
-
-
-                if (
-                  this.checked
-                ) {
-
-
-                  coastline.addTo(
-                    map
-                  );
-
-                }
-
-                else {
-
-
-                  map.removeLayer(
-                    coastline
-                  );
-
-                }
-
-              }
-
-            );
-
         }
 
       )
@@ -2490,20 +2435,9 @@
 
         function(error) {
 
-
           console.error(
+            'GP_RT.json:',
             error
-          );
-
-
-          alert(
-
-            'Gagal membaca GP_RT.json.\n\n' +
-
-            'Pastikan GP_RT.json berada ' +
-
-            'satu folder dengan index.html.'
-
           );
 
         }
@@ -2512,7 +2446,47 @@
 
 
     /* =====================================================
-       16. HAPUS SEMUA BASEMAP
+       14. CHECKBOX GARIS PANTAI
+       ===================================================== */
+
+    document
+
+      .getElementById(
+        'coastlineCheck'
+      )
+
+      .addEventListener(
+
+        'change',
+
+        function() {
+
+
+          if (
+            this.checked
+          ) {
+
+            coastline.addTo(
+              map
+            );
+
+          }
+
+          else {
+
+            map.removeLayer(
+              coastline
+            );
+
+          }
+
+        }
+
+      );
+
+
+    /* =====================================================
+       15. BASEMAP SWITCHER
        ===================================================== */
 
     function removeBasemaps() {
@@ -2547,7 +2521,7 @@
 
 
     /* =====================================================
-       17. ESRI WORLD IMAGERY
+       16. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2596,7 +2570,7 @@
 
 
     /* =====================================================
-       18. ESRI WORLD STREET MAP
+       17. ESRI STREET
        ===================================================== */
 
     document
@@ -2645,7 +2619,7 @@
 
 
     /* =====================================================
-       19. ORTHOPHOTO SEBAGAI LAYER
+       18. ORTHOPHOTO LAYER ON/OFF
        ===================================================== */
 
     document
@@ -2661,23 +2635,14 @@
         function() {
 
 
-          /* ===============================================
-             ORTHOPHOTO ON
-             =============================================== */
-
           if (
             this.checked
           ) {
 
 
-            orthoErrorCount =
-              0;
-
-
-            /*
-             * Pastikan zoom berada pada
-             * level cache L12-L18.
-             */
+            /* ------------------------------------------
+               ZOOM KE LEVEL YANG ADA
+            ------------------------------------------- */
 
             if (
               map.getZoom() < 12
@@ -2701,52 +2666,27 @@
             }
 
 
-            /*
-             * Tambahkan Orthophoto
-             */
+            /* ------------------------------------------
+               TAMBAHKAN ORTHOPHOTO
+            ------------------------------------------- */
 
             orthoLayer.addTo(
               map
             );
 
 
-            /*
-             * Taruh di atas basemap
-             */
+            /* ------------------------------------------
+               TARUH DI ATAS BASEMAP
+            ------------------------------------------- */
 
             orthoLayer.bringToFront();
 
 
             console.log(
-              '================================'
-            );
-
-
-            console.log(
-              'ORTHOPHOTO LAYER ON'
-            );
-
-
-            console.log(
-              'LEVEL L12 - L18'
-            );
-
-
-            console.log(
-              'BLEND MODE: MULTIPLY'
-            );
-
-
-            console.log(
-              '================================'
+              'ORTHOPHOTO ON - L12 sampai L18'
             );
 
           }
-
-
-          /* ===============================================
-             ORTHOPHOTO OFF
-             =============================================== */
 
           else {
 
@@ -2765,7 +2705,7 @@
 
 
             console.log(
-              'ORTHOPHOTO LAYER OFF'
+              'ORTHOPHOTO OFF'
             );
 
           }
@@ -2776,137 +2716,7 @@
 
 
     /* =====================================================
-       20. TILELOAD
-       ===================================================== */
-
-    orthoLayer.on(
-
-      'tileload',
-
-      function(e) {
-
-
-        console.log(
-
-          'ORTHOPHOTO TILE BERHASIL:',
-
-          e.coords
-
-        );
-
-      }
-
-    );
-
-
-    /* =====================================================
-       21. TILEERROR
-       ===================================================== */
-
-    orthoLayer.on(
-
-      'tileerror',
-
-      function(e) {
-
-
-        orthoErrorCount++;
-
-
-        console.error(
-
-          'ORTHOPHOTO TILE GAGAL:',
-
-          e.coords
-
-        );
-
-
-        if (
-          e.coords
-        ) {
-
-
-          const rowHex =
-            Math.floor(
-              e.coords.y
-            )
-              .toString(16)
-              .padStart(
-                8,
-                '0'
-              )
-              .toLowerCase();
-
-
-          const colHex =
-            Math.floor(
-              e.coords.x
-            )
-              .toString(16)
-              .padStart(
-                8,
-                '0'
-              )
-              .toLowerCase();
-
-
-          const failedUrl =
-
-            'https://raw.githubusercontent.com/' +
-
-            'rivaldo123230038-cloud/' +
-
-            'WebGIS-Kemker-Kelompok-1/' +
-
-            'main/' +
-
-            'Fix_Ortho_web/' +
-
-            '_alllayers/' +
-
-            'L' +
-            e.coords.z +
-
-            '/' +
-
-            'R' +
-            rowHex +
-
-            '/' +
-
-            'C' +
-            colHex +
-
-            '.png';
-
-
-          console.error(
-
-            'URL TILE GAGAL:',
-
-            failedUrl
-
-          );
-
-        }
-
-
-        console.error(
-
-          'TOTAL TILE ERROR:',
-
-          orthoErrorCount
-
-        );
-
-      }
-
-    );
-
-
-    /* =====================================================
-       22. SCALE BAR
+       19. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2926,7 +2736,7 @@
 
 
     /* =====================================================
-       23. LEGENDA
+       20. LEGENDA
        ===================================================== */
 
     const legend =
@@ -2939,7 +2749,7 @@
 
 
     legend.onAdd =
-      function(map) {
+      function() {
 
 
         const div =
@@ -2973,12 +2783,6 @@
         `;
 
 
-        L.DomEvent
-          .disableClickPropagation(
-            div
-          );
-
-
         return div;
 
       };
@@ -2990,7 +2794,7 @@
 
 
     /* =====================================================
-       24. KOORDINAT KURSOR
+       21. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -3001,29 +2805,19 @@
 
 
         document
-
           .getElementById(
             'latitude'
           )
-
           .innerHTML =
-
-          e.latlng
-            .lat
-            .toFixed(6);
+          e.latlng.lat.toFixed(6);
 
 
         document
-
           .getElementById(
             'longitude'
           )
-
           .innerHTML =
-
-          e.latlng
-            .lng
-            .toFixed(6);
+          e.latlng.lng.toFixed(6);
 
       }
 
@@ -3031,7 +2825,7 @@
 
 
     /* =====================================================
-       25. BACKGROUND 3 FOTO
+       22. BACKGROUND 3 FOTO
        ===================================================== */
 
     const bgSlideshow =
@@ -3063,7 +2857,7 @@
 
 
     /* =====================================================
-       26. ROTASI BACKGROUND
+       23. ROTASI BACKGROUND
        ===================================================== */
 
     function rotateBackgroundPhotos() {
@@ -3082,9 +2876,7 @@
           bgStep++;
 
 
-          /* ===============================================
-             PUTARAN 1
-             =============================================== */
+          /* PUTARAN 1 */
 
           if (
             bgStep === 1
@@ -3105,9 +2897,7 @@
           }
 
 
-          /* ===============================================
-             PUTARAN 2
-             =============================================== */
+          /* PUTARAN 2 */
 
           else if (
             bgStep === 2
@@ -3128,9 +2918,7 @@
           }
 
 
-          /* ===============================================
-             PUTARAN 3
-             =============================================== */
+          /* PUTARAN 3 */
 
           else {
 
@@ -3178,7 +2966,7 @@
 
 
     /* =====================================================
-       27. INTERVAL BACKGROUND
+       24. INTERVAL BACKGROUND
        ===================================================== */
 
     setInterval(
