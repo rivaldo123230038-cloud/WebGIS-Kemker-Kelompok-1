@@ -40,7 +40,10 @@
       width: 100%;
       height: 100%;
 
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
       overflow: hidden;
     }
@@ -57,8 +60,11 @@
       left: 350px;
       top: 0;
 
-      width: calc(100% - 350px);
-      height: 100vh;
+      width:
+        calc(100% - 350px);
+
+      height:
+        100vh;
 
       transition:
         left 0.3s ease,
@@ -80,10 +86,12 @@
       width: 350px;
       height: 100vh;
 
-      background: #ffffff;
+      background:
+        #ffffff;
 
       box-shadow:
-        2px 0 12px rgba(0, 0, 0, 0.18);
+        2px 0 12px
+        rgba(0, 0, 0, 0.18);
 
       z-index: 2000;
 
@@ -123,25 +131,35 @@
       border-radius:
         0 8px 8px 0;
 
-      background: #17324d;
+      background:
+        #17324d;
 
-      color: white;
+      color:
+        white;
 
       z-index: 3000;
 
-      cursor: pointer;
+      cursor:
+        pointer;
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
-      justify-content: center;
+      align-items:
+        center;
 
-      font-size: 22px;
+      justify-content:
+        center;
 
-      font-weight: bold;
+      font-size:
+        22px;
+
+      font-weight:
+        bold;
 
       box-shadow:
-        2px 0 8px rgba(0, 0, 0, 0.25);
+        2px 0 8px
+        rgba(0, 0, 0, 0.25);
 
       transition:
         left 0.3s ease,
@@ -151,13 +169,15 @@
 
     .sidebar-toggle:hover {
 
-      background: #244e73;
+      background:
+        #244e73;
     }
 
 
     .sidebar-toggle.collapsed {
 
-      left: 0;
+      left:
+        0;
 
       border-radius:
         0 8px 8px 0;
@@ -165,64 +185,87 @@
 
 
     /* =====================================================
-       4 LOGO
+       4 LOGO SEJAJAR
        ===================================================== */
 
     .logo-section {
 
-      position: relative;
+      position:
+        relative;
 
-      z-index: 10;
+      z-index:
+        10;
 
-      display: flex;
+      display:
+        flex;
 
-      flex-direction: row;
+      flex-direction:
+        row;
 
-      justify-content: space-between;
+      justify-content:
+        space-between;
 
-      align-items: center;
+      align-items:
+        center;
 
-      width: 100%;
+      width:
+        100%;
 
-      height: 108px;
+      height:
+        108px;
 
-      padding: 18px 10px;
+      padding:
+        18px 10px;
 
-      gap: 5px;
+      gap:
+        5px;
 
-      background: #ffffff;
+      background:
+        #ffffff;
 
       border-bottom:
         1px solid #eeeeee;
 
-      flex-shrink: 0;
+      flex-shrink:
+        0;
     }
 
 
     .logo-item {
 
-      flex: 1;
+      flex:
+        1;
 
-      min-width: 0;
+      min-width:
+        0;
 
-      height: 72px;
+      height:
+        72px;
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      justify-content: center;
+      justify-content:
+        center;
     }
 
 
     .logo-item img {
 
-      width: 100%;
-      height: 100%;
+      width:
+        100%;
 
-      object-fit: contain;
+      height:
+        100%;
 
-      display: block;
+      object-fit:
+        contain;
+
+      display:
+        block;
     }
 
 
@@ -232,123 +275,174 @@
 
     .sidebar-body {
 
-      position: relative;
+      position:
+        relative;
 
       height:
         calc(100vh - 108px);
 
-      min-height: 0;
+      min-height:
+        0;
 
-      overflow-y: auto;
+      overflow-y:
+        auto;
 
-      overflow-x: hidden;
+      overflow-x:
+        hidden;
 
-      background: transparent;
+      background:
+        transparent;
+
+      scrollbar-width:
+        thin;
     }
 
 
     /* =====================================================
        BACKGROUND 3 FOTO
 
-       3 FOTO TAMPIL BERSAMAAN
-       ATAS - TENGAH - BAWAH
+       FOTO 1 = ATAS
+       FOTO 2 = TENGAH
+       FOTO 3 = BAWAH
 
-       BACKGROUND TETAP DIAM SAAT SCROLL
+       TIDAK IKUT SCROLL
        ===================================================== */
 
     .background-slideshow {
 
-      position: fixed;
+      position:
+        fixed;
 
-      left: 0;
-      top: 108px;
+      left:
+        0;
 
-      width: 350px;
+      top:
+        108px;
+
+      width:
+        350px;
 
       height:
         calc(100vh - 108px);
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
-      z-index: 0;
+      z-index:
+        0;
 
-      pointer-events: none;
+      pointer-events:
+        none;
     }
 
 
+    /* =====================================================
+       FOTO BACKGROUND
+       ===================================================== */
+
     .bg-photo {
 
-      position: absolute;
+      position:
+        absolute;
 
-      left: 0;
+      left:
+        0;
 
-      width: 100%;
+      width:
+        100%;
 
-      height: 33.333333%;
+      height:
+        33.333333%;
 
-      margin: 0;
-      padding: 0;
+      margin:
+        0;
 
-      background-repeat: no-repeat;
+      padding:
+        0;
 
-      background-position: center center;
+      border:
+        none;
 
-      background-size: cover;
+      background-repeat:
+        no-repeat;
 
-      background-color: #ffffff;
+      background-position:
+        center center;
 
-      opacity: 0.20;
+      background-size:
+        cover;
 
-      filter: brightness(1);
+      background-color:
+        #ffffff;
+
+      opacity:
+        0.20;
+
+      filter:
+        brightness(1);
 
       transition:
-        top 1.35s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.85s ease-in-out,
-        filter 0.85s ease-in-out;
+        top 1.35s
+        cubic-bezier(0.4, 0, 0.2, 1),
+
+        opacity 0.85s
+        ease-in-out,
+
+        filter 0.85s
+        ease-in-out;
     }
 
 
     .bg-photo.pos-top {
 
-      top: 0;
+      top:
+        0;
     }
 
 
     .bg-photo.pos-middle {
 
-      top: 33.333333%;
+      top:
+        33.333333%;
     }
 
 
     .bg-photo.pos-bottom {
 
-      top: 66.666666%;
+      top:
+        66.666666%;
     }
 
 
     /* =====================================================
-       EFEK FADE / KEDIP SMOOTH
+       EFEK FADE
        ===================================================== */
 
-    .background-slideshow.changing .bg-photo {
+    .background-slideshow.changing
+    .bg-photo {
 
-      opacity: 0.035;
+      opacity:
+        0.035;
 
-      filter: brightness(1.10);
+      filter:
+        brightness(1.10);
     }
 
 
     /* =====================================================
-       ISI SIDEBAR DI ATAS BACKGROUND
+       ISI SIDEBAR
        ===================================================== */
 
     .sidebar-content {
 
-      position: relative;
+      position:
+        relative;
 
-      z-index: 2;
+      z-index:
+        2;
 
-      min-height: 100%;
+      min-height:
+        100%;
     }
 
 
@@ -361,27 +455,44 @@
       padding:
         18px 20px 16px;
 
-      text-align: center;
+      text-align:
+        center;
 
       background:
-        rgba(255, 255, 255, 0.72);
+        rgba(
+          255,
+          255,
+          255,
+          0.72
+        );
 
       border-bottom:
-        1px solid rgba(238, 238, 238, 0.9);
+        1px solid
+        rgba(
+          238,
+          238,
+          238,
+          0.9
+        );
     }
 
 
     .title-section h1 {
 
-      margin: 0;
+      margin:
+        0;
 
-      font-size: 22px;
+      font-size:
+        22px;
 
-      font-weight: 700;
+      font-weight:
+        700;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      letter-spacing: 0.5px;
+      letter-spacing:
+        0.5px;
     }
 
 
@@ -390,11 +501,14 @@
       margin:
         7px 0 0;
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.4;
+      line-height:
+        1.4;
 
-      color: #555555;
+      color:
+        #555555;
     }
 
 
@@ -415,28 +529,37 @@
 
     .section-title {
 
-      margin-top: 18px;
+      margin-top:
+        18px;
 
-      margin-bottom: 10px;
+      margin-bottom:
+        10px;
 
-      padding-bottom: 7px;
+      padding-bottom:
+        7px;
 
       border-bottom:
-        2px solid #17324d;
+        2px solid
+        #17324d;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      font-size: 14px;
+      font-size:
+        14px;
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
     }
 
 
     .section-title:first-child {
 
-      margin-top: 0;
+      margin-top:
+        0;
     }
 
 
@@ -447,39 +570,65 @@
     .layer-control-box {
 
       background:
-        rgba(255, 255, 255, 0.84);
+        rgba(
+          255,
+          255,
+          255,
+          0.84
+        );
 
-      border-radius: 7px;
+      border-radius:
+        7px;
 
-      padding: 10px;
+      padding:
+        10px;
 
       border:
-        1px solid rgba(225, 229, 232, 0.9);
+        1px solid
+        rgba(
+          225,
+          229,
+          232,
+          0.9
+        );
 
       box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.08);
+        0 1px 4px
+        rgba(
+          0,
+          0,
+          0,
+          0.08
+        );
     }
 
 
     .layer-item {
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 8px;
+      gap:
+        8px;
 
-      padding: 8px 5px;
+      padding:
+        8px 5px;
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      cursor: pointer;
+      cursor:
+        pointer;
     }
 
 
     .layer-item input {
 
-      cursor: pointer;
+      cursor:
+        pointer;
     }
 
 
@@ -489,27 +638,38 @@
 
     .zoom-layer-button {
 
-      width: 100%;
+      width:
+        100%;
 
-      margin-top: 10px;
+      margin-top:
+        10px;
 
-      padding: 10px 12px;
+      padding:
+        10px 12px;
 
-      border: none;
+      border:
+        none;
 
-      border-radius: 6px;
+      border-radius:
+        6px;
 
-      background: #17324d;
+      background:
+        #17324d;
 
-      color: white;
+      color:
+        white;
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      cursor: pointer;
+      cursor:
+        pointer;
 
-      transition: 0.2s;
+      transition:
+        0.2s;
     }
 
 
@@ -534,39 +694,65 @@
     .coordinate-box {
 
       background:
-        rgba(255, 255, 255, 0.84);
+        rgba(
+          255,
+          255,
+          255,
+          0.84
+        );
 
       border:
-        1px solid rgba(225, 229, 232, 0.9);
+        1px solid
+        rgba(
+          225,
+          229,
+          232,
+          0.9
+        );
 
-      border-radius: 7px;
+      border-radius:
+        7px;
 
-      padding: 12px;
+      padding:
+        12px;
 
       box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.08);
+        0 1px 4px
+        rgba(
+          0,
+          0,
+          0,
+          0.08
+        );
     }
 
 
     .coordinate-box .label {
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      color: #666666;
+      color:
+        #666666;
 
-      margin-bottom: 3px;
+      margin-bottom:
+        3px;
     }
 
 
     .coordinate-box .value {
 
-      font-size: 14px;
+      font-size:
+        14px;
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      margin-bottom: 10px;
+      margin-bottom:
+        10px;
     }
 
 
@@ -577,17 +763,27 @@
     .cursor-box {
 
       background:
-        rgba(23, 50, 77, 0.90);
+        rgba(
+          23,
+          50,
+          77,
+          0.90
+        );
 
-      color: white;
+      color:
+        white;
 
-      border-radius: 7px;
+      border-radius:
+        7px;
 
-      padding: 10px;
+      padding:
+        10px;
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      line-height: 1.6;
+      line-height:
+        1.6;
     }
 
 
@@ -597,24 +793,40 @@
 
     .sidebar-footer {
 
-      margin-top: 25px;
+      margin-top:
+        25px;
 
       padding:
         15px 20px;
 
       border-top:
-        1px solid rgba(238, 238, 238, 0.9);
+        1px solid
+        rgba(
+          238,
+          238,
+          238,
+          0.9
+        );
 
-      text-align: center;
+      text-align:
+        center;
 
-      font-size: 10px;
+      font-size:
+        10px;
 
-      color: #666666;
+      color:
+        #666666;
 
-      line-height: 1.5;
+      line-height:
+        1.5;
 
       background:
-        rgba(255, 255, 255, 0.72);
+        rgba(
+          255,
+          255,
+          255,
+          0.72
+        );
     }
 
 
@@ -624,13 +836,17 @@
 
     .popup-title {
 
-      font-size: 14px;
+      font-size:
+        14px;
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      margin-bottom: 7px;
+      margin-bottom:
+        7px;
     }
 
 
@@ -640,41 +856,63 @@
 
     .zoom-to-layer-control {
 
-      margin-top: 10px;
+      margin-top:
+        10px;
     }
 
 
     .zoom-to-layer-button-map {
 
-      width: 38px;
-      height: 38px;
+      width:
+        38px;
 
-      background: white;
+      height:
+        38px;
+
+      background:
+        white;
 
       border:
-        2px solid rgba(0, 0, 0, 0.2);
+        2px solid
+        rgba(
+          0,
+          0,
+          0,
+          0.2
+        );
 
-      border-radius: 4px;
+      border-radius:
+        4px;
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      justify-content: center;
+      justify-content:
+        center;
 
-      font-size: 19px;
+      font-size:
+        19px;
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      cursor: pointer;
+      cursor:
+        pointer;
 
       box-shadow:
-        0 1px 5px rgba(0, 0, 0, 0.25);
-
-      transition:
-        0.2s;
+        0 1px 5px
+        rgba(
+          0,
+          0,
+          0,
+          0.25
+        );
     }
 
 
@@ -692,70 +930,102 @@
     .map-legend {
 
       background:
-        rgba(255, 255, 255, 0.95);
+        rgba(
+          255,
+          255,
+          255,
+          0.95
+        );
 
       padding:
         10px 12px;
 
-      border-radius: 6px;
+      border-radius:
+        6px;
 
       border:
-        1px solid #cccccc;
+        1px solid
+        #cccccc;
 
       box-shadow:
-        0 1px 5px rgba(0, 0, 0, 0.25);
+        0 1px 5px
+        rgba(
+          0,
+          0,
+          0,
+          0.25
+        );
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      line-height: 1.5;
+      line-height:
+        1.5;
 
-      color: #333333;
+      color:
+        #333333;
 
-      min-width: 150px;
+      min-width:
+        150px;
 
-      margin-right: 10px;
+      margin-right:
+        10px;
 
-      margin-bottom: 10px;
+      margin-bottom:
+        10px;
     }
 
 
     .map-legend-title {
 
-      font-weight: bold;
+      font-weight:
+        bold;
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      color: #17324d;
+      color:
+        #17324d;
 
-      margin-bottom: 7px;
+      margin-bottom:
+        7px;
 
-      padding-bottom: 4px;
+      padding-bottom:
+        4px;
 
       border-bottom:
-        1px solid #dddddd;
+        1px solid
+        #dddddd;
     }
 
 
     .legend-item {
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 8px;
+      gap:
+        8px;
     }
 
 
     .legend-line-coastline {
 
-      width: 28px;
+      width:
+        28px;
 
-      height: 0;
+      height:
+        0;
 
       border-top:
-        4px solid #00ffff;
+        4px solid
+        #00ffff;
 
-      flex-shrink: 0;
+      flex-shrink:
+        0;
     }
 
 
@@ -767,7 +1037,8 @@
 
       .sidebar {
 
-        width: 280px;
+        width:
+          280px;
       }
 
 
@@ -780,7 +1051,8 @@
 
       #map {
 
-        left: 280px;
+        left:
+          280px;
 
         width:
           calc(100% - 280px);
@@ -992,18 +1264,20 @@
 
 
           <!-- =============================================
-               GARIS PANTAI
+               LAYER
                ============================================= -->
 
           <div class="section-title">
 
-            Garis Pantai
+            Layer
 
           </div>
 
 
           <div class="layer-control-box">
 
+
+            <!-- GARIS PANTAI -->
 
             <label class="layer-item">
 
@@ -1019,6 +1293,24 @@
 
             </label>
 
+
+            <!-- ORTHOPHOTO -->
+
+            <label class="layer-item">
+
+              <input
+                type="checkbox"
+                id="orthoCheck"
+              >
+
+              <span>
+                Orthophoto
+              </span>
+
+            </label>
+
+
+            <!-- AUTO ZOOM -->
 
             <button
               type="button"
@@ -1048,6 +1340,8 @@
           <div class="layer-control-box">
 
 
+            <!-- ESRI WORLD IMAGERY -->
+
             <label class="layer-item">
 
               <input
@@ -1064,20 +1358,7 @@
             </label>
 
 
-            <label class="layer-item">
-
-              <input
-                type="radio"
-                name="basemap"
-                id="googleRadio"
-              >
-
-              <span>
-                Google Satellite
-              </span>
-
-            </label>
-
+            <!-- ESRI WORLD STREET MAP -->
 
             <label class="layer-item">
 
@@ -1089,21 +1370,6 @@
 
               <span>
                 Esri World Street Map
-              </span>
-
-            </label>
-
-
-            <label class="layer-item">
-
-              <input
-                type="radio"
-                name="basemap"
-                id="orthoRadio"
-              >
-
-              <span>
-                Orthophoto
               </span>
 
             </label>
@@ -1262,24 +1528,6 @@
   </script>
 
 
-  <!-- =====================================================
-       GOOGLE MAPS API
-       ===================================================== -->
-
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&v=weekly">
-  </script>
-
-
-  <!-- =====================================================
-       GOOGLE MUTANT
-       ===================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js">
-  </script>
-
-
   <script>
 
 
@@ -1375,6 +1623,12 @@
             'Tampilkan Panel';
 
 
+          sidebarToggle.setAttribute(
+            'aria-label',
+            'Tampilkan Panel'
+          );
+
+
           document
             .getElementById('map')
             .style.left =
@@ -1408,6 +1662,12 @@
 
           sidebarToggle.title =
             'Minimize Panel';
+
+
+          sidebarToggle.setAttribute(
+            'aria-label',
+            'Minimize Panel'
+          );
 
 
           const sidebarWidth =
@@ -1473,7 +1733,7 @@
 
 
     /* =====================================================
-       4. ESRI STREET
+       4. ESRI WORLD STREET MAP
        ===================================================== */
 
     const street =
@@ -1498,38 +1758,27 @@
 
 
     /* =====================================================
-       5. GOOGLE SATELLITE
-       ===================================================== */
+       5. ORTHOPHOTO SEBAGAI LAYER
 
-    const googleSatellite =
-      L.gridLayer.googleMutant({
-
-        type:
-          'satellite',
-
-        minZoom:
-          0,
-
-        maxZoom:
-          23
-
-      });
-
-
-    /* =====================================================
-       6. ORTHOPHOTO
-
-       PENTING:
-       TIDAK MENGGUNAKAN ESRI.
-
-       SUMBER:
-       RAW GITHUB
+       BUKAN BASEMAP
 
        LEVEL:
-       L12-L17
+       L12 - L18
+
+       STRUKTUR:
+       Fix_Ortho_web/
+       └── _alllayers/
+           ├── L12/
+           ├── L13/
+           ├── L14/
+           ├── L15/
+           ├── L16/
+           ├── L17/
+           └── L18/
 
        FORMAT:
-       Rxxxxxxxx/Cxxxxxxxx.png
+       Rxxxxxxxx/
+       Cxxxxxxxx.png
        ===================================================== */
 
     let orthoErrorCount =
@@ -1538,20 +1787,22 @@
 
     const orthoLayer =
       L.tileLayer(
+
         '',
+
         {
 
           minZoom:
             12,
 
           maxZoom:
-            17,
+            18,
 
           minNativeZoom:
             12,
 
           maxNativeZoom:
-            17,
+            18,
 
           tileSize:
             256,
@@ -1562,25 +1813,25 @@
           opacity:
             1,
 
+          zIndex:
+            500,
+
           attribution:
             'Orthophoto'
 
         }
+
       );
 
 
     /* =====================================================
-       7. URL TILE ORTHOPHOTO
+       6. URL TILE ORTHOPHOTO
 
-       CONTOH:
+       RAW GITHUB
 
-       L16
-       R000083f1
-       C0000cad1.png
-
-       HASIL:
-       https://raw.githubusercontent.com/...
-       /L16/R000083f1/C0000cad1.png
+       Lxx/
+       Rxxxxxxxx/
+       Cxxxxxxxx.png
        ===================================================== */
 
     orthoLayer.getTileUrl =
@@ -1600,12 +1851,12 @@
 
 
         /* -----------------------------------------------
-           HANYA L12-L17
+           HANYA L12-L18
            ----------------------------------------------- */
 
         if (
           z < 12 ||
-          z > 17
+          z > 18
         ) {
 
           return '';
@@ -1629,10 +1880,6 @@
 
         /* -----------------------------------------------
            ROW HEX
-
-           Leaflet Y
-           ->
-           ArcMap Rxxxxxxxx
            ----------------------------------------------- */
 
         const rowHex =
@@ -1647,10 +1894,6 @@
 
         /* -----------------------------------------------
            COLUMN HEX
-
-           Leaflet X
-           ->
-           ArcMap Cxxxxxxxx
            ----------------------------------------------- */
 
         const colHex =
@@ -1664,13 +1907,7 @@
 
 
         /* -----------------------------------------------
-           RAW GITHUB URL
-
-           GITHUB USER:
-           rivaldo123230038-cloud
-
-           REPO:
-           WebGIS-Kemker-Kelompok-1
+           URL RAW GITHUB
            ----------------------------------------------- */
 
         const url =
@@ -1687,21 +1924,24 @@
 
           '_alllayers/' +
 
-          'L' + z +
+          'L' +
+          z +
 
           '/' +
 
-          'R' + rowHex +
+          'R' +
+          rowHex +
 
           '/' +
 
-          'C' + colHex +
+          'C' +
+          colHex +
 
           '.png';
 
 
         console.log(
-          'ORTHOPHOTO TILE:',
+          'ORTHOPHOTO REQUEST:',
           url
         );
 
@@ -1712,7 +1952,7 @@
 
 
     /* =====================================================
-       8. DEFAULT BASEMAP
+       7. DEFAULT BASEMAP
        ===================================================== */
 
     satellite.addTo(
@@ -1721,7 +1961,7 @@
 
 
     /* =====================================================
-       9. GARIS PANTAI STYLE
+       8. STYLE GARIS PANTAI
        ===================================================== */
 
     const coastlineStyle = {
@@ -1739,7 +1979,7 @@
 
 
     /* =====================================================
-       10. COASTLINE VARIABLE
+       9. COASTLINE VARIABLE
        ===================================================== */
 
     let coastline =
@@ -1747,7 +1987,7 @@
 
 
     /* =====================================================
-       11. AUTO ZOOM
+       10. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -1805,7 +2045,7 @@
 
 
     /* =====================================================
-       12. AUTO ZOOM BUTTON SIDEBAR
+       11. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -1828,7 +2068,7 @@
 
 
     /* =====================================================
-       13. AUTO ZOOM MAP
+       12. AUTO ZOOM MAP
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -1922,7 +2162,7 @@
 
 
     /* =====================================================
-       14. KONVERSI ESRI JSON
+       13. KONVERSI ESRI JSON
        ===================================================== */
 
     function convertEsriJSON(
@@ -2004,6 +2244,8 @@
 
                 );
 
+
+              /* POPUP */
 
               let html =
 
@@ -2089,6 +2331,8 @@
               );
 
 
+              /* HOVER */
+
               line.on(
 
                 'mouseover',
@@ -2148,7 +2392,7 @@
 
 
     /* =====================================================
-       15. LOAD GP_RT.JSON
+       14. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch(
@@ -2203,6 +2447,8 @@
           zoomToCoastline();
 
 
+          /* CHECKBOX GARIS PANTAI */
+
           document
 
             .getElementById(
@@ -2226,10 +2472,7 @@
                   );
 
 
-                  zoomToCoastline();
-
                 }
-
 
                 else {
 
@@ -2274,7 +2517,7 @@
 
 
     /* =====================================================
-       16. HAPUS SEMUA BASEMAP
+       15. FUNGSI HAPUS BASEMAP
        ===================================================== */
 
     function removeBasemaps() {
@@ -2295,38 +2538,12 @@
 
       if (
         map.hasLayer(
-          googleSatellite
-        )
-      ) {
-
-        map.removeLayer(
-          googleSatellite
-        );
-
-      }
-
-
-      if (
-        map.hasLayer(
           street
         )
       ) {
 
         map.removeLayer(
           street
-        );
-
-      }
-
-
-      if (
-        map.hasLayer(
-          orthoLayer
-        )
-      ) {
-
-        map.removeLayer(
-          orthoLayer
         );
 
       }
@@ -2335,7 +2552,7 @@
 
 
     /* =====================================================
-       17. ESRI
+       16. ESRI WORLD IMAGERY
        ===================================================== */
 
     document
@@ -2364,42 +2581,20 @@
             );
 
 
-          }
+            /*
+             * Orthophoto tetap aktif kalau
+             * checkbox Orthophoto dicentang.
+             */
 
-        }
+            if (
+              document.getElementById(
+                'orthoCheck'
+              ).checked
+            ) {
 
-      );
+              orthoLayer.bringToFront();
 
-
-    /* =====================================================
-       18. GOOGLE
-       ===================================================== */
-
-    document
-
-      .getElementById(
-        'googleRadio'
-      )
-
-      .addEventListener(
-
-        'change',
-
-        function() {
-
-
-          if (
-            this.checked
-          ) {
-
-
-            removeBasemaps();
-
-
-            googleSatellite.addTo(
-              map
-            );
-
+            }
 
           }
 
@@ -2409,7 +2604,7 @@
 
 
     /* =====================================================
-       19. STREET
+       17. ESRI WORLD STREET MAP
        ===================================================== */
 
     document
@@ -2438,6 +2633,20 @@
             );
 
 
+            /*
+             * Orthophoto tetap menjadi layer overlay.
+             */
+
+            if (
+              document.getElementById(
+                'orthoCheck'
+              ).checked
+            ) {
+
+              orthoLayer.bringToFront();
+
+            }
+
           }
 
         }
@@ -2446,20 +2655,23 @@
 
 
     /* =====================================================
-       20. ORTHOPHOTO
+       18. ORTHOPHOTO CHECKBOX
 
-       HANYA ORTHOPHOTO.
+       ORTHOPHOTO = LAYER
 
-       TIDAK ADA:
-       satellite.addTo(map)
-       googleSatellite.addTo(map)
-       street.addTo(map)
+       BUKAN BASEMAP
+
+       Saat ON:
+       Orthophoto ditambahkan di atas basemap.
+
+       Saat OFF:
+       Orthophoto dilepas.
        ===================================================== */
 
     document
 
       .getElementById(
-        'orthoRadio'
+        'orthoCheck'
       )
 
       .addEventListener(
@@ -2469,93 +2681,114 @@
         function() {
 
 
-          if (
-            !this.checked
-          ) {
-
-            return;
-
-          }
-
-
-          /* -----------------------------------------------
-             RESET ERROR
-             ----------------------------------------------- */
-
-          orthoErrorCount =
-            0;
-
-
-          /* -----------------------------------------------
-             HAPUS SEMUA BASEMAP
-             ----------------------------------------------- */
-
-          removeBasemaps();
-
-
-          /* -----------------------------------------------
-             PASANG ORTHOPHOTO SAJA
-             ----------------------------------------------- */
-
-          orthoLayer.addTo(
-            map
-          );
-
-
-          orthoLayer.bringToFront();
-
-
-          /* -----------------------------------------------
-             BATASI ZOOM KE L12-L17
-             ----------------------------------------------- */
+          /* ===============================================
+             ON
+             =============================================== */
 
           if (
-            map.getZoom() < 12
+            this.checked
           ) {
 
 
-            map.setZoom(
-              12
+            orthoErrorCount =
+              0;
+
+
+            /*
+             * Kalau zoom < 12,
+             * naikkan ke L12 agar tile bisa dicoba.
+             */
+
+            if (
+              map.getZoom() < 12
+            ) {
+
+              map.setZoom(
+                12
+              );
+
+            }
+
+
+            /*
+             * Kalau zoom > 18,
+             * turunkan ke L18.
+             */
+
+            if (
+              map.getZoom() > 18
+            ) {
+
+              map.setZoom(
+                18
+              );
+
+            }
+
+
+            /*
+             * Tambahkan Orthophoto
+             */
+
+            orthoLayer.addTo(
+              map
+            );
+
+
+            /*
+             * Pastikan di atas basemap
+             */
+
+            orthoLayer.bringToFront();
+
+
+            console.log(
+              '================================'
+            );
+
+
+            console.log(
+              'ORTHOPHOTO LAYER ON'
+            );
+
+
+            console.log(
+              'LEVEL: L12 - L18'
+            );
+
+
+            console.log(
+              '================================'
             );
 
           }
 
 
-          if (
-            map.getZoom() > 17
-          ) {
+          /* ===============================================
+             OFF
+             =============================================== */
+
+          else {
 
 
-            map.setZoom(
-              17
+            if (
+              map.hasLayer(
+                orthoLayer
+              )
+            ) {
+
+              map.removeLayer(
+                orthoLayer
+              );
+
+            }
+
+
+            console.log(
+              'ORTHOPHOTO LAYER OFF'
             );
 
           }
-
-
-          console.log(
-            '================================='
-          );
-
-
-          console.log(
-            'ORTHOPHOTO AKTIF'
-          );
-
-
-          console.log(
-            'SUMBER: RAW GITHUB'
-          );
-
-
-          console.log(
-            'LEVEL: L12-L17'
-          );
-
-
-          console.log(
-            '================================='
-          );
 
         }
 
@@ -2563,7 +2796,7 @@
 
 
     /* =====================================================
-       21. ORTHOPHOTO TILELOAD
+       19. ORTHOPHOTO TILE LOAD
        ===================================================== */
 
     orthoLayer.on(
@@ -2575,7 +2808,7 @@
 
         console.log(
 
-          'ORTHOPHOTO BERHASIL:',
+          'ORTHOPHOTO TILE BERHASIL:',
 
           e.coords
 
@@ -2587,7 +2820,7 @@
 
 
     /* =====================================================
-       22. ORTHOPHOTO TILEERROR
+       20. ORTHOPHOTO TILE ERROR
        ===================================================== */
 
     orthoLayer.on(
@@ -2602,7 +2835,7 @@
 
         console.error(
 
-          'ORTHOPHOTO GAGAL:',
+          'ORTHOPHOTO TILE GAGAL:',
 
           e.coords
 
@@ -2693,7 +2926,7 @@
 
 
     /* =====================================================
-       23. SCALE BAR
+       21. SCALE BAR
        ===================================================== */
 
     L.control.scale({
@@ -2707,11 +2940,13 @@
       position:
         'bottomleft'
 
-    }).addTo(map);
+    }).addTo(
+      map
+    );
 
 
     /* =====================================================
-       24. LEGENDA
+       22. LEGENDA
        ===================================================== */
 
     const legend =
@@ -2724,7 +2959,7 @@
 
 
     legend.onAdd =
-      function(map) {
+      function() {
 
 
         const div =
@@ -2775,7 +3010,7 @@
 
 
     /* =====================================================
-       25. KOORDINAT KURSOR
+       23. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -2786,22 +3021,28 @@
 
 
         document
+
           .getElementById(
             'latitude'
           )
+
           .innerHTML =
 
-          e.latlng.lat
+          e.latlng
+            .lat
             .toFixed(6);
 
 
         document
+
           .getElementById(
             'longitude'
           )
+
           .innerHTML =
 
-          e.latlng.lng
+          e.latlng
+            .lng
             .toFixed(6);
 
       }
@@ -2810,25 +3051,7 @@
 
 
     /* =====================================================
-       26. BACKGROUND 3 FOTO
-
-       AWAL:
-       FOTO 1 = ATAS
-       FOTO 2 = TENGAH
-       FOTO 3 = BAWAH
-
-       PUTARAN 1:
-       FOTO 2 = ATAS
-       FOTO 3 = TENGAH
-       FOTO 1 = BAWAH
-
-       PUTARAN 2:
-       FOTO 3 = ATAS
-       FOTO 1 = TENGAH
-       FOTO 2 = BAWAH
-
-       PUTARAN 3:
-       KEMBALI AWAL
+       24. BACKGROUND 3 FOTO
        ===================================================== */
 
     const bgSlideshow =
@@ -2860,13 +3083,11 @@
 
 
     /* =====================================================
-       27. ROTASI BACKGROUND
+       25. ROTASI BACKGROUND
        ===================================================== */
 
     function rotateBackgroundPhotos() {
 
-
-      /* FADE OUT */
 
       bgSlideshow.classList.add(
         'changing'
@@ -2883,6 +3104,10 @@
 
           /* ===============================================
              PUTARAN 1
+
+             FOTO 2 = ATAS
+             FOTO 3 = TENGAH
+             FOTO 1 = BAWAH
              =============================================== */
 
           if (
@@ -2906,6 +3131,10 @@
 
           /* ===============================================
              PUTARAN 2
+
+             FOTO 3 = ATAS
+             FOTO 1 = TENGAH
+             FOTO 2 = BAWAH
              =============================================== */
 
           else if (
@@ -2952,8 +3181,6 @@
           }
 
 
-          /* FADE IN */
-
           setTimeout(
 
             function() {
@@ -2979,7 +3206,7 @@
 
 
     /* =====================================================
-       28. INTERVAL BACKGROUND
+       26. INTERVAL BACKGROUND
        ===================================================== */
 
     setInterval(
