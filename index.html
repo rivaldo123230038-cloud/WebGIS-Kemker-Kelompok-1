@@ -13,6 +13,9 @@
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 
+<!-- PROJ4 UNTUK KONVERSI UTM 48S -> GCS WGS 84 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
+
 <style>
 
 /* =========================================================
@@ -835,7 +838,9 @@ body{
 >
 
 
-    <!-- LOGO -->
+    <!-- =================================================
+         LOGO
+    ================================================== -->
 
     <div class="logo-section">
 
@@ -883,12 +888,16 @@ body{
     </div>
 
 
-    <!-- SIDEBAR BODY -->
+    <!-- =================================================
+         SIDEBAR BODY
+    ================================================== -->
 
     <div class="sidebar-body">
 
 
-        <!-- BACKGROUND -->
+        <!-- =================================================
+             BACKGROUND
+        ================================================== -->
 
         <div
             class="background-slideshow"
@@ -929,12 +938,12 @@ body{
         </div>
 
 
-        <!-- CONTENT -->
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
 
         <div class="sidebar-content">
 
-
-            <!-- TITLE -->
 
             <div class="title-section">
 
@@ -952,12 +961,12 @@ body{
             <div class="panel-content">
 
 
-                <!-- LAYER -->
+                <!-- =================================================
+                     LAYER
+                ================================================== -->
 
                 <div class="section-title">
-
                     Layer
-
                 </div>
 
 
@@ -1013,12 +1022,12 @@ body{
                 </div>
 
 
-                <!-- BASEMAP -->
+                <!-- =================================================
+                     BASEMAP
+                ================================================== -->
 
                 <div class="section-title">
-
                     Base Map
-
                 </div>
 
 
@@ -1059,12 +1068,12 @@ body{
                 </div>
 
 
-                <!-- SISTEM KOORDINAT -->
+                <!-- =================================================
+                     SISTEM KOORDINAT
+                ================================================== -->
 
                 <div class="section-title">
-
                     Sistem Koordinat
-
                 </div>
 
 
@@ -1101,12 +1110,12 @@ body{
                 </div>
 
 
-                <!-- KOORDINAT KURSOR -->
+                <!-- =================================================
+                     KOORDINAT KURSOR
+                ================================================== -->
 
                 <div class="section-title">
-
                     Koordinat Kursor
-
                 </div>
 
 
@@ -1138,7 +1147,9 @@ body{
                 </div>
 
 
-                <!-- FOOTER -->
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
 
                 <div class="sidebar-footer">
 
@@ -1157,14 +1168,19 @@ body{
 
             </div>
 
+
         </div>
 
+
     </div>
+
 
 </div>
 
 
-<!-- SIDEBAR TOGGLE -->
+<!-- =====================================================
+     SIDEBAR TOGGLE
+===================================================== -->
 
 <button
     id="sidebarToggle"
@@ -1178,12 +1194,16 @@ body{
 </button>
 
 
-<!-- MAP -->
+<!-- =====================================================
+     MAP
+===================================================== -->
 
 <div id="map"></div>
 
 
-<!-- LEAFLET -->
+<!-- =====================================================
+     LEAFLET
+===================================================== -->
 
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -1191,6 +1211,35 @@ body{
 
 
 <script>
+
+/* =========================================================
+   DEFINISI SISTEM KOORDINAT
+========================================================= */
+
+/*
+   DATA ASLI:
+   UTM Zone 48S
+   WGS 84
+
+   EPSG:32748
+
+   HASIL:
+   GCS WGS 84
+   EPSG:4326
+*/
+
+
+proj4.defs(
+    "EPSG:32748",
+
+    "+proj=utm " +
+    "+zone=48 " +
+    "+south " +
+    "+datum=WGS84 " +
+    "+units=m " +
+    "+no_defs"
+);
+
 
 /* =========================================================
    INITIAL MAP
@@ -1363,7 +1412,7 @@ const satellite =
 
 
 /* =========================================================
-   ESRI STREET MAP
+   ESRI WORLD STREET MAP
 ========================================================= */
 
 const street =
@@ -1397,6 +1446,7 @@ satellite.addTo(
 
 /* =========================================================
    ORTHOPHOTO
+   L12 - L18
 ========================================================= */
 
 const orthoLayer =
@@ -1541,7 +1591,11 @@ orthoLayer.on(
 
 /* =========================================================
    GARIS PANTAI RTK
-   FILE: Garis_Pantai_RTK.geojson
+   DATA ASLI:
+   UTM ZONE 48S / EPSG:32748
+
+   HASIL:
+   GCS WGS84 / EPSG:4326
 ========================================================= */
 
 const coastlineStyle = {
@@ -1570,6 +1624,332 @@ let coastline =
 
 let coastlineReady =
     false;
+
+
+/* =========================================================
+   FUNGSI KONVERSI KOORDINAT UTM 48S -> GCS
+========================================================= */
+
+function convertUTM48SToGCS(
+    coordinates
+){
+
+    if(
+        !Array.isArray(
+            coordinates
+        )
+    ){
+
+        return coordinates;
+
+    }
+
+
+    /*
+       Leaflet / GeoJSON menggunakan:
+
+       [X,Y]
+
+       X = Easting
+       Y = Northing
+
+       UTM 48S:
+       EPSG:32748
+
+       Output:
+       EPSG:4326
+
+       [Longitude, Latitude]
+    */
+
+    if(
+        typeof coordinates[0] === 'number'
+    ){
+
+        const converted =
+            proj4(
+                'EPSG:32748',
+                'EPSG:4326',
+                [
+                    coordinates[0],
+                    coordinates[1]
+                ]
+            );
+
+
+        return [
+
+            converted[0],
+            converted[1]
+
+        ];
+
+    }
+
+
+    return coordinates.map(
+        function(item){
+
+            return convertUTM48SToGCS(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   KONVERSI SELURUH GEOMETRY
+========================================================= */
+
+function convertGeometryUTMToGCS(
+    geometry
+){
+
+    if(
+        !geometry
+    ){
+
+        return geometry;
+
+    }
+
+
+    const convertedGeometry =
+        JSON.parse(
+            JSON.stringify(
+                geometry
+            )
+        );
+
+
+    if(
+        geometry.type ===
+        'Point'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'MultiPoint'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'LineString'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'MultiLineString'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'Polygon'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'MultiPolygon'
+    ){
+
+        convertedGeometry.coordinates =
+
+            convertUTM48SToGCS(
+                geometry.coordinates
+            );
+
+    }
+
+
+    else if(
+        geometry.type ===
+        'GeometryCollection'
+    ){
+
+        convertedGeometry.geometries =
+
+            geometry.geometries.map(
+                function(g){
+
+                    return convertGeometryUTMToGCS(
+                        g
+                    );
+
+                }
+            );
+
+    }
+
+
+    return convertedGeometry;
+
+}
+
+
+/* =========================================================
+   KONVERSI FEATURE
+========================================================= */
+
+function convertFeatureUTMToGCS(
+    feature
+){
+
+    const convertedFeature =
+        JSON.parse(
+            JSON.stringify(
+                feature
+            )
+        );
+
+
+    if(
+        feature.geometry
+    ){
+
+        convertedFeature.geometry =
+
+            convertGeometryUTMToGCS(
+                feature.geometry
+            );
+
+    }
+
+
+    return convertedFeature;
+
+}
+
+
+/* =========================================================
+   KONVERSI GEOJSON
+========================================================= */
+
+function convertGeoJSONUTMToGCS(
+    data
+){
+
+    const converted =
+        JSON.parse(
+            JSON.stringify(
+                data
+            )
+        );
+
+
+    if(
+        data.type ===
+        'FeatureCollection'
+    ){
+
+        converted.features =
+
+            data.features.map(
+                function(feature){
+
+                    return convertFeatureUTMToGCS(
+                        feature
+                    );
+
+                }
+            );
+
+    }
+
+
+    else if(
+        data.type ===
+        'Feature'
+    ){
+
+        return convertFeatureUTMToGCS(
+            data
+        );
+
+    }
+
+
+    else if(
+        data.type ===
+        'GeometryCollection'
+    ){
+
+        converted.geometries =
+
+            data.geometries.map(
+                function(geometry){
+
+                    return convertGeometryUTMToGCS(
+                        geometry
+                    );
+
+                }
+            );
+
+    }
+
+
+    else if(
+        data.coordinates
+    ){
+
+        return convertGeometryUTMToGCS(
+            data
+        );
+
+    }
+
+
+    return converted;
+
+}
 
 
 /* =========================================================
@@ -1682,10 +2062,49 @@ fetch(
 .then(
     function(data){
 
+        console.log(
+            'Data Garis Pantai RTK berhasil dibaca.'
+        );
+
+
+        console.log(
+            'Sistem koordinat input:',
+            'UTM Zone 48S / EPSG:32748'
+        );
+
+
+        console.log(
+            'Konversi:',
+            'EPSG:32748 -> EPSG:4326'
+        );
+
+
+        /*
+           KONVERSI DATA
+           UTM 48S -> GCS WGS 84
+        */
+
+        const dataGCS =
+
+            convertGeoJSONUTMToGCS(
+                data
+            );
+
+
+        console.log(
+            'Data setelah konversi ke GCS:',
+            dataGCS
+        );
+
+
+        /* =============================================
+           TAMPILKAN DI LEAFLET
+        ============================================== */
+
         coastline =
 
             L.geoJSON(
-                data,
+                dataGCS,
                 {
 
                     style:
@@ -1698,6 +2117,8 @@ fetch(
                             layer
                         ){
 
+                            /* POPUP */
+
                             layer.bindPopup(
 
                                 createRTKPopup(
@@ -1706,6 +2127,8 @@ fetch(
 
                             );
 
+
+                            /* HOVER */
 
                             layer.on(
                                 'mouseover',
@@ -1733,6 +2156,8 @@ fetch(
                                 }
                             );
 
+
+                            /* HOVER KELUAR */
 
                             layer.on(
                                 'mouseout',
@@ -1766,6 +2191,11 @@ fetch(
             true;
 
 
+        /*
+           SETELAH DATA SELESAI DIKONVERSI,
+           MAP OTOMATIS ZOOM KE GARIS PANTAI
+        */
+
         setTimeout(
             function(){
 
@@ -1791,7 +2221,7 @@ fetch(
 
             'Garis Pantai RTK tidak dapat dimuat.\n\n' +
 
-            'Pastikan nama file tepat:\n' +
+            'Pastikan file bernama:\n' +
 
             'Garis_Pantai_RTK.geojson'
 
@@ -2063,7 +2493,7 @@ document
 
 
 /* =========================================================
-   REMOVE BASEMAP
+   BASEMAP
 ========================================================= */
 
 function removeBaseMaps(){
@@ -2129,7 +2559,7 @@ document
 
 
 /* =========================================================
-   STREET
+   STREET MAP
 ========================================================= */
 
 document
