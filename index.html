@@ -1,215 +1,1662 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>WEBGIS KELOMPOK 1</title>
+
+
 <!-- =========================================================
-     ORTHOPHOTO ARC GIS EXPLODED CACHE
+     LEAFLET
 ========================================================= -->
 
-<script>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<style>
 
 /* =========================================================
-   ORTHOPHOTO BASE URL
+   GLOBAL
 ========================================================= */
 
-const ORTHO_BASE_URL =
-    'https://cdn.jsdelivr.net/gh/' +
-    'rivaldo123230038-cloud/' +
-    'WebGIS-Kemker-Kelompok-1@main/' +
-    'Fix_Ortho_web/' +
-    '_alllayers/';
+*{
+    box-sizing:border-box;
+}
 
+html,
+body{
 
-/* =========================================================
-   RESOLUSI ARC GIS CACHE
-   SESUAI conf.xml
-========================================================= */
+    width:100%;
+    height:100%;
 
-const ORTHO_RESOLUTIONS = {
+    margin:0;
+    padding:0;
 
-    12:
-        38.21851414258813,
+    overflow:hidden;
 
-    13:
-        19.109257071294063,
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    14:
-        9.554628535647032,
+    background:#eeeeeb;
 
-    15:
-        4.777314267823516,
-
-    16:
-        2.388657133911758,
-
-    17:
-        1.194328566955879,
-
-    18:
-        0.5971642834779395
-
-};
+    color:#20262a;
+}
 
 
 /* =========================================================
-   ORIGIN ARC GIS WEB MERCATOR
+   MAP
 ========================================================= */
 
-const ORTHO_ORIGIN_X =
-    -20037508.342789244;
+#map{
 
-const ORTHO_ORIGIN_Y =
-     20037508.342789244;
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:1;
+}
 
 
 /* =========================================================
-   TILE SIZE
+   SIDEBAR
 ========================================================= */
 
-const ORTHO_TILE_SIZE = 256;
+#sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+    bottom:0;
+
+    width:360px;
+
+    background:#f8f8f6;
+
+    border-right:1px solid #cfcfca;
+
+    box-shadow:
+        4px 0 14px rgba(0,0,0,0.14);
+
+    z-index:2000;
+
+    display:flex;
+    flex-direction:column;
+
+    transition:
+        transform 0.35s ease;
+
+}
 
 
-/* =========================================================
-   KONVERSI LEAFLET TILE
-   KE ARC GIS ROW / COLUMN
-========================================================= */
+/* CLOSE */
 
-function getArcGISTileName(coords){
+#sidebar.closed{
 
-    const z = coords.z;
-
-
-    /*
-       Orthophoto hanya tersedia
-       pada level L12 sampai L18.
-    */
-
-    if(
-        z < 12 ||
-        z > 18
-    ){
-
-        return null;
-
-    }
-
-
-    const resolution =
-        ORTHO_RESOLUTIONS[z];
-
-
-    if(
-        !resolution
-    ){
-
-        return null;
-
-    }
-
-
-    const worldTileSize =
-        ORTHO_TILE_SIZE *
-        resolution;
-
-
-    /* =====================================================
-       COLUMN
-    ===================================================== */
-
-    const col =
-        Math.floor(
-
-            (
-                coords.x *
-                ORTHO_TILE_SIZE *
-                resolution -
-
-                ORTHO_ORIGIN_X
-            )
-            /
-            worldTileSize
-
-        );
-
-
-    /* =====================================================
-       ROW
-    ===================================================== */
-
-    const row =
-        Math.floor(
-
-            (
-                ORTHO_ORIGIN_Y -
-
-                (
-                    coords.y *
-                    ORTHO_TILE_SIZE *
-                    resolution
-                )
-            )
-            /
-            worldTileSize
-
-        );
-
-
-    if(
-        col < 0 ||
-        row < 0
-    ){
-
-        return null;
-
-    }
-
-
-    /* =====================================================
-       UBAH KE HEXADECIMAL 8 DIGIT
-    ===================================================== */
-
-    const rowHex =
-        row
-        .toString(16)
-        .padStart(
-            8,
-            '0'
-        )
-        .toLowerCase();
-
-
-    const colHex =
-        col
-        .toString(16)
-        .padStart(
-            8,
-            '0'
-        )
-        .toLowerCase();
-
-
-    return {
-
-        z:z,
-
-        row:row,
-
-        col:col,
-
-        rowHex:rowHex,
-
-        colHex:colHex
-
-    };
+    transform:
+        translateX(-360px);
 
 }
 
 
 /* =========================================================
-   CUSTOM ORTHOPHOTO GRID LAYER
+   TOP AREA
 ========================================================= */
 
-const orthoLayer =
-    L.gridLayer({
+.sidebar-top{
 
-        tileSize:256,
+    flex:none;
 
+    background:#ffffff;
+
+    border-bottom:1px solid #d6d6d1;
+
+}
+
+
+/* =========================================================
+   LOGOS
+========================================================= */
+
+.logo-row{
+
+    height:78px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    padding:
+        10px 20px;
+
+    gap:20px;
+
+    background:#ffffff;
+
+}
+
+
+.logo-item{
+
+    height:55px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+.logo-item img{
+
+    display:block;
+
+    width:auto;
+    height:auto;
+
+    max-width:62px;
+    max-height:50px;
+
+    object-fit:contain;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title-area{
+
+    position:relative;
+
+    min-height:134px;
+
+    padding:
+        17px 24px 20px;
+
+    background:#23313b;
+
+    color:#ffffff;
+
+    overflow:hidden;
+
+}
+
+
+/* Orange accent */
+
+.title-area::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:6px;
+    height:100%;
+
+    background:#b86443;
+
+}
+
+
+/* bottom line */
+
+.title-area::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:24px;
+    bottom:0;
+
+    width:80px;
+    height:3px;
+
+    background:#c87452;
+
+}
+
+
+/* small title */
+
+.title-kicker{
+
+    margin:0 0 8px;
+
+    font-size:9px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    color:#d6a28e;
+
+    text-transform:uppercase;
+
+}
+
+
+/* main title */
+
+.title-main{
+
+    position:relative;
+
+    z-index:2;
+
+    margin:0;
+
+    width:70%;
+
+    font-size:21px;
+
+    line-height:1.17;
+
+    font-weight:bold;
+
+}
+
+
+/* subtitle */
+
+.title-sub{
+
+    position:relative;
+
+    z-index:2;
+
+    margin:
+        9px 0 0;
+
+    width:73%;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+    color:#d1d7da;
+
+}
+
+
+/* =========================================================
+   TITLE PHOTOS
+========================================================= */
+
+.title-photos{
+
+    position:absolute;
+
+    right:0;
+    top:0;
+
+    width:42%;
+    height:100%;
+
+    overflow:hidden;
+
+    opacity:0.20;
+
+    pointer-events:none;
+
+}
+
+
+.title-photos img{
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:0;
+
+    transition:
+        opacity 1.2s ease;
+
+}
+
+
+.title-photos img.active{
+
+    opacity:1;
+
+}
+
+
+/* =========================================================
+   SIDEBAR CONTENT
+========================================================= */
+
+.sidebar-content{
+
+    flex:1;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding:
+        18px 22px 30px;
+
+}
+
+
+/* scrollbar */
+
+.sidebar-content::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar-content::-webkit-scrollbar-track{
+
+    background:#eeeeeb;
+
+}
+
+.sidebar-content::-webkit-scrollbar-thumb{
+
+    background:#babbb6;
+
+    border-radius:2px;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+
+    margin-bottom:22px;
+
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    min-height:27px;
+
+    margin-bottom:2px;
+
+    border-bottom:
+        1px solid #d4d4ce;
+
+}
+
+
+/* section number */
+
+.section-number{
+
+    width:28px;
+    height:22px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    margin-right:9px;
+
+    background:#23313b;
+
+    color:#ffffff;
+
+    font-size:9px;
+
+    font-weight:bold;
+
+}
+
+
+/* section text */
+
+.section-name{
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+    color:#3d464b;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   LAYER
+========================================================= */
+
+.layer-row{
+
+    min-height:44px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid #e1e1dc;
+
+}
+
+
+.layer-name{
+
+    flex:1;
+
+    font-size:13px;
+
+    color:#30373b;
+
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.switch{
+
+    position:relative;
+
+    width:40px;
+    height:20px;
+
+    display:block;
+
+}
+
+
+.switch input{
+
+    display:none;
+
+}
+
+
+.switch-track{
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:40px;
+    height:20px;
+
+    background:#c3c4bf;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    transition:
+        background .2s ease;
+
+}
+
+
+.switch-track::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:3px;
+    top:3px;
+
+    width:14px;
+    height:14px;
+
+    background:#ffffff;
+
+    border-radius:50%;
+
+    box-shadow:
+        0 1px 2px rgba(0,0,0,.25);
+
+    transition:
+        left .2s ease;
+
+}
+
+
+.switch input:checked
++ .switch-track{
+
+    background:#b76444;
+
+}
+
+
+.switch input:checked
++ .switch-track::after{
+
+    left:23px;
+
+}
+
+
+/* =========================================================
+   AUTO ZOOM
+========================================================= */
+
+.autozoom{
+
+    width:100%;
+
+    height:38px;
+
+    margin-top:10px;
+
+    padding:
+        0 12px;
+
+    background:#ffffff;
+
+    border:
+        1px solid #bfc0bb;
+
+    color:#30393e;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border .2s ease;
+
+}
+
+
+.autozoom:hover{
+
+    background:#23313b;
+
+    color:#ffffff;
+
+    border-color:#23313b;
+
+}
+
+
+.autozoom-arrow{
+
+    float:right;
+
+    font-size:16px;
+
+    color:#b76444;
+
+}
+
+
+.autozoom:hover
+.autozoom-arrow{
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================================
+   BASE MAP
+========================================================= */
+
+.base-row{
+
+    min-height:41px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid #e1e1dc;
+
+}
+
+
+.base-row input{
+
+    appearance:none;
+
+    width:15px;
+    height:15px;
+
+    margin:
+        0 10px 0 2px;
+
+    border:
+        1px solid #969791;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    position:relative;
+
+    cursor:pointer;
+
+}
+
+
+.base-row input:checked{
+
+    border-color:#b76444;
+
+}
+
+
+.base-row input:checked::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:7px;
+    height:7px;
+
+    left:3px;
+    top:3px;
+
+    background:#b76444;
+
+    border-radius:50%;
+
+}
+
+
+.base-row label{
+
+    font-size:12px;
+
+    color:#333b3f;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================================================
+   COORDINATE SYSTEM
+========================================================= */
+
+.info-row{
+
+    min-height:39px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid #e1e1dc;
+
+}
+
+
+.info-label{
+
+    width:105px;
+
+    flex:none;
+
+    font-size:9px;
+
+    color:#85867f;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    font-weight:bold;
+
+}
+
+
+.info-value{
+
+    flex:1;
+
+    font-size:12px;
+
+    color:#343d42;
+
+    font-weight:600;
+
+    line-height:1.4;
+
+}
+
+
+/* =========================================================
+   COORDINATE DISPLAY
+========================================================= */
+
+.coordinate-box{
+
+    margin-top:11px;
+
+    padding:
+        12px 14px;
+
+    background:#23313b;
+
+    border-left:
+        4px solid #b76444;
+
+}
+
+
+.coordinate-label{
+
+    margin-bottom:7px;
+
+    font-size:8px;
+
+    font-weight:bold;
+
+    color:#aab3b8;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+}
+
+
+.coordinate-value{
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:11.5px;
+
+    line-height:1.8;
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    margin-top:23px;
+
+    padding-top:12px;
+
+    border-top:
+        1px solid #d4d4ce;
+
+    font-size:9px;
+
+    line-height:1.6;
+
+    color:#888a85;
+
+}
+
+
+.footer strong{
+
+    color:#4d5559;
+
+}
+
+
+/* =========================================================
+   SIDEBAR TOGGLE
+========================================================= */
+
+#toggleSidebar{
+
+    position:absolute;
+
+    right:-36px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    width:36px;
+    height:70px;
+
+    border:
+        1px solid #c8c8c3;
+
+    border-left:none;
+
+    background:#f8f8f6;
+
+    color:#303a3f;
+
+    font-size:21px;
+
+    cursor:pointer;
+
+    box-shadow:
+        4px 0 10px rgba(0,0,0,.10);
+
+}
+
+
+#toggleSidebar:hover{
+
+    background:#23313b;
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================================
+   MAP TOOL
+========================================================= */
+
+.map-tool{
+
+    position:fixed;
+
+    top:15px;
+    right:15px;
+
+    z-index:1500;
+
+}
+
+
+.map-tool button{
+
+    height:37px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid #c8c8c3;
+
+    background:#ffffff;
+
+    color:#29343a;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 2px 9px rgba(0,0,0,.15);
+
+}
+
+
+.map-tool button:hover{
+
+    background:#23313b;
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================================
+   LEAFLET
+========================================================= */
+
+.leaflet-control-zoom a{
+
+    background:#ffffff !important;
+
+    color:#27343a !important;
+
+    border-color:#d0d0cb !important;
+
+}
+
+
+.leaflet-control-zoom a:hover{
+
+    background:#23313b !important;
+
+    color:#ffffff !important;
+
+}
+
+
+.leaflet-popup-content{
+
+    font-size:11px;
+
+    line-height:1.6;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    #sidebar{
+
+        width:340px;
+
+    }
+
+
+    #sidebar.closed{
+
+        transform:
+            translateX(-340px);
+
+    }
+
+
+    .logo-row{
+
+        gap:12px;
+
+        padding-left:16px;
+        padding-right:16px;
+
+    }
+
+
+    .logo-item img{
+
+        max-width:54px;
+        max-height:45px;
+
+    }
+
+}
+
+
+@media(max-width:420px){
+
+    #sidebar{
+
+        width:
+            calc(100% - 12px);
+
+    }
+
+
+    #sidebar.closed{
+
+        transform:
+            translateX(
+                calc(-100% - 2px)
+            );
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MAP
+========================================================= -->
+
+<div id="map"></div>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside id="sidebar">
+
+
+    <!-- =====================================================
+         TOP
+    ====================================================== -->
+
+    <div class="sidebar-top">
+
+
+        <!-- LOGO -->
+
+        <div class="logo-row">
+
+
+            <div class="logo-item">
+                <img
+                    src="ITERA.png"
+                    alt="ITERA"
+                >
+            </div>
+
+
+            <div class="logo-item">
+                <img
+                    src="Logo_GT.png"
+                    alt="Teknik Geomatika"
+                >
+            </div>
+
+
+            <div class="logo-item">
+                <img
+                    src="LOGO_GT23.png"
+                    alt="GT23"
+                >
+            </div>
+
+
+            <div class="logo-item">
+                <img
+                    src="LOGO_KEMKER.png"
+                    alt="Kemker"
+                >
+            </div>
+
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="title-area">
+
+
+            <div class="title-kicker">
+                WEBGIS KELOMPOK 1
+            </div>
+
+
+            <h1 class="title-main">
+
+                Pemetaan dan
+                Visualisasi Garis Pantai
+
+            </h1>
+
+
+            <p class="title-sub">
+
+                Sistem informasi geografis
+                untuk visualisasi data garis
+                pantai secara interaktif.
+
+            </p>
+
+
+            <!-- FOTO -->
+
+            <div class="title-photos">
+
+
+                <img
+                    src="bcg1.jpeg"
+                    class="active"
+                    alt=""
+                >
+
+
+                <img
+                    src="bcg2.jpeg"
+                    alt=""
+                >
+
+
+                <img
+                    src="bcg3.jpeg"
+                    alt=""
+                >
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <div class="sidebar-content">
+
+
+        <!-- =================================================
+             LAYER
+        ================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <div class="section-name">
+                    Layer
+                </div>
+
+            </div>
+
+
+            <!-- GARIS PANTAI RTK -->
+
+            <div class="layer-row">
+
+
+                <div class="layer-name">
+                    Garis Pantai RTK
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="coastlineCheck"
+                        checked
+                    >
+
+                    <span class="switch-track"></span>
+
+                </label>
+
+
+            </div>
+
+
+            <!-- ORTHOPHOTO -->
+
+            <div class="layer-row">
+
+
+                <div class="layer-name">
+                    Orthophoto
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="orthoCheck"
+                    >
+
+                    <span class="switch-track"></span>
+
+                </label>
+
+
+            </div>
+
+
+            <!-- AUTO ZOOM -->
+
+            <button
+                class="autozoom"
+                id="zoomLayerBtn"
+            >
+
+                Auto Zoom to Layer
+
+                <span class="autozoom-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+        </section>
+
+
+        <!-- =================================================
+             BASEMAP
+        ================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    02
+                </div>
+
+                <div class="section-name">
+                    Base Map
+                </div>
+
+            </div>
+
+
+            <div class="base-row">
+
+
+                <input
+                    type="radio"
+                    name="basemap"
+                    id="satelliteRadio"
+                    checked
+                >
+
+
+                <label
+                    for="satelliteRadio"
+                >
+                    Esri World Imagery
+                </label>
+
+
+            </div>
+
+
+            <div class="base-row">
+
+
+                <input
+                    type="radio"
+                    name="basemap"
+                    id="streetRadio"
+                >
+
+
+                <label
+                    for="streetRadio"
+                >
+                    Esri World Street Map
+                </label>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             SISTEM KOORDINAT
+        ================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    03
+                </div>
+
+                <div class="section-name">
+                    Sistem Koordinat
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Datum
+                </div>
+
+                <div class="info-value">
+                    WGS 84
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Sistem
+                </div>
+
+                <div class="info-value">
+                    Geographic Coordinate System
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    EPSG
+                </div>
+
+                <div class="info-value">
+                    EPSG:4326
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             KOORDINAT KURSOR
+        ================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    04
+                </div>
+
+                <div class="section-name">
+                    Koordinat Kursor
+                </div>
+
+            </div>
+
+
+            <div class="coordinate-box">
+
+
+                <div class="coordinate-label">
+                    Posisi Kursor
+                </div>
+
+
+                <div
+                    id="cursorCoordinates"
+                    class="coordinate-value"
+                >
+
+                    Latitude&nbsp;&nbsp; : -
+
+                    <br>
+
+                    Longitude : -
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="footer">
+
+
+            <strong>
+                WEBGIS KELOMPOK 1
+            </strong>
+
+            <br>
+
+            Program Studi Teknik Geomatika
+
+            <br>
+
+            Institut Teknologi Sumatera
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         SIDEBAR TOGGLE
+    ====================================================== -->
+
+    <button
+        id="toggleSidebar"
+        title="Buka / Tutup Sidebar"
+    >
+        ‹
+    </button>
+
+
+</aside>
+
+
+<!-- =========================================================
+     FLOATING AUTO ZOOM
+========================================================= -->
+
+<div class="map-tool">
+
+    <button id="floatingZoomBtn">
+        Auto Zoom
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     LEAFLET JS
+========================================================= -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+/* =========================================================
+   MAP
+========================================================= */
+
+const map = L.map(
+    'map',
+    {
+        center:[
+            -5.43,
+            105.26
+        ],
+
+        zoom:10,
+
+        zoomControl:true,
+
+        attributionControl:true,
+
+        preferCanvas:true
+    }
+);
+
+
+/* =========================================================
+   ESRI WORLD IMAGERY
+========================================================= */
+
+const satellite = L.tileLayer(
+
+    'https://server.arcgisonline.com/' +
+    'ArcGIS/rest/services/' +
+    'World_Imagery/' +
+    'MapServer/tile/{z}/{y}/{x}',
+
+    {
+        minZoom:0,
+
+        maxZoom:19,
+
+        maxNativeZoom:19,
+
+        attribution:
+            'Tiles © Esri'
+    }
+
+);
+
+
+/* =========================================================
+   ESRI WORLD STREET MAP
+========================================================= */
+
+const street = L.tileLayer(
+
+    'https://server.arcgisonline.com/' +
+    'ArcGIS/rest/services/' +
+    'World_Street_Map/' +
+    'MapServer/tile/{z}/{y}/{x}',
+
+    {
+        minZoom:0,
+
+        maxZoom:19,
+
+        maxNativeZoom:19,
+
+        attribution:
+            'Tiles © Esri'
+    }
+
+);
+
+
+/* DEFAULT */
+
+satellite.addTo(map);
+
+
+/* =========================================================
+   ORTHOPHOTO
+========================================================= */
+
+/*
+   STRUKTUR FILE:
+
+   Fix_Ortho_web/
+   └── _alllayers/
+       ├── L12/
+       ├── L13/
+       ├── L14/
+       ├── L15/
+       ├── L16/
+       ├── L17/
+       └── L18/
+
+   Setiap level:
+
+   Rxxxxxxxx/
+       Cxxxxxxxx.png
+*/
+
+
+/* =========================================================
+   HEX
+========================================================= */
+
+function toHex8(value){
+
+    return Math.abs(value)
+        .toString(16)
+        .toUpperCase()
+        .padStart(8,'0');
+
+}
+
+
+/* =========================================================
+   ORTHO BASE URL
+========================================================= */
+
+const ORTHO_URL =
+
+    'https://raw.githubusercontent.com/' +
+    'rivaldo123230038/' +
+    'WebGIS-Kemker-Kelompok-1/' +
+    'main/' +
+    'Fix_Ortho_web/' +
+    '_alllayers/';
+
+
+/* =========================================================
+   ORTHOPHOTO LAYER
+========================================================= */
+
+const ortho = L.tileLayer(
+
+    '',
+
+    {
         minZoom:12,
 
         maxZoom:18,
@@ -218,236 +1665,785 @@ const orthoLayer =
 
         maxNativeZoom:18,
 
-        noWrap:true,
+        tileSize:256,
 
         opacity:1,
 
+        noWrap:true,
+
+        updateWhenZooming:true,
+
         updateWhenIdle:true,
 
-        keepBuffer:2,
+        keepBuffer:3,
 
         attribution:
-            'Orthophoto'
+            'Orthophoto Kelompok 1'
 
-    });
+    }
+
+);
 
 
 /* =========================================================
-   CREATE ORTHOPHOTO TILE
+   ORTHO TILE URL
 ========================================================= */
 
-orthoLayer.createTile =
-    function(
-        coords,
-        done
-    ){
+ortho.getTileUrl = function(coords){
 
-        const tile =
-            document.createElement(
-                'img'
-            );
+    return (
 
+        ORTHO_URL +
 
-        tile.width =
-            256;
+        'L' +
+        coords.z +
 
-        tile.height =
-            256;
+        '/R' +
+        toHex8(
+            coords.y
+        ) +
 
-        tile.alt =
-            'Orthophoto';
+        '/C' +
+        toHex8(
+            coords.x
+        ) +
 
+        '.png'
 
-        tile.setAttribute(
-            'role',
-            'presentation'
-        );
+    );
+
+};
 
 
-        /* =================================================
-           CARI ROW/COLUMN ARC GIS
-        ================================================= */
+/* =========================================================
+   GARIS PANTAI RTK
+========================================================= */
 
-        const tileInfo =
-            getArcGISTileName(
-                coords
-            );
+let coastline = null;
 
-
-        /*
-           Kalau zoom bukan L12-L18,
-           jangan request tile.
-        */
-
-        if(
-            !tileInfo
-        ){
-
-            setTimeout(
-                function(){
-
-                    done(
-                        null,
-                        tile
-                    );
-
-                },
-                0
-            );
+let coastlineReady = false;
 
 
-            return tile;
+/* =========================================================
+   STYLE GARIS PANTAI
+========================================================= */
 
-        }
+function coastlineStyle(){
 
+    return {
 
-        /* =================================================
-           BENTUK URL TILE
-           
-           L18/Rxxxxxxxx/Cxxxxxxxx.png
-        ================================================= */
+        color:'#00ffff',
 
-        const url =
+        weight:4,
 
-            ORTHO_BASE_URL +
+        opacity:.95,
 
-            'L' +
-            tileInfo.z +
-            '/' +
+        lineCap:'round',
 
-            'R' +
-            tileInfo.rowHex +
-            '/' +
-
-            'C' +
-            tileInfo.colHex +
-            '.png';
-
-
-        console.log(
-            'ORTHO TILE:',
-            url
-        );
-
-
-        /* =================================================
-           TILE BERHASIL
-        ================================================= */
-
-        tile.onload =
-            function(){
-
-                done(
-                    null,
-                    tile
-                );
-
-            };
-
-
-        /* =================================================
-           TILE GAGAL
-        ================================================= */
-
-        tile.onerror =
-            function(){
-
-                console.warn(
-                    'Tile Orthophoto tidak ditemukan:',
-                    url
-                );
-
-
-                /*
-                   Jangan tampilkan
-                   kotak tile error.
-                */
-
-                tile.style.display =
-                    'none';
-
-
-                done(
-                    null,
-                    tile
-                );
-
-            };
-
-
-        tile.src =
-            url;
-
-
-        return tile;
+        lineJoin:'round'
 
     };
 
-
-/* =========================================================
-   ORTHOPHOTO EVENT
-========================================================= */
-
-orthoLayer.on(
-    'loading',
-    function(){
-
-        const loading =
-            document.getElementById(
-                'orthoLoading'
-            );
-
-        if(loading){
-
-            loading.style.display =
-                'block';
-
-        }
-
-    }
-);
-
-
-orthoLayer.on(
-    'load',
-    function(){
-
-        const loading =
-            document.getElementById(
-                'orthoLoading'
-            );
-
-        if(loading){
-
-            loading.style.display =
-                'none';
-
-        }
-
-    }
-);
+}
 
 
 /* =========================================================
-   AKTIFKAN ORTHOPHOTO
+   POPUP ATTRIBUTE
 ========================================================= */
 
-orthoLayer.addTo(
-    map
-);
-
-
-/* =========================================================
-   PASTIKAN GARIS PANTAI DI ATAS ORTHOPHOTO
-========================================================= */
-
-if(
-    typeof coastline !== 'undefined' &&
-    coastline
+function createPopup(
+    properties
 ){
 
-    coastline.bringToFront();
+    if(
+        !properties ||
+        Object.keys(
+            properties
+        ).length === 0
+    ){
+
+        return '';
+
+    }
+
+
+    let html =
+
+        '<div style="' +
+        'font-size:11px;' +
+        'line-height:1.6;' +
+        '">';
+
+
+    Object.keys(
+        properties
+    ).forEach(
+        function(key){
+
+            const value =
+                properties[key];
+
+
+            html +=
+
+                '<b>' +
+                key +
+                '</b>: ' +
+
+                (
+
+                    value === null ||
+                    value === undefined ||
+                    value === ''
+
+                        ? '-'
+
+                        : value
+
+                ) +
+
+                '<br>';
+
+        }
+    );
+
+
+    html += '</div>';
+
+
+    return html;
 
 }
 
+
+/* =========================================================
+   LOAD GARIS PANTAI RTK
+========================================================= */
+
+fetch(
+    'Garis Pantai RTK.geojson'
+)
+
+.then(
+    function(response){
+
+        if(
+            !response.ok
+        ){
+
+            throw new Error(
+                'Garis Pantai RTK.geojson gagal dimuat.'
+            );
+
+        }
+
+
+        return response.json();
+
+    }
+)
+
+.then(
+    function(data){
+
+        /* ================================================
+           GEOJSON
+        ================================================= */
+
+        coastline =
+            L.geoJSON(
+                data,
+
+                {
+
+                    style:
+                        coastlineStyle,
+
+
+                    onEachFeature:
+                        function(
+                            feature,
+                            layer
+                        ){
+
+                            /* POPUP */
+
+                            const popup =
+                                createPopup(
+                                    feature.properties
+                                );
+
+
+                            if(
+                                popup
+                            ){
+
+                                layer.bindPopup(
+                                    popup
+                                );
+
+                            }
+
+
+                            /* HOVER MASUK */
+
+                            layer.on(
+                                'mouseover',
+                                function(){
+
+                                    if(
+                                        this.setStyle
+                                    ){
+
+                                        this.setStyle({
+
+                                            color:
+                                                '#ff5037',
+
+                                            weight:6,
+
+                                            opacity:1
+
+                                        });
+
+                                    }
+
+                                }
+                            );
+
+
+                            /* HOVER KELUAR */
+
+                            layer.on(
+                                'mouseout',
+                                function(){
+
+                                    if(
+                                        this.setStyle
+                                    ){
+
+                                        this.setStyle(
+                                            coastlineStyle()
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        }
+
+                }
+
+            );
+
+
+        /* ADD LAYER */
+
+        coastline.addTo(
+            map
+        );
+
+
+        coastlineReady = true;
+
+
+        /* AUTO ZOOM */
+
+        setTimeout(
+            function(){
+
+                zoomToCoastline();
+
+            },
+            300
+        );
+
+    }
+)
+
+.catch(
+    function(error){
+
+        console.error(
+            'Garis Pantai RTK:',
+            error
+        );
+
+
+        alert(
+
+            'Garis Pantai RTK.geojson ' +
+            'tidak dapat dimuat.\n\n' +
+
+            'Pastikan nama file adalah:\n' +
+
+            'Garis Pantai RTK.geojson'
+
+        );
+
+    }
+);
+
+
+/* =========================================================
+   AUTO ZOOM
+========================================================= */
+
+function zoomToCoastline(){
+
+    if(
+        !coastline ||
+        !coastlineReady
+    ){
+
+        alert(
+            'Garis Pantai RTK masih dimuat...'
+        );
+
+        return;
+
+    }
+
+
+    const bounds =
+        coastline.getBounds();
+
+
+    if(
+        !bounds.isValid()
+    ){
+
+        alert(
+            'Extent garis pantai RTK tidak valid.'
+        );
+
+        return;
+
+    }
+
+
+    map.invalidateSize();
+
+
+    map.fitBounds(
+
+        bounds,
+
+        {
+
+            paddingTopLeft:[
+                60,
+                60
+            ],
+
+            paddingBottomRight:[
+                60,
+                60
+            ],
+
+            maxZoom:17,
+
+            animate:true,
+
+            duration:1.2
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   BUTTON AUTO ZOOM
+========================================================= */
+
+document
+    .getElementById(
+        'zoomLayerBtn'
+    )
+    .addEventListener(
+        'click',
+        zoomToCoastline
+    );
+
+
+document
+    .getElementById(
+        'floatingZoomBtn'
+    )
+    .addEventListener(
+        'click',
+        zoomToCoastline
+    );
+
+
+/* =========================================================
+   GARIS PANTAI TOGGLE
+========================================================= */
+
+document
+    .getElementById(
+        'coastlineCheck'
+    )
+    .addEventListener(
+        'change',
+        function(){
+
+            if(
+                this.checked
+            ){
+
+                if(
+                    coastline &&
+                    !map.hasLayer(
+                        coastline
+                    )
+                ){
+
+                    coastline.addTo(
+                        map
+                    );
+
+                }
+
+            }
+            else{
+
+                if(
+                    coastline &&
+                    map.hasLayer(
+                        coastline
+                    )
+                ){
+
+                    map.removeLayer(
+                        coastline
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ORTHOPHOTO TOGGLE
+========================================================= */
+
+document
+    .getElementById(
+        'orthoCheck'
+    )
+    .addEventListener(
+        'change',
+        function(){
+
+            if(
+                this.checked
+            ){
+
+                if(
+                    !map.hasLayer(
+                        ortho
+                    )
+                ){
+
+                    ortho.addTo(
+                        map
+                    );
+
+                }
+
+
+                /*
+                   Orthophoto mulai tersedia
+                   pada L12.
+                */
+
+                if(
+                    map.getZoom() < 12
+                ){
+
+                    map.setZoom(
+                        12
+                    );
+
+                }
+
+            }
+            else{
+
+                if(
+                    map.hasLayer(
+                        ortho
+                    )
+                ){
+
+                    map.removeLayer(
+                        ortho
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   SATELLITE
+========================================================= */
+
+document
+    .getElementById(
+        'satelliteRadio'
+    )
+    .addEventListener(
+        'change',
+        function(){
+
+            if(
+                this.checked
+            ){
+
+                if(
+                    map.hasLayer(
+                        street
+                    )
+                ){
+
+                    map.removeLayer(
+                        street
+                    );
+
+                }
+
+
+                if(
+                    !map.hasLayer(
+                        satellite
+                    )
+                ){
+
+                    satellite.addTo(
+                        map
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   STREET
+========================================================= */
+
+document
+    .getElementById(
+        'streetRadio'
+    )
+    .addEventListener(
+        'change',
+        function(){
+
+            if(
+                this.checked
+            ){
+
+                if(
+                    map.hasLayer(
+                        satellite
+                    )
+                ){
+
+                    map.removeLayer(
+                        satellite
+                    );
+
+                }
+
+
+                if(
+                    !map.hasLayer(
+                        street
+                    )
+                ){
+
+                    street.addTo(
+                        map
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   CURSOR COORDINATE
+========================================================= */
+
+map.on(
+    'mousemove',
+    function(e){
+
+        const latitude =
+            e.latlng.lat.toFixed(6);
+
+
+        const longitude =
+            e.latlng.lng.toFixed(6);
+
+
+        document
+            .getElementById(
+                'cursorCoordinates'
+            )
+            .innerHTML =
+
+                'Latitude&nbsp;&nbsp; : ' +
+                latitude +
+
+                '<br>' +
+
+                'Longitude : ' +
+                longitude;
+
+    }
+);
+
+
+/* =========================================================
+   SIDEBAR TOGGLE
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        'sidebar'
+    );
+
+
+const toggleButton =
+    document.getElementById(
+        'toggleSidebar'
+    );
+
+
+let sidebarOpen = true;
+
+
+toggleButton.addEventListener(
+    'click',
+    function(){
+
+        sidebarOpen =
+            !sidebarOpen;
+
+
+        if(
+            sidebarOpen
+        ){
+
+            sidebar.classList.remove(
+                'closed'
+            );
+
+
+            toggleButton.innerHTML =
+                '‹';
+
+        }
+        else{
+
+            sidebar.classList.add(
+                'closed'
+            );
+
+
+            toggleButton.innerHTML =
+                '›';
+
+        }
+
+
+        setTimeout(
+            function(){
+
+                map.invalidateSize();
+
+            },
+            400
+        );
+
+    }
+);
+
+
+/* =========================================================
+   FOTO HEADER
+========================================================= */
+
+const photos =
+    document.querySelectorAll(
+        '.title-photos img'
+    );
+
+
+let photoIndex = 0;
+
+
+setInterval(
+    function(){
+
+        photos[
+            photoIndex
+        ].classList.remove(
+            'active'
+        );
+
+
+        photoIndex =
+            (
+                photoIndex + 1
+            ) %
+            photos.length;
+
+
+        photos[
+            photoIndex
+        ].classList.add(
+            'active'
+        );
+
+    },
+    5000
+);
+
+
+/* =========================================================
+   WINDOW RESIZE
+========================================================= */
+
+window.addEventListener(
+    'resize',
+    function(){
+
+        map.invalidateSize();
+
+    }
+);
+
 </script>
+
+</body>
+</html>
