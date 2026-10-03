@@ -23,6 +23,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
 </script>
 
+
 <style>
 
 /* =========================================================
@@ -285,15 +286,19 @@ body {
 
     gap: 8px;
 
-    margin: 8px 0;
+    margin: 9px 0;
 
     font-size: 14px;
+
+    cursor: pointer;
 }
 
 .layer-item input {
 
     width: 16px;
     height: 16px;
+
+    flex-shrink: 0;
 }
 
 
@@ -332,7 +337,6 @@ body {
 
 /* =========================================================
    BASEMAP
-   DIBUAT VERTIKAL KE BAWAH
 ========================================================= */
 
 .basemap-item {
@@ -402,7 +406,7 @@ body {
 
     z-index: 1000;
 
-    min-width: 160px;
+    min-width: 190px;
 
     background: rgba(255,255,255,0.92);
 
@@ -431,6 +435,14 @@ body {
 }
 
 
+.legend-item {
+
+    margin: 7px 0;
+
+    white-space: nowrap;
+}
+
+
 .legend-line {
 
     display: inline-block;
@@ -439,11 +451,22 @@ body {
 
     height: 4px;
 
-    background: cyan;
-
     margin-right: 7px;
 
     vertical-align: middle;
+}
+
+
+.legend-rtk {
+    background: cyan;
+}
+
+.legend-pantai {
+    background: #ffd700;
+}
+
+.legend-digitasi {
+    background: red;
 }
 
 
@@ -471,7 +494,9 @@ body {
 <div id="sidebar">
 
 
-    <!-- LOGO -->
+    <!-- =====================================================
+         LOGO
+    ====================================================== -->
 
     <div class="logo-container">
 
@@ -498,7 +523,9 @@ body {
     </div>
 
 
-    <!-- JUDUL -->
+    <!-- =====================================================
+         JUDUL
+    ====================================================== -->
 
     <div class="title-box">
 
@@ -513,12 +540,16 @@ body {
     </div>
 
 
-    <!-- SIDEBAR BODY -->
+    <!-- =====================================================
+         SIDEBAR BODY
+    ====================================================== -->
 
     <div class="sidebar-body">
 
 
-        <!-- BACKGROUND FOTO -->
+        <!-- =================================================
+             BACKGROUND FOTO
+        ================================================== -->
 
         <div class="background-gallery">
 
@@ -542,6 +573,8 @@ body {
             </h3>
 
 
+            <!-- GARIS PANTAI RTK -->
+
             <label class="layer-item">
 
                 <input
@@ -557,6 +590,40 @@ body {
             </label>
 
 
+            <!-- GARIS PANTAI -->
+
+            <label class="layer-item">
+
+                <input
+                    type="checkbox"
+                    id="pantaiCheck"
+                >
+
+                <span>
+                    Garis Pantai
+                </span>
+
+            </label>
+
+
+            <!-- GARIS PANTAI DIGITASI -->
+
+            <label class="layer-item">
+
+                <input
+                    type="checkbox"
+                    id="digitasiCheck"
+                >
+
+                <span>
+                    Garis Pantai Digitasi
+                </span>
+
+            </label>
+
+
+            <!-- ORTHOPHOTO -->
+
             <label class="layer-item">
 
                 <input
@@ -570,6 +637,8 @@ body {
 
             </label>
 
+
+            <!-- AUTO ZOOM -->
 
             <button id="autoZoomBtn">
 
@@ -732,11 +801,30 @@ body {
         LEGENDA
     </div>
 
-    <div>
 
-        <span class="legend-line"></span>
+    <div class="legend-item">
+
+        <span class="legend-line legend-rtk"></span>
 
         Garis Pantai RTK
+
+    </div>
+
+
+    <div class="legend-item">
+
+        <span class="legend-line legend-pantai"></span>
+
+        Garis Pantai
+
+    </div>
+
+
+    <div class="legend-item">
+
+        <span class="legend-line legend-digitasi"></span>
+
+        Garis Pantai Digitasi
 
     </div>
 
@@ -901,7 +989,7 @@ const map =
 
 
 /* =========================================================
-   ESRI WORLD IMAGERY
+   BASEMAP ESRI WORLD IMAGERY
 ========================================================= */
 
 const esriImagery =
@@ -927,7 +1015,7 @@ const esriImagery =
 
 
 /* =========================================================
-   ESRI WORLD STREET MAP
+   BASEMAP ESRI WORLD STREET MAP
 ========================================================= */
 
 const esriStreet =
@@ -956,18 +1044,78 @@ const esriStreet =
    BASEMAP DEFAULT
 ========================================================= */
 
-esriImagery.addTo(map);
+esriImagery.addTo(
+    map
+);
 
 
 /* =========================================================
-   GARIS PANTAI
+   VARIABLE LAYER
 ========================================================= */
 
-let coastlineLayer;
+let coastlineLayer = null;
+
+let pantaiLayer = null;
+
+let digitasiLayer = null;
 
 
 /* =========================================================
-   LOAD GEOJSON
+   STYLE GARIS PANTAI RTK
+========================================================= */
+
+const styleRTK = {
+
+    color:
+        "cyan",
+
+    weight:
+        3,
+
+    opacity:
+        1
+
+};
+
+
+/* =========================================================
+   STYLE GARIS PANTAI
+========================================================= */
+
+const stylePantai = {
+
+    color:
+        "#ffd700",
+
+    weight:
+        3,
+
+    opacity:
+        1
+
+};
+
+
+/* =========================================================
+   STYLE GARIS PANTAI DIGITASI
+========================================================= */
+
+const styleDigitasi = {
+
+    color:
+        "red",
+
+    weight:
+        3,
+
+    opacity:
+        1
+
+};
+
+
+/* =========================================================
+   LOAD GARIS PANTAI RTK
 ========================================================= */
 
 fetch(
@@ -975,8 +1123,19 @@ fetch(
 )
 
 .then(
-    response =>
-        response.json()
+    response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Garis_Pantai_RTK.geojson tidak ditemukan"
+            );
+
+        }
+
+        return response.json();
+
+    }
 )
 
 .then(
@@ -995,22 +1154,7 @@ fetch(
                 {
 
                     style:
-                        function() {
-
-                            return {
-
-                                color:
-                                    "cyan",
-
-                                weight:
-                                    3,
-
-                                opacity:
-                                    1
-
-                            };
-
-                        },
+                        styleRTK,
 
 
                     onEachFeature:
@@ -1021,12 +1165,15 @@ fetch(
 
 
                             if (
-                                feature.properties
+                                feature.properties &&
+                                Object.keys(
+                                    feature.properties
+                                ).length > 0
                             ) {
 
                                 let popup =
                                     "<b>" +
-                                    "Informasi Garis Pantai" +
+                                    "Informasi Garis Pantai RTK" +
                                     "</b><br><br>";
 
 
@@ -1086,12 +1233,14 @@ fetch(
 
                 }
             )
-            .addTo(map);
+            .addTo(
+                map
+            );
 
 
-        /* =================================================
-           AUTO ZOOM AWAL
-        ================================================= */
+        /*
+         * AUTO ZOOM AWAL
+         */
 
         if (
             coastlineLayer &&
@@ -1117,7 +1266,274 @@ fetch(
     function(error) {
 
         console.error(
-            "Gagal memuat Garis_Pantai_RTK.geojson:",
+            error
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LOAD GARIS PANTAI
+========================================================= */
+
+fetch(
+    "Garis_Pantai.geojson"
+)
+
+.then(
+    response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Garis_Pantai.geojson tidak ditemukan"
+            );
+
+        }
+
+        return response.json();
+
+    }
+)
+
+.then(
+    function(data) {
+
+
+        const convertedData =
+            convertGeoJSONToWGS84(
+                data
+            );
+
+
+        pantaiLayer =
+            L.geoJSON(
+                convertedData,
+                {
+
+                    style:
+                        stylePantai,
+
+
+                    onEachFeature:
+                        function(
+                            feature,
+                            layer
+                        ) {
+
+
+                            if (
+                                feature.properties &&
+                                Object.keys(
+                                    feature.properties
+                                ).length > 0
+                            ) {
+
+                                let popup =
+                                    "<b>" +
+                                    "Informasi Garis Pantai" +
+                                    "</b><br><br>";
+
+
+                                Object.keys(
+                                    feature.properties
+                                ).forEach(
+                                    function(key) {
+
+                                        popup +=
+                                            "<b>" +
+                                            key +
+                                            ":</b> " +
+                                            feature.properties[key] +
+                                            "<br>";
+
+                                    }
+                                );
+
+
+                                layer.bindPopup(
+                                    popup
+                                );
+
+                            }
+
+
+                            layer.on(
+                                "mouseover",
+                                function() {
+
+                                    this.setStyle({
+
+                                        color:
+                                            "orange",
+
+                                        weight:
+                                            4
+
+                                    });
+
+                                }
+                            );
+
+
+                            layer.on(
+                                "mouseout",
+                                function() {
+
+                                    pantaiLayer.resetStyle(
+                                        this
+                                    );
+
+                                }
+                            );
+
+                        }
+
+                }
+            );
+
+    }
+)
+
+.catch(
+    function(error) {
+
+        console.error(
+            error
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LOAD GARIS PANTAI DIGITASI
+========================================================= */
+
+fetch(
+    "Garis_Pantai_Digitasi.geojson"
+)
+
+.then(
+    response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Garis_Pantai_Digitasi.geojson tidak ditemukan"
+            );
+
+        }
+
+        return response.json();
+
+    }
+)
+
+.then(
+    function(data) {
+
+
+        const convertedData =
+            convertGeoJSONToWGS84(
+                data
+            );
+
+
+        digitasiLayer =
+            L.geoJSON(
+                convertedData,
+                {
+
+                    style:
+                        styleDigitasi,
+
+
+                    onEachFeature:
+                        function(
+                            feature,
+                            layer
+                        ) {
+
+
+                            if (
+                                feature.properties &&
+                                Object.keys(
+                                    feature.properties
+                                ).length > 0
+                            ) {
+
+                                let popup =
+                                    "<b>" +
+                                    "Informasi Garis Pantai Digitasi" +
+                                    "</b><br><br>";
+
+
+                                Object.keys(
+                                    feature.properties
+                                ).forEach(
+                                    function(key) {
+
+                                        popup +=
+                                            "<b>" +
+                                            key +
+                                            ":</b> " +
+                                            feature.properties[key] +
+                                            "<br>";
+
+                                    }
+                                );
+
+
+                                layer.bindPopup(
+                                    popup
+                                );
+
+                            }
+
+
+                            layer.on(
+                                "mouseover",
+                                function() {
+
+                                    this.setStyle({
+
+                                        color:
+                                            "#ff6600",
+
+                                        weight:
+                                            4
+
+                                    });
+
+                                }
+                            );
+
+
+                            layer.on(
+                                "mouseout",
+                                function() {
+
+                                    digitasiLayer.resetStyle(
+                                        this
+                                    );
+
+                                }
+                            );
+
+                        }
+
+                }
+            );
+
+    }
+)
+
+.catch(
+    function(error) {
+
+        console.error(
             error
         );
 
@@ -1355,7 +1771,7 @@ const ortho =
 
 
 /* =========================================================
-   CHECKBOX GARIS PANTAI
+   CHECKBOX GARIS PANTAI RTK
 ========================================================= */
 
 document
@@ -1397,6 +1813,112 @@ document
 
                     map.removeLayer(
                         coastlineLayer
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   CHECKBOX GARIS PANTAI
+========================================================= */
+
+document
+    .getElementById(
+        "pantaiCheck"
+    )
+    .addEventListener(
+        "change",
+        function() {
+
+
+            if (
+                this.checked
+            ) {
+
+                if (
+                    pantaiLayer &&
+                    !map.hasLayer(
+                        pantaiLayer
+                    )
+                ) {
+
+                    pantaiLayer.addTo(
+                        map
+                    );
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    pantaiLayer &&
+                    map.hasLayer(
+                        pantaiLayer
+                    )
+                ) {
+
+                    map.removeLayer(
+                        pantaiLayer
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   CHECKBOX GARIS PANTAI DIGITASI
+========================================================= */
+
+document
+    .getElementById(
+        "digitasiCheck"
+    )
+    .addEventListener(
+        "change",
+        function() {
+
+
+            if (
+                this.checked
+            ) {
+
+                if (
+                    digitasiLayer &&
+                    !map.hasLayer(
+                        digitasiLayer
+                    )
+                ) {
+
+                    digitasiLayer.addTo(
+                        map
+                    );
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    digitasiLayer &&
+                    map.hasLayer(
+                        digitasiLayer
+                    )
+                ) {
+
+                    map.removeLayer(
+                        digitasiLayer
                     );
 
                 }
@@ -1567,6 +2089,11 @@ document
         function() {
 
 
+            /*
+             * Jika ada garis pantai RTK,
+             * gunakan sebagai acuan utama.
+             */
+
             if (
                 coastlineLayer &&
                 coastlineLayer.getBounds().isValid()
@@ -1574,6 +2101,56 @@ document
 
                 map.fitBounds(
                     coastlineLayer.getBounds(),
+                    {
+                        padding: [
+                            20,
+                            20
+                        ]
+                    }
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Jika RTK belum tersedia,
+             * coba Garis Pantai.
+             */
+
+            if (
+                pantaiLayer &&
+                pantaiLayer.getBounds().isValid()
+            ) {
+
+                map.fitBounds(
+                    pantaiLayer.getBounds(),
+                    {
+                        padding: [
+                            20,
+                            20
+                        ]
+                    }
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Jika masih belum tersedia,
+             * gunakan digitasi.
+             */
+
+            if (
+                digitasiLayer &&
+                digitasiLayer.getBounds().isValid()
+            ) {
+
+                map.fitBounds(
+                    digitasiLayer.getBounds(),
                     {
                         padding: [
                             20,
@@ -1691,7 +2268,9 @@ L.control.scale({
     metric:
         true
 
-}).addTo(map);
+}).addTo(
+    map
+);
 
 
 /* =========================================================
