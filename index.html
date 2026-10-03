@@ -23,7 +23,6 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
 </script>
 
-
 <style>
 
 /* =========================================================
@@ -461,7 +460,9 @@ body {
 <div id="sidebar">
 
 
-    <!-- LOGO -->
+    <!-- =====================================================
+         LOGO
+    ====================================================== -->
 
     <div class="logo-container">
 
@@ -476,7 +477,9 @@ body {
     </div>
 
 
-    <!-- JUDUL -->
+    <!-- =====================================================
+         JUDUL
+    ====================================================== -->
 
     <div class="title-box">
 
@@ -491,11 +494,15 @@ body {
     </div>
 
 
+    <!-- =====================================================
+         SIDEBAR BODY
+    ====================================================== -->
+
     <div class="sidebar-body">
 
 
         <!-- =================================================
-             BACKGROUND FOTO
+             3 FOTO BACKGROUND
         ================================================== -->
 
         <div class="background-gallery">
@@ -733,7 +740,7 @@ function UTM48SToWGS84(
 
 
 /* =========================================================
-   KONVERSI GEOJSON
+   KONVERSI KOORDINAT GEOJSON
 ========================================================= */
 
 function convertCoordinates(coords) {
@@ -759,18 +766,21 @@ function convertCoordinates(coords) {
     return coords.map(
         convertCoordinates
     );
+
 }
 
 
 /* =========================================================
-   KONVERSI GEOJSON WGS84
+   KONVERSI GEOJSON
 ========================================================= */
 
 function convertGeoJSONToWGS84(geojson) {
 
     const converted =
         JSON.parse(
-            JSON.stringify(geojson)
+            JSON.stringify(
+                geojson
+            )
         );
 
 
@@ -801,7 +811,8 @@ function convertGeoJSONToWGS84(geojson) {
 
 
     else if (
-        converted.type === "Feature"
+        converted.type ===
+        "Feature"
     ) {
 
         if (
@@ -820,6 +831,7 @@ function convertGeoJSONToWGS84(geojson) {
 
 
     return converted;
+
 }
 
 
@@ -874,7 +886,7 @@ const esriImagery =
 
 
 /* =========================================================
-   ESRI WORLD STREET
+   ESRI WORLD STREET MAP
 ========================================================= */
 
 const esriStreet =
@@ -898,7 +910,7 @@ const esriStreet =
 
 
 /* =========================================================
-   DEFAULT BASEMAP
+   BASEMAP DEFAULT
 ========================================================= */
 
 esriImagery.addTo(map);
@@ -912,7 +924,7 @@ let coastlineLayer;
 
 
 /* =========================================================
-   LOAD GARIS PANTAI
+   LOAD GEOJSON
 ========================================================= */
 
 fetch(
@@ -920,11 +932,13 @@ fetch(
 )
 
 .then(
-    response => response.json()
+    response =>
+        response.json()
 )
 
 .then(
     function(data) {
+
 
         const convertedData =
             convertGeoJSONToWGS84(
@@ -1032,6 +1046,10 @@ fetch(
             .addTo(map);
 
 
+        /* =============================================
+           AUTO ZOOM AWAL
+        ============================================== */
+
         if (
             coastlineLayer &&
             coastlineLayer.getBounds().isValid()
@@ -1079,12 +1097,6 @@ const ORTHO_URL_BASE =
 
 /* =========================================================
    HEX LOWERCASE
-   PENTING:
-   FILE KAMU:
-   R00020fc4
-   C00032b4a.png
-
-   JADI HARUS LOWERCASE
 ========================================================= */
 
 function toHex(num) {
@@ -1101,7 +1113,7 @@ function toHex(num) {
 
 
 /* =========================================================
-   ORTHOPHOTO GRID
+   CUSTOM ORTHOPHOTO GRID
 ========================================================= */
 
 const OrthoGridLayer =
@@ -1138,16 +1150,17 @@ const OrthoGridLayer =
 
 
                 /*
-                 * DATA NATIVE SAMPAI L18
+                 * TILE NATIVE DATA:
+                 * L11 - L18
                  */
 
-                const nativeZoom = 18;
+                const nativeZoom =
+                    18;
 
 
                 /*
-                 * Kalau user berada
-                 * di atas L18,
-                 * kita ambil tile L18
+                 * Gunakan zoom maksimal
+                 * yang tersedia.
                  */
 
                 const sourceZoom =
@@ -1165,9 +1178,9 @@ const OrthoGridLayer =
 
 
                 /*
-                 * Kalau z > 18,
-                 * ubah koordinat tile
-                 * ke indeks L18.
+                 * Jika zoom > L18,
+                 * turunkan indeks tile
+                 * ke L18.
                  */
 
                 if (
@@ -1177,23 +1190,30 @@ const OrthoGridLayer =
                     const factor =
                         Math.pow(
                             2,
-                            coords.z - nativeZoom
+                            coords.z -
+                            nativeZoom
                         );
 
 
                     sourceX =
                         Math.floor(
-                            coords.x / factor
+                            coords.x /
+                            factor
                         );
 
 
                     sourceY =
                         Math.floor(
-                            coords.y / factor
+                            coords.y /
+                            factor
                         );
 
                 }
 
+
+                /*
+                 * HEX LOWERCASE
+                 */
 
                 const rowHex =
                     toHex(
@@ -1206,6 +1226,12 @@ const OrthoGridLayer =
                         sourceX
                     );
 
+
+                /*
+                 * URL TILE
+                 *
+                 * L18/Rxxxxxxxx/Cxxxxxxxx.png
+                 */
 
                 const url =
                     ORTHO_URL_BASE +
@@ -1236,10 +1262,7 @@ const OrthoGridLayer =
 
 
                         /*
-                         * Kalau sedang
-                         * zoom > L18,
-                         * tile L18 akan
-                         * diperbesar.
+                         * Tampilkan tile
                          */
 
                         ctx.drawImage(
@@ -1263,7 +1286,8 @@ const OrthoGridLayer =
                     function() {
 
                         console.warn(
-                            "ORTHO 404:",
+                            "Tile orthophoto " +
+                            "tidak ditemukan:",
                             url
                         );
 
@@ -1330,6 +1354,7 @@ document
         "change",
         function() {
 
+
             if (
                 this.checked
             ) {
@@ -1382,6 +1407,7 @@ document
         "change",
         function() {
 
+
             if (
                 this.checked
             ) {
@@ -1432,6 +1458,7 @@ document
         "change",
         function() {
 
+
             if (
                 this.checked
             ) {
@@ -1478,6 +1505,7 @@ document
     .addEventListener(
         "change",
         function() {
+
 
             if (
                 this.checked
@@ -1526,6 +1554,7 @@ document
         "click",
         function() {
 
+
             if (
                 coastlineLayer &&
                 coastlineLayer.getBounds().isValid()
@@ -1554,6 +1583,7 @@ document
 map.on(
     "mousemove",
     function(e) {
+
 
         document
             .getElementById(
@@ -1598,6 +1628,7 @@ toggleSidebar
     .addEventListener(
         "click",
         function() {
+
 
             sidebar.classList.toggle(
                 "closed"
@@ -1652,7 +1683,7 @@ L.control.scale({
 
 
 /* =========================================================
-   ANIMASI 3 BACKGROUND
+   ANIMASI 3 FOTO BACKGROUND
 ========================================================= */
 
 const backgroundGallery =
@@ -1670,6 +1701,7 @@ let photoOrder = [
 
 function rotateBackgroundPhotos() {
 
+
     photoOrder.unshift(
         photoOrder.pop()
     );
@@ -1684,6 +1716,7 @@ function rotateBackgroundPhotos() {
 
     photos.forEach(
         function(photo) {
+
 
             const className =
                 Array.from(
@@ -1709,6 +1742,10 @@ function rotateBackgroundPhotos() {
 
 }
 
+
+/* =========================================================
+   GANTI POSISI SETIAP 4 DETIK
+========================================================= */
 
 setInterval(
     rotateBackgroundPhotos,
