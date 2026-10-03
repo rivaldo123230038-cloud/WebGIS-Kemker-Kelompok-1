@@ -185,7 +185,7 @@ body {
 
 
 /* =========================================================
-   3 FOTO BACKGROUND
+   BACKGROUND 3 FOTO
 ========================================================= */
 
 .background-gallery {
@@ -325,23 +325,32 @@ body {
 }
 
 #autoZoomBtn:hover {
+
     background: #125ea8;
 }
 
 
 /* =========================================================
    BASEMAP
+   DIBUAT VERTIKAL KE BAWAH
 ========================================================= */
 
 .basemap-item {
 
-    margin: 8px 0;
+    display: block;
+
+    margin: 10px 0;
 
     font-size: 14px;
+
+    cursor: pointer;
 }
 
 .basemap-item input {
+
     margin-right: 7px;
+
+    vertical-align: middle;
 }
 
 
@@ -357,6 +366,7 @@ body {
 }
 
 .coordinate-value {
+
     font-weight: bold;
 }
 
@@ -442,6 +452,7 @@ body {
 ========================================================= */
 
 .leaflet-control-scale {
+
     margin-bottom: 15px !important;
 }
 
@@ -460,26 +471,34 @@ body {
 <div id="sidebar">
 
 
-    <!-- =====================================================
-         LOGO
-    ====================================================== -->
+    <!-- LOGO -->
 
     <div class="logo-container">
 
-        <img src="ITERA.png" alt="ITERA">
+        <img
+            src="ITERA.png"
+            alt="ITERA"
+        >
 
-        <img src="Logo_GT.png" alt="Geomatics">
+        <img
+            src="Logo_GT.png"
+            alt="Geomatics"
+        >
 
-        <img src="LOGO_GT23.png" alt="GT23">
+        <img
+            src="LOGO_GT23.png"
+            alt="GT23"
+        >
 
-        <img src="LOGO_KEMKER.png" alt="Kemker">
+        <img
+            src="LOGO_KEMKER.png"
+            alt="Kemker"
+        >
 
     </div>
 
 
-    <!-- =====================================================
-         JUDUL
-    ====================================================== -->
+    <!-- JUDUL -->
 
     <div class="title-box">
 
@@ -494,16 +513,12 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         SIDEBAR BODY
-    ====================================================== -->
+    <!-- SIDEBAR BODY -->
 
     <div class="sidebar-body">
 
 
-        <!-- =================================================
-             3 FOTO BACKGROUND
-        ================================================== -->
+        <!-- BACKGROUND FOTO -->
 
         <div class="background-gallery">
 
@@ -619,44 +634,66 @@ body {
             <div class="coordinate-box">
 
                 <div>
+
                     Sistem Koordinat:
+
                     <span class="coordinate-value">
                         WGS 84
                     </span>
+
                 </div>
 
+
                 <div>
+
                     Sistem Referensi:
+
                     <span class="coordinate-value">
                         Geographic Coordinate System
                     </span>
+
                 </div>
 
+
                 <div>
+
                     EPSG:
+
                     <span class="coordinate-value">
                         4326
                     </span>
+
                 </div>
+
 
                 <br>
 
-                <div>
-                    Latitude:
-                    <span
-                        id="latitudeValue"
-                        class="coordinate-value">
-                        -
-                    </span>
-                </div>
 
                 <div>
-                    Longitude:
+
+                    Latitude:
+
                     <span
-                        id="longitudeValue"
-                        class="coordinate-value">
+                        id="latitudeValue"
+                        class="coordinate-value"
+                    >
                         -
                     </span>
+
+                </div>
+
+
+                <div>
+
+                    Longitude:
+
+                    <span
+                        id="longitudeValue"
+                        class="coordinate-value"
+                    >
+                        -
+                    </span>
+
                 </div>
 
             </div>
@@ -740,7 +777,7 @@ function UTM48SToWGS84(
 
 
 /* =========================================================
-   KONVERSI KOORDINAT GEOJSON
+   KONVERSI COORDINATES GEOJSON
 ========================================================= */
 
 function convertCoordinates(coords) {
@@ -774,7 +811,9 @@ function convertCoordinates(coords) {
    KONVERSI GEOJSON
 ========================================================= */
 
-function convertGeoJSONToWGS84(geojson) {
+function convertGeoJSONToWGS84(
+    geojson
+) {
 
     const converted =
         JSON.parse(
@@ -876,9 +915,11 @@ const esriImagery =
             attribution:
                 "Tiles © Esri",
 
-            minZoom: 0,
+            minZoom:
+                0,
 
-            maxZoom: 24
+            maxZoom:
+                24
 
         }
 
@@ -900,9 +941,11 @@ const esriStreet =
             attribution:
                 "Tiles © Esri",
 
-            minZoom: 0,
+            minZoom:
+                0,
 
-            maxZoom: 24
+            maxZoom:
+                24
 
         }
 
@@ -1046,9 +1089,9 @@ fetch(
             .addTo(map);
 
 
-        /* =============================================
+        /* =================================================
            AUTO ZOOM AWAL
-        ============================================== */
+        ================================================= */
 
         if (
             coastlineLayer &&
@@ -1149,19 +1192,9 @@ const OrthoGridLayer =
                     );
 
 
-                /*
-                 * TILE NATIVE DATA:
-                 * L11 - L18
-                 */
-
                 const nativeZoom =
                     18;
 
-
-                /*
-                 * Gunakan zoom maksimal
-                 * yang tersedia.
-                 */
 
                 const sourceZoom =
                     Math.min(
@@ -1176,12 +1209,6 @@ const OrthoGridLayer =
                 let sourceY =
                     coords.y;
 
-
-                /*
-                 * Jika zoom > L18,
-                 * turunkan indeks tile
-                 * ke L18.
-                 */
 
                 if (
                     coords.z > nativeZoom
@@ -1211,10 +1238,6 @@ const OrthoGridLayer =
                 }
 
 
-                /*
-                 * HEX LOWERCASE
-                 */
-
                 const rowHex =
                     toHex(
                         sourceY
@@ -1226,12 +1249,6 @@ const OrthoGridLayer =
                         sourceX
                     );
 
-
-                /*
-                 * URL TILE
-                 *
-                 * L18/Rxxxxxxxx/Cxxxxxxxx.png
-                 */
 
                 const url =
                     ORTHO_URL_BASE +
@@ -1261,10 +1278,6 @@ const OrthoGridLayer =
                     function() {
 
 
-                        /*
-                         * Tampilkan tile
-                         */
-
                         ctx.drawImage(
                             img,
                             0,
@@ -1286,8 +1299,7 @@ const OrthoGridLayer =
                     function() {
 
                         console.warn(
-                            "Tile orthophoto " +
-                            "tidak ditemukan:",
+                            "ORTHO 404:",
                             url
                         );
 
@@ -1683,7 +1695,7 @@ L.control.scale({
 
 
 /* =========================================================
-   ANIMASI 3 FOTO BACKGROUND
+   ROTASI 3 BACKGROUND
 ========================================================= */
 
 const backgroundGallery =
@@ -1744,7 +1756,7 @@ function rotateBackgroundPhotos() {
 
 
 /* =========================================================
-   GANTI POSISI SETIAP 4 DETIK
+   ROTASI SETIAP 4 DETIK
 ========================================================= */
 
 setInterval(
