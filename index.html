@@ -70,11 +70,8 @@ body {
     transition: left 0.3s ease;
 }
 
-
 #sidebar.closed {
-
     left: -350px;
-
 }
 
 
@@ -111,11 +108,8 @@ body {
     transition: left 0.3s ease;
 }
 
-
 #sidebar.closed + #toggleSidebar {
-
     left: 0;
-
 }
 
 
@@ -133,7 +127,6 @@ body {
     gap: 10px;
 
     padding: 18px 10px 10px 10px;
-
 }
 
 .logo-container img {
@@ -143,7 +136,6 @@ body {
     width: auto;
 
     object-fit: contain;
-
 }
 
 
@@ -156,7 +148,6 @@ body {
     text-align: center;
 
     padding: 5px 15px 15px 15px;
-
 }
 
 .title-box h1 {
@@ -166,7 +157,6 @@ body {
     font-size: 22px;
 
     font-weight: bold;
-
 }
 
 .title-box p {
@@ -176,12 +166,11 @@ body {
     font-size: 13px;
 
     color: #555;
-
 }
 
 
 /* =========================================================
-   AREA BACKGROUND FOTO
+   SIDEBAR BODY
 ========================================================= */
 
 .sidebar-body {
@@ -193,7 +182,6 @@ body {
     padding: 10px 15px 30px 15px;
 
     overflow: hidden;
-
 }
 
 
@@ -218,7 +206,6 @@ body {
     z-index: -2;
 
     overflow: hidden;
-
 }
 
 
@@ -236,35 +223,20 @@ body {
 
     opacity: 0.20;
 
-    transition:
-        transform 1.2s ease-in-out;
-
+    transition: all 1.2s ease-in-out;
 }
 
 
-/* =========================================================
-   FOTO
-========================================================= */
-
 .photo-1 {
-
-    background-image:
-        url("bcg1.jpeg");
-
+    background-image: url("bcg1.jpeg");
 }
 
 .photo-2 {
-
-    background-image:
-        url("bcg2.jpeg");
-
+    background-image: url("bcg2.jpeg");
 }
 
 .photo-3 {
-
-    background-image:
-        url("bcg3.jpeg");
-
+    background-image: url("bcg3.jpeg");
 }
 
 
@@ -278,8 +250,7 @@ body {
 
     z-index: 5;
 
-    background:
-        rgba(255,255,255,0.88);
+    background: rgba(255,255,255,0.88);
 
     border-radius: 8px;
 
@@ -289,7 +260,6 @@ body {
 
     box-shadow:
         0 2px 6px rgba(0,0,0,0.12);
-
 }
 
 .panel h3 {
@@ -301,7 +271,6 @@ body {
     border-bottom: 1px solid #ddd;
 
     padding-bottom: 7px;
-
 }
 
 
@@ -320,14 +289,12 @@ body {
     margin: 8px 0;
 
     font-size: 14px;
-
 }
 
 .layer-item input {
 
     width: 16px;
     height: 16px;
-
 }
 
 
@@ -356,13 +323,10 @@ body {
     font-weight: bold;
 
     cursor: pointer;
-
 }
 
 #autoZoomBtn:hover {
-
     background: #125ea8;
-
 }
 
 
@@ -375,13 +339,10 @@ body {
     margin: 8px 0;
 
     font-size: 14px;
-
 }
 
 .basemap-item input {
-
     margin-right: 7px;
-
 }
 
 
@@ -394,13 +355,10 @@ body {
     font-size: 13px;
 
     line-height: 1.6;
-
 }
 
 .coordinate-value {
-
     font-weight: bold;
-
 }
 
 
@@ -418,7 +376,6 @@ body {
     left: 350px;
 
     z-index: 1;
-
 }
 
 
@@ -438,8 +395,7 @@ body {
 
     min-width: 160px;
 
-    background:
-        rgba(255,255,255,0.92);
+    background: rgba(255,255,255,0.92);
 
     padding: 10px 14px;
 
@@ -449,7 +405,6 @@ body {
         0 2px 6px rgba(0,0,0,0.25);
 
     font-size: 13px;
-
 }
 
 
@@ -464,7 +419,6 @@ body {
     padding-bottom: 6px;
 
     border-bottom: 1px solid #ddd;
-
 }
 
 
@@ -481,18 +435,15 @@ body {
     margin-right: 7px;
 
     vertical-align: middle;
-
 }
 
 
 /* =========================================================
-   LEAFLET SCALE
+   SCALE
 ========================================================= */
 
 .leaflet-control-scale {
-
     margin-bottom: 15px !important;
-
 }
 
 </style>
@@ -510,9 +461,7 @@ body {
 <div id="sidebar">
 
 
-    <!-- =====================================================
-         LOGO
-    ====================================================== -->
+    <!-- LOGO -->
 
     <div class="logo-container">
 
@@ -527,9 +476,7 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         JUDUL
-    ====================================================== -->
+    <!-- JUDUL -->
 
     <div class="title-box">
 
@@ -544,30 +491,20 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         SIDEBAR BODY
-    ====================================================== -->
-
     <div class="sidebar-body">
 
 
         <!-- =================================================
-             3 BACKGROUND FOTO
+             BACKGROUND FOTO
         ================================================== -->
 
         <div class="background-gallery">
 
-            <div
-                class="background-photo photo-1">
-            </div>
+            <div class="background-photo photo-1"></div>
 
-            <div
-                class="background-photo photo-2">
-            </div>
+            <div class="background-photo photo-2"></div>
 
-            <div
-                class="background-photo photo-3">
-            </div>
+            <div class="background-photo photo-3"></div>
 
         </div>
 
@@ -621,7 +558,6 @@ body {
         </div>
 
 
-
         <!-- =================================================
              BASEMAP
         ================================================== -->
@@ -660,7 +596,6 @@ body {
             </label>
 
         </div>
-
 
 
         <!-- =================================================
@@ -727,17 +662,13 @@ body {
 </div>
 
 
-
 <!-- =========================================================
      TOGGLE SIDEBAR
 ========================================================= -->
 
 <button id="toggleSidebar">
-
     ❮
-
 </button>
-
 
 
 <!-- =========================================================
@@ -747,7 +678,6 @@ body {
 <div id="map"></div>
 
 
-
 <!-- =========================================================
      LEGENDA
 ========================================================= -->
@@ -755,9 +685,7 @@ body {
 <div class="map-legend">
 
     <div class="map-legend-heading">
-
         LEGENDA
-
     </div>
 
     <div>
@@ -771,11 +699,10 @@ body {
 </div>
 
 
-
 <script>
 
 /* =========================================================
-   PROYEKSI UTM 48S
+   PROYEKSI UTM ZONE 48S
 ========================================================= */
 
 proj4.defs(
@@ -806,12 +733,10 @@ function UTM48SToWGS84(
 
 
 /* =========================================================
-   KONVERSI KOORDINAT GEOJSON
+   KONVERSI GEOJSON
 ========================================================= */
 
-function convertCoordinates(
-    coords
-) {
+function convertCoordinates(coords) {
 
     if (
         typeof coords[0] === "number" &&
@@ -831,27 +756,21 @@ function convertCoordinates(
 
     }
 
-
     return coords.map(
         convertCoordinates
     );
-
 }
 
 
 /* =========================================================
-   KONVERSI GEOJSON
+   KONVERSI GEOJSON WGS84
 ========================================================= */
 
-function convertGeoJSONToWGS84(
-    geojson
-) {
+function convertGeoJSONToWGS84(geojson) {
 
     const converted =
         JSON.parse(
-            JSON.stringify(
-                geojson
-            )
+            JSON.stringify(geojson)
         );
 
 
@@ -882,8 +801,7 @@ function convertGeoJSONToWGS84(
 
 
     else if (
-        converted.type ===
-        "Feature"
+        converted.type === "Feature"
     ) {
 
         if (
@@ -902,7 +820,6 @@ function convertGeoJSONToWGS84(
 
 
     return converted;
-
 }
 
 
@@ -957,7 +874,7 @@ const esriImagery =
 
 
 /* =========================================================
-   ESRI STREET
+   ESRI WORLD STREET
 ========================================================= */
 
 const esriStreet =
@@ -995,7 +912,7 @@ let coastlineLayer;
 
 
 /* =========================================================
-   LOAD GEOJSON
+   LOAD GARIS PANTAI
 ========================================================= */
 
 fetch(
@@ -1003,13 +920,11 @@ fetch(
 )
 
 .then(
-    response =>
-        response.json()
+    response => response.json()
 )
 
 .then(
     function(data) {
-
 
         const convertedData =
             convertGeoJSONToWGS84(
@@ -1117,10 +1032,6 @@ fetch(
             .addTo(map);
 
 
-        /* =============================================
-           AUTO ZOOM AWAL
-        ============================================== */
-
         if (
             coastlineLayer &&
             coastlineLayer.getBounds().isValid()
@@ -1145,8 +1056,7 @@ fetch(
     function(error) {
 
         console.error(
-            "Gagal memuat " +
-            "Garis_Pantai_RTK.geojson:",
+            "Gagal memuat Garis_Pantai_RTK.geojson:",
             error
         );
 
@@ -1168,14 +1078,20 @@ const ORTHO_URL_BASE =
 
 
 /* =========================================================
-   KONVERSI ANGKA KE HEX
+   HEX LOWERCASE
+   PENTING:
+   FILE KAMU:
+   R00020fc4
+   C00032b4a.png
+
+   JADI HARUS LOWERCASE
 ========================================================= */
 
 function toHex(num) {
 
     return num
         .toString(16)
-        .toUpperCase()
+        .toLowerCase()
         .padStart(
             8,
             "0"
@@ -1185,7 +1101,7 @@ function toHex(num) {
 
 
 /* =========================================================
-   CUSTOM ORTHOPHOTO GRID
+   ORTHOPHOTO GRID
 ========================================================= */
 
 const OrthoGridLayer =
@@ -1221,32 +1137,73 @@ const OrthoGridLayer =
                     );
 
 
-                const img =
-                    new Image();
+                /*
+                 * DATA NATIVE SAMPAI L18
+                 */
+
+                const nativeZoom = 18;
 
 
-                img.crossOrigin =
-                    "anonymous";
+                /*
+                 * Kalau user berada
+                 * di atas L18,
+                 * kita ambil tile L18
+                 */
+
+                const sourceZoom =
+                    Math.min(
+                        coords.z,
+                        nativeZoom
+                    );
 
 
-                const z =
-                    coords.z;
+                let sourceX =
+                    coords.x;
 
-                const row =
+                let sourceY =
                     coords.y;
 
-                const col =
-                    coords.x;
+
+                /*
+                 * Kalau z > 18,
+                 * ubah koordinat tile
+                 * ke indeks L18.
+                 */
+
+                if (
+                    coords.z > nativeZoom
+                ) {
+
+                    const factor =
+                        Math.pow(
+                            2,
+                            coords.z - nativeZoom
+                        );
+
+
+                    sourceX =
+                        Math.floor(
+                            coords.x / factor
+                        );
+
+
+                    sourceY =
+                        Math.floor(
+                            coords.y / factor
+                        );
+
+                }
 
 
                 const rowHex =
                     toHex(
-                        row
+                        sourceY
                     );
+
 
                 const colHex =
                     toHex(
-                        col
+                        sourceX
                     );
 
 
@@ -1254,7 +1211,7 @@ const OrthoGridLayer =
                     ORTHO_URL_BASE +
 
                     "L" +
-                    z +
+                    sourceZoom +
                     "/" +
 
                     "R" +
@@ -1266,9 +1223,24 @@ const OrthoGridLayer =
                     ".png";
 
 
+                const img =
+                    new Image();
+
+
+                img.crossOrigin =
+                    "anonymous";
+
+
                 img.onload =
                     function() {
 
+
+                        /*
+                         * Kalau sedang
+                         * zoom > L18,
+                         * tile L18 akan
+                         * diperbesar.
+                         */
 
                         ctx.drawImage(
                             img,
@@ -1277,70 +1249,6 @@ const OrthoGridLayer =
                             size.x,
                             size.y
                         );
-
-
-                        try {
-
-                            const imageData =
-                                ctx.getImageData(
-                                    0,
-                                    0,
-                                    size.x,
-                                    size.y
-                                );
-
-
-                            const data =
-                                imageData.data;
-
-
-                            for (
-                                let i = 0;
-                                i < data.length;
-                                i += 4
-                            ) {
-
-                                const r =
-                                    data[i];
-
-                                const g =
-                                    data[i + 1];
-
-                                const b =
-                                    data[i + 2];
-
-
-                                if (
-                                    r > 245 &&
-                                    g > 245 &&
-                                    b > 245
-                                ) {
-
-                                    data[i + 3] =
-                                        0;
-
-                                }
-
-                            }
-
-
-                            ctx.putImageData(
-                                imageData,
-                                0,
-                                0
-                            );
-
-                        }
-
-                        catch(e) {
-
-                            console.warn(
-                                "Transparansi " +
-                                "orthophoto:",
-                                e
-                            );
-
-                        }
 
 
                         done(
@@ -1355,8 +1263,7 @@ const OrthoGridLayer =
                     function() {
 
                         console.warn(
-                            "Tile orthophoto " +
-                            "tidak ditemukan:",
+                            "ORTHO 404:",
                             url
                         );
 
@@ -1400,7 +1307,7 @@ const ortho =
             true,
 
         minZoom:
-            12,
+            11,
 
         maxNativeZoom:
             18,
@@ -1422,7 +1329,6 @@ document
     .addEventListener(
         "change",
         function() {
-
 
             if (
                 this.checked
@@ -1476,7 +1382,6 @@ document
         "change",
         function() {
 
-
             if (
                 this.checked
             ) {
@@ -1527,7 +1432,6 @@ document
         "change",
         function() {
 
-
             if (
                 this.checked
             ) {
@@ -1575,7 +1479,6 @@ document
         "change",
         function() {
 
-
             if (
                 this.checked
             ) {
@@ -1622,7 +1525,6 @@ document
     .addEventListener(
         "click",
         function() {
-
 
             if (
                 coastlineLayer &&
@@ -1697,7 +1599,6 @@ toggleSidebar
         "click",
         function() {
 
-
             sidebar.classList.toggle(
                 "closed"
             );
@@ -1751,7 +1652,7 @@ L.control.scale({
 
 
 /* =========================================================
-   ANIMASI 3 FOTO
+   ANIMASI 3 BACKGROUND
 ========================================================= */
 
 const backgroundGallery =
@@ -1769,7 +1670,6 @@ let photoOrder = [
 
 function rotateBackgroundPhotos() {
 
-
     photoOrder.unshift(
         photoOrder.pop()
     );
@@ -1785,19 +1685,23 @@ function rotateBackgroundPhotos() {
     photos.forEach(
         function(photo) {
 
+            const className =
+                Array.from(
+                    photo.classList
+                ).find(
+                    function(c) {
+
+                        return c.indexOf(
+                            "photo-"
+                        ) === 0;
+
+                    }
+                );
+
+
             photo.style.order =
                 photoOrder.indexOf(
-                    Array.from(
-                        photo.classList
-                    ).find(
-                        function(c) {
-
-                            return c.indexOf(
-                                "photo-"
-                            ) === 0;
-
-                        }
-                    )
+                    className
                 );
 
         }
@@ -1805,10 +1709,6 @@ function rotateBackgroundPhotos() {
 
 }
 
-
-/* =========================================================
-   JALANKAN SETIAP 4 DETIK
-========================================================= */
 
 setInterval(
     rotateBackgroundPhotos,
