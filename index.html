@@ -170,7 +170,6 @@
 
     /* =====================================================
        LOGO
-       PUTIH POLOS
        ===================================================== */
 
     .logo-section {
@@ -353,7 +352,7 @@
 
 
     /* =====================================================
-       TITLE ORANGE BATA
+       TITLE
        ===================================================== */
 
     .title-section {
@@ -911,12 +910,9 @@
   >
 
 
-    <!-- =================================================
-         LOGO
-         ================================================= -->
+    <!-- LOGO -->
 
     <div class="logo-section">
-
 
       <div class="logo-item">
 
@@ -957,18 +953,15 @@
 
       </div>
 
-
     </div>
 
 
-    <!-- =================================================
-         SIDEBAR BODY
-         ================================================= -->
+    <!-- SIDEBAR BODY -->
 
     <div class="sidebar-body">
 
 
-      <!-- BACKGROUND 3 FOTO -->
+      <!-- BACKGROUND -->
 
       <div
         class="background-slideshow"
@@ -1123,7 +1116,6 @@
 
             </label>
 
-
           </div>
 
 
@@ -1138,11 +1130,9 @@
 
           <div class="coordinate-box">
 
-
             <div class="label">
               Datum
             </div>
-
 
             <div class="value">
               WGS 84
@@ -1153,7 +1143,6 @@
               Sistem Koordinat
             </div>
 
-
             <div class="value">
               Geographic Coordinate System
             </div>
@@ -1163,11 +1152,9 @@
               EPSG
             </div>
 
-
             <div class="value">
               EPSG:4326
             </div>
-
 
           </div>
 
@@ -1249,11 +1236,125 @@
   </script>
 
 
+  <!-- =====================================================
+       PROJ4JS
+       =====================================================
+
+       Digunakan untuk transformasi:
+
+       EPSG:32748
+       WGS 84 / UTM Zone 48S
+
+              ↓
+
+       EPSG:4326
+       WGS 84 Geographic
+       Longitude / Latitude
+
+       ===================================================== -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
+  </script>
+
+
   <script>
 
 
     /* =====================================================
-       1. MAP
+       1. DEFINISI SISTEM KOORDINAT
+       =====================================================
+
+       SUMBER:
+       EPSG:32748
+       WGS 84 / UTM Zone 48S
+
+       HASIL:
+       EPSG:4326
+       WGS 84 Geographic
+       ===================================================== */
+
+
+    proj4.defs(
+
+      "EPSG:32748",
+
+      "+proj=utm " +
+      "+zone=48 " +
+      "+south " +
+      "+datum=WGS84 " +
+      "+units=m " +
+      "+no_defs"
+
+    );
+
+
+    proj4.defs(
+
+      "EPSG:4326",
+
+      "+proj=longlat " +
+      "+datum=WGS84 " +
+      "+no_defs"
+
+    );
+
+
+    /* =====================================================
+       2. FUNGSI KONVERSI UTM 48S -> WGS84
+       =====================================================
+
+       INPUT:
+
+       [Easting, Northing]
+
+       CONTOH:
+
+       [500000, 9400000]
+
+       OUTPUT:
+
+       [Longitude, Latitude]
+
+       ===================================================== */
+
+    function UTM48SToWGS84(
+      easting,
+      northing
+    ) {
+
+
+      const result =
+
+        proj4(
+
+          "EPSG:32748",
+
+          "EPSG:4326",
+
+          [
+
+            Number(easting),
+
+            Number(northing)
+
+          ]
+
+        );
+
+
+      return [
+
+        result[0],
+        result[1]
+
+      ];
+
+    }
+
+
+    /* =====================================================
+       3. MAP
        ===================================================== */
 
     const map =
@@ -1293,7 +1394,7 @@
 
 
     /* =====================================================
-       2. SIDEBAR
+       4. SIDEBAR
        ===================================================== */
 
     const sidebar =
@@ -1404,7 +1505,7 @@
 
 
     /* =====================================================
-       3. BASEMAP
+       5. BASEMAP
        ===================================================== */
 
     const satellite =
@@ -1450,16 +1551,7 @@
 
 
     /* =====================================================
-       4. ORTHOPHOTO
-       =====================================================
-
-       L12 - L18
-
-       PUTIH/HITAM YANG TERHUBUNG KE TEPI
-       DIBUAT TRANSPARAN.
-
-       METODE:
-       IMAGE -> CANVAS -> FLOOD FILL
+       6. ORTHOPHOTO
        ===================================================== */
 
     const ORTHO_URL_BASE =
@@ -1540,10 +1632,6 @@
               );
 
 
-            /* -------------------------------------------
-               CEK LEVEL
-               ------------------------------------------- */
-
             if (
 
               coords.z < 12 ||
@@ -1567,10 +1655,6 @@
             }
 
 
-            /* -------------------------------------------
-               ROW / COLUMN HEX
-               ------------------------------------------- */
-
             const rowHex =
               Math.floor(coords.y)
                 .toString(16)
@@ -1590,10 +1674,6 @@
                 )
                 .toLowerCase();
 
-
-            /* -------------------------------------------
-               URL
-               ------------------------------------------- */
 
             const url =
 
@@ -1615,16 +1695,6 @@
               '.png';
 
 
-            console.log(
-              'ORTHOPHOTO:',
-              url
-            );
-
-
-            /* -------------------------------------------
-               LOAD IMAGE
-               ------------------------------------------- */
-
             const img =
               new Image();
 
@@ -1639,10 +1709,6 @@
 
                 try {
 
-
-                  /* =====================================
-                     GAMBAR KE CANVAS
-                     ===================================== */
 
                   ctx.clearRect(
                     0,
@@ -1664,10 +1730,6 @@
 
                   );
 
-
-                  /* =====================================
-                     BACA PIXEL
-                     ===================================== */
 
                   const imageData =
                     ctx.getImageData(
@@ -1691,11 +1753,6 @@
                   const height =
                     256;
 
-
-                  /*
-                   * Flood fill menggunakan array
-                   * visited.
-                   */
 
                   const visited =
                     new Uint8Array(
@@ -1727,10 +1784,6 @@
                   let queueEnd =
                     0;
 
-
-                  /* =====================================
-                     FUNGSI CEK BACKGROUND
-                     ===================================== */
 
                   function isBackground(
                     x,
@@ -1799,19 +1852,11 @@
                       0.114 * b;
 
 
-                    /*
-                     * PUTIH / ABU-ABU TERANG
-                     */
-
                     const white =
 
                       brightness >= 235 &&
                       chroma <= 35;
 
-
-                    /*
-                     * HITAM / ABU-ABU GELAP
-                     */
 
                     const black =
 
@@ -1826,10 +1871,6 @@
 
                   }
 
-
-                  /* =====================================
-                     FUNGSI MASUKKAN QUEUE
-                     ===================================== */
 
                   function addPixel(
                     x,
@@ -1893,10 +1934,6 @@
                   }
 
 
-                  /* =====================================
-                     AMBIL BACKGROUND DARI SEMUA TEPI
-                     ===================================== */
-
                   for (
                     let x = 0;
                     x < width;
@@ -1939,10 +1976,6 @@
                   }
 
 
-                  /* =====================================
-                     FLOOD FILL
-                     ===================================== */
-
                   while (
                     queueStart <
                     queueEnd
@@ -1972,18 +2005,10 @@
                       ) * 4;
 
 
-                    /*
-                     * Jadikan transparan
-                     */
-
                     data[
                       pixelIndex + 3
                     ] = 0;
 
-
-                    /*
-                     * ATAS
-                     */
 
                     addPixel(
                       x,
@@ -1991,29 +2016,17 @@
                     );
 
 
-                    /*
-                     * BAWAH
-                     */
-
                     addPixel(
                       x,
                       y + 1
                     );
 
 
-                    /*
-                     * KIRI
-                     */
-
                     addPixel(
                       x - 1,
                       y
                     );
 
-
-                    /*
-                     * KANAN
-                     */
 
                     addPixel(
                       x + 1,
@@ -2022,10 +2035,6 @@
 
                   }
 
-
-                  /* =====================================
-                     SIMPAN HASIL
-                     ===================================== */
 
                   ctx.putImageData(
 
@@ -2036,10 +2045,6 @@
 
                   );
 
-
-                  /* =====================================
-                     TILE SELESAI
-                     ===================================== */
 
                   done(
                     null,
@@ -2061,11 +2066,6 @@
 
                   );
 
-
-                  /*
-                   * Kalau Canvas gagal,
-                   * tetap tampilkan tile asli.
-                   */
 
                   ctx.clearRect(
                     0,
@@ -2098,10 +2098,6 @@
               };
 
 
-            /* -------------------------------------------
-               ERROR IMAGE
-               ------------------------------------------- */
-
             img.onerror =
               function(error) {
 
@@ -2125,10 +2121,6 @@
               };
 
 
-            /* -------------------------------------------
-               MULAI DOWNLOAD
-               ------------------------------------------- */
-
             img.src =
               url;
 
@@ -2141,7 +2133,7 @@
 
 
     /* =====================================================
-       5. DEFAULT BASEMAP
+       7. DEFAULT BASEMAP
        ===================================================== */
 
     satellite.addTo(
@@ -2150,7 +2142,7 @@
 
 
     /* =====================================================
-       6. ORTHOPHOTO DEFAULT ON
+       8. ORTHOPHOTO DEFAULT ON
        ===================================================== */
 
     const ortho =
@@ -2163,7 +2155,7 @@
 
 
     /* =====================================================
-       7. GARIS PANTAI
+       9. GARIS PANTAI
        ===================================================== */
 
     const coastlineStyle = {
@@ -2189,7 +2181,7 @@
 
 
     /* =====================================================
-       8. AUTO ZOOM
+       10. AUTO ZOOM
        ===================================================== */
 
     function zoomToCoastline() {
@@ -2262,7 +2254,7 @@
 
 
     /* =====================================================
-       9. AUTO ZOOM SIDEBAR
+       11. AUTO ZOOM SIDEBAR
        ===================================================== */
 
     document
@@ -2285,7 +2277,7 @@
 
 
     /* =====================================================
-       10. AUTO ZOOM MAP
+       12. AUTO ZOOM MAP
        ===================================================== */
 
     const ZoomToLayerControl =
@@ -2377,7 +2369,29 @@
 
 
     /* =====================================================
-       11. KONVERSI GP_RT.JSON
+       13. KONVERSI GP_RT.JSON
+       =====================================================
+
+       PERUBAHAN UTAMA ADA DI SINI.
+
+       DATA ASLI:
+
+       EPSG:32748
+       UTM Zone 48S
+
+       koordinat:
+
+       [Easting, Northing]
+
+       DIUBAH MENJADI:
+
+       EPSG:4326
+       WGS84 Geographic
+
+       koordinat:
+
+       [Longitude, Latitude]
+
        ===================================================== */
 
     function convertEsriJSON(
@@ -2393,6 +2407,10 @@
         !data ||
         !data.features
       ) {
+
+        console.error(
+          'GP_RT.json tidak memiliki features.'
+        );
 
         return group;
 
@@ -2416,6 +2434,10 @@
             !geometry.paths
           ) {
 
+            console.warn(
+              'Feature tidak memiliki paths.'
+            );
+
             return;
 
           }
@@ -2426,16 +2448,68 @@
             function(path) {
 
 
+              /*
+               * =================================================
+               * KONVERSI SETIAP TITIK
+               * =================================================
+               */
+
               const latLngs =
+
                 path.map(
 
                   function(point) {
 
+
+                    /*
+                     * DATA ASLI
+                     *
+                     * point[0] = EASTING
+                     * point[1] = NORTHING
+                     */
+
+                    const easting =
+                      Number(
+                        point[0]
+                      );
+
+
+                    const northing =
+                      Number(
+                        point[1]
+                      );
+
+
+                    /*
+                     * UTM 48S -> WGS84
+                     */
+
+                    const converted =
+
+                      UTM48SToWGS84(
+
+                        easting,
+
+                        northing
+
+                      );
+
+
+                    /*
+                     * PROJ4 menghasilkan:
+                     *
+                     * [Longitude, Latitude]
+                     *
+                     * Leaflet membutuhkan:
+                     *
+                     * [Latitude, Longitude]
+                     */
+
                     return [
 
-                      point[1],
+                      converted[1],
 
-                      point[0]
+                      converted[0]
 
                     ];
 
@@ -2443,6 +2517,25 @@
 
                 );
 
+
+              /* =================================================
+                 CEK HASIL KONVERSI
+                 ================================================= */
+
+              if (
+                latLngs.length === 0
+              ) {
+
+                return;
+
+              }
+
+
+              /*
+               * =================================================
+               * BUAT GARIS
+               * =================================================
+               */
 
               const line =
                 L.polyline(
@@ -2453,6 +2546,10 @@
 
                 );
 
+
+              /* =================================================
+                 POPUP
+                 ================================================= */
 
               let html =
 
@@ -2532,6 +2629,10 @@
               );
 
 
+              /* =================================================
+                 HIGHLIGHT
+                 ================================================= */
+
               line.on(
 
                 'mouseover',
@@ -2587,7 +2688,7 @@
 
 
     /* =====================================================
-       12. LOAD GP_RT.JSON
+       14. LOAD GP_RT.JSON
        ===================================================== */
 
     fetch(
@@ -2622,6 +2723,23 @@
         function(data) {
 
 
+          console.log(
+            'GP_RT.json berhasil dibaca.'
+          );
+
+
+          console.log(
+            'Sistem koordinat sumber:',
+            'EPSG:32748 - WGS 84 / UTM Zone 48S'
+          );
+
+
+          console.log(
+            'Sistem koordinat tampilan:',
+            'EPSG:4326 - WGS 84 Geographic'
+          );
+
+
           coastline =
             convertEsriJSON(
               data
@@ -2636,6 +2754,15 @@
           coastlineReady =
             true;
 
+
+          console.log(
+            'Garis pantai berhasil dikonversi dari UTM 48S ke WGS84.'
+          );
+
+
+          /*
+           * Auto zoom setelah layer selesai.
+           */
 
           setTimeout(
 
@@ -2659,6 +2786,7 @@
 
 
           console.error(
+            'ERROR GP_RT:',
             error
           );
 
@@ -2668,7 +2796,7 @@
 
 
           alert(
-            'GP_RT.json gagal dimuat.'
+            'GP_RT.json gagal dimuat atau koordinat tidak dapat dikonversi.'
           );
 
         }
@@ -2677,7 +2805,7 @@
 
 
     /* =====================================================
-       13. CHECKBOX GARIS PANTAI
+       15. CHECKBOX GARIS PANTAI
        ===================================================== */
 
     document
@@ -2691,6 +2819,20 @@
         'change',
 
         function() {
+
+
+          /*
+           * Mencegah error jika layer
+           * belum selesai dimuat.
+           */
+
+          if (
+            !coastline
+          ) {
+
+            return;
+
+          }
 
 
           if (
@@ -2719,7 +2861,7 @@
 
 
     /* =====================================================
-       14. BASEMAP SWITCHER
+       16. BASEMAP SWITCHER
        ===================================================== */
 
     function removeBasemaps() {
@@ -2846,7 +2988,7 @@
 
 
     /* =====================================================
-       15. ORTHOPHOTO CHECKBOX
+       17. ORTHOPHOTO CHECKBOX
        ===================================================== */
 
     document
@@ -2891,7 +3033,7 @@
 
 
     /* =====================================================
-       16. SCALE
+       18. SCALE
        ===================================================== */
 
     L.control.scale({
@@ -2911,7 +3053,7 @@
 
 
     /* =====================================================
-       17. LEGEND
+       19. LEGEND
        ===================================================== */
 
     const legend =
@@ -2975,7 +3117,7 @@
 
 
     /* =====================================================
-       18. KOORDINAT KURSOR
+       20. KOORDINAT KURSOR
        ===================================================== */
 
     map.on(
@@ -3006,7 +3148,7 @@
 
 
     /* =====================================================
-       19. BACKGROUND SLIDESHOW
+       21. BACKGROUND SLIDESHOW
        ===================================================== */
 
     const bgSlideshow =
