@@ -10,10 +10,6 @@
 
 <title>WEBGIS KELOMPOK 1</title>
 
-<!-- =========================================================
-     LEAFLET
-========================================================= -->
-
 <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -22,10 +18,6 @@
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
-
-<!-- =========================================================
-     PROJ4
-========================================================= -->
 
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
@@ -79,10 +71,6 @@ body {
 }
 
 
-/* =========================================================
-   SIDEBAR SAAT DITUTUP
-========================================================= */
-
 #sidebar.closed {
 
     left: -350px;
@@ -132,7 +120,7 @@ body {
 
 
 /* =========================================================
-   BAGIAN LOGO
+   LOGO
 ========================================================= */
 
 .logo-container {
@@ -193,7 +181,7 @@ body {
 
 
 /* =========================================================
-   BACKGROUND SIDEBAR
+   AREA BACKGROUND FOTO
 ========================================================= */
 
 .sidebar-body {
@@ -209,16 +197,38 @@ body {
 }
 
 
-.sidebar-body::before {
+/* =========================================================
+   3 FOTO BACKGROUND
+========================================================= */
 
-    content: "";
+.background-gallery {
 
     position: absolute;
 
-    inset: 0;
+    top: 0;
+    left: 0;
 
-    background-image:
-        url("bcg1.jpeg");
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    z-index: -2;
+
+    overflow: hidden;
+
+}
+
+
+.background-photo {
+
+    width: 100%;
+
+    height: 33.333333%;
+
+    flex-shrink: 0;
 
     background-size: cover;
 
@@ -226,7 +236,34 @@ body {
 
     opacity: 0.20;
 
-    z-index: -1;
+    transition:
+        transform 1.2s ease-in-out;
+
+}
+
+
+/* =========================================================
+   FOTO
+========================================================= */
+
+.photo-1 {
+
+    background-image:
+        url("bcg1.jpeg");
+
+}
+
+.photo-2 {
+
+    background-image:
+        url("bcg2.jpeg");
+
+}
+
+.photo-3 {
+
+    background-image:
+        url("bcg3.jpeg");
 
 }
 
@@ -237,7 +274,12 @@ body {
 
 .panel {
 
-    background: rgba(255,255,255,0.88);
+    position: relative;
+
+    z-index: 5;
+
+    background:
+        rgba(255,255,255,0.88);
 
     border-radius: 8px;
 
@@ -264,7 +306,7 @@ body {
 
 
 /* =========================================================
-   CHECKBOX LAYER
+   LAYER
 ========================================================= */
 
 .layer-item {
@@ -290,7 +332,7 @@ body {
 
 
 /* =========================================================
-   TOMBOL AUTO ZOOM
+   AUTO ZOOM
 ========================================================= */
 
 #autoZoomBtn {
@@ -344,6 +386,25 @@ body {
 
 
 /* =========================================================
+   KOORDINAT
+========================================================= */
+
+.coordinate-box {
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+}
+
+.coordinate-value {
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================================
    MAP
 ========================================================= */
 
@@ -358,13 +419,11 @@ body {
 
     z-index: 1;
 
-    max-width: none;
-
 }
 
 
 /* =========================================================
-   LEGENDA PETA
+   LEGENDA
 ========================================================= */
 
 .map-legend {
@@ -377,9 +436,10 @@ body {
 
     z-index: 1000;
 
-    min-width: 150px;
+    min-width: 160px;
 
-    background: rgba(255,255,255,0.92);
+    background:
+        rgba(255,255,255,0.92);
 
     padding: 10px 14px;
 
@@ -426,7 +486,7 @@ body {
 
 
 /* =========================================================
-   LEAFLET
+   LEAFLET SCALE
 ========================================================= */
 
 .leaflet-control-scale {
@@ -484,7 +544,32 @@ body {
     </div>
 
 
+    <!-- =====================================================
+         SIDEBAR BODY
+    ====================================================== -->
+
     <div class="sidebar-body">
+
+
+        <!-- =================================================
+             3 BACKGROUND FOTO
+        ================================================== -->
+
+        <div class="background-gallery">
+
+            <div
+                class="background-photo photo-1">
+            </div>
+
+            <div
+                class="background-photo photo-2">
+            </div>
+
+            <div
+                class="background-photo photo-3">
+            </div>
+
+        </div>
 
 
         <!-- =================================================
@@ -526,10 +611,6 @@ body {
 
             </label>
 
-
-            <!-- =============================================
-                 AUTO ZOOM
-            ============================================== -->
 
             <button id="autoZoomBtn">
 
@@ -577,6 +658,66 @@ body {
                 Esri World Street Map
 
             </label>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KOORDINAT
+        ================================================== -->
+
+        <div class="panel">
+
+            <h3>
+                KOORDINAT
+            </h3>
+
+
+            <div class="coordinate-box">
+
+                <div>
+                    Sistem Koordinat:
+                    <span class="coordinate-value">
+                        WGS 84
+                    </span>
+                </div>
+
+                <div>
+                    Sistem Referensi:
+                    <span class="coordinate-value">
+                        Geographic Coordinate System
+                    </span>
+                </div>
+
+                <div>
+                    EPSG:
+                    <span class="coordinate-value">
+                        4326
+                    </span>
+                </div>
+
+                <br>
+
+                <div>
+                    Latitude:
+                    <span
+                        id="latitudeValue"
+                        class="coordinate-value">
+                        -
+                    </span>
+                </div>
+
+                <div>
+                    Longitude:
+                    <span
+                        id="longitudeValue"
+                        class="coordinate-value">
+                        -
+                    </span>
+                </div>
+
+            </div>
 
         </div>
 
@@ -634,7 +775,7 @@ body {
 <script>
 
 /* =========================================================
-   PROYEKSI UTM ZONE 48S
+   PROYEKSI UTM 48S
 ========================================================= */
 
 proj4.defs(
@@ -644,15 +785,21 @@ proj4.defs(
 
 
 /* =========================================================
-   FUNGSI UTM 48S → WGS84
+   UTM 48S → WGS84
 ========================================================= */
 
-function UTM48SToWGS84(easting, northing) {
+function UTM48SToWGS84(
+    easting,
+    northing
+) {
 
     return proj4(
         "EPSG:32748",
         "EPSG:4326",
-        [easting, northing]
+        [
+            easting,
+            northing
+        ]
     );
 
 }
@@ -662,7 +809,9 @@ function UTM48SToWGS84(easting, northing) {
    KONVERSI KOORDINAT GEOJSON
 ========================================================= */
 
-function convertCoordinates(coords) {
+function convertCoordinates(
+    coords
+) {
 
     if (
         typeof coords[0] === "number" &&
@@ -682,6 +831,7 @@ function convertCoordinates(coords) {
 
     }
 
+
     return coords.map(
         convertCoordinates
     );
@@ -693,15 +843,22 @@ function convertCoordinates(coords) {
    KONVERSI GEOJSON
 ========================================================= */
 
-function convertGeoJSONToWGS84(geojson) {
+function convertGeoJSONToWGS84(
+    geojson
+) {
 
     const converted =
         JSON.parse(
-            JSON.stringify(geojson)
+            JSON.stringify(
+                geojson
+            )
         );
 
 
-    if (converted.type === "FeatureCollection") {
+    if (
+        converted.type ===
+        "FeatureCollection"
+    ) {
 
         converted.features.forEach(
             function(feature) {
@@ -725,7 +882,8 @@ function convertGeoJSONToWGS84(geojson) {
 
 
     else if (
-        converted.type === "Feature"
+        converted.type ===
+        "Feature"
     ) {
 
         if (
@@ -752,29 +910,30 @@ function convertGeoJSONToWGS84(geojson) {
    MAP
 ========================================================= */
 
-const map = L.map(
-    "map",
-    {
+const map =
+    L.map(
+        "map",
+        {
 
-        center: [
-            -5.45,
-            105.25
-        ],
+            center: [
+                -5.45,
+                105.25
+            ],
 
-        zoom: 12,
+            zoom: 12,
 
-        minZoom: 0,
+            minZoom: 0,
 
-        maxZoom: 24,
+            maxZoom: 24,
 
-        zoomControl: true
+            zoomControl: true
 
-    }
-);
+        }
+    );
 
 
 /* =========================================================
-   BASEMAP ESRI IMAGERY
+   ESRI WORLD IMAGERY
 ========================================================= */
 
 const esriImagery =
@@ -798,7 +957,7 @@ const esriImagery =
 
 
 /* =========================================================
-   BASEMAP ESRI STREET
+   ESRI STREET
 ========================================================= */
 
 const esriStreet =
@@ -822,7 +981,7 @@ const esriStreet =
 
 
 /* =========================================================
-   BASEMAP DEFAULT
+   DEFAULT BASEMAP
 ========================================================= */
 
 esriImagery.addTo(map);
@@ -844,7 +1003,8 @@ fetch(
 )
 
 .then(
-    response => response.json()
+    response =>
+        response.json()
 )
 
 .then(
@@ -867,11 +1027,14 @@ fetch(
 
                             return {
 
-                                color: "cyan",
+                                color:
+                                    "cyan",
 
-                                weight: 3,
+                                weight:
+                                    3,
 
-                                opacity: 1
+                                opacity:
+                                    1
 
                             };
 
@@ -885,16 +1048,14 @@ fetch(
                         ) {
 
 
-                            /* =========================
-                               POPUP
-                            ========================== */
-
                             if (
                                 feature.properties
                             ) {
 
                                 let popup =
-                                    "<b>Informasi Garis Pantai</b><br><br>";
+                                    "<b>" +
+                                    "Informasi Garis Pantai" +
+                                    "</b><br><br>";
 
 
                                 Object.keys(
@@ -920,19 +1081,17 @@ fetch(
                             }
 
 
-                            /* =========================
-                               HOVER
-                            ========================== */
-
                             layer.on(
                                 "mouseover",
                                 function() {
 
                                     this.setStyle({
 
-                                        color: "red",
+                                        color:
+                                            "red",
 
-                                        weight: 4
+                                        weight:
+                                            4
 
                                     });
 
@@ -970,7 +1129,10 @@ fetch(
             map.fitBounds(
                 coastlineLayer.getBounds(),
                 {
-                    padding: [20,20]
+                    padding: [
+                        20,
+                        20
+                    ]
                 }
             );
 
@@ -983,7 +1145,8 @@ fetch(
     function(error) {
 
         console.error(
-            "Gagal memuat Garis_Pantai_RTK.geojson:",
+            "Gagal memuat " +
+            "Garis_Pantai_RTK.geojson:",
             error
         );
 
@@ -1005,7 +1168,7 @@ const ORTHO_URL_BASE =
 
 
 /* =========================================================
-   HEX
+   KONVERSI ANGKA KE HEX
 ========================================================= */
 
 function toHex(num) {
@@ -1013,7 +1176,10 @@ function toHex(num) {
     return num
         .toString(16)
         .toUpperCase()
-        .padStart(8, "0");
+        .padStart(
+            8,
+            "0"
+        );
 
 }
 
@@ -1026,7 +1192,10 @@ const OrthoGridLayer =
     L.GridLayer.extend({
 
         createTile:
-            function(coords, done) {
+            function(
+                coords,
+                done
+            ) {
 
 
                 const tile =
@@ -1047,7 +1216,9 @@ const OrthoGridLayer =
 
 
                 const ctx =
-                    tile.getContext("2d");
+                    tile.getContext(
+                        "2d"
+                    );
 
 
                 const img =
@@ -1061,21 +1232,22 @@ const OrthoGridLayer =
                 const z =
                     coords.z;
 
-
                 const row =
                     coords.y;
-
 
                 const col =
                     coords.x;
 
 
                 const rowHex =
-                    toHex(row);
-
+                    toHex(
+                        row
+                    );
 
                 const colHex =
-                    toHex(col);
+                    toHex(
+                        col
+                    );
 
 
                 const url =
@@ -1128,7 +1300,6 @@ const OrthoGridLayer =
                                 i += 4
                             ) {
 
-
                                 const r =
                                     data[i];
 
@@ -1145,7 +1316,8 @@ const OrthoGridLayer =
                                     b > 245
                                 ) {
 
-                                    data[i + 3] = 0;
+                                    data[i + 3] =
+                                        0;
 
                                 }
 
@@ -1163,7 +1335,8 @@ const OrthoGridLayer =
                         catch(e) {
 
                             console.warn(
-                                "Transparansi orthophoto:",
+                                "Transparansi " +
+                                "orthophoto:",
                                 e
                             );
 
@@ -1182,9 +1355,11 @@ const OrthoGridLayer =
                     function() {
 
                         console.warn(
-                            "Tile orthophoto tidak ditemukan:",
+                            "Tile orthophoto " +
+                            "tidak ditemukan:",
                             url
                         );
+
 
                         done(
                             null,
@@ -1206,25 +1381,32 @@ const OrthoGridLayer =
 
 
 /* =========================================================
-   ORTHOPHOTO LAYER
+   LAYER ORTHOPHOTO
 ========================================================= */
 
 const ortho =
     new OrthoGridLayer({
 
-        tileSize: 256,
+        tileSize:
+            256,
 
-        opacity: 0.80,
+        opacity:
+            0.80,
 
-        zIndex: 500,
+        zIndex:
+            500,
 
-        noWrap: true,
+        noWrap:
+            true,
 
-        minZoom: 12,
+        minZoom:
+            12,
 
-        maxNativeZoom: 18,
+        maxNativeZoom:
+            18,
 
-        maxZoom: 24
+        maxZoom:
+            24
 
     });
 
@@ -1450,7 +1632,10 @@ document
                 map.fitBounds(
                     coastlineLayer.getBounds(),
                     {
-                        padding: [20,20]
+                        padding: [
+                            20,
+                            20
+                        ]
                     }
                 );
 
@@ -1458,6 +1643,37 @@ document
 
         }
     );
+
+
+/* =========================================================
+   KOORDINAT KURSOR
+========================================================= */
+
+map.on(
+    "mousemove",
+    function(e) {
+
+        document
+            .getElementById(
+                "latitudeValue"
+            )
+            .textContent =
+                e.latlng.lat.toFixed(
+                    6
+                );
+
+
+        document
+            .getElementById(
+                "longitudeValue"
+            )
+            .textContent =
+                e.latlng.lng.toFixed(
+                    6
+                );
+
+    }
+);
 
 
 /* =========================================================
@@ -1525,11 +1741,79 @@ toggleSidebar
 
 L.control.scale({
 
-    imperial: false,
+    imperial:
+        false,
 
-    metric: true
+    metric:
+        true
 
 }).addTo(map);
+
+
+/* =========================================================
+   ANIMASI 3 FOTO
+========================================================= */
+
+const backgroundGallery =
+    document.querySelector(
+        ".background-gallery"
+    );
+
+
+let photoOrder = [
+    "photo-1",
+    "photo-2",
+    "photo-3"
+];
+
+
+function rotateBackgroundPhotos() {
+
+
+    photoOrder.unshift(
+        photoOrder.pop()
+    );
+
+
+    const photos =
+        backgroundGallery
+            .querySelectorAll(
+                ".background-photo"
+            );
+
+
+    photos.forEach(
+        function(photo) {
+
+            photo.style.order =
+                photoOrder.indexOf(
+                    Array.from(
+                        photo.classList
+                    ).find(
+                        function(c) {
+
+                            return c.indexOf(
+                                "photo-"
+                            ) === 0;
+
+                        }
+                    )
+                );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   JALANKAN SETIAP 4 DETIK
+========================================================= */
+
+setInterval(
+    rotateBackgroundPhotos,
+    4000
+);
 
 </script>
 
