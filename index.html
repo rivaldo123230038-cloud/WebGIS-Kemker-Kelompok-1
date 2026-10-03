@@ -14,7 +14,10 @@
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 
-<!-- PROJ4 -->
+<!-- =========================================================
+     PROJ4
+     Untuk konversi UTM 48S -> GCS WGS84
+========================================================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
 
 
@@ -247,7 +250,7 @@ body{
 
 
 /* =========================================================
-   BACKGROUND
+   BACKGROUND FOTO
 ========================================================= */
 
 .background-slideshow{
@@ -986,9 +989,7 @@ body{
             <div class="panel-content">
 
 
-                <!-- =================================================
-                     LAYER
-                ================================================== -->
+                <!-- LAYER -->
 
                 <div class="section-title">
                     Layer
@@ -1041,9 +1042,7 @@ body{
                 </div>
 
 
-                <!-- =================================================
-                     BASE MAP
-                ================================================== -->
+                <!-- BASEMAP -->
 
                 <div class="section-title">
                     Base Map
@@ -1087,9 +1086,7 @@ body{
                 </div>
 
 
-                <!-- =================================================
-                     SISTEM KOORDINAT
-                ================================================== -->
+                <!-- SISTEM KOORDINAT -->
 
                 <div class="section-title">
                     Sistem Koordinat
@@ -1129,9 +1126,7 @@ body{
                 </div>
 
 
-                <!-- =================================================
-                     KOORDINAT KURSOR
-                ================================================== -->
+                <!-- KOORDINAT KURSOR -->
 
                 <div class="section-title">
                     Koordinat Kursor
@@ -1219,7 +1214,7 @@ body{
 
 
 <!-- =====================================================
-     ORTHOPHOTO LOADING
+     LOADING
 ===================================================== -->
 
 <div
@@ -1242,11 +1237,20 @@ body{
 <script>
 
 /* =========================================================
-   PROJ4
-   UTM 48S -> GCS WGS84
+   DEFINISI PROYEKSI
+
+   GARIS PANTAI:
+   UTM Zone 48S
+   WGS 84
+   EPSG:32748
+
+   OUTPUT:
+   GCS WGS 84
+   EPSG:4326
 ========================================================= */
 
 proj4.defs(
+
     "EPSG:32748",
 
     "+proj=utm " +
@@ -1255,6 +1259,7 @@ proj4.defs(
     "+datum=WGS84 " +
     "+units=m " +
     "+no_defs"
+
 );
 
 
@@ -1389,7 +1394,7 @@ sidebarToggle.addEventListener(
 
 
 /* =========================================================
-   BASEMAP ESRI WORLD IMAGERY
+   ESRI WORLD IMAGERY
 ========================================================= */
 
 const satellite =
@@ -1415,7 +1420,7 @@ const satellite =
 
 
 /* =========================================================
-   BASEMAP ESRI WORLD STREET
+   ESRI WORLD STREET MAP
 ========================================================= */
 
 const street =
@@ -1440,7 +1445,7 @@ const street =
     );
 
 
-/* DEFAULT */
+/* DEFAULT BASEMAP */
 
 satellite.addTo(
     map
@@ -1448,41 +1453,63 @@ satellite.addTo(
 
 
 /* =========================================================
-   ORTHOPHOTO ARC GIS EXPLODED CACHE
-=========================================================
+   =========================================================
+   ORTHOPHOTO
+   =========================================================
 
-   STRUKTUR FILE:
+   STRUKTUR GITHUB:
 
    Fix_Ortho_web/
-       _alllayers/
-           L12/
-               Rxxxxxxxx/
-                   Cxxxxxxxx.png
+   └── _alllayers/
+       ├── L12/
+       │   ├── R00000xxx/
+       │   │   ├── C00000xxx.png
+       │   │   └── ...
+       │
+       ├── L13/
+       ├── L14/
+       ├── L15/
+       ├── L16/
+       ├── L17/
+       └── L18/
 
-           L13/
-           L14/
-           L15/
-           L16/
-           L17/
-           L18/
+   CATATAN PENTING:
+
+   ArcGIS EXPLODED CACHE menggunakan:
+
+   R = ROW = Y
+   C = COLUMN = X
+
+   Nilai row dan column disimpan
+   dalam HEXADECIMAL 8 digit.
+
+   Contoh:
+
+   Leaflet:
+       x = 123
+       y = 456
+
+   menjadi:
+
+       C0000007b.png
+       R000001c8.png
 
 ========================================================= */
 
 
-/*
-   CDN GITHUB
-
-   Dibanding raw.githubusercontent.com,
-   jsDelivr lebih stabil untuk tile statis.
-*/
+/* =========================================================
+   URL DASAR CACHE
+========================================================= */
 
 const ORTHO_BASE_URL =
 
-    'https://cdn.jsdelivr.net/gh/' +
+    'https://raw.githubusercontent.com/' +
 
     'rivaldo123230038-cloud/' +
 
-    'WebGIS-Kemker-Kelompok-1@main/' +
+    'WebGIS-Kemker-Kelompok-1/' +
+
+    'main/' +
 
     'Fix_Ortho_web/' +
 
@@ -1490,187 +1517,21 @@ const ORTHO_BASE_URL =
 
 
 /* =========================================================
-   RESOLUSI ARC GIS CACHE
+   FUNGSI HEXADECIMAL
 ========================================================= */
 
-const ORTHO_RESOLUTIONS = {
-
-    12:
-        38.21851414258813,
-
-    13:
-        19.109257071294063,
-
-    14:
-        9.554628535647032,
-
-    15:
-        4.777314267823516,
-
-    16:
-        2.388657133911758,
-
-    17:
-        1.194328566955879,
-
-    18:
-        0.5971642834779395
-
-};
-
-
-/* =========================================================
-   ORIGIN ARC GIS WEB MERCATOR
-========================================================= */
-
-const ORTHO_ORIGIN_X =
-    -20037508.342789244;
-
-
-const ORTHO_ORIGIN_Y =
-     20037508.342789244;
-
-
-/* =========================================================
-   TILE SIZE
-========================================================= */
-
-const ORTHO_TILE_SIZE =
-    256;
-
-
-/* =========================================================
-   KONVERSI LEAFLET TILE
-   KE ARC GIS ROW / COLUMN
-========================================================= */
-
-function getArcGISTileName(
-    coords
+function toArcGISHex(
+    number
 ){
 
-    const z =
-        coords.z;
-
-
-    if(
-        z < 12 ||
-        z > 18
-    ){
-
-        return null;
-
-    }
-
-
-    const resolution =
-        ORTHO_RESOLUTIONS[z];
-
-
-    if(
-        !resolution
-    ){
-
-        return null;
-
-    }
-
-
-    /*
-       LEAFLET:
-
-       coords.x
-       coords.y
-
-       dikonversi berdasarkan
-       origin ArcGIS cache.
-    */
-
-
-    const worldTileSize =
-
-        ORTHO_TILE_SIZE *
-        resolution;
-
-
-    const col =
-
-        Math.floor(
-
-            (
-                coords.x *
-                ORTHO_TILE_SIZE *
-                resolution -
-                ORTHO_ORIGIN_X
-            )
-            /
-            worldTileSize
-
-        );
-
-
-    const row =
-
-        Math.floor(
-
-            (
-                ORTHO_ORIGIN_Y -
-                (
-                    coords.y *
-                    ORTHO_TILE_SIZE *
-                    resolution
-                )
-            )
-            /
-            worldTileSize
-
-        );
-
-
-    if(
-        col < 0 ||
-        row < 0
-    ){
-
-        return null;
-
-    }
-
-
-    const rowHex =
-
-        row
+    return Math
+        .floor(number)
         .toString(16)
         .padStart(
             8,
             '0'
         )
         .toLowerCase();
-
-
-    const colHex =
-
-        col
-        .toString(16)
-        .padStart(
-            8,
-            '0'
-        )
-        .toLowerCase();
-
-
-    return {
-
-        z:z,
-
-        row:row,
-
-        col:col,
-
-        rowHex:rowHex,
-
-        colHex:colHex
-
-    };
 
 }
 
@@ -1708,7 +1569,7 @@ const orthoLayer =
 
 
 /* =========================================================
-   CREATE TILE
+   CREATE TILE ORTHOPHOTO
 ========================================================= */
 
 orthoLayer.createTile =
@@ -1735,21 +1596,25 @@ orthoLayer.createTile =
             'Orthophoto';
 
 
-        tile.setAttribute(
-            'role',
-            'presentation'
-        );
+        tile.style.width =
+            '256px';
+
+        tile.style.height =
+            '256px';
 
 
-        const tileInfo =
-            getArcGISTileName(
-                coords
-            );
-
+        /*
+           CEK LEVEL
+        */
 
         if(
-            !tileInfo
+            coords.z < 12 ||
+            coords.z > 18
         ){
+
+            tile.style.display =
+                'none';
+
 
             setTimeout(
                 function(){
@@ -1769,31 +1634,68 @@ orthoLayer.createTile =
         }
 
 
-        const url =
+        /*
+           X = COLUMN
+           Y = ROW
+        */
+
+        const column =
+            toArcGISHex(
+                coords.x
+            );
+
+
+        const row =
+            toArcGISHex(
+                coords.y
+            );
+
+
+        /*
+           SUSUN URL:
+
+           L12/
+           Rxxxxxxxx/
+           Cxxxxxxxx.png
+        */
+
+        const tileURL =
 
             ORTHO_BASE_URL +
 
             'L' +
-            tileInfo.z +
+            coords.z +
             '/' +
 
             'R' +
-            tileInfo.rowHex +
+            row +
             '/' +
 
             'C' +
-            tileInfo.colHex +
+            column +
             '.png';
 
 
+        /*
+           DEBUG
+        */
+
         console.log(
-            'ORTHO TILE:',
-            url
+            'ORTHOPHOTO:',
+            tileURL
         );
 
 
+        /*
+           LOAD TILE
+        */
+
         tile.onload =
             function(){
+
+                tile.style.display =
+                    'block';
+
 
                 done(
                     null,
@@ -1803,18 +1705,22 @@ orthoLayer.createTile =
             };
 
 
+        /*
+           JIKA TILE TIDAK ADA
+        */
+
         tile.onerror =
             function(){
 
                 console.warn(
-                    'Tile Orthophoto tidak ditemukan:',
-                    url
+                    'Tile tidak ditemukan:',
+                    tileURL
                 );
 
 
                 /*
-                   Jangan menampilkan
-                   kotak error.
+                   Jangan munculkan
+                   ikon gambar rusak.
                 */
 
                 tile.style.display =
@@ -1829,8 +1735,12 @@ orthoLayer.createTile =
             };
 
 
+        /*
+           MULAI LOAD
+        */
+
         tile.src =
-            url;
+            tileURL;
 
 
         return tile;
@@ -1839,7 +1749,7 @@ orthoLayer.createTile =
 
 
 /* =========================================================
-   ORTHOPHOTO EVENTS
+   ORTHOPHOTO LOADING
 ========================================================= */
 
 orthoLayer.on(
@@ -1873,10 +1783,83 @@ orthoLayer.on(
 
 
 /* =========================================================
-   FUNGSI KONVERSI UTM 48S -> GCS
+   =========================================================
+   KONVERSI UTM 48S -> GCS WGS84
+   =========================================================
 ========================================================= */
 
-function convertUTM48SToGCS(
+
+/*
+   Konversi satu koordinat:
+
+   INPUT:
+   [Easting, Northing]
+
+   EPSG:32748
+
+   OUTPUT:
+   [Longitude, Latitude]
+
+   EPSG:4326
+*/
+
+function convertCoordinateUTM48SToGCS(
+    coordinate
+){
+
+    if(
+        !Array.isArray(
+            coordinate
+        )
+    ){
+
+        return coordinate;
+
+    }
+
+
+    if(
+        coordinate.length < 2
+    ){
+
+        return coordinate;
+
+    }
+
+
+    const converted =
+
+        proj4(
+            'EPSG:32748',
+            'EPSG:4326',
+            [
+                Number(
+                    coordinate[0]
+                ),
+
+                Number(
+                    coordinate[1]
+                )
+            ]
+        );
+
+
+    return [
+
+        converted[0],
+
+        converted[1]
+
+    ];
+
+}
+
+
+/* =========================================================
+   KONVERSI ARRAY KOORDINAT
+========================================================= */
+
+function convertCoordinates(
     coordinates
 ){
 
@@ -1891,37 +1874,31 @@ function convertUTM48SToGCS(
     }
 
 
+    /*
+       Jika sudah sampai
+       [X,Y]
+    */
+
     if(
         typeof coordinates[0] ===
         'number'
     ){
 
-        const converted =
-
-            proj4(
-                'EPSG:32748',
-                'EPSG:4326',
-                [
-                    coordinates[0],
-                    coordinates[1]
-                ]
-            );
-
-
-        return [
-
-            converted[0],
-            converted[1]
-
-        ];
+        return convertCoordinateUTM48SToGCS(
+            coordinates
+        );
 
     }
 
 
+    /*
+       Jika masih array bertingkat
+    */
+
     return coordinates.map(
         function(item){
 
-            return convertUTM48SToGCS(
+            return convertCoordinates(
                 item
             );
 
@@ -1935,7 +1912,7 @@ function convertUTM48SToGCS(
    KONVERSI GEOMETRY
 ========================================================= */
 
-function convertGeometryUTMToGCS(
+function convertGeometry(
     geometry
 ){
 
@@ -1957,92 +1934,20 @@ function convertGeometryUTMToGCS(
 
 
     if(
-        geometry.type ===
-        'Point'
+        geometry.coordinates
     ){
 
         result.coordinates =
 
-            convertUTM48SToGCS(
+            convertCoordinates(
                 geometry.coordinates
             );
 
     }
 
 
-    else if(
-        geometry.type ===
-        'MultiPoint'
-    ){
-
-        result.coordinates =
-
-            convertUTM48SToGCS(
-                geometry.coordinates
-            );
-
-    }
-
-
-    else if(
-        geometry.type ===
-        'LineString'
-    ){
-
-        result.coordinates =
-
-            convertUTM48SToGCS(
-                geometry.coordinates
-            );
-
-    }
-
-
-    else if(
-        geometry.type ===
-        'MultiLineString'
-    ){
-
-        result.coordinates =
-
-            convertUTM48SToGCS(
-                geometry.coordinates
-            );
-
-    }
-
-
-    else if(
-        geometry.type ===
-        'Polygon'
-    ){
-
-        result.coordinates =
-
-            convertUTM48SToGCS(
-                geometry.coordinates
-            );
-
-    }
-
-
-    else if(
-        geometry.type ===
-        'MultiPolygon'
-    ){
-
-        result.coordinates =
-
-            convertUTM48SToGCS(
-                geometry.coordinates
-            );
-
-    }
-
-
-    else if(
-        geometry.type ===
-        'GeometryCollection'
+    if(
+        geometry.geometries
     ){
 
         result.geometries =
@@ -2050,7 +1955,7 @@ function convertGeometryUTMToGCS(
             geometry.geometries.map(
                 function(g){
 
-                    return convertGeometryUTMToGCS(
+                    return convertGeometry(
                         g
                     );
 
@@ -2069,7 +1974,7 @@ function convertGeometryUTMToGCS(
    KONVERSI FEATURE
 ========================================================= */
 
-function convertFeatureUTMToGCS(
+function convertFeature(
     feature
 ){
 
@@ -2087,7 +1992,7 @@ function convertFeatureUTMToGCS(
 
         result.geometry =
 
-            convertGeometryUTMToGCS(
+            convertGeometry(
                 feature.geometry
             );
 
@@ -2100,10 +2005,10 @@ function convertFeatureUTMToGCS(
 
 
 /* =========================================================
-   KONVERSI GEOJSON
+   KONVERSI GEOJSON UTM -> GCS
 ========================================================= */
 
-function convertGeoJSONUTMToGCS(
+function convertUTMGeoJSONToGCS(
     data
 ){
 
@@ -2115,6 +2020,10 @@ function convertGeoJSONUTMToGCS(
         );
 
 
+    /*
+       FEATURE COLLECTION
+    */
+
     if(
         data.type ===
         'FeatureCollection'
@@ -2125,7 +2034,7 @@ function convertGeoJSONUTMToGCS(
             data.features.map(
                 function(feature){
 
-                    return convertFeatureUTMToGCS(
+                    return convertFeature(
                         feature
                     );
 
@@ -2135,23 +2044,31 @@ function convertGeoJSONUTMToGCS(
     }
 
 
+    /*
+       SINGLE FEATURE
+    */
+
     else if(
         data.type ===
         'Feature'
     ){
 
-        return convertFeatureUTMToGCS(
+        return convertFeature(
             data
         );
 
     }
 
 
+    /*
+       GEOMETRY LANGSUNG
+    */
+
     else if(
         data.coordinates
     ){
 
-        return convertGeometryUTMToGCS(
+        return convertGeometry(
             data
         );
 
@@ -2167,6 +2084,18 @@ function convertGeoJSONUTMToGCS(
    GARIS PANTAI RTK
 ========================================================= */
 
+let coastline =
+    null;
+
+
+let coastlineReady =
+    false;
+
+
+/* =========================================================
+   STYLE GARIS PANTAI
+========================================================= */
+
 const coastlineStyle = {
 
     color:
@@ -2176,7 +2105,7 @@ const coastlineStyle = {
         4,
 
     opacity:
-        0.95,
+        .95,
 
     lineCap:
         'round',
@@ -2185,14 +2114,6 @@ const coastlineStyle = {
         'round'
 
 };
-
-
-let coastline =
-    null;
-
-
-let coastlineReady =
-    false;
 
 
 /* =========================================================
@@ -2239,6 +2160,7 @@ function createRTKPopup(
                     '<b>' +
                     key +
                     '</b>: ' +
+
                     (
                         value === null ||
                         value === undefined ||
@@ -2246,6 +2168,7 @@ function createRTKPopup(
                             ? '-'
                             : value
                     ) +
+
                     '<br>';
 
             }
@@ -2271,7 +2194,7 @@ function createRTKPopup(
 
 
 /* =========================================================
-   LOAD GARIS PANTAI
+   LOAD GARIS PANTAI RTK
 ========================================================= */
 
 fetch(
@@ -2301,21 +2224,31 @@ fetch(
     function(data){
 
         console.log(
-            'INPUT GARIS PANTAI:',
-            'EPSG:32748 - UTM Zone 48S'
+            'Garis Pantai RTK:',
+            'INPUT EPSG:32748 UTM 48S'
         );
 
 
+        /*
+           KONVERSI:
+
+           UTM 48S
+              ↓
+           GCS WGS84
+              ↓
+           EPSG:4326
+        */
+
         const dataGCS =
 
-            convertGeoJSONUTMToGCS(
+            convertUTMGeoJSONToGCS(
                 data
             );
 
 
         console.log(
-            'OUTPUT GARIS PANTAI:',
-            'EPSG:4326 - WGS 84 Geographic'
+            'Garis Pantai RTK:',
+            'OUTPUT EPSG:4326 GCS WGS84'
         );
 
 
@@ -2382,6 +2315,10 @@ fetch(
             );
 
 
+        /*
+           TAMPILKAN GARIS
+        */
+
         coastline.addTo(
             map
         );
@@ -2389,6 +2326,14 @@ fetch(
 
         coastlineReady =
             true;
+
+
+        /*
+           Pastikan garis
+           di atas orthophoto
+        */
+
+        coastline.bringToFront();
 
     }
 )
@@ -2400,9 +2345,10 @@ fetch(
             error
         );
 
-
         alert(
-            'Garis Pantai RTK gagal dimuat.'
+            'Garis Pantai RTK gagal dimuat. ' +
+            'Pastikan file Garis_Pantai_RTK.geojson ' +
+            'ada di repository.'
         );
 
     }
@@ -2473,7 +2419,7 @@ function zoomToCoastline(){
 
 
 /* =========================================================
-   AUTO ZOOM BUTTON
+   TOMBOL AUTO ZOOM SIDEBAR
 ========================================================= */
 
 document
@@ -2487,7 +2433,7 @@ document
 
 
 /* =========================================================
-   MAP AUTO ZOOM CONTROL
+   AUTO ZOOM MAP CONTROL
 ========================================================= */
 
 const ZoomToLayerControl =
@@ -2505,7 +2451,7 @@ const ZoomToLayerControl =
                 const container =
                     L.DomUtil.create(
                         'div',
-                        'leaflet-bar zoom-to-layer-control'
+                        'leaflet-bar'
                     );
 
 
@@ -2593,6 +2539,8 @@ document
                     map
                 );
 
+                coastline.bringToFront();
+
             }
 
             else{
@@ -2624,16 +2572,18 @@ document
             ){
 
                 /*
-                   Orthophoto hanya tersedia
-                   L12 sampai L18
+                   Orthophoto hanya
+                   mempunyai cache:
+
+                   L12 - L18
                 */
 
-                let currentZoom =
+                let z =
                     map.getZoom();
 
 
                 if(
-                    currentZoom < 12
+                    z < 12
                 ){
 
                     map.setZoom(
@@ -2644,7 +2594,7 @@ document
 
 
                 if(
-                    currentZoom > 18
+                    z > 18
                 ){
 
                     map.setZoom(
@@ -2654,22 +2604,26 @@ document
                 }
 
 
+                /*
+                   Tambahkan Orthophoto
+                */
+
                 orthoLayer.addTo(
                     map
                 );
 
 
                 /*
-                   Pastikan Orthophoto
-                   berada di atas basemap
+                   Orthophoto di atas
+                   basemap
                 */
 
                 orthoLayer.bringToFront();
 
 
                 /*
-                   Jika Garis Pantai ada,
-                   tetap di paling atas
+                   Garis pantai harus
+                   paling atas
                 */
 
                 if(
@@ -2698,7 +2652,7 @@ document
 
 
 /* =========================================================
-   BASEMAP
+   REMOVE BASEMAP
 ========================================================= */
 
 function removeBaseMaps(){
@@ -2760,6 +2714,11 @@ document
             );
 
 
+            /*
+               Orthophoto tetap
+               di atas basemap
+            */
+
             if(
                 map.hasLayer(
                     orthoLayer
@@ -2770,6 +2729,10 @@ document
 
             }
 
+
+            /*
+               Garis pantai paling atas
+            */
 
             if(
                 coastline &&
@@ -2787,7 +2750,7 @@ document
 
 
 /* =========================================================
-   STREET
+   STREET MAP
 ========================================================= */
 
 document
