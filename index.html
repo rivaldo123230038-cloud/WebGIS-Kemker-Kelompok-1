@@ -11,457 +11,447 @@
 <title>WEBGIS KELOMPOK 1</title>
 
 <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
 
 <style>
 
-/* =========================================================
-   DASAR
-========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
 }
 
 #map {
-    width: 100%;
-    height: 100%;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
 }
-
 
 /* =========================================================
    SIDEBAR
-========================================================= */
+   ========================================================= */
 
 #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
 
-    width: 350px;
-    height: 100vh;
+    position:absolute;
 
-    z-index: 2000;
+    top:0;
+    left:0;
 
-    background: rgba(255,255,255,0.94);
+    width:350px;
+    height:100%;
 
-    box-shadow:
-        2px 0 8px rgba(0,0,0,0.25);
+    z-index:1000;
 
-    overflow-y: auto;
+    overflow-y:auto;
 
-    transition:
-        transform 0.3s ease;
+    box-sizing:border-box;
+
+    padding:20px;
+
+    background:rgba(255,255,255,0.90);
+
+    box-shadow:2px 0 8px rgba(0,0,0,0.25);
+
+    transition:transform 0.35s ease;
 }
 
 #sidebar.closed {
-    transform: translateX(-350px);
+
+    transform:translateX(-350px);
+
 }
 
+#sidebarToggle {
+
+    position:absolute;
+
+    top:50%;
+    right:-32px;
+
+    width:32px;
+    height:70px;
+
+    transform:translateY(-50%);
+
+    border:none;
+
+    border-radius:0 8px 8px 0;
+
+    background:#ffffff;
+
+    box-shadow:2px 0 6px rgba(0,0,0,0.25);
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    z-index:1100;
+
+}
 
 /* =========================================================
    BACKGROUND GALLERY
-========================================================= */
+   ========================================================= */
 
 .background-gallery {
-    position: absolute;
 
-    top: 0;
-    left: 0;
+    position:absolute;
 
-    width: 100%;
-    height: 100%;
+    top:0;
+    left:0;
 
-    display: flex;
-    flex-direction: column;
+    width:100%;
+    height:100%;
 
-    z-index: -2;
+    display:flex;
 
-    overflow: hidden;
+    flex-direction:column;
+
+    z-index:-2;
+
+    overflow:hidden;
+
 }
 
 .background-photo {
-    width: 100%;
-    height: 33.333333%;
 
-    flex-shrink: 0;
+    width:100%;
+    height:33.333333%;
 
-    background-size: cover;
-    background-position: center;
+    flex-shrink:0;
 
-    opacity: 0.20;
+    background-size:cover;
 
-    transition:
-        all 1.2s ease-in-out;
+    background-position:center;
+
+    opacity:0.20;
+
+    transition:all 1.2s ease-in-out;
+
 }
 
 .photo-1 {
-    background-image:
-        url("bcg1.jpeg");
+
+    background-image:url("bcg1.jpeg");
+
 }
 
 .photo-2 {
-    background-image:
-        url("bcg2.jpeg");
+
+    background-image:url("bcg2.jpeg");
+
 }
 
 .photo-3 {
-    background-image:
-        url("bcg3.jpeg");
+
+    background-image:url("bcg3.jpeg");
+
 }
-
-
-/* =========================================================
-   SIDEBAR TOGGLE
-========================================================= */
-
-#sidebarToggle {
-    position: fixed;
-
-    top: 50%;
-    left: 350px;
-
-    transform:
-        translateY(-50%);
-
-    width: 30px;
-    height: 60px;
-
-    z-index: 2500;
-
-    border: none;
-
-    background:
-        rgba(255,255,255,0.95);
-
-    box-shadow:
-        2px 0 6px rgba(0,0,0,0.2);
-
-    cursor: pointer;
-
-    font-size: 22px;
-
-    border-radius:
-        0 8px 8px 0;
-
-    transition:
-        left 0.3s ease;
-}
-
-#sidebar.closed + #sidebarToggle {
-    left: 0;
-}
-
 
 /* =========================================================
    SIDEBAR CONTENT
-========================================================= */
+   ========================================================= */
 
 .sidebar-content {
-    position: relative;
 
-    z-index: 1;
+    position:relative;
 
-    padding: 18px;
+    z-index:10;
+
 }
 
-
-/* =========================================================
-   LOGO
-========================================================= */
-
 .logo-container {
-    display: flex;
 
-    justify-content: center;
-    align-items: center;
+    display:flex;
 
-    gap: 10px;
+    justify-content:center;
 
-    margin-bottom: 12px;
+    align-items:center;
 
-    flex-wrap: wrap;
+    gap:10px;
+
+    margin-bottom:12px;
+
 }
 
 .logo-container img {
-    height: 55px;
 
-    width: auto;
+    max-width:70px;
 
-    object-fit: contain;
+    max-height:70px;
+
+    object-fit:contain;
+
 }
-
-
-/* =========================================================
-   TITLE
-========================================================= */
 
 .sidebar-title {
-    text-align: center;
 
-    margin-top: 5px;
+    text-align:center;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin-bottom:5px;
+
 }
 
-.sidebar-title h1 {
-    margin: 0;
+.sidebar-subtitle {
 
-    font-size: 23px;
+    text-align:center;
 
-    font-weight: bold;
-}
+    font-size:13px;
 
-.sidebar-title p {
-    margin:
-        7px 0 15px 0;
+    margin-bottom:20px;
 
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   SECTION
-========================================================= */
-
-.section {
-    background:
-        rgba(255,255,255,0.88);
-
-    border-radius: 8px;
-
-    padding: 12px;
-
-    margin-bottom: 12px;
-
-    box-shadow:
-        0 1px 5px rgba(0,0,0,0.15);
 }
 
 .section-title {
-    font-size: 15px;
 
-    font-weight: bold;
+    font-weight:bold;
 
-    margin-bottom: 10px;
+    font-size:15px;
+
+    margin-top:18px;
+
+    margin-bottom:10px;
+
+    padding-bottom:6px;
+
+    border-bottom:1px solid #aaa;
+
 }
 
-
-/* =========================================================
-   LAYER
-========================================================= */
-
 .layer-item {
-    display: block;
 
-    margin: 9px 0;
+    margin:9px 0;
 
-    font-size: 14px;
+    font-size:14px;
 
-    cursor: pointer;
 }
 
 .layer-item input {
-    margin-right: 7px;
 
-    vertical-align: middle;
+    margin-right:7px;
+
 }
-
-
-/* =========================================================
-   AUTO ZOOM SIDEBAR
-========================================================= */
-
-.autozoom-button {
-    width: 100%;
-
-    padding: 9px 10px;
-
-    margin-top: 8px;
-
-    border: none;
-
-    border-radius: 5px;
-
-    background: #333;
-
-    color: white;
-
-    cursor: pointer;
-
-    font-size: 13px;
-}
-
-.autozoom-button:hover {
-    background: #555;
-}
-
 
 /* =========================================================
    BASEMAP
-========================================================= */
+   ========================================================= */
 
 .basemap-item {
-    display: block;
 
-    margin: 10px 0;
+    display:block;
 
-    font-size: 14px;
+    margin:10px 0;
 
-    cursor: pointer;
+    font-size:14px;
+
+    cursor:pointer;
+
 }
 
 .basemap-item input {
-    margin-right: 7px;
 
-    vertical-align: middle;
+    margin-right:7px;
+
+    vertical-align:middle;
+
 }
 
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.control-button {
+
+    width:100%;
+
+    padding:10px;
+
+    margin-top:8px;
+
+    border:none;
+
+    border-radius:5px;
+
+    background:#1976d2;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.control-button:hover {
+
+    background:#125ca5;
+
+}
 
 /* =========================================================
    COORDINATE PANEL
-========================================================= */
+   ========================================================= */
 
 .coordinate-panel {
-    font-size: 13px;
 
-    line-height: 1.6;
+    margin-top:15px;
+
+    padding:10px;
+
+    background:rgba(255,255,255,0.88);
+
+    border-radius:5px;
+
+    font-size:13px;
+
+    line-height:1.6;
+
 }
 
-.coordinate-panel div {
-    margin-bottom: 3px;
+.coordinate-title {
+
+    font-weight:bold;
+
+    margin-bottom:5px;
+
 }
-
-
-/* =========================================================
-   AUTO ZOOM KANAN ATAS
-========================================================= */
-
-.autozoom-map-control {
-    position: absolute;
-
-    top: 10px;
-    right: 10px;
-
-    z-index: 1500;
-}
-
-.autozoom-map-button {
-    width: 38px;
-    height: 38px;
-
-    border: none;
-
-    border-radius: 5px;
-
-    background: white;
-
-    color: #333;
-
-    box-shadow:
-        0 1px 5px rgba(0,0,0,0.35);
-
-    cursor: pointer;
-
-    font-size: 21px;
-
-    line-height: 38px;
-
-    padding: 0;
-}
-
-.autozoom-map-button:hover {
-    background: #f0f0f0;
-}
-
 
 /* =========================================================
    LEGEND
-========================================================= */
+   ========================================================= */
 
 .map-legend {
-    position: absolute;
 
-    right: 20px;
-    bottom: 20px;
+    position:absolute;
 
-    z-index: 1000;
+    right:20px;
 
-    min-width: 190px;
+    bottom:20px;
 
-    background:
-        rgba(255,255,255,0.92);
+    z-index:1000;
 
-    padding:
-        10px 14px;
+    min-width:190px;
 
-    border-radius: 6px;
+    background:rgba(255,255,255,0.92);
 
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.25);
+    padding:10px 14px;
 
-    font-size: 13px;
+    border-radius:6px;
+
+    box-shadow:0 2px 6px rgba(0,0,0,0.25);
+
+    font-size:13px;
+
 }
 
 .map-legend-heading {
-    font-weight: bold;
 
-    font-size: 14px;
+    font-weight:bold;
 
-    margin-bottom: 8px;
+    font-size:14px;
 
-    padding-bottom: 6px;
+    margin-bottom:8px;
 
-    border-bottom:
-        1px solid #ddd;
+    padding-bottom:6px;
+
+    border-bottom:1px solid #ddd;
+
 }
 
 .legend-item {
-    margin: 7px 0;
 
-    white-space: nowrap;
+    margin:7px 0;
+
+    white-space:nowrap;
+
 }
 
 .legend-line {
-    display: inline-block;
 
-    width: 30px;
-    height: 4px;
+    display:inline-block;
 
-    margin-right: 7px;
+    width:30px;
 
-    vertical-align: middle;
+    height:4px;
+
+    margin-right:7px;
+
+    vertical-align:middle;
+
 }
 
 .legend-rtk {
-    background: cyan;
+
+    background:cyan;
+
 }
 
 .legend-pantai {
-    background: #ffd700;
+
+    background:#ffd700;
+
 }
 
 .legend-digitasi {
-    background: red;
+
+    background:red;
+
 }
 
-
 /* =========================================================
-   LEAFLET
-========================================================= */
+   AUTO ZOOM MAP BUTTON
+   ========================================================= */
 
-.leaflet-control-layers {
-    display: none;
+#autoZoomMapButton {
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    z-index:1000;
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:white;
+
+    box-shadow:0 2px 7px rgba(0,0,0,0.30);
+
+    cursor:pointer;
+
+    font-size:21px;
+
+}
+
+#autoZoomMapButton:hover {
+
+    background:#f0f0f0;
+
 }
 
 </style>
@@ -471,55 +461,43 @@ body {
 
 <body>
 
-
-<!-- =========================================================
+<!-- =====================================================
      MAP
-========================================================= -->
+     ===================================================== -->
 
 <div id="map"></div>
 
 
-<!-- =========================================================
-     AUTO ZOOM KANAN ATAS
-========================================================= -->
+<!-- =====================================================
+     AUTO ZOOM BUTTON PADA PETA
+     ===================================================== -->
 
-<div class="autozoom-map-control">
-
-    <button
-        id="autoZoomMapButton"
-        class="autozoom-map-button"
-        title="Auto Zoom to Layer"
-        aria-label="Auto Zoom to Layer">
-
-        ⛶
-
-    </button>
-
-</div>
+<button
+    id="autoZoomMapButton"
+    title="Auto Zoom"
+>
+    ⛶
+</button>
 
 
-<!-- =========================================================
+<!-- =====================================================
      SIDEBAR
-========================================================= -->
+     ===================================================== -->
 
 <div id="sidebar">
 
+    <button id="sidebarToggle">
+        ‹
+    </button>
 
-    <!-- BACKGROUND -->
 
     <div class="background-gallery">
 
-        <div
-            class="background-photo photo-1">
-        </div>
+        <div class="background-photo photo-1"></div>
 
-        <div
-            class="background-photo photo-2">
-        </div>
+        <div class="background-photo photo-2"></div>
 
-        <div
-            class="background-photo photo-3">
-        </div>
+        <div class="background-photo photo-3"></div>
 
     </div>
 
@@ -527,214 +505,213 @@ body {
     <div class="sidebar-content">
 
 
-        <!-- =================================================
-             LOGO
-        ================================================== -->
+        <!-- LOGO -->
 
         <div class="logo-container">
 
-            <img
-                src="ITERA.png"
-                alt="ITERA">
+            <img src="ITERA.png">
 
-            <img
-                src="Logo_GT.png"
-                alt="Geomatics">
+            <img src="Logo_GT.png">
 
-            <img
-                src="LOGO_GT23.png"
-                alt="GT23">
+            <img src="LOGO_GT23.png">
 
-            <img
-                src="LOGO_KEMKER.png"
-                alt="Kemah Kerja">
+            <img src="LOGO_KEMKER.png">
 
         </div>
 
 
-        <!-- =================================================
-             TITLE
-        ================================================== -->
-
         <div class="sidebar-title">
 
-            <h1>
-                WEBGIS KELOMPOK 1
-            </h1>
+            WEBGIS KELOMPOK 1
 
-            <p>
-                Pemetaan dan Visualisasi Garis Pantai
-            </p>
+        </div>
+
+
+        <div class="sidebar-subtitle">
+
+            Pemetaan dan Visualisasi Garis Pantai
 
         </div>
 
 
         <!-- =================================================
              LAYER
-        ================================================== -->
+             ================================================= -->
 
-        <div class="section">
+        <div class="section-title">
 
-            <div class="section-title">
-                LAYER
-            </div>
+            LAYER
+
+        </div>
 
 
-            <label class="layer-item">
+        <div class="layer-item">
+
+            <label>
 
                 <input
                     type="checkbox"
                     id="rtkCheck"
-                    checked>
+                    checked
+                >
 
                 Garis Pantai RTK
 
             </label>
 
+        </div>
 
-            <label class="layer-item">
+
+        <div class="layer-item">
+
+            <label>
 
                 <input
                     type="checkbox"
                     id="pantaiCheck"
-                    checked>
+                    checked
+                >
 
                 Garis Pantai
 
             </label>
 
+        </div>
 
-            <label class="layer-item">
+
+        <div class="layer-item">
+
+            <label>
 
                 <input
                     type="checkbox"
                     id="digitasiCheck"
-                    checked>
+                    checked
+                >
 
                 Garis Pantai Digitasi
 
             </label>
 
+        </div>
 
-            <label class="layer-item">
+
+        <div class="layer-item">
+
+            <label>
 
                 <input
                     type="checkbox"
-                    id="orthoCheck">
+                    id="orthoCheck"
+                >
 
                 Orthophoto
 
             </label>
 
-
-            <button
-                id="autoZoomButton"
-                class="autozoom-button">
-
-                ⛶ Auto Zoom to Layer
-
-            </button>
-
         </div>
+
+
+        <button
+            id="autoZoomButton"
+            class="control-button"
+        >
+
+            Auto Zoom to Layer
+
+        </button>
 
 
         <!-- =================================================
              BASEMAP
-        ================================================== -->
+             ================================================= -->
 
-        <div class="section">
+        <div class="section-title">
 
-            <div class="section-title">
-                BASEMAP
-            </div>
-
-
-            <label class="basemap-item">
-
-                <input
-                    type="radio"
-                    name="basemap"
-                    value="imagery"
-                    checked>
-
-                Esri World Imagery
-
-            </label>
-
-
-            <label class="basemap-item">
-
-                <input
-                    type="radio"
-                    name="basemap"
-                    value="street">
-
-                Esri World Street Map
-
-            </label>
+            BASEMAP
 
         </div>
 
 
+        <label class="basemap-item">
+
+            <input
+                type="radio"
+                name="basemap"
+                id="esriImagery"
+                checked
+            >
+
+            Esri World Imagery
+
+        </label>
+
+
+        <label class="basemap-item">
+
+            <input
+                type="radio"
+                name="basemap"
+                id="esriStreet"
+            >
+
+            Esri World Street Map
+
+        </label>
+
+
         <!-- =================================================
              KOORDINAT
-        ================================================== -->
+             ================================================= -->
 
-        <div class="section">
+        <div class="section-title">
 
-            <div class="section-title">
-                KOORDINAT
+            SISTEM KOORDINAT
+
+        </div>
+
+
+        <div class="coordinate-panel">
+
+            <div class="coordinate-title">
+
+                WGS 84
+
             </div>
 
+            <div>
 
-            <div class="coordinate-panel">
+                Geographic Coordinate System
 
-                <div>
+            </div>
 
-                    <strong>
-                        Sistem Koordinat:
-                    </strong>
+            <div>
 
-                    WGS 84
+                EPSG:4326
 
-                </div>
+            </div>
 
+            <hr>
 
-                <div>
+            <div>
 
-                    <strong>
-                        Geographic Coordinate System:
-                    </strong>
+                Latitude:
+                <span id="latitude">
 
-                    EPSG:4326
+                    -
 
-                </div>
+                </span>
 
+            </div>
 
-                <div>
+            <div>
 
-                    <strong>
-                        Latitude:
-                    </strong>
+                Longitude:
+                <span id="longitude">
 
-                    <span id="latitude">
-                        -
-                    </span>
+                    -
 
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        Longitude:
-                    </strong>
-
-                    <span id="longitude">
-                        -
-                    </span>
-
-                </div>
+                </span>
 
             </div>
 
@@ -745,35 +722,22 @@ body {
 </div>
 
 
-<!-- =========================================================
-     SIDEBAR TOGGLE
-========================================================= -->
-
-<button
-    id="sidebarToggle"
-    title="Buka/Tutup Sidebar">
-
-    ❮
-
-</button>
-
-
-<!-- =========================================================
+<!-- =====================================================
      LEGEND
-========================================================= -->
+     ===================================================== -->
 
 <div class="map-legend">
 
     <div class="map-legend-heading">
+
         LEGENDA
+
     </div>
 
 
     <div class="legend-item">
 
-        <span
-            class="legend-line legend-rtk">
-        </span>
+        <span class="legend-line legend-rtk"></span>
 
         Garis Pantai RTK
 
@@ -782,9 +746,7 @@ body {
 
     <div class="legend-item">
 
-        <span
-            class="legend-line legend-pantai">
-        </span>
+        <span class="legend-line legend-pantai"></span>
 
         Garis Pantai
 
@@ -793,9 +755,7 @@ body {
 
     <div class="legend-item">
 
-        <span
-            class="legend-line legend-digitasi">
-        </span>
+        <span class="legend-line legend-digitasi"></span>
 
         Garis Pantai Digitasi
 
@@ -804,73 +764,71 @@ body {
 </div>
 
 
-<!-- =========================================================
-     LEAFLET
-========================================================= -->
-
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
-
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
-</script>
-
-
 <script>
 
 /* =========================================================
    INITIAL MAP
-========================================================= */
+   ========================================================= */
 
-const map = L.map(
-    "map",
-    {
-        zoomControl: true,
-        maxZoom: 24,
-        minZoom: 2
-    }
+const map = L.map("map", {
+
+    zoomControl:true,
+
+    maxZoom:24
+
+});
+
+
+map.setView(
+    [-5.4,105.3],
+    12
 );
 
 
 /* =========================================================
    BASEMAP
-========================================================= */
+   ========================================================= */
 
-const imagery = L.tileLayer(
+const esriImagery = L.tileLayer(
 
-    "https://server.arcgisonline.com/" +
-    "ArcGIS/rest/services/" +
+    "https://server.arcgisonline.com/ArcGIS/rest/services/" +
     "World_Imagery/MapServer/tile/{z}/{y}/{x}",
 
     {
-        maxZoom: 24,
-        attribution: "Tiles © Esri"
+
+        maxZoom:24,
+
+        attribution:
+        "Tiles &copy; Esri"
+
     }
 
 );
 
 
-const street = L.tileLayer(
+const esriStreet = L.tileLayer(
 
-    "https://server.arcgisonline.com/" +
-    "ArcGIS/rest/services/" +
+    "https://server.arcgisonline.com/ArcGIS/rest/services/" +
     "World_Street_Map/MapServer/tile/{z}/{y}/{x}",
 
     {
-        maxZoom: 24,
-        attribution: "Tiles © Esri"
+
+        maxZoom:24,
+
+        attribution:
+        "Tiles &copy; Esri"
+
     }
 
 );
 
 
-imagery.addTo(map);
+esriImagery.addTo(map);
 
 
 /* =========================================================
-   PROJECTION UTM 48S
-========================================================= */
+   PROJ4
+   ========================================================= */
 
 proj4.defs(
 
@@ -887,12 +845,14 @@ proj4.defs(
 
 
 /* =========================================================
-   UTM 48S KE WGS84
-========================================================= */
+   UTM 48S -> WGS84
+   ========================================================= */
 
 function UTM48SToWGS84(
+
     easting,
     northing
+
 ) {
 
     const result = proj4(
@@ -902,35 +862,29 @@ function UTM48SToWGS84(
         "EPSG:4326",
 
         [
-            Number(easting),
-            Number(northing)
+            easting,
+            northing
         ]
 
     );
 
+    return [
 
-    return {
+        result[1],
+        result[0]
 
-        lng: result[0],
-
-        lat: result[1]
-
-    };
+    ];
 
 }
 
 
 /* =========================================================
-   AMBIL KOORDINAT PERTAMA
-========================================================= */
+   GET FIRST COORDINATE
+   ========================================================= */
 
-function getFirstCoordinate(
-    coords
-) {
+function getFirstCoordinate(coords) {
 
-    if (
-        !Array.isArray(coords)
-    ) {
+    if (!Array.isArray(coords)) {
 
         return null;
 
@@ -940,29 +894,31 @@ function getFirstCoordinate(
     if (
 
         coords.length >= 2 &&
-
         typeof coords[0] === "number" &&
-
         typeof coords[1] === "number"
 
     ) {
 
-        return coords;
+        return [
+
+            coords[0],
+            coords[1]
+
+        ];
 
     }
 
 
     for (
+
         let i = 0;
         i < coords.length;
         i++
+
     ) {
 
         const result =
-            getFirstCoordinate(
-                coords[i]
-            );
-
+            getFirstCoordinate(coords[i]);
 
         if (result) {
 
@@ -979,91 +935,67 @@ function getFirstCoordinate(
 
 
 /* =========================================================
-   DETEKSI CRS DARI METADATA
-========================================================= */
+   DETECT CRS DARI METADATA
+   ========================================================= */
 
-function detectCRSFromGeoJSON(
-    geojson
-) {
-
-    if (
-        !geojson ||
-        !geojson.crs
-    ) {
-
-        return null;
-
-    }
-
-
-    let crsText = "";
-
+function detectCRSFromGeoJSON(geojson) {
 
     try {
 
         if (
+
+            geojson.crs &&
             geojson.crs.properties
+
         ) {
 
-            crsText +=
-                " " +
-                String(
-                    geojson.crs.properties.name ||
-                    ""
-                );
+            const properties =
+                geojson.crs.properties;
 
 
-            crsText +=
-                " " +
-                String(
-                    geojson.crs.properties.href ||
-                    ""
-                );
+            const name =
+                properties.name ||
+                properties.href ||
+                "";
+
+
+            const nameUpper =
+                String(name).toUpperCase();
+
+
+            if (
+
+                nameUpper.includes("4326") ||
+                nameUpper.includes("WGS84") ||
+                nameUpper.includes("WGS 84")
+
+            ) {
+
+                return "EPSG:4326";
+
+            }
+
+
+            if (
+
+                nameUpper.includes("32748")
+
+            ) {
+
+                return "EPSG:32748";
+
+            }
 
         }
 
-
-        crsText +=
-            " " +
-            String(
-                geojson.crs.name ||
-                ""
-            );
-
     }
 
-    catch (error) {
+    catch(error) {
 
         console.warn(
-            "Gagal membaca metadata CRS:",
+            "CRS metadata tidak dapat dibaca:",
             error
         );
-
-    }
-
-
-    crsText =
-        crsText.toUpperCase();
-
-
-    if (
-
-        crsText.includes("4326") ||
-        crsText.includes("WGS84") ||
-        crsText.includes("WGS 84")
-
-    ) {
-
-        return "EPSG:4326";
-
-    }
-
-
-    if (
-        crsText.includes("32748")
-    ) {
-
-        return "EPSG:32748";
 
     }
 
@@ -1074,145 +1006,38 @@ function detectCRSFromGeoJSON(
 
 
 /* =========================================================
-   DETEKSI CRS DARI NILAI KOORDINAT
-========================================================= */
+   DETECT CRS DARI NILAI KOORDINAT
+   ========================================================= */
 
-function detectCRSFromCoordinates(
-    geojson
-) {
+function detectCRSFromCoordinates(geojson) {
 
-    let coordinate = null;
-
-
-    /*
-       FEATURE COLLECTION
-    */
-
-    if (
-        geojson.type ===
-        "FeatureCollection"
-    ) {
-
-        if (
-            Array.isArray(
-                geojson.features
-            )
-        ) {
-
-            for (
-                let i = 0;
-                i < geojson.features.length;
-                i++
-            ) {
-
-                const feature =
-                    geojson.features[i];
+    const first =
+        getFirstCoordinate(
+            geojson.features &&
+            geojson.features.length > 0
+                ? geojson.features[0].geometry.coordinates
+                : null
+        );
 
 
-                if (
-                    feature &&
-                    feature.geometry &&
-                    feature.geometry.coordinates
-                ) {
-
-                    coordinate =
-                        getFirstCoordinate(
-                            feature.geometry.coordinates
-                        );
-
-
-                    if (coordinate) {
-
-                        break;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    /*
-       FEATURE
-    */
-
-    else if (
-        geojson.type ===
-        "Feature"
-    ) {
-
-        if (
-            geojson.geometry &&
-            geojson.geometry.coordinates
-        ) {
-
-            coordinate =
-                getFirstCoordinate(
-                    geojson.geometry.coordinates
-                );
-
-        }
-
-    }
-
-
-    /*
-       GEOMETRY
-    */
-
-    else if (
-        geojson.coordinates
-    ) {
-
-        coordinate =
-            getFirstCoordinate(
-                geojson.coordinates
-            );
-
-    }
-
-
-    if (!coordinate) {
+    if (!first) {
 
         return null;
 
     }
 
 
-    const x =
-        Number(
-            coordinate[0]
-        );
+    const x = first[0];
 
-    const y =
-        Number(
-            coordinate[1]
-        );
+    const y = first[1];
 
 
-    if (
-        !isFinite(x) ||
-        !isFinite(y)
-    ) {
-
-        return null;
-
-    }
-
-
-    /*
-       WGS84
-    */
+    /* WGS84 */
 
     if (
 
         x >= -180 &&
         x <= 180 &&
-
         y >= -90 &&
         y <= 90
 
@@ -1223,15 +1048,12 @@ function detectCRSFromCoordinates(
     }
 
 
-    /*
-       UTM 48S
-    */
+    /* UTM 48S */
 
     if (
 
         x >= 100000 &&
         x <= 900000 &&
-
         y >= 0 &&
         y <= 10000000
 
@@ -1248,17 +1070,13 @@ function detectCRSFromCoordinates(
 
 
 /* =========================================================
-   DETEKSI CRS
-========================================================= */
+   DETECT GEOJSON CRS
+   ========================================================= */
 
-function detectGeoJSONCRS(
-    geojson
-) {
+function detectGeoJSONCRS(geojson) {
 
     const metadataCRS =
-        detectCRSFromGeoJSON(
-            geojson
-        );
+        detectCRSFromGeoJSON(geojson);
 
 
     if (metadataCRS) {
@@ -1268,24 +1086,26 @@ function detectGeoJSONCRS(
     }
 
 
-    return detectCRSFromCoordinates(
-        geojson
-    );
+    return detectCRSFromCoordinates(geojson);
 
 }
 
 
 /* =========================================================
-   KONVERSI COORDINATES
-========================================================= */
+   CONVERT COORDINATES
+   ========================================================= */
 
 function convertCoordinates(
+
     coords,
     sourceCRS
+
 ) {
 
     if (
+
         !Array.isArray(coords)
+
     ) {
 
         return coords;
@@ -1293,49 +1113,26 @@ function convertCoordinates(
     }
 
 
-    /*
-       PASANGAN KOORDINAT
-    */
-
     if (
 
         coords.length >= 2 &&
-
         typeof coords[0] === "number" &&
-
         typeof coords[1] === "number"
 
     ) {
 
         if (
-            sourceCRS ===
-            "EPSG:4326"
+
+            sourceCRS === "EPSG:32748"
+
         ) {
 
-            return [
+            return UTM48SToWGS84(
+
                 coords[0],
                 coords[1]
-            ];
 
-        }
-
-
-        if (
-            sourceCRS ===
-            "EPSG:32748"
-        ) {
-
-            const converted =
-                UTM48SToWGS84(
-                    coords[0],
-                    coords[1]
-                );
-
-
-            return [
-                converted.lng,
-                converted.lat
-            ];
+            );
 
         }
 
@@ -1345,190 +1142,92 @@ function convertCoordinates(
     }
 
 
-    /*
-       NESTED ARRAY
-    */
-
     return coords.map(
+
         function(item) {
 
             return convertCoordinates(
+
                 item,
                 sourceCRS
+
             );
 
         }
+
     );
 
 }
 
 
 /* =========================================================
-   KONVERSI GEOMETRY
-========================================================= */
-
-function convertGeometryToWGS84(
-    geometry,
-    sourceCRS
-) {
-
-    if (
-        !geometry
-    ) {
-
-        return geometry;
-
-    }
-
-
-    const result =
-        JSON.parse(
-            JSON.stringify(
-                geometry
-            )
-        );
-
-
-    if (
-        result.coordinates
-    ) {
-
-        result.coordinates =
-            convertCoordinates(
-                result.coordinates,
-                sourceCRS
-            );
-
-    }
-
-
-    return result;
-
-}
-
-
-/* =========================================================
-   KONVERSI FEATURE
-========================================================= */
-
-function convertFeatureToWGS84(
-    feature,
-    sourceCRS
-) {
-
-    if (
-        !feature
-    ) {
-
-        return feature;
-
-    }
-
-
-    const result =
-        JSON.parse(
-            JSON.stringify(
-                feature
-            )
-        );
-
-
-    if (
-        result.geometry
-    ) {
-
-        result.geometry =
-            convertGeometryToWGS84(
-                result.geometry,
-                sourceCRS
-            );
-
-    }
-
-
-    return result;
-
-}
-
-
-/* =========================================================
-   KONVERSI GEOJSON
-========================================================= */
+   CONVERT GEOJSON -> WGS84
+   ========================================================= */
 
 function convertGeoJSONToWGS84(
+
     geojson
+
 ) {
 
-    const result =
+    const converted =
         JSON.parse(
-            JSON.stringify(
-                geojson
-            )
+            JSON.stringify(geojson)
         );
 
 
     const sourceCRS =
-        detectGeoJSONCRS(
-            result
-        );
+        detectGeoJSONCRS(converted);
 
 
     console.log(
-        "CRS TERDETEKSI:",
+        "CRS GeoJSON:",
         sourceCRS
     );
 
 
-    /*
-       JIKA SUDAH WGS84
-    */
-
     if (
-        sourceCRS ===
-        "EPSG:4326"
+
+        !sourceCRS
+
     ) {
 
-        return result;
+        console.warn(
+            "CRS tidak terdeteksi. Data tidak dikonversi."
+        );
+
+        return converted;
 
     }
 
 
-    /*
-       JIKA UTM 48S
-    */
-
     if (
-        sourceCRS ===
-        "EPSG:32748"
+
+        sourceCRS === "EPSG:4326"
+
     ) {
 
+        return converted;
 
-        /*
-           FeatureCollection
-        */
+    }
 
-        if (
-            result.type ===
-            "FeatureCollection"
-        ) {
+
+    converted.features.forEach(
+
+        function(feature) {
 
             if (
-                Array.isArray(
-                    result.features
-                )
+
+                feature.geometry &&
+                feature.geometry.coordinates
+
             ) {
 
-                result.features =
-                    result.features.map(
+                feature.geometry.coordinates =
+                    convertCoordinates(
 
-                        function(feature) {
-
-                            return convertFeatureToWGS84(
-                                feature,
-                                sourceCRS
-                            );
-
-                        }
+                        feature.geometry.coordinates,
+                        sourceCRS
 
                     );
 
@@ -1536,99 +1235,57 @@ function convertGeoJSONToWGS84(
 
         }
 
-
-        /*
-           Feature
-        */
-
-        else if (
-            result.type ===
-            "Feature"
-        ) {
-
-            return convertFeatureToWGS84(
-                result,
-                sourceCRS
-            );
-
-        }
+    );
 
 
-        /*
-           Geometry langsung
-        */
-
-        else if (
-            result.coordinates
-        ) {
-
-            result.coordinates =
-                convertCoordinates(
-                    result.coordinates,
-                    sourceCRS
-                );
-
-        }
-
-    }
-
-
-    return result;
+    return converted;
 
 }
 
 
 /* =========================================================
-   STYLE RTK
-========================================================= */
+   STYLE
+   ========================================================= */
 
 function styleRTK() {
 
     return {
 
-        color: "cyan",
+        color:"cyan",
 
-        weight: 3,
+        weight:3,
 
-        opacity: 1
+        opacity:1
 
     };
 
 }
 
-
-/* =========================================================
-   STYLE GARIS PANTAI
-========================================================= */
 
 function stylePantai() {
 
     return {
 
-        color: "#ffd700",
+        color:"#ffd700",
 
-        weight: 3,
+        weight:3,
 
-        opacity: 1
+        opacity:1
 
     };
 
 }
 
-
-/* =========================================================
-   STYLE DIGITASI
-========================================================= */
 
 function styleDigitasi() {
 
     return {
 
-        color: "red",
+        color:"red",
 
-        weight: 3,
+        weight:3,
 
-        opacity: 1
+        opacity:1
 
     };
 
@@ -1636,42 +1293,114 @@ function styleDigitasi() {
 
 
 /* =========================================================
-   HIGHLIGHT
-========================================================= */
+   HOVER
+   ========================================================= */
 
-function highlightFeature(e) {
+function onEachRTK(
 
-    const layer =
-        e.target;
+    feature,
+    layer
 
+) {
 
-    layer.setStyle({
+    layer.on({
 
-        color: "orange",
+        mouseover:function(e) {
 
-        weight: 4
+            e.target.setStyle({
+
+                color:"orange",
+
+                weight:4
+
+            });
+
+        },
+
+        mouseout:function(e) {
+
+            e.target.setStyle(
+                styleRTK()
+            );
+
+        }
 
     });
 
+}
 
-    if (
 
-        !L.Browser.ie &&
-        !L.Browser.opera &&
-        !L.Browser.edge
+function onEachPantai(
 
-    ) {
+    feature,
+    layer
 
-        layer.bringToFront();
+) {
 
-    }
+    layer.on({
+
+        mouseover:function(e) {
+
+            e.target.setStyle({
+
+                color:"orange",
+
+                weight:4
+
+            });
+
+        },
+
+        mouseout:function(e) {
+
+            e.target.setStyle(
+                stylePantai()
+            );
+
+        }
+
+    });
+
+}
+
+
+function onEachDigitasi(
+
+    feature,
+    layer
+
+) {
+
+    layer.on({
+
+        mouseover:function(e) {
+
+            e.target.setStyle({
+
+                color:"orange",
+
+                weight:4
+
+            });
+
+        },
+
+        mouseout:function(e) {
+
+            e.target.setStyle(
+                styleDigitasi()
+            );
+
+        }
+
+    });
 
 }
 
 
 /* =========================================================
-   VARIABEL LAYER
-========================================================= */
+   LAYER VARIABLES
+   ========================================================= */
 
 let rtkLayer = null;
 
@@ -1681,149 +1410,37 @@ let digitasiLayer = null;
 
 
 /* =========================================================
-   EVENT RTK
-========================================================= */
-
-function onEachRTK(
-    feature,
-    layer
-) {
-
-    layer.on({
-
-        mouseover:
-            highlightFeature,
-
-        mouseout:
-            function(e) {
-
-                if (
-                    rtkLayer
-                ) {
-
-                    rtkLayer.resetStyle(
-                        e.target
-                    );
-
-                }
-
-            }
-
-    });
-
-}
-
-
-/* =========================================================
-   EVENT PANTAI
-========================================================= */
-
-function onEachPantai(
-    feature,
-    layer
-) {
-
-    layer.on({
-
-        mouseover:
-            highlightFeature,
-
-        mouseout:
-            function(e) {
-
-                if (
-                    pantaiLayer
-                ) {
-
-                    pantaiLayer.resetStyle(
-                        e.target
-                    );
-
-                }
-
-            }
-
-    });
-
-}
-
-
-/* =========================================================
-   EVENT DIGITASI
-========================================================= */
-
-function onEachDigitasi(
-    feature,
-    layer
-) {
-
-    layer.on({
-
-        mouseover:
-            highlightFeature,
-
-        mouseout:
-            function(e) {
-
-                if (
-                    digitasiLayer
-                ) {
-
-                    digitasiLayer.resetStyle(
-                        e.target
-                    );
-
-                }
-
-            }
-
-    });
-
-}
-
-
-/* =========================================================
    LOAD RTK
-========================================================= */
+   ========================================================= */
 
 fetch(
     "Garis_Pantai_RTK.geojson"
 )
 
 .then(
-    function(response) {
 
-        if (
-            !response.ok
-        ) {
+    response => {
+
+        if (!response.ok) {
 
             throw new Error(
-                "HTTP " +
-                response.status +
-                " - Garis_Pantai_RTK.geojson"
+                "Garis_Pantai_RTK.geojson tidak ditemukan"
             );
 
         }
 
-
         return response.json();
 
     }
+
 )
 
 .then(
-    function(data) {
 
-        console.log(
-            "DATA RTK:",
-            data
-        );
-
+    data => {
 
         const converted =
-            convertGeoJSONToWGS84(
-                data
-            );
+            convertGeoJSONToWGS84(data);
 
 
         rtkLayer =
@@ -1833,83 +1450,72 @@ fetch(
 
                 {
 
-                    style:
-                        styleRTK,
+                    style:styleRTK,
 
-                    onEachFeature:
-                        onEachRTK
+                    onEachFeature:onEachRTK
 
                 }
 
             );
 
 
-        rtkLayer.addTo(
-            map
-        );
+        rtkLayer.addTo(map);
 
 
         console.log(
             "RTK berhasil dimuat."
         );
 
-
-        console.log(
-            "BOUNDS RTK:",
-            rtkLayer.getBounds()
-        );
-
     }
+
 )
 
 .catch(
-    function(error) {
+
+    error => {
 
         console.error(
-            "GAGAL MEMUAT RTK:",
+            "Error RTK:",
             error
         );
 
     }
+
 );
 
 
 /* =========================================================
    LOAD GARIS PANTAI
-========================================================= */
+   ========================================================= */
 
 fetch(
     "Garis_Pantai.geojson"
 )
 
 .then(
-    function(response) {
 
-        if (
-            !response.ok
-        ) {
+    response => {
+
+        if (!response.ok) {
 
             throw new Error(
-                "HTTP " +
-                response.status +
-                " - Garis_Pantai.geojson"
+                "Garis_Pantai.geojson tidak ditemukan"
             );
 
         }
 
-
         return response.json();
 
     }
+
 )
 
 .then(
-    function(data) {
+
+    data => {
 
         const converted =
-            convertGeoJSONToWGS84(
-                data
-            );
+            convertGeoJSONToWGS84(data);
 
 
         pantaiLayer =
@@ -1919,20 +1525,16 @@ fetch(
 
                 {
 
-                    style:
-                        stylePantai,
+                    style:stylePantai,
 
-                    onEachFeature:
-                        onEachPantai
+                    onEachFeature:onEachPantai
 
                 }
 
             );
 
 
-        pantaiLayer.addTo(
-            map
-        );
+        pantaiLayer.addTo(map);
 
 
         console.log(
@@ -1940,56 +1542,55 @@ fetch(
         );
 
     }
+
 )
 
 .catch(
-    function(error) {
+
+    error => {
 
         console.error(
-            "GAGAL MEMUAT GARIS PANTAI:",
+            "Error Garis Pantai:",
             error
         );
 
     }
+
 );
 
 
 /* =========================================================
-   LOAD DIGITASI
-========================================================= */
+   LOAD GARIS PANTAI DIGITASI
+   ========================================================= */
 
 fetch(
     "Garis_Pantai_Digitasi.geojson"
 )
 
 .then(
-    function(response) {
 
-        if (
-            !response.ok
-        ) {
+    response => {
+
+        if (!response.ok) {
 
             throw new Error(
-                "HTTP " +
-                response.status +
-                " - Garis_Pantai_Digitasi.geojson"
+                "Garis_Pantai_Digitasi.geojson tidak ditemukan"
             );
 
         }
 
-
         return response.json();
 
     }
+
 )
 
 .then(
-    function(data) {
+
+    data => {
 
         const converted =
-            convertGeoJSONToWGS84(
-                data
-            );
+            convertGeoJSONToWGS84(data);
 
 
         digitasiLayer =
@@ -1999,20 +1600,16 @@ fetch(
 
                 {
 
-                    style:
-                        styleDigitasi,
+                    style:styleDigitasi,
 
-                    onEachFeature:
-                        onEachDigitasi
+                    onEachFeature:onEachDigitasi
 
                 }
 
             );
 
 
-        digitasiLayer.addTo(
-            map
-        );
+        digitasiLayer.addTo(map);
 
 
         console.log(
@@ -2020,24 +1617,26 @@ fetch(
         );
 
     }
+
 )
 
 .catch(
-    function(error) {
+
+    error => {
 
         console.error(
-            "GAGAL MEMUAT DIGITASI:",
+            "Error Digitasi:",
             error
         );
 
     }
+
 );
 
 
 /* =========================================================
-   ORTHOPHOTO GITHUB
-   L11 - L19
-========================================================= */
+   ORTHOPHOTO
+   ========================================================= */
 
 const ORTHO_URL_BASE =
 
@@ -2055,285 +1654,601 @@ const ORTHO_URL_BASE =
 
 
 /* =========================================================
-   KONVERSI ANGKA KE HEX
-========================================================= */
+   NATIVE ZOOM ORTHOPHOTO
+   ========================================================= */
 
-function toHex(
-    num
-) {
+const ORTHO_NATIVE_ZOOM = 19;
+
+
+/* =========================================================
+   HEX CONVERTER
+   ========================================================= */
+
+function toHex(num) {
 
     return num
         .toString(16)
         .toLowerCase()
-        .padStart(
-            8,
-            "0"
-        );
+        .padStart(8,"0");
 
 }
 
 
 /* =========================================================
-   ORTHOPHOTO GRID LAYER
-========================================================= */
+   CUSTOM ORTHOPHOTO GRID LAYER
 
-const OrthoGridLayer =
-    L.GridLayer.extend({
+   L11 - L19 = TILE ASLI
 
-        createTile:
-            function(
-                coords,
-                done
-            ) {
+   Z20 - Z24 = MENGAMBIL BAGIAN DARI TILE L19
 
+   Jadi orthophoto tidak hilang ketika zoom.
+   ========================================================= */
 
-                const tile =
-                    document.createElement(
-                        "canvas"
-                    );
+const orthophotoLayer = L.GridLayer.extend({
 
+    createTile:function(
 
-                const size =
-                    this.getTileSize();
+        coords,
+        done
 
+    ) {
 
-                tile.width =
-                    size.x;
-
-                tile.height =
-                    size.y;
+        const tile =
+            document.createElement("canvas");
 
 
-                const ctx =
-                    tile.getContext(
-                        "2d"
-                    );
+        const tileSize =
+            this.getTileSize();
 
 
-                /*
-                   SEKARANG NATIVE ZOOM
-                   SAMPAI L19
-                */
+        tile.width =
+            tileSize.x;
 
-                const nativeZoom =
-                    19;
+        tile.height =
+            tileSize.y;
 
 
-                /*
-                   Zoom sumber maksimum L19
-                */
-
-                const sourceZoom =
-                    Math.min(
-                        coords.z,
-                        nativeZoom
-                    );
+        const ctx =
+            tile.getContext("2d");
 
 
-                let sourceX =
-                    coords.x;
+        /*
+         * =================================================
+         * ZOOM <= L19
+         * =================================================
+         */
+
+        if (
+
+            coords.z <= ORTHO_NATIVE_ZOOM
+
+        ) {
+
+            const img =
+                new Image();
 
 
-                let sourceY =
-                    coords.y;
+            img.crossOrigin =
+                "anonymous";
 
 
-                /*
-                   Jika user zoom > L19,
-                   tetap mengambil tile L19.
-                */
-
-                if (
-                    coords.z >
-                    nativeZoom
-                ) {
-
-                    const factor =
-                        Math.pow(
-                            2,
-                            coords.z -
-                            nativeZoom
-                        );
+            const rowHex =
+                toHex(coords.y);
 
 
-                    sourceX =
-                        Math.floor(
-                            coords.x /
-                            factor
-                        );
+            const colHex =
+                toHex(coords.x);
 
 
-                    sourceY =
-                        Math.floor(
-                            coords.y /
-                            factor
-                        );
+            const url =
 
-                }
+                ORTHO_URL_BASE +
 
+                "L" +
+                coords.z +
+                "/" +
 
-                /*
-                   NOMOR ROW
-                */
+                "R" +
+                rowHex +
+                "/" +
 
-                const rowHex =
-                    toHex(
-                        sourceY
-                    );
+                "C" +
+                colHex +
+                ".png";
 
 
-                /*
-                   NOMOR COLUMN
-                */
+            img.onload = function() {
 
-                const colHex =
-                    toHex(
-                        sourceX
-                    );
+                ctx.clearRect(
 
+                    0,
+                    0,
+                    tileSize.x,
+                    tileSize.y
 
-                /*
-                   URL TILE
-                */
-
-                const url =
-
-                    ORTHO_URL_BASE +
-
-                    "L" +
-                    sourceZoom +
-                    "/" +
-
-                    "R" +
-                    rowHex +
-                    "/" +
-
-                    "C" +
-                    colHex +
-                    ".png";
+                );
 
 
-                console.log(
-                    "ORTHO TILE:",
+                ctx.drawImage(
+
+                    img,
+
+                    0,
+                    0,
+                    tileSize.x,
+                    tileSize.y
+
+                );
+
+
+                done(
+                    null,
+                    tile
+                );
+
+            };
+
+
+            img.onerror = function() {
+
+                console.warn(
+                    "Tile orthophoto tidak ditemukan:",
                     url
                 );
 
 
-                const img =
-                    new Image();
+                done(
+                    null,
+                    tile
+                );
+
+            };
 
 
-                img.crossOrigin =
-                    "anonymous";
+            img.src = url;
 
 
-                img.onload =
-                    function() {
+            return tile;
+
+        }
 
 
-                        ctx.drawImage(
+        /*
+         * =================================================
+         * ZOOM > L19
+         *
+         * Ambil parent tile L19.
+         * =================================================
+         */
 
-                            img,
-
-                            0,
-                            0,
-
-                            size.x,
-                            size.y
-
-                        );
-
-
-                        done(
-                            null,
-                            tile
-                        );
-
-                    };
+        const zoomDifference =
+            coords.z -
+            ORTHO_NATIVE_ZOOM;
 
 
-                img.onerror =
-                    function() {
+        const factor =
+            Math.pow(
+                2,
+                zoomDifference
+            );
 
 
-                        console.warn(
-                            "ORTHO TILE TIDAK DITEMUKAN:",
-                            url
-                        );
+        /*
+         * Parent tile L19
+         */
+
+        const parentX =
+            Math.floor(
+                coords.x / factor
+            );
 
 
-                        done(
-                            null,
-                            tile
-                        );
-
-                    };
+        const parentY =
+            Math.floor(
+                coords.y / factor
+            );
 
 
-                img.src =
-                    url;
+        /*
+         * Posisi tile sekarang
+         * terhadap tile L19.
+         */
+
+        const localX =
+            coords.x -
+            parentX * factor;
 
 
-                return tile;
+        const localY =
+            coords.y -
+            parentY * factor;
 
-            }
+
+        /*
+         * URL L19
+         */
+
+        const rowHex =
+            toHex(parentY);
+
+
+        const colHex =
+            toHex(parentX);
+
+
+        const url =
+
+            ORTHO_URL_BASE +
+
+            "L" +
+            ORTHO_NATIVE_ZOOM +
+            "/" +
+
+            "R" +
+            rowHex +
+            "/" +
+
+            "C" +
+            colHex +
+            ".png";
+
+
+        const img =
+            new Image();
+
+
+        img.crossOrigin =
+            "anonymous";
+
+
+        img.onload = function() {
+
+            /*
+             * Ukuran bagian L19
+             * yang harus diambil.
+             */
+
+            const sourceWidth =
+                img.width /
+                factor;
+
+
+            const sourceHeight =
+                img.height /
+                factor;
+
+
+            /*
+             * Posisi bagian yang
+             * harus diambil.
+             */
+
+            const sourceX =
+                localX *
+                sourceWidth;
+
+
+            const sourceY =
+                localY *
+                sourceHeight;
+
+
+            /*
+             * Ambil bagian kecil
+             * dari tile L19 lalu
+             * diperbesar ke 256x256.
+             */
+
+            ctx.clearRect(
+
+                0,
+                0,
+                tileSize.x,
+                tileSize.y
+
+            );
+
+
+            ctx.imageSmoothingEnabled =
+                true;
+
+
+            ctx.imageSmoothingQuality =
+                "high";
+
+
+            ctx.drawImage(
+
+                img,
+
+                sourceX,
+                sourceY,
+
+                sourceWidth,
+                sourceHeight,
+
+                0,
+                0,
+
+                tileSize.x,
+                tileSize.y
+
+            );
+
+
+            done(
+
+                null,
+                tile
+
+            );
+
+        };
+
+
+        img.onerror = function() {
+
+            console.warn(
+                "Tile L19 orthophoto tidak ditemukan:",
+                url
+            );
+
+
+            done(
+
+                null,
+                tile
+
+            );
+
+        };
+
+
+        img.src = url;
+
+
+        return tile;
+
+    }
+
+});
+
+
+const orthophotoLayerInstance =
+    new orthophotoLayer({
+
+        tileSize:256,
+
+        minZoom:11,
+
+        maxZoom:24,
+
+        opacity:1,
+
+        updateWhenIdle:false,
+
+        updateWhenZooming:true,
+
+        keepBuffer:4
 
     });
 
 
 /* =========================================================
-   ORTHOPHOTO INSTANCE
-========================================================= */
+   LAYER CHECKBOX
+   ========================================================= */
 
-const ortho =
-    new OrthoGridLayer({
+document
+.getElementById("rtkCheck")
+.addEventListener(
 
-        tileSize: 256,
+    "change",
 
-        opacity: 0.80,
+    function() {
 
-        zIndex: 500,
+        if (!rtkLayer) return;
 
-        noWrap: true,
 
-        minZoom: 11,
+        if (this.checked) {
 
-        /*
-           TILE ASLI SAMPAI L19
-        */
+            rtkLayer.addTo(map);
 
-        maxNativeZoom: 19,
+        }
 
-        /*
-           WEBGIS MASIH BOLEH
-           ZOOM SAMPAI 24
-        */
+        else {
 
-        maxZoom: 24
+            map.removeLayer(
+                rtkLayer
+            );
 
-    });
+        }
+
+    }
+
+);
+
+
+document
+.getElementById("pantaiCheck")
+.addEventListener(
+
+    "change",
+
+    function() {
+
+        if (!pantaiLayer) return;
+
+
+        if (this.checked) {
+
+            pantaiLayer.addTo(map);
+
+        }
+
+        else {
+
+            map.removeLayer(
+                pantaiLayer
+            );
+
+        }
+
+    }
+
+);
+
+
+document
+.getElementById("digitasiCheck")
+.addEventListener(
+
+    "change",
+
+    function() {
+
+        if (!digitasiLayer) return;
+
+
+        if (this.checked) {
+
+            digitasiLayer.addTo(map);
+
+        }
+
+        else {
+
+            map.removeLayer(
+                digitasiLayer
+            );
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   ORTHOPHOTO CHECKBOX
+   ========================================================= */
+
+document
+.getElementById("orthoCheck")
+.addEventListener(
+
+    "change",
+
+    function() {
+
+        if (this.checked) {
+
+            orthophotoLayerInstance
+                .addTo(map);
+
+        }
+
+        else {
+
+            map.removeLayer(
+                orthophotoLayerInstance
+            );
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   BASEMAP SWITCH
+   ========================================================= */
+
+document
+.getElementById("esriImagery")
+.addEventListener(
+
+    "change",
+
+    function() {
+
+        if (this.checked) {
+
+            if (
+                map.hasLayer(esriStreet)
+            ) {
+
+                map.removeLayer(
+                    esriStreet
+                );
+
+            }
+
+
+            if (
+                !map.hasLayer(esriImagery)
+            ) {
+
+                esriImagery.addTo(map);
+
+            }
+
+        }
+
+    }
+
+);
+
+
+document
+.getElementById("esriStreet")
+.addEventListener(
+
+    "change",
+
+    function() {
+
+        if (this.checked) {
+
+            if (
+                map.hasLayer(esriImagery)
+            ) {
+
+                map.removeLayer(
+                    esriImagery
+                );
+
+            }
+
+
+            if (
+                !map.hasLayer(esriStreet)
+            ) {
+
+                esriStreet.addTo(map);
+
+            }
+
+        }
+
+    }
+
+);
 
 
 /* =========================================================
    AUTO ZOOM
-========================================================= */
+   ========================================================= */
 
 function updateAutoZoom() {
-
 
     const activeLayers = [];
 
 
-    /*
-       RTK
-    */
-
     if (
 
         rtkLayer &&
-        map.hasLayer(
-            rtkLayer
-        )
+        map.hasLayer(rtkLayer)
 
     ) {
 
@@ -2343,17 +2258,11 @@ function updateAutoZoom() {
 
     }
 
-
-    /*
-       GARIS PANTAI
-    */
 
     if (
 
         pantaiLayer &&
-        map.hasLayer(
-            pantaiLayer
-        )
+        map.hasLayer(pantaiLayer)
 
     ) {
 
@@ -2363,17 +2272,11 @@ function updateAutoZoom() {
 
     }
 
-
-    /*
-       DIGITASI
-    */
 
     if (
 
         digitasiLayer &&
-        map.hasLayer(
-            digitasiLayer
-        )
+        map.hasLayer(digitasiLayer)
 
     ) {
 
@@ -2384,12 +2287,10 @@ function updateAutoZoom() {
     }
 
 
-    /*
-       TIDAK ADA LAYER
-    */
-
     if (
+
         activeLayers.length === 0
+
     ) {
 
         alert(
@@ -2400,10 +2301,6 @@ function updateAutoZoom() {
 
     }
 
-
-    /*
-       GABUNGKAN BOUNDS
-    */
 
     let bounds = null;
 
@@ -2417,8 +2314,10 @@ function updateAutoZoom() {
 
 
             if (
+
                 !layerBounds ||
                 !layerBounds.isValid()
+
             ) {
 
                 return;
@@ -2427,13 +2326,18 @@ function updateAutoZoom() {
 
 
             if (
+
                 bounds === null
+
             ) {
 
                 bounds =
                     L.latLngBounds(
+
                         layerBounds.getSouthWest(),
+
                         layerBounds.getNorthEast()
+
                     );
 
             }
@@ -2451,13 +2355,11 @@ function updateAutoZoom() {
     );
 
 
-    /*
-       VALIDASI
-    */
-
     if (
+
         !bounds ||
         !bounds.isValid()
+
     ) {
 
         alert(
@@ -2480,10 +2382,6 @@ function updateAutoZoom() {
     );
 
 
-    /*
-       CEK SIDEBAR
-    */
-
     const sidebar =
         document.getElementById(
             "sidebar"
@@ -2496,10 +2394,6 @@ function updateAutoZoom() {
         );
 
 
-    /*
-       FIT BOUNDS
-    */
-
     map.fitBounds(
 
         bounds,
@@ -2507,19 +2401,16 @@ function updateAutoZoom() {
         {
 
             paddingTopLeft:
-
                 sidebarOpen
-
-                    ? [370, 40]
-
-                    : [40, 40],
+                    ? [370,40]
+                    : [40,40],
 
             paddingBottomRight:
-                [40, 40],
+                [40,40],
 
-            maxZoom: 24,
+            maxZoom:24,
 
-            animate: true
+            animate:true
 
         }
 
@@ -2530,319 +2421,45 @@ function updateAutoZoom() {
 
 /* =========================================================
    AUTO ZOOM SIDEBAR
-========================================================= */
+   ========================================================= */
 
 document
-    .getElementById(
-        "autoZoomButton"
-    )
-    .addEventListener(
+.getElementById("autoZoomButton")
+.addEventListener(
 
-        "click",
+    "click",
 
-        function() {
+    function() {
 
-            updateAutoZoom();
+        updateAutoZoom();
 
-        }
+    }
 
-    );
+);
 
 
 /* =========================================================
-   AUTO ZOOM KANAN ATAS
-========================================================= */
+   AUTO ZOOM MAP
+   ========================================================= */
 
 document
-    .getElementById(
-        "autoZoomMapButton"
-    )
-    .addEventListener(
+.getElementById("autoZoomMapButton")
+.addEventListener(
 
-        "click",
+    "click",
 
-        function() {
+    function() {
 
-            updateAutoZoom();
+        updateAutoZoom();
 
-        }
+    }
 
-    );
-
-
-/* =========================================================
-   CHECKBOX RTK
-========================================================= */
-
-document
-    .getElementById(
-        "rtkCheck"
-    )
-    .addEventListener(
-
-        "change",
-
-        function(e) {
-
-            if (
-                !rtkLayer
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                e.target.checked
-            ) {
-
-                rtkLayer.addTo(
-                    map
-                );
-
-            }
-
-            else {
-
-                map.removeLayer(
-                    rtkLayer
-                );
-
-            }
-
-        }
-
-    );
-
-
-/* =========================================================
-   CHECKBOX GARIS PANTAI
-========================================================= */
-
-document
-    .getElementById(
-        "pantaiCheck"
-    )
-    .addEventListener(
-
-        "change",
-
-        function(e) {
-
-            if (
-                !pantaiLayer
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                e.target.checked
-            ) {
-
-                pantaiLayer.addTo(
-                    map
-                );
-
-            }
-
-            else {
-
-                map.removeLayer(
-                    pantaiLayer
-                );
-
-            }
-
-        }
-
-    );
-
-
-/* =========================================================
-   CHECKBOX DIGITASI
-========================================================= */
-
-document
-    .getElementById(
-        "digitasiCheck"
-    )
-    .addEventListener(
-
-        "change",
-
-        function(e) {
-
-            if (
-                !digitasiLayer
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                e.target.checked
-            ) {
-
-                digitasiLayer.addTo(
-                    map
-                );
-
-            }
-
-            else {
-
-                map.removeLayer(
-                    digitasiLayer
-                );
-
-            }
-
-        }
-
-    );
-
-
-/* =========================================================
-   CHECKBOX ORTHOPHOTO
-========================================================= */
-
-document
-    .getElementById(
-        "orthoCheck"
-    )
-    .addEventListener(
-
-        "change",
-
-        function(e) {
-
-            if (
-                e.target.checked
-            ) {
-
-                ortho.addTo(
-                    map
-                );
-
-            }
-
-            else {
-
-                map.removeLayer(
-                    ortho
-                );
-
-            }
-
-        }
-
-    );
-
-
-/* =========================================================
-   BASEMAP
-========================================================= */
-
-document
-    .querySelectorAll(
-        'input[name="basemap"]'
-    )
-    .forEach(
-
-        function(radio) {
-
-            radio.addEventListener(
-
-                "change",
-
-                function(e) {
-
-
-                    if (
-                        e.target.value ===
-                        "imagery"
-                    ) {
-
-
-                        if (
-                            map.hasLayer(
-                                street
-                            )
-                        ) {
-
-                            map.removeLayer(
-                                street
-                            );
-
-                        }
-
-
-                        if (
-                            !map.hasLayer(
-                                imagery
-                            )
-                        ) {
-
-                            imagery.addTo(
-                                map
-                            );
-
-                        }
-
-                    }
-
-
-                    if (
-                        e.target.value ===
-                        "street"
-                    ) {
-
-
-                        if (
-                            map.hasLayer(
-                                imagery
-                            )
-                        ) {
-
-                            map.removeLayer(
-                                imagery
-                            );
-
-                        }
-
-
-                        if (
-                            !map.hasLayer(
-                                street
-                            )
-                        ) {
-
-                            street.addTo(
-                                map
-                            );
-
-                        }
-
-                    }
-
-                }
-
-            );
-
-        }
-
-    );
+);
 
 
 /* =========================================================
    SIDEBAR TOGGLE
-========================================================= */
+   ========================================================= */
 
 const sidebar =
     document.getElementById(
@@ -2862,7 +2479,6 @@ sidebarToggle.addEventListener(
 
     function() {
 
-
         sidebar.classList.toggle(
             "closed"
         );
@@ -2875,14 +2491,14 @@ sidebarToggle.addEventListener(
         ) {
 
             sidebarToggle.innerHTML =
-                "❯";
+                "›";
 
         }
 
         else {
 
             sidebarToggle.innerHTML =
-                "❮";
+                "‹";
 
         }
 
@@ -2905,8 +2521,8 @@ sidebarToggle.addEventListener(
 
 
 /* =========================================================
-   KOORDINAT KURSOR
-========================================================= */
+   LIVE COORDINATE
+   ========================================================= */
 
 map.on(
 
@@ -2914,27 +2530,20 @@ map.on(
 
     function(e) {
 
-
         document
-            .getElementById(
-                "latitude"
-            )
-            .textContent =
-
-            e.latlng.lat.toFixed(
-                7
-            );
+        .getElementById(
+            "latitude"
+        )
+        .textContent =
+            e.latlng.lat.toFixed(7);
 
 
         document
-            .getElementById(
-                "longitude"
-            )
-            .textContent =
-
-            e.latlng.lng.toFixed(
-                7
-            );
+        .getElementById(
+            "longitude"
+        )
+        .textContent =
+            e.latlng.lng.toFixed(7);
 
     }
 
@@ -2942,8 +2551,8 @@ map.on(
 
 
 /* =========================================================
-   BACKGROUND ROTATION
-========================================================= */
+   BACKGROUND PHOTO ROTATION
+   ========================================================= */
 
 const backgroundGallery =
     document.querySelector(
@@ -2954,16 +2563,13 @@ const backgroundGallery =
 let photoOrder = [
 
     "photo-1",
-
     "photo-2",
-
     "photo-3"
 
 ];
 
 
 function rotateBackgroundPhotos() {
-
 
     photoOrder.unshift(
         photoOrder.pop()
@@ -2980,11 +2586,11 @@ function rotateBackgroundPhotos() {
 
         function(photo) {
 
-
             const className =
                 Array.from(
                     photo.classList
-                ).find(
+                )
+                .find(
 
                     function(c) {
 
@@ -3014,22 +2620,6 @@ setInterval(
     rotateBackgroundPhotos,
 
     4000
-
-);
-
-
-/* =========================================================
-   POSISI AWAL MAP
-========================================================= */
-
-map.setView(
-
-    [
-        -5.4,
-        105.3
-    ],
-
-    12
 
 );
 
