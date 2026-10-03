@@ -11,9 +11,12 @@
 <title>WEBGIS KELOMPOK 1</title>
 
 <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 >
+
+<!-- PROJ4 UNTUK KONVERSI UTM 48S -> GCS WGS84 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
 
 <style>
 
@@ -376,8 +379,6 @@ body {
 
 <div class="sidebar" id="sidebar">
 
-
-    <!-- LOGO -->
     <div class="logo-section">
 
         <div class="logo-item">
@@ -399,11 +400,8 @@ body {
     </div>
 
 
-    <!-- SIDEBAR BODY -->
     <div class="sidebar-body">
 
-
-        <!-- BACKGROUND -->
         <div
             class="background-slideshow"
             id="backgroundSlideshow"
@@ -430,11 +428,9 @@ body {
         </div>
 
 
-        <!-- CONTENT -->
         <div class="sidebar-content">
 
 
-            <!-- TITLE -->
             <div class="title-section">
 
                 <h1>
@@ -459,7 +455,6 @@ body {
                 </div>
 
                 <div class="panel-content">
-
 
                     <div class="layer-option">
 
@@ -502,7 +497,6 @@ body {
                         Auto Zoom ke Garis Pantai
                     </button>
 
-
                 </div>
 
             </div>
@@ -519,7 +513,6 @@ body {
                 </div>
 
                 <div class="panel-content">
-
 
                     <div class="layer-option">
 
@@ -554,7 +547,6 @@ body {
                         </label>
 
                     </div>
-
 
                 </div>
 
@@ -624,7 +616,6 @@ body {
             </div>
 
 
-            <!-- FOOTER -->
             <div class="footer">
 
                 WEBGIS KELOMPOK 1<br>
@@ -632,7 +623,6 @@ body {
                 Institut Teknologi Sumatera
 
             </div>
-
 
         </div>
 
@@ -659,10 +649,6 @@ body {
 
 <div id="map"></div>
 
-
-<!-- =====================================================
-     LEAFLET
-===================================================== -->
 
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
@@ -728,6 +714,7 @@ sidebarToggle.addEventListener(
         ) {
 
             mapContainer.style.left = "0";
+
             mapContainer.style.width = "100%";
 
             sidebarToggle.innerHTML = "▶";
@@ -915,10 +902,6 @@ const OrthoGridLayer =
                     );
 
 
-                    /* =====================================
-                       TRANSPARANSI BACKGROUND PUTIH/HITAM
-                    ====================================== */
-
                     try {
 
                         const imageData =
@@ -939,6 +922,7 @@ const OrthoGridLayer =
 
                         const queue = [];
 
+
                         function addPixel(x, y) {
 
                             if (
@@ -947,22 +931,28 @@ const OrthoGridLayer =
                                 y < 0 ||
                                 y >= 256
                             ) {
+
                                 return;
+
                             }
+
 
                             const index =
                                 y * 256 + x;
 
+
                             if (
                                 visited[index]
                             ) {
+
                                 return;
+
                             }
 
-                            visited[index] = 1;
 
                             const p =
                                 index * 4;
+
 
                             const r =
                                 data[p];
@@ -980,7 +970,9 @@ const OrthoGridLayer =
                             if (
                                 a === 0
                             ) {
+
                                 return;
+
                             }
 
 
@@ -1001,6 +993,8 @@ const OrthoGridLayer =
                                 isBlack
                             ) {
 
+                                visited[index] = 1;
+
                                 queue.push([
                                     x,
                                     y
@@ -1010,10 +1004,6 @@ const OrthoGridLayer =
 
                         }
 
-
-                        /* ================================
-                           AMBIL PIXEL TEPI TILE
-                        ================================= */
 
                         for (
                             let x = 0;
@@ -1047,11 +1037,8 @@ const OrthoGridLayer =
                         }
 
 
-                        /* ================================
-                           FLOOD FILL
-                        ================================= */
-
                         let qIndex = 0;
+
 
                         while (
                             qIndex <
@@ -1093,8 +1080,11 @@ const OrthoGridLayer =
                                 of neighbors
                             ) {
 
-                                const nx = n[0];
-                                const ny = n[1];
+                                const nx =
+                                    n[0];
+
+                                const ny =
+                                    n[1];
 
 
                                 if (
@@ -1103,7 +1093,9 @@ const OrthoGridLayer =
                                     ny < 0 ||
                                     ny >= 256
                                 ) {
+
                                     continue;
+
                                 }
 
 
@@ -1114,7 +1106,9 @@ const OrthoGridLayer =
                                 if (
                                     visited[ni]
                                 ) {
+
                                     continue;
+
                                 }
 
 
@@ -1139,6 +1133,7 @@ const OrthoGridLayer =
                                     nr > 245 &&
                                     ng > 245 &&
                                     nb > 245;
+
 
                                 const nearBlack =
                                     nr < 10 &&
@@ -1233,10 +1228,6 @@ const ortho =
     });
 
 
-/* =========================================================
-   TAMBAHKAN ORTHOPHOTO
-========================================================= */
-
 ortho.addTo(map);
 
 
@@ -1265,14 +1256,194 @@ let coastlineReady = false;
 
 
 /* =========================================================
-   MEMBACA GEOJSON
+   DEFINISI PROYEKSI
+   UTM ZONE 48S WGS84
+   EPSG:32748
 ========================================================= */
 
-function loadCoastlineGeoJSON(data) {
+proj4.defs(
+    "EPSG:32748",
+    "+proj=utm +zone=48 +south +datum=WGS84 +units=m +no_defs"
+);
+
+
+/* =========================================================
+   UTM 48S -> GCS WGS84
+========================================================= */
+
+function UTM48SToWGS84(
+    easting,
+    northing
+) {
+
+    const result =
+        proj4(
+            "EPSG:32748",
+            "EPSG:4326",
+            [
+                Number(easting),
+                Number(northing)
+            ]
+        );
+
+
+    return [
+        result[0],
+        result[1]
+    ];
+
+}
+
+
+/* =========================================================
+   KONVERSI KOORDINAT GEOJSON
+   HANYA UNTUK GARIS PANTAI RTK
+========================================================= */
+
+function convertCoordinatesUTMToWGS84(
+    coordinates
+) {
+
+    if (
+        typeof coordinates[0] === "number"
+    ) {
+
+        const converted =
+            UTM48SToWGS84(
+                coordinates[0],
+                coordinates[1]
+            );
+
+
+        return [
+            converted[0],
+            converted[1]
+        ];
+
+    }
+
+
+    return coordinates.map(
+        function(coord) {
+
+            return convertCoordinatesUTMToWGS84(
+                coord
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   KONVERSI GEOJSON GARIS PANTAI RTK
+========================================================= */
+
+function convertGeoJSONUTMToWGS84(
+    geojson
+) {
+
+    const converted =
+        JSON.parse(
+            JSON.stringify(
+                geojson
+            )
+        );
+
+
+    if (
+        converted.type ===
+        "FeatureCollection"
+    ) {
+
+        converted.features =
+            converted.features.map(
+                function(feature) {
+
+                    if (
+                        feature.geometry &&
+                        feature.geometry.coordinates
+                    ) {
+
+                        feature.geometry.coordinates =
+                            convertCoordinatesUTMToWGS84(
+                                feature.geometry.coordinates
+                            );
+
+                    }
+
+
+                    return feature;
+
+                }
+            );
+
+    }
+
+
+    else if (
+        converted.type ===
+        "Feature"
+    ) {
+
+        if (
+            converted.geometry &&
+            converted.geometry.coordinates
+        ) {
+
+            converted.geometry.coordinates =
+                convertCoordinatesUTMToWGS84(
+                    converted.geometry.coordinates
+                );
+
+        }
+
+    }
+
+
+    else if (
+        converted.coordinates
+    ) {
+
+        converted.coordinates =
+            convertCoordinatesUTMToWGS84(
+                converted.coordinates
+            );
+
+    }
+
+
+    return converted;
+
+}
+
+
+/* =========================================================
+   LOAD GEOJSON GARIS PANTAI
+========================================================= */
+
+function loadCoastlineGeoJSON(
+    data
+) {
+
+    /*
+     * DATA ASLI:
+     * UTM 48S
+     *
+     * DATA SETELAH KONVERSI:
+     * GCS WGS84 EPSG:4326
+     */
+
+    const dataWGS84 =
+        convertGeoJSONUTMToWGS84(
+            data
+        );
+
 
     const group =
         L.geoJSON(
-            data,
+            dataWGS84,
             {
 
                 style:
@@ -1280,14 +1451,14 @@ function loadCoastlineGeoJSON(data) {
 
 
                 onEachFeature:
-                    function (
+                    function(
                         feature,
                         layer
                     ) {
 
 
                         /* ============================
-                           POPUP ATRIBUT
+                           POPUP
                         ============================ */
 
                         let html =
@@ -1423,7 +1594,7 @@ fetch(
         ) {
 
             throw new Error(
-                "File Garis_Pantai_RTK.geojson tidak ditemukan."
+                "Garis_Pantai_RTK.geojson tidak ditemukan."
             );
 
         }
@@ -1436,6 +1607,12 @@ fetch(
 
 .then(
     function(data) {
+
+        /*
+         * HANYA DATA GARIS PANTAI RTK
+         * YANG DIKONVERSI DARI UTM 48S
+         * KE GCS WGS84.
+         */
 
         coastline =
             loadCoastlineGeoJSON(
@@ -1450,10 +1627,6 @@ fetch(
 
         coastlineReady = true;
 
-
-        /* ================================
-           AUTO ZOOM SETELAH FILE SELESAI
-        ================================= */
 
         setTimeout(
             function() {
@@ -1471,7 +1644,7 @@ fetch(
     function(error) {
 
         console.error(
-            "Error GeoJSON:",
+            "Error Garis Pantai RTK:",
             error
         );
 
@@ -1543,7 +1716,7 @@ function zoomToCoastline() {
 
 
 /* =========================================================
-   TOMBOL AUTO ZOOM SIDEBAR
+   TOMBOL AUTO ZOOM
 ========================================================= */
 
 document
@@ -1561,7 +1734,7 @@ document
 
 
 /* =========================================================
-   KONTROL ZOOM TO LAYER
+   KONTROL ZOOM GARIS PANTAI
 ========================================================= */
 
 const ZoomToLayerControl =
@@ -1757,7 +1930,7 @@ document
 
 
 /* =========================================================
-   BASemap SWITCH
+   BASEMAP SWITCH
 ========================================================= */
 
 function removeBasemaps() {
@@ -1980,10 +2153,6 @@ const backgroundPhotos = [
 let activeBackground = 0;
 
 
-/* =========================================================
-   RESET OPACITY
-========================================================= */
-
 function resetBackgroundOpacity() {
 
     backgroundPhotos.forEach(
@@ -1998,10 +2167,6 @@ function resetBackgroundOpacity() {
 }
 
 
-/* =========================================================
-   SLIDESHOW
-========================================================= */
-
 setInterval(
     function() {
 
@@ -2009,6 +2174,7 @@ setInterval(
 
 
         activeBackground++;
+
 
         if (
             activeBackground >=
