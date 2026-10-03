@@ -49,6 +49,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+
     width: 350px;
     height: 100vh;
 
@@ -71,7 +72,7 @@ body {
 
 
 /* =========================================================
-   BACKGROUND SIDEBAR
+   BACKGROUND GALLERY
 ========================================================= */
 
 .background-gallery {
@@ -165,7 +166,7 @@ body {
 
 
 /* =========================================================
-   ISI SIDEBAR
+   SIDEBAR CONTENT
 ========================================================= */
 
 .sidebar-content {
@@ -204,7 +205,7 @@ body {
 
 
 /* =========================================================
-   JUDUL
+   TITLE
 ========================================================= */
 
 .sidebar-title {
@@ -328,7 +329,7 @@ body {
 
 
 /* =========================================================
-   KOORDINAT
+   COORDINATE PANEL
 ========================================================= */
 
 .coordinate-panel {
@@ -385,7 +386,7 @@ body {
 
 
 /* =========================================================
-   LEGENDA
+   LEGEND
 ========================================================= */
 
 .map-legend {
@@ -523,8 +524,6 @@ body {
     </div>
 
 
-    <!-- SIDEBAR CONTENT -->
-
     <div class="sidebar-content">
 
 
@@ -554,7 +553,7 @@ body {
 
 
         <!-- =================================================
-             JUDUL
+             TITLE
         ================================================== -->
 
         <div class="sidebar-title">
@@ -760,7 +759,7 @@ body {
 
 
 <!-- =========================================================
-     LEGENDA
+     LEGEND
 ========================================================= -->
 
 <div class="map-legend">
@@ -813,7 +812,6 @@ body {
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
-
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
 </script>
@@ -822,7 +820,7 @@ body {
 <script>
 
 /* =========================================================
-   INISIALISASI MAP
+   INITIAL MAP
 ========================================================= */
 
 const map = L.map(
@@ -836,7 +834,7 @@ const map = L.map(
 
 
 /* =========================================================
-   BASEMAP ESRI IMAGERY
+   BASEMAP
 ========================================================= */
 
 const imagery = L.tileLayer(
@@ -847,17 +845,11 @@ const imagery = L.tileLayer(
 
     {
         maxZoom: 24,
-
-        attribution:
-            "Tiles © Esri"
+        attribution: "Tiles © Esri"
     }
 
 );
 
-
-/* =========================================================
-   BASEMAP ESRI STREET
-========================================================= */
 
 const street = L.tileLayer(
 
@@ -867,21 +859,17 @@ const street = L.tileLayer(
 
     {
         maxZoom: 24,
-
-        attribution:
-            "Tiles © Esri"
+        attribution: "Tiles © Esri"
     }
 
 );
 
 
-/* BASEMAP DEFAULT */
-
 imagery.addTo(map);
 
 
 /* =========================================================
-   PROYEKSI UTM 48S
+   PROJECTION UTM 48S
 ========================================================= */
 
 proj4.defs(
@@ -899,7 +887,7 @@ proj4.defs(
 
 
 /* =========================================================
-   UTM 48S -> WGS84
+   UTM 48S KE WGS84
 ========================================================= */
 
 function UTM48SToWGS84(
@@ -933,7 +921,7 @@ function UTM48SToWGS84(
 
 
 /* =========================================================
-   MENCARI KOORDINAT PERTAMA
+   AMBIL KOORDINAT PERTAMA
 ========================================================= */
 
 function getFirstCoordinate(
@@ -1060,8 +1048,6 @@ function detectCRSFromGeoJSON(
 
     if (
 
-        crsText.includes("EPSG:4326") ||
-        crsText.includes("EPSG/0/4326") ||
         crsText.includes("4326") ||
         crsText.includes("WGS84") ||
         crsText.includes("WGS 84")
@@ -1074,10 +1060,7 @@ function detectCRSFromGeoJSON(
 
 
     if (
-
-        crsText.includes("EPSG:32748") ||
         crsText.includes("32748")
-
     ) {
 
         return "EPSG:32748";
@@ -1091,7 +1074,7 @@ function detectCRSFromGeoJSON(
 
 
 /* =========================================================
-   DETEKSI CRS BERDASARKAN NILAI KOORDINAT
+   DETEKSI CRS DARI NILAI KOORDINAT
 ========================================================= */
 
 function detectCRSFromCoordinates(
@@ -1102,7 +1085,7 @@ function detectCRSFromCoordinates(
 
 
     /*
-       FeatureCollection
+       FEATURE COLLECTION
     */
 
     if (
@@ -1154,7 +1137,7 @@ function detectCRSFromCoordinates(
 
 
     /*
-       Feature
+       FEATURE
     */
 
     else if (
@@ -1178,24 +1161,7 @@ function detectCRSFromCoordinates(
 
 
     /*
-       Geometry langsung
-    */
-
-    else if (
-        geojson.geometry
-    ) {
-
-        coordinate =
-            getFirstCoordinate(
-                geojson.geometry.coordinates
-            );
-
-    }
-
-
-    /*
-       Geometry object
-       langsung
+       GEOMETRY
     */
 
     else if (
@@ -1222,7 +1188,6 @@ function detectCRSFromCoordinates(
             coordinate[0]
         );
 
-
     const y =
         Number(
             coordinate[1]
@@ -1240,7 +1205,7 @@ function detectCRSFromCoordinates(
 
 
     /*
-       WGS84 geografis
+       WGS84
     */
 
     if (
@@ -1259,7 +1224,7 @@ function detectCRSFromCoordinates(
 
 
     /*
-       UTM
+       UTM 48S
     */
 
     if (
@@ -1290,10 +1255,6 @@ function detectGeoJSONCRS(
     geojson
 ) {
 
-    /*
-       Metadata diprioritaskan
-    */
-
     const metadataCRS =
         detectCRSFromGeoJSON(
             geojson
@@ -1307,11 +1268,6 @@ function detectGeoJSONCRS(
     }
 
 
-    /*
-       Jika tidak ada metadata,
-       cek nilai koordinat
-    */
-
     return detectCRSFromCoordinates(
         geojson
     );
@@ -1320,7 +1276,7 @@ function detectGeoJSONCRS(
 
 
 /* =========================================================
-   KONVERSI KOORDINAT
+   KONVERSI COORDINATES
 ========================================================= */
 
 function convertCoordinates(
@@ -1338,8 +1294,7 @@ function convertCoordinates(
 
 
     /*
-       Jika sudah merupakan
-       pasangan koordinat
+       PASANGAN KOORDINAT
     */
 
     if (
@@ -1385,17 +1340,13 @@ function convertCoordinates(
         }
 
 
-        return [
-            coords[0],
-            coords[1]
-        ];
+        return coords;
 
     }
 
 
     /*
-       Jika masih berupa array
-       nested coordinates
+       NESTED ARRAY
     */
 
     return coords.map(
@@ -1501,7 +1452,7 @@ function convertFeatureToWGS84(
 
 
 /* =========================================================
-   KONVERSI SEMUA GEOJSON
+   KONVERSI GEOJSON
 ========================================================= */
 
 function convertGeoJSONToWGS84(
@@ -1523,41 +1474,13 @@ function convertGeoJSONToWGS84(
 
 
     console.log(
-        "================================================"
-    );
-
-    console.log(
         "CRS TERDETEKSI:",
         sourceCRS
     );
 
-    console.log(
-        "TIPE GEOJSON:",
-        result.type
-    );
-
 
     /*
-       Jika tidak diketahui,
-       jangan melakukan konversi
-    */
-
-    if (
-        !sourceCRS
-    ) {
-
-        console.warn(
-            "CRS tidak dapat dideteksi. " +
-            "Koordinat digunakan apa adanya."
-        );
-
-        return result;
-
-    }
-
-
-    /*
-       Sudah WGS84
+       JIKA SUDAH WGS84
     */
 
     if (
@@ -1565,90 +1488,89 @@ function convertGeoJSONToWGS84(
         "EPSG:4326"
     ) {
 
-        console.log(
-            "GeoJSON sudah EPSG:4326."
-        );
-
         return result;
 
     }
 
 
     /*
-       FeatureCollection
+       JIKA UTM 48S
     */
 
     if (
-
-        result.type ===
-        "FeatureCollection"
-
+        sourceCRS ===
+        "EPSG:32748"
     ) {
 
+
+        /*
+           FeatureCollection
+        */
+
         if (
-            Array.isArray(
-                result.features
-            )
+            result.type ===
+            "FeatureCollection"
         ) {
 
-            result.features =
-                result.features.map(
+            if (
+                Array.isArray(
+                    result.features
+                )
+            ) {
 
-                    function(feature) {
+                result.features =
+                    result.features.map(
 
-                        return convertFeatureToWGS84(
-                            feature,
-                            sourceCRS
-                        );
+                        function(feature) {
 
-                    }
+                            return convertFeatureToWGS84(
+                                feature,
+                                sourceCRS
+                            );
 
+                        }
+
+                    );
+
+            }
+
+        }
+
+
+        /*
+           Feature
+        */
+
+        else if (
+            result.type ===
+            "Feature"
+        ) {
+
+            return convertFeatureToWGS84(
+                result,
+                sourceCRS
+            );
+
+        }
+
+
+        /*
+           Geometry langsung
+        */
+
+        else if (
+            result.coordinates
+        ) {
+
+            result.coordinates =
+                convertCoordinates(
+                    result.coordinates,
+                    sourceCRS
                 );
 
         }
 
     }
-
-
-    /*
-       Feature tunggal
-    */
-
-    else if (
-        result.type ===
-        "Feature"
-    ) {
-
-        return convertFeatureToWGS84(
-            result,
-            sourceCRS
-        );
-
-    }
-
-
-    /*
-       Geometry langsung
-    */
-
-    else if (
-        result.coordinates
-    ) {
-
-        result.coordinates =
-            convertCoordinates(
-                result.coordinates,
-                sourceCRS
-            );
-
-    }
-
-
-    console.log(
-        "Konversi",
-        sourceCRS,
-        "-> EPSG:4326 selesai."
-    );
 
 
     return result;
@@ -1904,22 +1826,6 @@ fetch(
             );
 
 
-        /*
-           Pastikan hasilnya
-           valid sebelum dibuat layer
-        */
-
-        if (
-            !converted
-        ) {
-
-            throw new Error(
-                "Data RTK kosong."
-            );
-
-        }
-
-
         rtkLayer =
             L.geoJSON(
 
@@ -1944,12 +1850,12 @@ fetch(
 
 
         console.log(
-            "RTK berhasil ditambahkan ke map."
+            "RTK berhasil dimuat."
         );
 
 
         console.log(
-            "Bounds RTK:",
+            "BOUNDS RTK:",
             rtkLayer.getBounds()
         );
 
@@ -2000,12 +1906,6 @@ fetch(
 .then(
     function(data) {
 
-        console.log(
-            "DATA GARIS PANTAI:",
-            data
-        );
-
-
         const converted =
             convertGeoJSONToWGS84(
                 data
@@ -2036,7 +1936,7 @@ fetch(
 
 
         console.log(
-            "Garis Pantai berhasil ditambahkan."
+            "Garis Pantai berhasil dimuat."
         );
 
     }
@@ -2055,7 +1955,7 @@ fetch(
 
 
 /* =========================================================
-   LOAD GARIS PANTAI DIGITASI
+   LOAD DIGITASI
 ========================================================= */
 
 fetch(
@@ -2085,12 +1985,6 @@ fetch(
 
 .then(
     function(data) {
-
-        console.log(
-            "DATA DIGITASI:",
-            data
-        );
-
 
         const converted =
             convertGeoJSONToWGS84(
@@ -2122,7 +2016,7 @@ fetch(
 
 
         console.log(
-            "Garis Pantai Digitasi berhasil ditambahkan."
+            "Garis Pantai Digitasi berhasil dimuat."
         );
 
     }
@@ -2141,7 +2035,8 @@ fetch(
 
 
 /* =========================================================
-   ORTHOPHOTO
+   ORTHOPHOTO GITHUB
+   L11 - L19
 ========================================================= */
 
 const ORTHO_URL_BASE =
@@ -2159,15 +2054,28 @@ const ORTHO_URL_BASE =
     "_alllayers/";
 
 
-function toHex(num) {
+/* =========================================================
+   KONVERSI ANGKA KE HEX
+========================================================= */
+
+function toHex(
+    num
+) {
 
     return num
         .toString(16)
         .toLowerCase()
-        .padStart(8,"0");
+        .padStart(
+            8,
+            "0"
+        );
 
 }
 
+
+/* =========================================================
+   ORTHOPHOTO GRID LAYER
+========================================================= */
 
 const OrthoGridLayer =
     L.GridLayer.extend({
@@ -2177,6 +2085,7 @@ const OrthoGridLayer =
                 coords,
                 done
             ) {
+
 
                 const tile =
                     document.createElement(
@@ -2201,9 +2110,18 @@ const OrthoGridLayer =
                     );
 
 
-                const nativeZoom =
-                    18;
+                /*
+                   SEKARANG NATIVE ZOOM
+                   SAMPAI L19
+                */
 
+                const nativeZoom =
+                    19;
+
+
+                /*
+                   Zoom sumber maksimum L19
+                */
 
                 const sourceZoom =
                     Math.min(
@@ -2219,6 +2137,11 @@ const OrthoGridLayer =
                 let sourceY =
                     coords.y;
 
+
+                /*
+                   Jika user zoom > L19,
+                   tetap mengambil tile L19.
+                */
 
                 if (
                     coords.z >
@@ -2249,17 +2172,29 @@ const OrthoGridLayer =
                 }
 
 
+                /*
+                   NOMOR ROW
+                */
+
                 const rowHex =
                     toHex(
                         sourceY
                     );
 
 
+                /*
+                   NOMOR COLUMN
+                */
+
                 const colHex =
                     toHex(
                         sourceX
                     );
 
+
+                /*
+                   URL TILE
+                */
 
                 const url =
 
@@ -2278,6 +2213,12 @@ const OrthoGridLayer =
                     ".png";
 
 
+                console.log(
+                    "ORTHO TILE:",
+                    url
+                );
+
+
                 const img =
                     new Image();
 
@@ -2289,12 +2230,17 @@ const OrthoGridLayer =
                 img.onload =
                     function() {
 
+
                         ctx.drawImage(
+
                             img,
+
                             0,
                             0,
+
                             size.x,
                             size.y
+
                         );
 
 
@@ -2309,8 +2255,9 @@ const OrthoGridLayer =
                 img.onerror =
                     function() {
 
+
                         console.warn(
-                            "ORTHO 404:",
+                            "ORTHO TILE TIDAK DITEMUKAN:",
                             url
                         );
 
@@ -2334,6 +2281,10 @@ const OrthoGridLayer =
     });
 
 
+/* =========================================================
+   ORTHOPHOTO INSTANCE
+========================================================= */
+
 const ortho =
     new OrthoGridLayer({
 
@@ -2347,7 +2298,16 @@ const ortho =
 
         minZoom: 11,
 
-        maxNativeZoom: 18,
+        /*
+           TILE ASLI SAMPAI L19
+        */
+
+        maxNativeZoom: 19,
+
+        /*
+           WEBGIS MASIH BOLEH
+           ZOOM SAMPAI 24
+        */
 
         maxZoom: 24
 
@@ -2360,17 +2320,20 @@ const ortho =
 
 function updateAutoZoom() {
 
-    /*
-       Pastikan layer sudah tersedia
-    */
 
     const activeLayers = [];
 
 
+    /*
+       RTK
+    */
+
     if (
 
         rtkLayer &&
-        map.hasLayer(rtkLayer)
+        map.hasLayer(
+            rtkLayer
+        )
 
     ) {
 
@@ -2381,10 +2344,16 @@ function updateAutoZoom() {
     }
 
 
+    /*
+       GARIS PANTAI
+    */
+
     if (
 
         pantaiLayer &&
-        map.hasLayer(pantaiLayer)
+        map.hasLayer(
+            pantaiLayer
+        )
 
     ) {
 
@@ -2395,10 +2364,16 @@ function updateAutoZoom() {
     }
 
 
+    /*
+       DIGITASI
+    */
+
     if (
 
         digitasiLayer &&
-        map.hasLayer(digitasiLayer)
+        map.hasLayer(
+            digitasiLayer
+        )
 
     ) {
 
@@ -2410,7 +2385,7 @@ function updateAutoZoom() {
 
 
     /*
-       Tidak ada layer aktif
+       TIDAK ADA LAYER
     */
 
     if (
@@ -2418,7 +2393,7 @@ function updateAutoZoom() {
     ) {
 
         alert(
-            "Layer garis pantai belum tersedia atau tidak ada yang aktif."
+            "Tidak ada layer garis pantai yang aktif."
         );
 
         return;
@@ -2427,7 +2402,7 @@ function updateAutoZoom() {
 
 
     /*
-       Gabungkan bounds
+       GABUNGKAN BOUNDS
     */
 
     let bounds = null;
@@ -2477,7 +2452,7 @@ function updateAutoZoom() {
 
 
     /*
-       Validasi akhir
+       VALIDASI
     */
 
     if (
@@ -2490,7 +2465,7 @@ function updateAutoZoom() {
         );
 
         console.error(
-            "Bounds Auto Zoom:",
+            "Bounds:",
             bounds
         );
 
@@ -2506,7 +2481,7 @@ function updateAutoZoom() {
 
 
     /*
-       Status sidebar
+       CEK SIDEBAR
     */
 
     const sidebar =
@@ -2794,6 +2769,7 @@ document
                         "imagery"
                     ) {
 
+
                         if (
                             map.hasLayer(
                                 street
@@ -2826,6 +2802,7 @@ document
                         e.target.value ===
                         "street"
                     ) {
+
 
                         if (
                             map.hasLayer(
@@ -2885,6 +2862,7 @@ sidebarToggle.addEventListener(
 
     function() {
 
+
         sidebar.classList.toggle(
             "closed"
         );
@@ -2936,11 +2914,13 @@ map.on(
 
     function(e) {
 
+
         document
             .getElementById(
                 "latitude"
             )
             .textContent =
+
             e.latlng.lat.toFixed(
                 7
             );
@@ -2951,6 +2931,7 @@ map.on(
                 "longitude"
             )
             .textContent =
+
             e.latlng.lng.toFixed(
                 7
             );
@@ -2961,7 +2942,7 @@ map.on(
 
 
 /* =========================================================
-   ROTASI BACKGROUND
+   BACKGROUND ROTATION
 ========================================================= */
 
 const backgroundGallery =
@@ -2973,13 +2954,16 @@ const backgroundGallery =
 let photoOrder = [
 
     "photo-1",
+
     "photo-2",
+
     "photo-3"
 
 ];
 
 
 function rotateBackgroundPhotos() {
+
 
     photoOrder.unshift(
         photoOrder.pop()
@@ -2995,6 +2979,7 @@ function rotateBackgroundPhotos() {
     photos.forEach(
 
         function(photo) {
+
 
             const className =
                 Array.from(
@@ -3025,8 +3010,11 @@ function rotateBackgroundPhotos() {
 
 
 setInterval(
+
     rotateBackgroundPhotos,
+
     4000
+
 );
 
 
