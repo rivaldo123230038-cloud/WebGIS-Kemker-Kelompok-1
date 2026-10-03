@@ -10,31 +10,11 @@
 
 <title>WEBGIS KELOMPOK 1</title>
 
-
-<!-- =====================================================
-     LEAFLET
-===================================================== -->
-
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-
-<!-- =====================================================
-     PROJ4
-     UTM 48S -> WGS84
-===================================================== -->
-
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js">
-</script>
-
-
 <style>
-
-/* =====================================================
-   RESET
-===================================================== */
 
 * {
   box-sizing: border-box;
@@ -53,37 +33,26 @@ body {
 
 /* =====================================================
    PETA
-===================================================== */
+   ===================================================== */
 
 #map {
-
   position: absolute;
-
   left: 350px;
   top: 0;
-
   width: calc(100% - 350px);
-
   height: 100vh;
-
-  transition:
-    left 0.3s ease,
-    width 0.3s ease;
-
+  transition: left 0.3s ease, width 0.3s ease;
 }
 
 
 /* =====================================================
    SIDEBAR
-===================================================== */
+   ===================================================== */
 
 .sidebar {
-
   position: fixed;
-
   left: 0;
   top: 0;
-
   width: 350px;
   height: 100vh;
 
@@ -95,24 +64,19 @@ body {
   z-index: 2000;
 
   overflow-y: auto;
-  overflow-x: hidden;
 
   transition:
     transform 0.3s ease;
-
 }
 
 .sidebar.collapsed {
-
-  transform:
-    translateX(-350px);
-
+  transform: translateX(-350px);
 }
 
 
 /* =====================================================
    TOGGLE SIDEBAR
-===================================================== */
+   ===================================================== */
 
 .sidebar-toggle {
 
@@ -124,13 +88,11 @@ body {
   width: 34px;
   height: 70px;
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 
   border: none;
 
-  border-radius:
-    0 8px 8px 0;
+  border-radius: 0 8px 8px 0;
 
   background: #17324d;
 
@@ -155,25 +117,20 @@ body {
   transition:
     left 0.3s ease,
     background 0.2s ease;
-
 }
 
 .sidebar-toggle:hover {
-
   background: #244e73;
-
 }
 
 .sidebar-toggle.collapsed {
-
   left: 0;
-
 }
 
 
 /* =====================================================
    LOGO
-===================================================== */
+   ===================================================== */
 
 .logo-section {
 
@@ -201,7 +158,6 @@ body {
 
   border-bottom:
     1px solid #eeeeee;
-
 }
 
 .logo-item {
@@ -217,7 +173,6 @@ body {
   align-items: center;
 
   justify-content: center;
-
 }
 
 .logo-item img {
@@ -228,13 +183,12 @@ body {
   object-fit: contain;
 
   display: block;
-
 }
 
 
 /* =====================================================
    SIDEBAR BODY
-===================================================== */
+   ===================================================== */
 
 .sidebar-body {
 
@@ -246,13 +200,12 @@ body {
   overflow-y: auto;
 
   overflow-x: hidden;
-
 }
 
 
 /* =====================================================
    BACKGROUND 3 FOTO
-===================================================== */
+   ===================================================== */
 
 .sidebar-body::before {
 
@@ -288,9 +241,7 @@ body {
     backgroundSlide 18s infinite;
 
   pointer-events: none;
-
 }
-
 
 .sidebar-body::after {
 
@@ -313,13 +264,12 @@ body {
     rgba(255,255,255,0.18);
 
   pointer-events: none;
-
 }
 
 
 /* =====================================================
    ANIMASI BACKGROUND
-===================================================== */
+   ===================================================== */
 
 @keyframes backgroundSlide {
 
@@ -330,7 +280,6 @@ body {
       url("bcg1.jpeg");
 
     opacity: 0.20;
-
   }
 
   29%,
@@ -340,7 +289,6 @@ body {
       url("bcg1.jpeg");
 
     opacity: 0;
-
   }
 
   33%,
@@ -350,7 +298,6 @@ body {
       url("bcg2.jpeg");
 
     opacity: 0.20;
-
   }
 
   62%,
@@ -360,7 +307,6 @@ body {
       url("bcg2.jpeg");
 
     opacity: 0;
-
   }
 
   66%,
@@ -370,7 +316,6 @@ body {
       url("bcg3.jpeg");
 
     opacity: 0.20;
-
   }
 
   95%,
@@ -380,7 +325,6 @@ body {
       url("bcg3.jpeg");
 
     opacity: 0;
-
   }
 
   100% {
@@ -389,28 +333,25 @@ body {
       url("bcg1.jpeg");
 
     opacity: 0.20;
-
   }
-
 }
 
 
 /* =====================================================
    CONTENT
-===================================================== */
+   ===================================================== */
 
 .sidebar-content {
 
   position: relative;
 
   z-index: 2;
-
 }
 
 
 /* =====================================================
    TITLE
-===================================================== */
+   ===================================================== */
 
 .title-section {
 
@@ -424,7 +365,6 @@ body {
 
   border-bottom:
     1px solid rgba(238,238,238,0.9);
-
 }
 
 .title-section h1 {
@@ -438,7 +378,6 @@ body {
   color: #17324d;
 
   letter-spacing: 0.5px;
-
 }
 
 .title-section p {
@@ -451,19 +390,17 @@ body {
   line-height: 1.4;
 
   color: #555555;
-
 }
 
 
 /* =====================================================
    PANEL
-===================================================== */
+   ===================================================== */
 
 .panel-content {
 
   padding:
     18px 20px;
-
 }
 
 .section-title {
@@ -484,19 +421,16 @@ body {
   font-weight: bold;
 
   text-transform: uppercase;
-
 }
 
 .section-title:first-child {
-
   margin-top: 0;
-
 }
 
 
 /* =====================================================
    LAYER BOX
-===================================================== */
+   ===================================================== */
 
 .layer-control-box {
 
@@ -512,7 +446,6 @@ body {
 
   box-shadow:
     0 1px 4px rgba(0,0,0,0.08);
-
 }
 
 .layer-item {
@@ -528,19 +461,16 @@ body {
   font-size: 13px;
 
   cursor: pointer;
-
 }
 
 .layer-item input {
-
   cursor: pointer;
-
 }
 
 
 /* =====================================================
    AUTO ZOOM
-===================================================== */
+   ===================================================== */
 
 .zoom-layer-button {
 
@@ -565,26 +495,20 @@ body {
   cursor: pointer;
 
   transition: 0.2s;
-
 }
 
 .zoom-layer-button:hover {
-
   background: #244e73;
-
 }
 
 .zoom-layer-button:active {
-
-  transform:
-    scale(0.98);
-
+  transform: scale(0.98);
 }
 
 
 /* =====================================================
    KOORDINAT
-===================================================== */
+   ===================================================== */
 
 .coordinate-box {
 
@@ -600,7 +524,6 @@ body {
 
   box-shadow:
     0 1px 4px rgba(0,0,0,0.08);
-
 }
 
 .coordinate-box .label {
@@ -610,7 +533,6 @@ body {
   color: #666666;
 
   margin-bottom: 3px;
-
 }
 
 .coordinate-box .value {
@@ -622,13 +544,12 @@ body {
   color: #17324d;
 
   margin-bottom: 10px;
-
 }
 
 
 /* =====================================================
    CURSOR
-===================================================== */
+   ===================================================== */
 
 .cursor-box {
 
@@ -644,13 +565,12 @@ body {
   font-size: 11px;
 
   line-height: 1.6;
-
 }
 
 
 /* =====================================================
    FOOTER
-===================================================== */
+   ===================================================== */
 
 .sidebar-footer {
 
@@ -672,13 +592,12 @@ body {
 
   background:
     rgba(255,255,255,0.72);
-
 }
 
 
 /* =====================================================
    POPUP
-===================================================== */
+   ===================================================== */
 
 .popup-title {
 
@@ -689,18 +608,15 @@ body {
   color: #17324d;
 
   margin-bottom: 7px;
-
 }
 
 
 /* =====================================================
    MAP ZOOM BUTTON
-===================================================== */
+   ===================================================== */
 
 .zoom-to-layer-control {
-
   margin-top: 10px;
-
 }
 
 .zoom-to-layer-button-map {
@@ -731,13 +647,12 @@ body {
 
   box-shadow:
     0 1px 5px rgba(0,0,0,0.25);
-
 }
 
 
 /* =====================================================
    LEGEND
-===================================================== */
+   ===================================================== */
 
 .map-legend {
 
@@ -766,7 +681,6 @@ body {
   margin-right: 10px;
 
   margin-bottom: 10px;
-
 }
 
 .map-legend-title {
@@ -783,7 +697,6 @@ body {
 
   border-bottom:
     1px solid #dddddd;
-
 }
 
 .legend-item {
@@ -793,7 +706,6 @@ body {
   align-items: center;
 
   gap: 8px;
-
 }
 
 .legend-line-coastline {
@@ -806,27 +718,22 @@ body {
     4px solid #00ffff;
 
   flex-shrink: 0;
-
 }
 
 
 /* =====================================================
    RESPONSIVE
-===================================================== */
+   ===================================================== */
 
 @media (max-width:800px) {
 
   .sidebar {
-
     width: 280px;
-
   }
 
   .sidebar.collapsed {
-
     transform:
       translateX(-280px);
-
   }
 
   #map {
@@ -835,20 +742,15 @@ body {
 
     width:
       calc(100% - 280px);
-
   }
 
   .sidebar-toggle {
-
     left: 280px;
-
   }
 
   .sidebar-body::before,
   .sidebar-body::after {
-
     width: 280px;
-
   }
 
   .logo-section {
@@ -857,19 +759,14 @@ body {
       15px 6px;
 
     gap: 3px;
-
   }
 
   .logo-item {
-
     height: 58px;
-
   }
 
   .title-section h1 {
-
     font-size: 18px;
-
   }
 
   .map-legend {
@@ -881,73 +778,55 @@ body {
     margin-right: 8px;
 
     margin-bottom: 8px;
-
   }
-
 }
 
 </style>
 
 </head>
 
-
 <body>
 
 
 <!-- =====================================================
      SIDEBAR
-===================================================== -->
+     ===================================================== -->
 
 <div
   class="sidebar"
   id="sidebar"
 >
 
-
   <div class="logo-section">
 
-
     <div class="logo-item">
-
       <img
         src="ITERA.png"
         alt="Logo ITERA">
-
     </div>
 
-
     <div class="logo-item">
-
       <img
         src="Logo_GT.png"
         alt="Logo Teknik Geomatika ITERA">
-
     </div>
 
-
     <div class="logo-item">
-
       <img
         src="LOGO_GT23.png"
         alt="Logo Teknik Geomatika 2023">
-
     </div>
 
-
     <div class="logo-item">
-
       <img
         src="LOGO_KEMKER.png"
         alt="Logo Kemah Kerja 2023">
-
     </div>
-
 
   </div>
 
 
   <div class="sidebar-body">
-
 
     <div class="sidebar-content">
 
@@ -968,17 +847,15 @@ body {
       <div class="panel-content">
 
 
-        <!-- =============================================
+        <!-- =================================================
              GARIS PANTAI
-        ============================================== -->
+             ================================================= -->
 
         <div class="section-title">
           Garis Pantai
         </div>
 
-
         <div class="layer-control-box">
-
 
           <label class="layer-item">
 
@@ -1003,21 +880,18 @@ body {
 
           </button>
 
-
         </div>
 
 
-        <!-- =============================================
+        <!-- =================================================
              BASEMAP
-        ============================================== -->
+             ================================================= -->
 
         <div class="section-title">
           Base Map
         </div>
 
-
         <div class="layer-control-box">
-
 
           <label class="layer-item">
 
@@ -1047,21 +921,18 @@ body {
 
           </label>
 
-
         </div>
 
 
-        <!-- =============================================
+        <!-- =================================================
              ORTHOPHOTO
-        ============================================== -->
+             ================================================= -->
 
         <div class="section-title">
           Layer Orthophoto
         </div>
 
-
         <div class="layer-control-box">
-
 
           <label class="layer-item">
 
@@ -1075,21 +946,18 @@ body {
 
           </label>
 
-
         </div>
 
 
-        <!-- =============================================
+        <!-- =================================================
              SISTEM KOORDINAT
-        ============================================== -->
+             ================================================= -->
 
         <div class="section-title">
           Sistem Koordinat
         </div>
 
-
         <div class="coordinate-box">
-
 
           <div class="label">
             Datum
@@ -1099,7 +967,6 @@ body {
             WGS 84
           </div>
 
-
           <div class="label">
             Sistem Koordinat
           </div>
@@ -1107,7 +974,6 @@ body {
           <div class="value">
             Geographic Coordinate System
           </div>
-
 
           <div class="label">
             EPSG
@@ -1117,38 +983,27 @@ body {
             EPSG:4326
           </div>
 
-
         </div>
 
 
-        <!-- =============================================
+        <!-- =================================================
              KOORDINAT KURSOR
-        ============================================== -->
+             ================================================= -->
 
         <div class="section-title">
           Koordinat Kursor
         </div>
 
-
         <div class="cursor-box">
 
           <div>
-
             Latitude:
-            <span id="latitude">
-              -
-            </span>
-
+            <span id="latitude">-</span>
           </div>
 
-
           <div>
-
             Longitude:
-            <span id="longitude">
-              -
-            </span>
-
+            <span id="longitude">-</span>
           </div>
 
         </div>
@@ -1171,7 +1026,6 @@ body {
 
       </div>
 
-
     </div>
 
   </div>
@@ -1181,7 +1035,7 @@ body {
 
 <!-- =====================================================
      SIDEBAR TOGGLE
-===================================================== -->
+     ===================================================== -->
 
 <button
   id="sidebarToggle"
@@ -1197,14 +1051,10 @@ body {
 
 <!-- =====================================================
      MAP
-===================================================== -->
+     ===================================================== -->
 
 <div id="map"></div>
 
-
-<!-- =====================================================
-     LEAFLET JS
-===================================================== -->
 
 <script
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
@@ -1214,92 +1064,66 @@ body {
 <script>
 
 /* =====================================================
-   1. PENGATURAN
-===================================================== */
-
-
-/*
-   MAP BOLEH ZOOM SAMPAI 24.
-
-   Ini TIDAK mengubah data asli.
-   Di atas native zoom, tile diperbesar.
-*/
+   1. PENGATURAN ZOOM
+   ===================================================== */
 
 const MAP_MAX_ZOOM = 24;
-
-
-/*
-   Orthophoto asli tersedia sampai L18.
-*/
 
 const ORTHO_NATIVE_ZOOM = 18;
 
 
 /* =====================================================
-   2. PROYEKSI UTM 48S
-===================================================== */
+   2. INISIALISASI MAP
+   ===================================================== */
 
-proj4.defs(
-  "EPSG:32748",
-  "+proj=utm +zone=48 +south +datum=WGS84 +units=m +no_defs +type=crs"
+const map = L.map(
+  'map',
+  {
+
+    center:
+      [-5.45,105.25],
+
+    zoom:
+      10,
+
+    minZoom:
+      0,
+
+    maxZoom:
+      MAP_MAX_ZOOM,
+
+    zoomControl:
+      true,
+
+    scrollWheelZoom:
+      true,
+
+    doubleClickZoom:
+      true,
+
+    touchZoom:
+      true,
+
+    boxZoom:
+      true
+
+  }
 );
 
 
 /* =====================================================
-   3. INISIALISASI MAP
-===================================================== */
-
-const map =
-  L.map(
-    'map',
-    {
-
-      center:
-        [-5.45,105.25],
-
-      zoom:
-        10,
-
-      minZoom:
-        0,
-
-      maxZoom:
-        MAP_MAX_ZOOM,
-
-      zoomControl:
-        true,
-
-      scrollWheelZoom:
-        true,
-
-      doubleClickZoom:
-        true,
-
-      touchZoom:
-        true,
-
-      boxZoom:
-        true
-
-    }
-  );
-
-
-/* =====================================================
-   4. SIDEBAR
-===================================================== */
+   3. SIDEBAR
+   ===================================================== */
 
 const sidebar =
   document.getElementById(
     'sidebar'
   );
 
-
 const sidebarToggle =
   document.getElementById(
     'sidebarToggle'
   );
-
 
 let sidebarCollapsed =
   false;
@@ -1309,99 +1133,78 @@ sidebarToggle.addEventListener(
   'click',
   function() {
 
-
     sidebarCollapsed =
       !sidebarCollapsed;
 
-
     if (sidebarCollapsed) {
-
 
       sidebar.classList.add(
         'collapsed'
       );
 
-
       sidebarToggle.classList.add(
         'collapsed'
       );
 
-
       sidebarToggle.innerHTML =
         '▶';
 
-
       sidebarToggle.title =
         'Tampilkan Panel';
-
 
       sidebarToggle.setAttribute(
         'aria-label',
         'Tampilkan Panel'
       );
 
-
       document
         .getElementById('map')
         .style.left =
         '0';
-
 
       document
         .getElementById('map')
         .style.width =
         '100%';
 
-
     }
 
-
     else {
-
 
       sidebar.classList.remove(
         'collapsed'
       );
 
-
       sidebarToggle.classList.remove(
         'collapsed'
       );
 
-
       sidebarToggle.innerHTML =
         '◀';
 
-
       sidebarToggle.title =
         'Minimize Panel';
-
 
       sidebarToggle.setAttribute(
         'aria-label',
         'Minimize Panel'
       );
 
-
       const sidebarWidth =
         window.innerWidth <= 800
           ? '280px'
           : '350px';
-
 
       document
         .getElementById('map')
         .style.left =
         sidebarWidth;
 
-
       document
         .getElementById('map')
         .style.width =
         `calc(100% - ${sidebarWidth})`;
-
     }
-
 
     setTimeout(
       function() {
@@ -1417,8 +1220,8 @@ sidebarToggle.addEventListener(
 
 
 /* =====================================================
-   5. ESRI WORLD IMAGERY
-===================================================== */
+   4. ESRI WORLD IMAGERY
+   ===================================================== */
 
 const satellite =
   L.tileLayer(
@@ -1430,14 +1233,14 @@ const satellite =
       minZoom:
         0,
 
+      /*
+       * BOLEH ZOOM SAMPAI 24
+       * DATA ASLI ESRI BERHENTI DI LEVEL 19
+       * TILE AKAN DIPERBESAR SETELAH LEVEL ASLI
+       */
+
       maxZoom:
         MAP_MAX_ZOOM,
-
-      /*
-         Native tile sampai 19.
-         Zoom 20-24 menggunakan pembesaran
-         dari tile native terakhir.
-      */
 
       maxNativeZoom:
         19,
@@ -1454,8 +1257,8 @@ const satellite =
 
 
 /* =====================================================
-   6. ESRI WORLD STREET MAP
-===================================================== */
+   5. ESRI WORLD STREET MAP
+   ===================================================== */
 
 const street =
   L.tileLayer(
@@ -1485,543 +1288,75 @@ const street =
 
 
 /* =====================================================
-   7. DEFAULT BASEMAP
-===================================================== */
+   6. DEFAULT BASEMAP
+   ===================================================== */
 
 satellite.addTo(map);
 
 
 /* =====================================================
-   8. FUNGSI NOMOR TILE
-===================================================== */
+   7. ORTHOPHOTO
+   ===================================================== */
+
+/*
+   STRUKTUR FILE:
+
+   Fix_Ortho_web/
+      _alllayers/
+         L12/
+         L13/
+         L14/
+         L15/
+         L16/
+         L17/
+         L18/
+
+   FORMAT TILE:
+
+   L{z}/R{rowHex}/C{colHex}.png
+*/
+
 
 function decimalToHex(value) {
 
-  return Math
-    .floor(value)
+  return Math.floor(value)
     .toString(16)
     .padStart(8,'0')
-    .toLowerCase();
+    .toUpperCase();
 
 }
 
 
-/* =====================================================
-   9. HAPUS WHITE NO-DATA ORTHOPHOTO
-===================================================== */
+const ortho =
+  L.tileLayer(
 
-
-/*
-   Hanya warna putih yang TERHUBUNG KE TEPI TILE
-   yang dihapus.
-
-   Jadi objek putih yang berada di tengah
-   orthophoto tidak ikut hilang.
-*/
-
-function removeWhiteEdge(canvas) {
-
-
-  try {
-
-
-    const ctx =
-      canvas.getContext(
-        '2d'
-      );
-
-
-    const width =
-      canvas.width;
-
-
-    const height =
-      canvas.height;
-
-
-    const imageData =
-      ctx.getImageData(
-        0,
-        0,
-        width,
-        height
-      );
-
-
-    const data =
-      imageData.data;
-
-
-    const total =
-      width * height;
-
-
-    const visited =
-      new Uint8Array(
-        total
-      );
-
-
-    const queue =
-      new Int32Array(
-        total
-      );
-
-
-    let head = 0;
-
-    let tail = 0;
-
-
-    function isWhite(index) {
-
-
-      const r =
-        data[index];
-
-
-      const g =
-        data[index + 1];
-
-
-      const b =
-        data[index + 2];
-
-
-      const a =
-        data[index + 3];
-
-
-      return (
-
-        a > 0 &&
-
-        r >= 240 &&
-
-        g >= 240 &&
-
-        b >= 240
-
-      );
-
-    }
-
-
-    function addPixel(
-      x,
-      y
-    ) {
-
-
-      if (
-
-        x < 0 ||
-
-        x >= width ||
-
-        y < 0 ||
-
-        y >= height
-
-      ) {
-
-        return;
-
-      }
-
-
-      const pos =
-        y * width + x;
-
-
-      if (
-        visited[pos]
-      ) {
-
-        return;
-
-      }
-
-
-      const index =
-        pos * 4;
-
-
-      if (
-        !isWhite(index)
-      ) {
-
-        return;
-
-      }
-
-
-      visited[pos] =
-        1;
-
-
-      queue[tail++] =
-        pos;
-
-    }
-
-
-    /*
-       Ambil semua piksel putih
-       dari keempat sisi tile.
-    */
-
-    for (
-      let x = 0;
-      x < width;
-      x++
-    ) {
-
-      addPixel(
-        x,
-        0
-      );
-
-      addPixel(
-        x,
-        height - 1
-      );
-
-    }
-
-
-    for (
-      let y = 0;
-      y < height;
-      y++
-    ) {
-
-      addPixel(
-        0,
-        y
-      );
-
-      addPixel(
-        width - 1,
-        y
-      );
-
-    }
-
-
-    /*
-       Flood fill
-    */
-
-    while (
-      head < tail
-    ) {
-
-
-      const pos =
-        queue[head++];
-
-
-      const x =
-        pos % width;
-
-
-      const y =
-        Math.floor(
-          pos / width
-        );
-
-
-      const index =
-        pos * 4;
-
-
-      /*
-         Jadikan transparan
-      */
-
-      data[
-        index + 3
-      ] = 0;
-
-
-      addPixel(
-        x + 1,
-        y
-      );
-
-
-      addPixel(
-        x - 1,
-        y
-      );
-
-
-      addPixel(
-        x,
-        y + 1
-      );
-
-
-      addPixel(
-        x,
-        y - 1
-      );
-
-    }
-
-
-    ctx.putImageData(
-      imageData,
-      0,
-      0
-    );
-
-
-  }
-
-  catch (error) {
-
-
-    console.warn(
-      'White no-data tidak dapat diproses:',
-      error
-    );
-
-
-  }
-
-}
-
-
-/* =====================================================
-   10. CUSTOM ORTHOPHOTO GRID LAYER
-===================================================== */
-
-const OrthophotoLayer =
-  L.GridLayer.extend(
+    'Fix_Ortho_web/_alllayers/L{z}/R{y}/C{x}.png',
 
     {
 
+      minZoom:
+        12,
 
-      options: {
+      maxZoom:
+        MAP_MAX_ZOOM,
 
+      maxNativeZoom:
+        ORTHO_NATIVE_ZOOM,
 
-        tileSize:
-          256,
+      tileSize:
+        256,
 
+      opacity:
+        1.0,
 
-        minZoom:
-          12,
+      tms:
+        false,
 
+      noWrap:
+        true,
 
-        maxZoom:
-          MAP_MAX_ZOOM,
-
-
-        maxNativeZoom:
-          ORTHO_NATIVE_ZOOM,
-
-
-        noWrap:
-          true,
-
-
-        updateWhenZooming:
-          false,
-
-
-        updateWhenIdle:
-          true,
-
-
-        keepBuffer:
-          3
-
-      },
-
-
-      createTile:
-        function(
-          coords,
-          done
-        ) {
-
-
-          const canvas =
-            document.createElement(
-              'canvas'
-            );
-
-
-          canvas.width =
-            256;
-
-
-          canvas.height =
-            256;
-
-
-          const ctx =
-            canvas.getContext(
-              '2d'
-            );
-
-
-          /*
-             Folder asli:
-
-             Fix_Ortho_web
-             _alllayers
-             L12 ... L18
-             Rxxxxxxxx
-             Cxxxxxxxx.png
-          */
-
-
-          const z =
-            coords.z;
-
-
-          const row =
-            decimalToHex(
-              coords.y
-            );
-
-
-          const col =
-            decimalToHex(
-              coords.x
-            );
-
-
-          /*
-             jsDelivr dipakai agar tile
-             bisa dibaca canvas tanpa
-             masalah CORS GitHub.
-          */
-
-          const url =
-
-            'https://cdn.jsdelivr.net/gh/' +
-
-            'rivaldo123230038-cloud/' +
-
-            'WebGIS-Kemker-Kelompok-1' +
-
-            '@main/' +
-
-            'Fix_Ortho_web/' +
-
-            '_alllayers/' +
-
-            'L' + z + '/' +
-
-            'R' + row + '/' +
-
-            'C' + col + '.png';
-
-
-          const img =
-            new Image();
-
-
-          img.crossOrigin =
-            'anonymous';
-
-
-          img.onload =
-            function() {
-
-
-              try {
-
-
-                ctx.clearRect(
-                  0,
-                  0,
-                  256,
-                  256
-                );
-
-
-                ctx.drawImage(
-                  img,
-                  0,
-                  0,
-                  256,
-                  256
-                );
-
-
-                /*
-                   Hapus white no-data
-                */
-
-                removeWhiteEdge(
-                  canvas
-                );
-
-
-              }
-
-              catch (error) {
-
-
-                console.warn(
-                  'Orthophoto canvas error:',
-                  error
-                );
-
-
-              }
-
-
-              done(
-                null,
-                canvas
-              );
-
-
-            };
-
-
-          img.onerror =
-            function() {
-
-
-              /*
-                 Tile kosong jika
-                 file memang tidak ada.
-
-                 Tidak menampilkan
-                 broken image.
-              */
-
-              ctx.clearRect(
-                0,
-                0,
-                256,
-                256
-              );
-
-
-              done(
-                null,
-                canvas
-              );
-
-
-            };
-
-
-          img.src =
-            url;
-
-
-          return canvas;
-
-        }
+      attribution:
+        'Orthophoto'
 
     }
 
@@ -2029,783 +1364,80 @@ const OrthophotoLayer =
 
 
 /* =====================================================
-   11. INSTANCE ORTHOPHOTO
-===================================================== */
+   8. STYLE GARIS PANTAI RTK
+   ===================================================== */
 
-const ortho =
-  new OrthophotoLayer();
+const coastlineStyle = {
 
+  color:
+    '#00ffff',
 
-/* =====================================================
-   12. GARIS PANTAI
-===================================================== */
+  weight:
+    4,
+
+  opacity:
+    0.95
+
+};
+
 
 let coastline =
   null;
 
 
-let coastlineReady =
-  false;
-
-
 /* =====================================================
-   13. CARI KOORDINAT PERTAMA
-===================================================== */
-
-function findFirstCoordinate(
-  coordinates
-) {
-
-
-  if (
-
-    Array.isArray(
-      coordinates
-    ) &&
-
-    coordinates.length >= 2 &&
-
-    typeof coordinates[0]
-      === 'number' &&
-
-    typeof coordinates[1]
-      === 'number'
-
-  ) {
-
-    return coordinates;
-
-  }
-
-
-  if (
-    Array.isArray(
-      coordinates
-    )
-  ) {
-
-
-    for (
-      const item
-      of coordinates
-    ) {
-
-
-      const result =
-        findFirstCoordinate(
-          item
-        );
-
-
-      if (result) {
-
-        return result;
-
-      }
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-/* =====================================================
-   14. UBAH SATU KOORDINAT
-===================================================== */
-
-function convertCoordinate(
-  coordinate
-) {
-
-
-  const result =
-    proj4(
-
-      'EPSG:32748',
-
-      'EPSG:4326',
-
-      [
-        coordinate[0],
-        coordinate[1]
-      ]
-
-    );
-
-
-  return [
-
-    result[0],
-    result[1]
-
-  ];
-
-}
-
-
-/* =====================================================
-   15. UBAH RECURSIVE COORDINATES
-===================================================== */
-
-function transformCoordinates(
-  coordinates
-) {
-
-
-  if (
-
-    Array.isArray(
-      coordinates
-    ) &&
-
-    coordinates.length >= 2 &&
-
-    typeof coordinates[0]
-      === 'number' &&
-
-    typeof coordinates[1]
-      === 'number'
-
-  ) {
-
-
-    return convertCoordinate(
-      coordinates
-    );
-
-  }
-
-
-  if (
-    Array.isArray(
-      coordinates
-    )
-  ) {
-
-
-    return coordinates.map(
-      function(item) {
-
-        return transformCoordinates(
-          item
-        );
-
-      }
-    );
-
-  }
-
-
-  return coordinates;
-
-}
-
-
-/* =====================================================
-   16. TRANSFORMASI GEOMETRY
-===================================================== */
-
-function transformGeometry(
-  geometry
-) {
-
-
-  if (
-    !geometry
-  ) {
-
-    return geometry;
-
-  }
-
-
-  return {
-
-    ...geometry,
-
-    coordinates:
-      transformCoordinates(
-        geometry.coordinates
-      )
-
-  };
-
-}
-
-
-/* =====================================================
-   17. TRANSFORMASI GEOJSON
-===================================================== */
-
-function convertGeoJSONToWGS84(
-  geojson
-) {
-
-
-  const firstCoord =
-    findFirstCoordinate(
-      geojson
-    );
-
-
-  if (
-    !firstCoord
-  ) {
-
-    throw new Error(
-      'Koordinat GeoJSON tidak ditemukan.'
-    );
-
-  }
-
-
-  /*
-     Jika:
-
-     X > 180
-     atau
-     Y > 90
-
-     maka diasumsikan UTM.
-  */
-
-  const isUTM =
-
-    Math.abs(
-      firstCoord[0]
-    ) > 180 ||
-
-    Math.abs(
-      firstCoord[1]
-    ) > 90;
-
-
-  if (!isUTM) {
-
-
-    console.log(
-      'GeoJSON sudah berada pada koordinat geografis.'
-    );
-
-
-    return geojson;
-
-  }
-
-
-  console.log(
-    'GeoJSON terdeteksi UTM 48S.'
-  );
-
-
-  console.log(
-    'Transformasi EPSG:32748 -> EPSG:4326'
-  );
-
-
-  if (
-    geojson.type ===
-    'FeatureCollection'
-  ) {
-
-
-    return {
-
-      ...geojson,
-
-      features:
-        geojson.features.map(
-          function(feature) {
-
-            return {
-
-              ...feature,
-
-              geometry:
-                transformGeometry(
-                  feature.geometry
-                )
-
-            };
-
-          }
-        )
-
-    };
-
-  }
-
-
-  if (
-    geojson.type ===
-    'Feature'
-  ) {
-
-
-    return {
-
-      ...geojson,
-
-      geometry:
-        transformGeometry(
-          geojson.geometry
-        )
-
-    };
-
-  }
-
-
-  if (
-    geojson.type
-  ) {
-
-
-    return {
-
-      ...geojson,
-
-      coordinates:
-        transformCoordinates(
-          geojson.coordinates
-        )
-
-    };
-
-  }
-
-
-  return geojson;
-
-}
-
-
-/* =====================================================
-   18. POPUP GEOJSON
-===================================================== */
-
-function popupContent(
-  properties
-) {
-
-
-  if (
-
-    !properties ||
-
-    Object.keys(
-      properties
-    ).length === 0
-
-  ) {
-
-
-    return `
-
-      <div class="popup-title">
-        Garis Pantai RTK
-      </div>
-
-      <div>
-        Tidak ada atribut.
-      </div>
-
-    `;
-
-  }
-
-
-  let html = `
-
-    <div class="popup-title">
-      Garis Pantai RTK
-    </div>
-
-  `;
-
-
-  Object.entries(
-    properties
-  ).forEach(
-    function(
-      [key,value]
-    ) {
-
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-
-        value = '-';
-
-      }
-
-
-      html +=
-
-        '<b>' +
-
-        key +
-
-        '</b>: ' +
-
-        value +
-
-        '<br>';
-
-    }
-  );
-
-
-  return html;
-
-}
-
-
-/* =====================================================
-   19. STYLE GARIS PANTAI
-===================================================== */
-
-function coastlineStyle() {
-
-  return {
-
-    color:
-      '#00ffff',
-
-    weight:
-      4,
-
-    opacity:
-      0.95
-
-  };
-
-}
-
-
-/* =====================================================
-   20. LOAD GARIS PANTAI RTK
-===================================================== */
-
-fetch(
-  'Garis_Pantai_RTK.geojson'
-)
-
-.then(
-  function(response) {
-
-
-    if (
-      !response.ok
-    ) {
-
-      throw new Error(
-        'File Garis_Pantai_RTK.geojson tidak ditemukan.'
-      );
-
-    }
-
-
-    return response.json();
-
-  }
-)
-
-.then(
-  function(data) {
-
-
-    console.log(
-      'GeoJSON berhasil dimuat.'
-    );
-
-
-    /*
-       UTM 48S -> WGS84
-    */
-
-    const converted =
-      convertGeoJSONToWGS84(
-        data
-      );
-
-
-    /*
-       BUAT LAYER GEOJSON
-    */
-
-    coastline =
-      L.geoJSON(
-
-        converted,
-
-        {
-
-          style:
-            coastlineStyle(),
-
-
-          onEachFeature:
-            function(
-              feature,
-              layer
-            ) {
-
-
-              /*
-                 Popup
-              */
-
-              layer.bindPopup(
-                popupContent(
-                  feature.properties
-                )
-              );
-
-
-              /*
-                 Hover
-              */
-
-              layer.on(
-                'mouseover',
-                function() {
-
-
-                  layer.setStyle({
-
-                    color:
-                      '#ff0000',
-
-                    weight:
-                      6,
-
-                    opacity:
-                      1
-
-                  });
-
-
-                }
-              );
-
-
-              layer.on(
-                'mouseout',
-                function() {
-
-
-                  coastline.resetStyle(
-                    layer
-                  );
-
-
-                }
-              );
-
-
-            }
-
-        }
-
-      );
-
-
-    /*
-       TAMBAHKAN KE MAP
-    */
-
-    coastline.addTo(
-      map
-    );
-
-
-    coastlineReady =
-      true;
-
-
-    console.log(
-      'Garis Pantai RTK berhasil ditampilkan.'
-    );
-
-
-    /*
-       AUTO ZOOM SETELAH
-       LAYER BENAR-BENAR SELESAI
-    */
-
-    setTimeout(
-      function() {
-
-        zoomToCoastline();
-
-      },
-      300
-    );
-
-
-  }
-)
-
-.catch(
-  function(error) {
-
-
-    console.error(
-      'Gagal memuat Garis Pantai RTK:',
-      error
-    );
-
-
-    alert(
-
-      'Garis Pantai RTK gagal dimuat.\\n\\n' +
-
-      'Pastikan file berikut berada satu folder dengan index.html:\\n\\n' +
-
-      'Garis_Pantai_RTK.geojson'
-
-    );
-
-  }
-);
-
-
-/* =====================================================
-   21. AUTO ZOOM
-===================================================== */
+   9. AUTO ZOOM GARIS PANTAI
+   ===================================================== */
 
 function zoomToCoastline() {
 
-
   if (
-    !coastlineReady ||
-    !coastline
+
+    coastline &&
+
+    coastline.getLayers().length > 0
+
   ) {
 
+    const bounds =
+      coastline.getBounds();
 
-    console.warn(
-      'Garis pantai belum selesai dimuat.'
-    );
+    if (bounds.isValid()) {
 
+      map.fitBounds(
 
-    return;
+        bounds,
 
-  }
+        {
 
+          padding:
+            [40,40],
 
-  const bounds =
-    coastline.getBounds();
+          maxZoom:
+            20
 
+        }
 
-  if (
-    !bounds.isValid()
-  ) {
-
-
-    console.warn(
-      'Bounds garis pantai tidak valid.'
-    );
-
-
-    return;
-
-  }
-
-
-  console.log(
-    'Auto Zoom ke garis pantai:',
-    bounds
-  );
-
-
-  /*
-     Tidak dibatasi maxZoom 20 lagi.
-
-     Bisa mendekati level 24.
-  */
-
-  map.fitBounds(
-
-    bounds,
-
-    {
-
-      padding:
-        [40,40],
-
-      maxZoom:
-        24,
-
-      animate:
-        true
+      );
 
     }
 
-  );
+  }
+
+  else {
+
+    alert(
+      'Layer Garis Pantai RTK belum tersedia.'
+    );
+
+  }
 
 }
 
 
 /* =====================================================
-   22. CHECKBOX GARIS PANTAI
-===================================================== */
-
-document
-  .getElementById(
-    'coastlineCheck'
-  )
-  .addEventListener(
-    'change',
-    function() {
-
-
-      if (
-        this.checked
-      ) {
-
-
-        if (
-          coastline
-        ) {
-
-          coastline.addTo(
-            map
-          );
-
-        }
-
-
-      }
-
-      else {
-
-
-        if (
-          coastline
-        ) {
-
-          map.removeLayer(
-            coastline
-          );
-
-        }
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   23. TOMBOL AUTO ZOOM SIDEBAR
-===================================================== */
+   10. AUTO ZOOM SIDEBAR
+   ===================================================== */
 
 document
   .getElementById(
@@ -2815,27 +1447,6 @@ document
     'click',
     function() {
 
-
-      /*
-         Jika layer belum muncul,
-         jangan gagal diam-diam.
-      */
-
-      if (
-        !coastlineReady
-      ) {
-
-
-        console.warn(
-          'Layer masih dimuat.'
-        );
-
-
-        return;
-
-      }
-
-
       zoomToCoastline();
 
     }
@@ -2843,135 +1454,8 @@ document
 
 
 /* =====================================================
-   24. ORTHOPHOTO CHECKBOX
-===================================================== */
-
-document
-  .getElementById(
-    'orthoCheck'
-  )
-  .addEventListener(
-    'change',
-    function() {
-
-
-      if (
-        this.checked
-      ) {
-
-
-        ortho.addTo(
-          map
-        );
-
-
-      }
-
-      else {
-
-
-        map.removeLayer(
-          ortho
-        );
-
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   25. BASEMAP SATELLITE
-===================================================== */
-
-document
-  .getElementById(
-    'satelliteRadio'
-  )
-  .addEventListener(
-    'change',
-    function() {
-
-
-      if (
-        this.checked
-      ) {
-
-
-        map.removeLayer(
-          street
-        );
-
-
-        satellite.addTo(
-          map
-        );
-
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   26. BASEMAP STREET
-===================================================== */
-
-document
-  .getElementById(
-    'streetRadio'
-  )
-  .addEventListener(
-    'change',
-    function() {
-
-
-      if (
-        this.checked
-      ) {
-
-
-        map.removeLayer(
-          satellite
-        );
-
-
-        street.addTo(
-          map
-        );
-
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   27. SCALE BAR
-===================================================== */
-
-L.control.scale({
-
-  imperial:
-    false,
-
-  metric:
-    true,
-
-  position:
-    'bottomleft'
-
-}).addTo(
-  map
-);
-
-
-/* =====================================================
-   28. AUTO ZOOM CONTROL DI MAP
-===================================================== */
+   11. AUTO ZOOM CONTROL PETA
+   ===================================================== */
 
 const ZoomToLayerControl =
   L.Control.extend({
@@ -2983,17 +1467,14 @@ const ZoomToLayerControl =
 
     },
 
-
     onAdd:
       function() {
-
 
         const container =
           L.DomUtil.create(
             'div',
             'leaflet-bar zoom-to-layer-control'
           );
-
 
         const button =
           L.DomUtil.create(
@@ -3002,47 +1483,37 @@ const ZoomToLayerControl =
             container
           );
 
-
         button.type =
           'button';
-
 
         button.innerHTML =
           '⌖';
 
-
         button.title =
           'Auto Zoom to Layer';
-
 
         button.setAttribute(
           'aria-label',
           'Auto Zoom to Layer'
         );
 
-
         L.DomEvent
           .disableClickPropagation(
             container
           );
-
 
         L.DomEvent.on(
           button,
           'click',
           function(e) {
 
-
             L.DomEvent
               .stopPropagation(e);
 
-
             zoomToCoastline();
-
 
           }
         );
-
 
         return container;
 
@@ -3057,8 +1528,380 @@ map.addControl(
 
 
 /* =====================================================
-   29. LEGEND
-===================================================== */
+   12. KONVERSI ESRI JSON
+   ===================================================== */
+
+function convertEsriJSON(data) {
+
+  const coastlineGroup =
+    L.featureGroup();
+
+  if (!data.features) {
+
+    console.error(
+      'Garis_Pantai_RTK tidak memiliki features.'
+    );
+
+    return coastlineGroup;
+
+  }
+
+
+  data.features.forEach(
+    function(feature) {
+
+      const geometry =
+        feature.geometry || {};
+
+      const attributes =
+        feature.attributes || {};
+
+
+      if (!geometry.paths) {
+        return;
+      }
+
+
+      geometry.paths.forEach(
+        function(path) {
+
+          const latLngs =
+            path.map(
+              function(point) {
+
+                return [
+
+                  point[1],
+
+                  point[0]
+
+                ];
+
+              }
+            );
+
+
+          const line =
+            L.polyline(
+              latLngs,
+              coastlineStyle
+            );
+
+
+          let html =
+            '<div>' +
+
+            '<div class="popup-title">' +
+
+            'Informasi Garis Pantai RTK' +
+
+            '</div>';
+
+
+          const keys =
+            Object.keys(attributes);
+
+
+          if (keys.length === 0) {
+
+            html +=
+              'Tidak terdapat atribut.';
+
+          }
+
+          else {
+
+            keys.forEach(
+              function(key) {
+
+                let value =
+                  attributes[key];
+
+                if (
+
+                  value === null ||
+
+                  value === undefined ||
+
+                  value === ''
+
+                ) {
+
+                  value = '-';
+
+                }
+
+                html +=
+
+                  '<b>' +
+
+                  key +
+
+                  '</b>: ' +
+
+                  value +
+
+                  '<br>';
+
+              }
+            );
+
+          }
+
+
+          html +=
+            '</div>';
+
+
+          line.bindPopup(html);
+
+
+          line.on(
+            'mouseover',
+            function() {
+
+              this.setStyle({
+
+                color:
+                  '#ff0000',
+
+                weight:
+                  6
+
+              });
+
+            }
+          );
+
+
+          line.on(
+            'mouseout',
+            function() {
+
+              this.setStyle(
+                coastlineStyle
+              );
+
+            }
+          );
+
+
+          coastlineGroup.addLayer(
+            line
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  return coastlineGroup;
+
+}
+
+
+/* =====================================================
+   13. LOAD GARIS PANTAI RTK
+   ===================================================== */
+
+fetch(
+  'Garis_Pantai_RTK.geojson'
+)
+
+.then(
+  function(response) {
+
+    if (!response.ok) {
+
+      throw new Error(
+        'Garis_Pantai_RTK.geojson tidak ditemukan.'
+      );
+
+    }
+
+    return response.json();
+
+  }
+)
+
+.then(
+  function(data) {
+
+    console.log(
+      'Garis_Pantai_RTK.geojson berhasil dimuat:',
+      data
+    );
+
+
+    /*
+     * DATA GARIS PANTAI RTK
+     * HARUS SUDAH DALAM WGS84 / EPSG:4326
+     */
+
+    coastline =
+      convertEsriJSON(data);
+
+
+    coastline.addTo(map);
+
+
+    zoomToCoastline();
+
+
+    document
+      .getElementById(
+        'coastlineCheck'
+      )
+      .addEventListener(
+        'change',
+        function() {
+
+          if (this.checked) {
+
+            coastline.addTo(map);
+
+          }
+
+          else {
+
+            map.removeLayer(
+              coastline
+            );
+
+          }
+
+        }
+      );
+
+  }
+)
+
+.catch(
+  function(error) {
+
+    console.error(error);
+
+    alert(
+
+      'Gagal membaca Garis_Pantai_RTK.geojson.\n\n' +
+
+      'Pastikan file berada satu folder dengan index.html.'
+
+    );
+
+  }
+);
+
+
+/* =====================================================
+   14. ORTHOPHOTO CHECKBOX
+   ===================================================== */
+
+document
+  .getElementById(
+    'orthoCheck'
+  )
+  .addEventListener(
+    'change',
+    function() {
+
+      if (this.checked) {
+
+        ortho.addTo(map);
+
+      }
+
+      else {
+
+        map.removeLayer(
+          ortho
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   15. ESRI SATELLITE
+   ===================================================== */
+
+document
+  .getElementById(
+    'satelliteRadio'
+  )
+  .addEventListener(
+    'change',
+    function() {
+
+      if (this.checked) {
+
+        map.removeLayer(
+          street
+        );
+
+        satellite.addTo(
+          map
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   16. ESRI STREET
+   ===================================================== */
+
+document
+  .getElementById(
+    'streetRadio'
+  )
+  .addEventListener(
+    'change',
+    function() {
+
+      if (this.checked) {
+
+        map.removeLayer(
+          satellite
+        );
+
+        street.addTo(
+          map
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   17. SCALE BAR
+   ===================================================== */
+
+L.control.scale({
+
+  imperial:
+    false,
+
+  metric:
+    true,
+
+  position:
+    'bottomleft'
+
+}).addTo(map);
+
+
+/* =====================================================
+   18. LEGEND
+   ===================================================== */
 
 const legend =
   L.control({
@@ -3071,7 +1914,6 @@ const legend =
 
 legend.onAdd =
   function() {
-
 
     const div =
       L.DomUtil.create(
@@ -3112,19 +1954,16 @@ legend.onAdd =
   };
 
 
-legend.addTo(
-  map
-);
+legend.addTo(map);
 
 
 /* =====================================================
-   30. KOORDINAT KURSOR
-===================================================== */
+   19. KOORDINAT KURSOR
+   ===================================================== */
 
 map.on(
   'mousemove',
   function(e) {
-
 
     document
       .getElementById(
@@ -3146,35 +1985,19 @@ map.on(
 
 
 /* =====================================================
-   31. INFO ZOOM
-===================================================== */
+   20. LOG ZOOM
+   ===================================================== */
 
 map.on(
   'zoomend',
   function() {
-
 
     console.log(
       'Zoom level:',
       map.getZoom()
     );
 
-
   }
-);
-
-
-/* =====================================================
-   32. INVALIDATE MAP
-===================================================== */
-
-setTimeout(
-  function() {
-
-    map.invalidateSize();
-
-  },
-  500
 );
 
 </script>
