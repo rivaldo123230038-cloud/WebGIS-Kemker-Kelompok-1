@@ -1635,27 +1635,41 @@ fetch(
 ========================================================= */
 
 /*
-   HASIL EXPORT GLOBAL MAPPER:
+   STRUKTUR TMS:
 
    TML/
       15/
-         X/
-            Y.png
+      16/
+      17/
+      18/
+      19/
 
-   Saat ini baru level 15 yang tersedia.
+   Setiap level berisi tile:
+      X/
+         Y.png
 
-   PENTING:
-   - Global Mapper TMS default menggunakan format:
-       %z\%x\%y.png
-   - Leaflet memakai tms:true karena TMS menggunakan orientasi Y terbalik.
-   - Ketika hanya L15 yang tersedia, orthophoto mulai tampil pada zoom 15.
-   - Zoom 16-24 tetap menggunakan tile L15 dan diperbesar oleh Leaflet.
+   L15-L19 tersedia.
 
-   Setelah L16-L19 juga diupload, cukup ubah:
-       ORTHO_NATIVE_ZOOM = 19
+   Pada zoom 15:
+      menggunakan L15
 
-   Level 15-19 kemudian akan dipakai sesuai zoom masing-masing.
+   Pada zoom 16:
+      menggunakan L16
+
+   Pada zoom 17:
+      menggunakan L17
+
+   Pada zoom 18:
+      menggunakan L18
+
+   Pada zoom 19:
+      menggunakan L19
+
+   Pada zoom 20-24:
+      tetap menggunakan tile L19
+      dan Leaflet memperbesar tile tersebut.
 */
+
 
 const ORTHO_URL_BASE =
   "https://raw.githubusercontent.com/" +
@@ -1666,15 +1680,16 @@ const ORTHO_URL_BASE =
 
 
 /* =========================================================
-   LEVEL YANG SAAT INI TERSEDIA
+   LEVEL ORTHOPHOTO
 ========================================================= */
 
 const ORTHO_MIN_NATIVE_ZOOM = 15;
-const ORTHO_NATIVE_ZOOM = 15;
+
+const ORTHO_NATIVE_ZOOM = 19;
 
 
 /* =========================================================
-   BUAT ORTHOPHOTO TMS
+   TMS ORTHOPHOTO
 ========================================================= */
 
 orthophotoLayer =
@@ -1686,8 +1701,7 @@ orthophotoLayer =
     {
 
       /*
-         Karena saat ini baru level 15 tersedia,
-         jangan minta tile level 11-14 yang belum ada.
+         Orthophoto tersedia mulai L15.
       */
 
       minZoom:
@@ -1695,22 +1709,26 @@ orthophotoLayer =
 
 
       /*
-         Zoom maksimum tampilan WebGIS.
+         WebGIS tetap dapat zoom sampai L24.
       */
 
       maxZoom: 24,
 
 
       /*
-         Tile asli saat ini = L15.
+         Resolusi asli tertinggi orthophoto
+         yang tersedia adalah L19.
 
-         Jadi pada L16-L24 Leaflet akan tetap memakai
-         tile L15 dan melakukan pembesaran.
+         Zoom 20-24 akan menggunakan L19.
       */
 
       maxNativeZoom:
         ORTHO_NATIVE_ZOOM,
 
+
+      /*
+         Ukuran tile TMS Global Mapper.
+      */
 
       tileSize: 256,
 
@@ -1719,17 +1737,33 @@ orthophotoLayer =
 
 
       /*
-         Global Mapper TMS menggunakan orientasi TMS.
+         Karena hasil export Global Mapper
+         adalah TMS.
       */
 
       tms: true,
 
 
-      updateWhenIdle: false,
+      /*
+         Agar tile di sekitar layar
+         tetap disiapkan.
+      */
+
+      keepBuffer: 4,
+
+
+      /*
+         Update ketika zoom.
+      */
 
       updateWhenZooming: true,
 
-      keepBuffer: 4,
+      updateWhenIdle: false,
+
+
+      /*
+         Tidak membungkus dunia.
+      */
 
       noWrap: true,
 
@@ -1752,7 +1786,7 @@ console.log(
 );
 
 console.log(
-  "Orthophoto minimum native zoom:",
+  "Orthophoto minimum zoom:",
   ORTHO_MIN_NATIVE_ZOOM
 );
 
@@ -2027,7 +2061,7 @@ function updateAutoZoom() {
 
 
   /*
-     Cek apakah sidebar sedang terbuka
+     Cek sidebar.
   */
 
   const sidebar =
@@ -2043,9 +2077,7 @@ function updateAutoZoom() {
 
 
   /*
-     Fit bounds.
-
-     Orthophoto TIDAK digunakan
+     Orthophoto tidak digunakan
      untuk menentukan bounds.
   */
 
