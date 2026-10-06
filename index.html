@@ -1,28 +1,22 @@
+<script>
+
 /* =========================================================
-   ORTHOPHOTO
+   ORTHOPHOTO TMS
    ========================================================= */
 
 /*
-   Struktur folder GitHub:
+   Struktur yang diharapkan:
 
-   Fix_Ortho_web/
-       _alllayers/
-           L19/
-               R00020fc4/
-                   C00032b4a.png
-                   ...
-               R00020fc5/
-                   ...
-               ...
+   WebGIS-Kemker-Kelompok-1/
+   └── TML/
+       └── L19/
+           ├── ...
+           └── ...
 
-   Tile native = L19
-   Zoom > 19 tetap menggunakan tile L19
-
-   Tambahan:
-   - Background putih yang terhubung dengan tepi tile
-     dibuat transparan.
-   - Putih yang berada di dalam objek orthophoto tidak
-     ikut dihapus.
+   HASIL EXPORT GLOBAL MAPPER:
+   - PNG
+   - Transparent Tiles
+   - TMS
 */
 
 
@@ -31,512 +25,121 @@ const ORTHO_URL_BASE =
   "rivaldo123230038-cloud/" +
   "WebGIS-Kemker-Kelompok-1/" +
   "main/" +
-  "Fix_Ortho_web/" +
-  "_alllayers/";
-
-
-const ORTHO_NATIVE_ZOOM = 19;
+  "TML/";
 
 
 /* =========================================================
-   FUNGSI DECIMAL -> HEX
+   VARIABEL ORTHOPHOTO
    ========================================================= */
 
-function numberToHex(number) {
-
-  return Math
-    .floor(number)
-    .toString(16)
-    .toLowerCase()
-    .padStart(8, "0");
-
-}
+let orthophotoLayer = null;
 
 
 /* =========================================================
-   BUAT BACKGROUND PUTIH MENJADI TRANSPARAN
-
-   Hanya area putih yang TERHUBUNG ke tepi tile
-   yang dihapus.
-
-   Jadi putih pada objek/fasilitas di bagian dalam
-   orthophoto tetap dipertahankan.
+   BUAT ORTHOPHOTO
    ========================================================= */
 
-function removeWhiteBackground(canvas) {
-
-  const ctx =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently: true
-      }
-    );
-
-
-  const width =
-    canvas.width;
-
-  const height =
-    canvas.height;
-
-
-  const imageData =
-    ctx.getImageData(
-      0,
-      0,
-      width,
-      height
-    );
-
-
-  const data =
-    imageData.data;
-
-
-  const visited =
-    new Uint8Array(
-      width * height
-    );
-
-
-  const queue =
-    new Int32Array(
-      width * height
-    );
-
-
-  let queueStart = 0;
-  let queueEnd = 0;
-
-
-  /*
-     Threshold putih.
-
-     Semakin tinggi:
-     semakin banyak putih yang dianggap background.
-  */
-
-  const WHITE_THRESHOLD = 245;
-
-
-  function isWhite(index) {
-
-    return (
-      data[index] >= WHITE_THRESHOLD &&
-      data[index + 1] >= WHITE_THRESHOLD &&
-      data[index + 2] >= WHITE_THRESHOLD &&
-      data[index + 3] > 0
-    );
-
-  }
-
-
-  function addPixel(x, y) {
-
-    if (
-      x < 0 ||
-      x >= width ||
-      y < 0 ||
-      y >= height
-    ) {
-
-      return;
-
-    }
-
-
-    const pixelIndex =
-      y * width + x;
-
-
-    if (visited[pixelIndex]) {
-
-      return;
-
-    }
-
-
-    const dataIndex =
-      pixelIndex * 4;
-
-
-    if (!isWhite(dataIndex)) {
-
-      return;
-
-    }
-
-
-    visited[pixelIndex] = 1;
-
-    queue[queueEnd++] =
-      pixelIndex;
-
-  }
-
-
-  /* =====================================================
-     MASUKKAN SEMUA PIXEL TEPI KE QUEUE
-     ===================================================== */
-
-  for (let x = 0; x < width; x++) {
-
-    addPixel(x, 0);
-
-    addPixel(x, height - 1);
-
-  }
-
-
-  for (let y = 0; y < height; y++) {
-
-    addPixel(0, y);
-
-    addPixel(width - 1, y);
-
-  }
-
-
-  /* =====================================================
-     FLOOD FILL AREA PUTIH DARI TEPI
-     ===================================================== */
-
-  while (queueStart < queueEnd) {
-
-    const pixelIndex =
-      queue[queueStart++];
-
-
-    const x =
-      pixelIndex % width;
-
-    const y =
-      Math.floor(
-        pixelIndex / width
-      );
-
-
-    const dataIndex =
-      pixelIndex * 4;
-
-
-    /*
-       Jadikan transparan
-    */
-
-    data[dataIndex + 3] = 0;
-
-
-    /*
-       Tetangga kiri
-    */
-
-    addPixel(
-      x - 1,
-      y
-    );
-
-
-    /*
-       Tetangga kanan
-    */
-
-    addPixel(
-      x + 1,
-      y
-    );
-
-
-    /*
-       Tetangga atas
-    */
-
-    addPixel(
-      x,
-      y - 1
-    );
-
-
-    /*
-       Tetangga bawah
-    */
-
-    addPixel(
-      x,
-      y + 1
-    );
-
-  }
-
-
-  ctx.putImageData(
-    imageData,
-    0,
-    0
-  );
-
-}
-
-
-/* =========================================================
-   TILE LAYER KHUSUS ORTHOPHOTO
-   ========================================================= */
-
-const TransparentOrthoTileLayer =
-  L.TileLayer.extend({
-
-    createTile:
-      function(
-        coords,
-        done
-      ) {
-
-        const tile =
-          document.createElement(
-            "canvas"
-          );
-
-
-        tile.width =
-          this.options.tileSize;
-
-        tile.height =
-          this.options.tileSize;
-
-
-        tile.className =
-          "leaflet-tile";
-
-
-        const ctx =
-          tile.getContext(
-            "2d",
-            {
-              willReadFrequently: true
-            }
-          );
-
-
-        const image =
-          new Image();
-
-
-        /*
-           Dibutuhkan agar image dari
-           raw.githubusercontent.com
-           dapat diproses oleh canvas.
-        */
-
-        image.crossOrigin =
-          "anonymous";
-
-
-        image.onload =
-          function() {
-
-            try {
-
-              ctx.clearRect(
-                0,
-                0,
-                tile.width,
-                tile.height
-              );
-
-
-              ctx.drawImage(
-                image,
-                0,
-                0,
-                tile.width,
-                tile.height
-              );
-
-
-              /*
-                 Hapus background putih
-              */
-
-              removeWhiteBackground(
-                tile
-              );
-
-
-              done(
-                null,
-                tile
-              );
-
-            }
-
-            catch (error) {
-
-              done(
-                error,
-                tile
-              );
-
-            }
-
-          };
-
-
-        image.onerror =
-          function(error) {
-
-            done(
-              error,
-              tile
-            );
-
-          };
-
-
-        /*
-           Buat URL tile
-        */
-
-        image.src =
-          this.getTileUrl(
-            coords
-          );
-
-
-        return tile;
-
-      },
-
-
-    getTileUrl:
-      function(
-        coords
-      ) {
-
-        /*
-           =================================================
-           PENTING
-
-           Kalau zoom > 19:
-           tetap gunakan tile L19.
-
-           Kalau zoom = 19:
-           gunakan tile L19.
-
-           Kalau zoom < 19:
-           gunakan tile sesuai level yang tersedia.
-           =================================================
-        */
-
-        const requestedZoom =
-          coords.z;
-
-
-        const nativeZoom =
-          Math.min(
-            requestedZoom,
-            ORTHO_NATIVE_ZOOM
-          );
-
-
-        /*
-           Jika zoom > 19,
-           cari tile induk pada L19.
-
-           Contoh:
-
-           L20 → L19
-           L21 → L19
-           L22 → L19
-           L23 → L19
-           L24 → L19
-        */
-
-        const scale =
-          Math.pow(
-            2,
-            requestedZoom - nativeZoom
-          );
-
-
-        const nativeX =
-          Math.floor(
-            coords.x / scale
-          );
-
-
-        const nativeY =
-          Math.floor(
-            coords.y / scale
-          );
-
-
-        const row =
-          numberToHex(
-            nativeY
-          );
-
-
-        const column =
-          numberToHex(
-            nativeX
-          );
-
-
-        return (
-          ORTHO_URL_BASE +
-
-          "L" +
-          nativeZoom +
-
-          "/R" +
-          row +
-
-          "/C" +
-          column +
-
-          ".png"
-        );
-
-      }
-
-  });
-
-
-/* =========================================================
-   BUAT ORTHOPHOTO TILE LAYER
-   ========================================================= */
+/*
+   TMS Global Mapper menggunakan struktur tile TMS.
+
+   Leaflet membutuhkan tms:true agar
+   orientasi Y dibalik sesuai standar TMS.
+*/
 
 orthophotoLayer =
-  new TransparentOrthoTileLayer(
+  L.tileLayer(
 
     ORTHO_URL_BASE +
-      "L{z}/R{y}/C{x}.png",
+    "{z}/{x}/{y}.png",
 
     {
 
+      /*
+         Zoom minimum.
+      */
+
       minZoom: 11,
+
+
+      /*
+         Zoom maksimum tampilan.
+      */
 
       maxZoom: 24,
 
+
       /*
-         Tile asli maksimal L19
+         Tile asli terakhir adalah L19.
+
+         Jadi ketika zoom:
+         L20
+         L21
+         L22
+         L23
+         L24
+
+         Leaflet tetap menggunakan
+         resolusi tile L19 dan
+         memperbesarnya.
       */
 
-      maxNativeZoom:
-        ORTHO_NATIVE_ZOOM,
+      maxNativeZoom: 19,
+
+
+      /*
+         Ukuran tile Global Mapper
+      */
 
       tileSize: 256,
 
+
+      /*
+         Transparansi tile sudah dibuat
+         saat export dari Global Mapper.
+      */
+
       opacity: 1,
 
-      updateWhenIdle: false,
+
+      /*
+         TMS membutuhkan pembalikan Y.
+      */
+
+      tms: true,
+
+
+      /*
+         Jangan membuat tile yang kosong
+         menjadi error besar.
+      */
+
+      errorTileUrl: "",
+
+
+      /*
+         Buffer tile di sekitar viewport.
+      */
+
+      keepBuffer: 4,
+
+
+      /*
+         Update saat zoom.
+      */
 
       updateWhenZooming: true,
 
-      keepBuffer: 6,
 
-      noWrap: false,
+      updateWhenIdle: false,
+
+
+      /*
+         Mencegah tile berulang
+         membungkus dunia.
+      */
+
+      noWrap: true,
+
 
       attribution:
         "Orthophoto"
@@ -547,20 +150,45 @@ orthophotoLayer =
 
 
 /* =========================================================
-   DEBUG ORTHOPHOTO
+   CHECKBOX ORTHOPHOTO
+   ========================================================= */
+
+document
+  .getElementById("checkOrthophoto")
+  .addEventListener(
+    "change",
+    function() {
+
+      if (this.checked) {
+
+        orthophotoLayer.addTo(map);
+
+      }
+
+      else {
+
+        map.removeLayer(
+          orthophotoLayer
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   DEBUG
    ========================================================= */
 
 console.log(
-  "Orthophoto base URL:",
+  "Orthophoto URL:",
   ORTHO_URL_BASE
-);
-
-console.log(
-  "Orthophoto native zoom:",
-  ORTHO_NATIVE_ZOOM
 );
 
 console.log(
   "Orthophoto layer:",
   orthophotoLayer
 );
+
+</script>
