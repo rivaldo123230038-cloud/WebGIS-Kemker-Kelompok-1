@@ -965,25 +965,56 @@ function styleDigitasi(feature) {
 /* =========================================================
    STYLE BATAS ADMINISTRASI DESA
 ========================================================= */
+/* =========================================================
+   SIMBOLOGI BATAS ADMINISTRASI DESA
+   Acuan: Perka BIG No. 3 Tahun 2016
 
-function styleBatasDesa(feature) {
+   Batas Desa/Kelurahan:
+   - Garis utama : Hitam
+   - Mask        : Kuning
+========================================================= */
+
+
+/* GARIS MASK KUNING */
+
+function styleBatasDesaMask(feature) {
 
   return {
 
-    color: "#0066ff",
+    color: "#FFFF00",
 
-    weight: 3,
+    weight: 5,
 
     opacity: 1,
 
-    fillColor: "#3388ff",
+    fill: false,
 
-    fillOpacity: 0.06
+    fillOpacity: 0
 
   };
 
 }
 
+
+/* GARIS UTAMA HITAM */
+
+function styleBatasDesa(feature) {
+
+  return {
+
+    color: "#000000",
+
+    weight: 2,
+
+    opacity: 1,
+
+    fill: false,
+
+    fillOpacity: 0
+
+  };
+
+}
 
 /* =========================================================
    HOVER
