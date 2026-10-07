@@ -2589,7 +2589,7 @@ body {
 
 
   <div class="legend-title">
-    Legenda
+    KETERANGAN
   </div>
 
 
@@ -2819,9 +2819,8 @@ body {
 
       <div class="feedback-note">
 
-        Pesan akan dikirim ke email
-        kelompok melalui aplikasi email
-        pada perangkat pengguna.
+        Kritik dan saran akan dikirim
+        langsung kepada kelompok.
 
       </div>
 
@@ -5281,7 +5280,7 @@ feedbackForm.addEventListener(
 
   "submit",
 
-  function(e) {
+  async function(e) {
 
 
     e.preventDefault();
@@ -5306,9 +5305,7 @@ feedbackForm.addEventListener(
           "feedbackEmail"
         )
         .value
-        .trim() ||
-
-      "Tidak disebutkan";
+        .trim();
 
 
     const message =
@@ -5336,50 +5333,134 @@ feedbackForm.addEventListener(
     }
 
 
-    const subject =
+    const sendButton =
 
-      encodeURIComponent(
-
-        "Kritik & Saran - WebGIS Kelompok 1"
-
+      feedbackForm.querySelector(
+        ".feedback-send"
       );
 
 
-    const body =
+    const originalButtonText =
 
-      encodeURIComponent(
+      sendButton.textContent;
 
-        "Nama: " +
-        name +
 
-        "\n" +
+    sendButton.disabled =
+      true;
 
-        "Email: " +
-        email +
 
-        "\n\n" +
+    sendButton.textContent =
+      "Mengirim...";
 
-        "Kritik / Saran:\n" +
 
-        message
+    try {
 
+
+      const response =
+
+        await fetch(
+
+          "https://formsubmit.co/ajax/" +
+          FEEDBACK_EMAIL,
+
+          {
+
+            method:
+              "POST",
+
+            headers: {
+
+              "Content-Type":
+                "application/json",
+
+              "Accept":
+                "application/json"
+
+            },
+
+            body:
+              JSON.stringify({
+
+                name:
+                  name,
+
+                email:
+                  email ||
+                  "Tidak disebutkan",
+
+                message:
+                  message,
+
+                _subject:
+                  "Kritik & Saran - WebGIS Kelompok 1",
+
+                _replyto:
+                  email ||
+                  FEEDBACK_EMAIL
+
+              })
+
+          }
+
+        );
+
+
+      const result =
+
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !result.success
+      ) {
+
+        throw new Error(
+          "Pengiriman gagal"
+        );
+
+      }
+
+
+      alert(
+        "Kritik dan saran berhasil dikirim. Terima kasih!"
       );
 
 
-    window.location.href =
+      feedbackForm.reset();
 
-      "mailto:" +
+      closeFeedback();
 
-      FEEDBACK_EMAIL +
 
-      "?subject=" +
+    }
 
-      subject +
+    catch (error) {
 
-      "&body=" +
 
-      body;
+      console.error(
+        "Error pengiriman kritik dan saran:",
+        error
+      );
 
+
+      alert(
+        "Kritik dan saran gagal dikirim. Silakan coba lagi."
+      );
+
+
+    }
+
+    finally {
+
+
+      sendButton.disabled =
+        false;
+
+
+      sendButton.textContent =
+        originalButtonText;
+
+    }
 
   }
 
