@@ -5,10 +5,17 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>WEBGIS KELOMPOK 1</title>
+
+
+<!-- =======================================================
+     LEAFLET
+======================================================= -->
 
 <link
   rel="stylesheet"
@@ -19,6 +26,11 @@
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
+
+<!-- =======================================================
+     PROJ4
+======================================================= -->
+
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
 </script>
@@ -27,74 +39,79 @@
 <style>
 
 /* =========================================================
-   DASAR
+   RESET / DASAR
 ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
   margin: 0;
   padding: 0;
+
   width: 100%;
   height: 100%;
+
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #eef1f4;
 }
 
+body {
+  color: #17202a;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
 #map {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+
+  inset: 0;
+
   width: 100%;
   height: 100%;
+
   z-index: 1;
 }
 
 
 /* =========================================================
-   BACKGROUND GALLERY
+   LEAFLET CONTROL
 ========================================================= */
 
-.background-gallery {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-
-  z-index: -2;
-
-  overflow: hidden;
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.18) !important;
 }
 
-.background-photo {
-  width: 100%;
-  height: 33.333333%;
+.leaflet-control-zoom a {
+  color: #1d2d3d !important;
 
-  flex-shrink: 0;
+  border: none !important;
 
-  background-size: cover;
-  background-position: center;
-
-  opacity: 0.20;
-
-  transition:
-    order 1.2s ease-in-out,
-    transform 1.2s ease-in-out;
+  background: #ffffff !important;
 }
 
-.photo-1 {
-  background-image: url("bcg1.jpeg");
+.leaflet-control-zoom a:hover {
+  background: #f1f4f7 !important;
 }
 
-.photo-2 {
-  background-image: url("bcg2.jpeg");
-}
+.leaflet-control-attribution {
+  background:
+    rgba(255,255,255,0.90) !important;
 
-.photo-3 {
-  background-image: url("bcg3.jpeg");
+  font-size: 10px;
 }
 
 
@@ -103,97 +120,66 @@ body {
 ========================================================= */
 
 #sidebar {
-  position: absolute;
 
-  top: 0;
-  left: 0;
+  position: fixed;
 
-  width: 350px;
-  height: 100%;
+  top: 16px;
+  left: 16px;
 
-  background: rgba(255,255,255,0.96);
+  width: 330px;
+
+  max-height:
+    calc(100vh - 32px);
 
   z-index: 1000;
 
+  background: #ffffff;
+
+  border:
+    1px solid #e5e9ed;
+
+  border-radius: 14px;
+
   box-shadow:
-    3px 0 12px rgba(0,0,0,0.25);
+    0 5px 22px rgba(0,0,0,0.16);
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
 
   transition:
-    transform 0.35s ease;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-#sidebar.closed {
-  transform:
-    translateX(-350px);
+    transform 0.30s ease;
 }
 
 
 /* =========================================================
-   TOMBOL SIDEBAR
+   SIDEBAR CLOSED
 ========================================================= */
 
-#sidebarToggle {
-  position: absolute;
-
-  top: 50%;
-  right: -42px;
-
-  width: 42px;
-  height: 80px;
+#sidebar.closed {
 
   transform:
-    translateY(-50%);
+    translateX(
+      calc(-100% - 25px)
+    );
 
-  border: none;
-
-  background:
-    rgba(0,0,0,0.75);
-
-  color: white;
-
-  border-radius:
-    0 12px 12px 0;
-
-  cursor: pointer;
-
-  font-size: 25px;
-
-  z-index: 1100;
 }
 
 
 /* =========================================================
-   HEADER
+   SIDEBAR HEADER
 ========================================================= */
 
 .sidebar-header {
+
   padding:
-    15px 15px 10px 15px;
+    17px 18px 15px;
 
-  background:
-    rgba(255,255,255,0.98);
+  background: #ffffff;
 
-  text-align: center;
-}
-
-.sidebar-title {
-  margin: 0;
-
-  font-size: 22px;
-  font-weight: bold;
-
-  color: #111;
-}
-
-.sidebar-subtitle {
-  margin-top: 6px;
-
-  font-size: 13px;
-
-  color: #555;
+  border-bottom:
+    1px solid #edf0f2;
 }
 
 
@@ -202,24 +188,99 @@ body {
 ========================================================= */
 
 .logo-container {
+
   display: flex;
 
-  justify-content: center;
   align-items: center;
 
-  gap: 12px;
+  gap: 9px;
 
-  padding:
-    12px 10px;
-
-  flex-wrap: wrap;
+  margin-bottom: 13px;
 }
 
 .logo-container img {
-  height: 48px;
+
   width: auto;
 
+  height: 38px;
+
   object-fit: contain;
+}
+
+
+/* =========================================================
+   JUDUL
+========================================================= */
+
+.sidebar-title {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  letter-spacing:
+    -0.3px;
+
+  color: #162534;
+}
+
+.sidebar-subtitle {
+
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  color: #71808f;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.project-status {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 11px;
+
+  padding:
+    5px 9px;
+
+  border-radius: 20px;
+
+  background: #edf8f5;
+
+  color: #16705d;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing:
+    0.5px;
+}
+
+.project-status::before {
+
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #1b9a78;
 }
 
 
@@ -228,31 +289,17 @@ body {
 ========================================================= */
 
 .sidebar-body {
-  position: relative;
 
   padding:
-    12px 15px 25px 15px;
+    13px;
 
-  min-height:
-    calc(100% - 180px);
+  overflow-y: auto;
 
-  overflow: hidden;
-}
+  scrollbar-width: thin;
 
-.sidebar-body::before {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    linear-gradient(
-      rgba(255,255,255,0.78),
-      rgba(255,255,255,0.78)
-    );
-
-  z-index: -1;
+  scrollbar-color:
+    #ccd3da
+    transparent;
 }
 
 
@@ -261,111 +308,219 @@ body {
 ========================================================= */
 
 .section {
-  margin-bottom: 18px;
 
-  padding: 12px;
-
-  background:
-    rgba(255,255,255,0.88);
-
-  border-radius: 10px;
-
-  box-shadow:
-    0 2px 7px rgba(0,0,0,0.12);
-}
-
-.section-title {
   margin-bottom: 10px;
 
-  font-size: 15px;
+  padding:
+    12px;
 
-  font-weight: bold;
-
-  color: #222;
-
-  border-bottom:
-    1px solid #ddd;
-
-  padding-bottom: 6px;
-}
-
-
-/* =========================================================
-   BASEMAP
-========================================================= */
-
-.basemap-select {
-  width: 100%;
-
-  padding: 9px;
-
-  border-radius: 7px;
+  background: #ffffff;
 
   border:
-    1px solid #aaa;
+    1px solid #e7ebef;
 
-  background: white;
-
-  font-size: 13px;
-
-  cursor: pointer;
+  border-radius: 10px;
 }
 
 
 /* =========================================================
-   CHECKBOX LAYER
+   SECTION TITLE
 ========================================================= */
 
-.layer-item {
+.section-title {
+
   display: flex;
 
   align-items: center;
 
-  gap: 8px;
+  justify-content: space-between;
 
-  margin: 8px 0;
+  margin-bottom: 9px;
 
-  font-size: 13px;
+  padding-bottom: 7px;
+
+  border-bottom:
+    1px solid #edf0f3;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing:
+    0.7px;
+
+  text-transform: uppercase;
+
+  color: #536372;
+}
+
+
+/* =========================================================
+   BASEMAP SELECT
+========================================================= */
+
+.basemap-select {
+
+  width: 100%;
+
+  height: 36px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid #d6dde3;
+
+  border-radius: 7px;
+
+  background: #fafbfc;
+
+  color: #243443;
+
+  font-size: 12px;
+
+  outline: none;
 
   cursor: pointer;
 }
 
+.basemap-select:focus {
+
+  border-color:
+    #4d7899;
+}
+
+
+/* =========================================================
+   LAYER ITEM
+========================================================= */
+
+.layer-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 34px;
+
+  padding:
+    5px 6px;
+
+  border-radius: 6px;
+
+  color: #334452;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease;
+}
+
+.layer-item:hover {
+
+  background:
+    #f5f7f8;
+}
+
+
 .layer-item input {
-  width: 16px;
-  height: 16px;
+
+  width: 15px;
+  height: 15px;
+
+  margin: 0;
+
+  accent-color:
+    #286b68;
 
   cursor: pointer;
 }
 
 
 /* =========================================================
-   BUTTON
+   GROUP LABEL
+========================================================= */
+
+.layer-group-label {
+
+  margin:
+    8px 6px 3px;
+
+  color: #9aa5ae;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+/* =========================================================
+   ORTHOPHOTO STATUS
+========================================================= */
+
+.ortho-status {
+
+  margin-top: 5px;
+
+  padding:
+    6px 8px;
+
+  border-radius: 6px;
+
+  background:
+    #f1f7f6;
+
+  color:
+    #42736e;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   AUTO ZOOM
 ========================================================= */
 
 .autozoom-btn {
+
   width: 100%;
 
-  padding: 10px;
+  height: 36px;
+
+  margin-top: 9px;
 
   border: none;
 
   border-radius: 7px;
 
   background:
-    #1976d2;
+    #203b53;
 
-  color: white;
+  color: #ffffff;
 
-  font-weight: bold;
+  font-size: 11px;
+
+  font-weight: 600;
 
   cursor: pointer;
 
-  margin-top: 8px;
+  transition:
+    background 0.15s ease;
 }
 
 .autozoom-btn:hover {
+
   background:
-    #125da5;
+    #2b526f;
 }
 
 
@@ -373,26 +528,100 @@ body {
    KOORDINAT
 ========================================================= */
 
-.coordinate-box {
-  font-size: 13px;
+.coordinate-row {
 
-  line-height: 1.7;
+  display: grid;
+
+  grid-template-columns:
+    72px 1fr;
+
+  align-items: center;
+
+  min-height: 29px;
+
+  border-bottom:
+    1px solid #f0f2f4;
+}
+
+.coordinate-row:last-child {
+
+  border-bottom: none;
+}
+
+.coordinate-label {
+
+  font-size: 10px;
+
+  color: #7a8791;
 }
 
 .coordinate-value {
-  font-family: monospace;
+
+  font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+  font-size: 10px;
+
+  color: #263846;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   SIDEBAR TOGGLE
+========================================================= */
+
+#sidebarToggle {
+
+  position: fixed;
+
+  left: 332px;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  z-index: 1100;
+
+  width: 31px;
+  height: 50px;
+
+  border: none;
+
+  border-radius:
+    0 8px 8px 0;
 
   background:
-    #f3f3f3;
+    #ffffff;
 
-  padding:
-    5px 7px;
+  color:
+    #34495a;
 
-  border-radius: 5px;
+  box-shadow:
+    3px 2px 9px rgba(0,0,0,0.14);
 
-  display: block;
+  font-size: 19px;
 
-  margin-top: 3px;
+  cursor: pointer;
+
+  transition:
+    left 0.30s ease,
+    background 0.15s ease;
+}
+
+#sidebarToggle:hover {
+
+  background:
+    #f3f6f8;
+}
+
+#sidebar.closed + #sidebarToggle {
+
+  left: 16px;
 }
 
 
@@ -401,72 +630,102 @@ body {
 ========================================================= */
 
 .legend {
-  position: absolute;
 
-  right: 15px;
-  bottom: 20px;
+  position: fixed;
 
-  z-index: 999;
+  right: 18px;
 
-  background:
-    rgba(255,255,255,0.94);
+  bottom: 18px;
+
+  z-index: 900;
+
+  width: 215px;
 
   padding:
-    12px 15px;
+    13px 14px;
 
-  border-radius: 8px;
+  background:
+    rgba(255,255,255,0.96);
+
+  border:
+    1px solid #e3e7ea;
+
+  border-radius: 10px;
 
   box-shadow:
-    0 2px 8px rgba(0,0,0,0.25);
-
-  font-size: 13px;
-
-  min-width: 165px;
+    0 4px 16px rgba(0,0,0,0.13);
 }
 
 .legend-title {
-  font-weight: bold;
+
+  margin-bottom: 9px;
+
+  color: #263847;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing:
+    0.6px;
+
+  text-transform:
+    uppercase;
+}
+
+.legend-subtitle {
 
   margin-bottom: 8px;
 
-  text-align: center;
+  color: #9aa5ad;
+
+  font-size: 9px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.6px;
 }
 
 .legend-item {
+
   display: flex;
 
   align-items: center;
 
-  gap: 8px;
+  min-height: 25px;
 
-  margin: 6px 0;
-}
+  gap: 9px;
 
-.legend-line {
-  width: 30px;
-  height: 4px;
+  color: #344451;
 
-  display: inline-block;
+  font-size: 11px;
 }
 
 
 /* =========================================================
-   LEGEND BATAS DESA
+   SIMBOL LEGENDA GARIS
 ========================================================= */
 
-.legend-batas-desa {
+.legend-symbol {
+
+  width: 34px;
+
+  height: 10px;
+
+  flex-shrink: 0;
+
   position: relative;
 
-  width: 30px;
-  height: 5px;
-
   display: inline-block;
-
-  background:
-    #FFD800;
 }
 
-.legend-batas-desa::after {
+
+/* RTK */
+
+.legend-rtk::after {
+
   content: "";
 
   position: absolute;
@@ -474,12 +733,99 @@ body {
   left: 0;
   right: 0;
 
-  top: 1.5px;
+  top: 4px;
 
-  height: 1.5px;
+  height: 3px;
+
+  background:
+    #00d9ff;
+
+  border-radius: 2px;
+}
+
+
+/* GARIS PANTAI */
+
+.legend-pantai::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 4px;
+
+  height: 3px;
+
+  background:
+    #f2c600;
+
+  border-radius: 2px;
+}
+
+
+/* DIGITASI */
+
+.legend-digitasi::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 4px;
+
+  height: 3px;
+
+  background:
+    #e53935;
+
+  border-radius: 2px;
+}
+
+
+/* =========================================================
+   SIMBOLOGI BATAS DESA
+   KUNING MASK + HITAM DOT-DOT-DASH
+========================================================= */
+
+.legend-batas-desa::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 2px;
+
+  height: 6px;
+
+  background:
+    #ffd600;
+}
+
+.legend-batas-desa::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 4px;
+
+  height: 2px;
 
   background:
     repeating-linear-gradient(
+
       to right,
 
       #000000 0px,
@@ -499,7 +845,82 @@ body {
 
       transparent 15px,
       transparent 19px
+
     );
+}
+
+
+/* =========================================================
+   ORTHOPHOTO LEGEND
+========================================================= */
+
+.legend-ortho {
+
+  background:
+    linear-gradient(
+      135deg,
+      #6e8e55,
+      #829b58 40%,
+      #4e8d94 70%,
+      #39747d
+    );
+
+  height: 12px;
+
+  border-radius: 2px;
+
+  border:
+    1px solid #aeb8bd;
+}
+
+
+/* =========================================================
+   LEGEND DIVIDER
+========================================================= */
+
+.legend-divider {
+
+  height: 1px;
+
+  margin:
+    8px 0;
+
+  background:
+    #edf0f2;
+}
+
+
+/* =========================================================
+   MAP INFO
+========================================================= */
+
+.map-info {
+
+  position: fixed;
+
+  top: 15px;
+
+  right: 18px;
+
+  z-index: 800;
+
+  padding:
+    7px 10px;
+
+  background:
+    rgba(255,255,255,0.93);
+
+  border:
+    1px solid #e4e8eb;
+
+  border-radius: 7px;
+
+  color: #65737e;
+
+  font-size: 10px;
+
+  box-shadow:
+    0 2px 9px rgba(0,0,0,0.10);
 }
 
 
@@ -507,20 +928,49 @@ body {
    MOBILE
 ========================================================= */
 
-@media(max-width:600px) {
+@media(max-width: 700px) {
 
   #sidebar {
-    width: 300px;
+
+    top: 10px;
+
+    left: 10px;
+
+    width: 290px;
+
+    max-height:
+      calc(100vh - 20px);
+
   }
 
-  #sidebar.closed {
-    transform:
-      translateX(-300px);
+  #sidebarToggle {
+
+    left: 292px;
+
+  }
+
+  #sidebar.closed + #sidebarToggle {
+
+    left: 10px;
+
   }
 
   .legend {
-    bottom: 10px;
+
     right: 10px;
+
+    bottom: 10px;
+
+    width: 190px;
+
+  }
+
+  .map-info {
+
+    top: 10px;
+
+    right: 10px;
+
   }
 
 }
@@ -534,25 +984,19 @@ body {
 
 
 <!-- =======================================================
-     BACKGROUND
-======================================================= -->
-
-<div class="background-gallery">
-
-  <div class="background-photo photo-1"></div>
-
-  <div class="background-photo photo-2"></div>
-
-  <div class="background-photo photo-3"></div>
-
-</div>
-
-
-<!-- =======================================================
-     MAP
+     PETA
 ======================================================= -->
 
 <div id="map"></div>
+
+
+<!-- =======================================================
+     MAP INFO
+======================================================= -->
+
+<div class="map-info">
+  WGS 84 · EPSG:4326
+</div>
 
 
 <!-- =======================================================
@@ -561,12 +1005,11 @@ body {
 
 <div id="sidebar">
 
-  <button id="sidebarToggle">
-    ‹
-  </button>
 
+  <!-- HEADER -->
 
   <div class="sidebar-header">
+
 
     <div class="logo-container">
 
@@ -602,8 +1045,16 @@ body {
       Pemetaan dan Visualisasi Garis Pantai
     </div>
 
+
+    <div class="project-status">
+      Data spasial aktif
+    </div>
+
+
   </div>
 
+
+  <!-- BODY -->
 
   <div class="sidebar-body">
 
@@ -615,7 +1066,7 @@ body {
     <div class="section">
 
       <div class="section-title">
-        BASEMAP
+        Basemap
       </div>
 
 
@@ -644,11 +1095,38 @@ body {
     <div class="section">
 
       <div class="section-title">
-        LAYER
+        Layer
       </div>
 
 
-      <!-- GARIS PANTAI RTK -->
+      <div class="layer-group-label">
+        Batas Administrasi
+      </div>
+
+
+      <!-- BATAS DESA -->
+
+      <label class="layer-item">
+
+        <input
+          type="checkbox"
+          id="checkBatasDesa"
+          checked
+        >
+
+        <span>
+          Batas Administrasi Desa Sidodadi
+        </span>
+
+      </label>
+
+
+      <div class="layer-group-label">
+        Garis Pantai
+      </div>
+
+
+      <!-- RTK -->
 
       <label class="layer-item">
 
@@ -682,7 +1160,7 @@ body {
       </label>
 
 
-      <!-- GARIS PANTAI DIGITASI -->
+      <!-- DIGITASI -->
 
       <label class="layer-item">
 
@@ -699,21 +1177,9 @@ body {
       </label>
 
 
-      <!-- BATAS DESA -->
-
-      <label class="layer-item">
-
-        <input
-          type="checkbox"
-          id="checkBatasDesa"
-          checked
-        >
-
-        <span>
-          Batas Administrasi Desa Sidodadi
-        </span>
-
-      </label>
+      <div class="layer-group-label">
+        Citra
+      </div>
 
 
       <!-- ORTHOPHOTO -->
@@ -723,6 +1189,7 @@ body {
         <input
           type="checkbox"
           id="checkOrthophoto"
+          checked
         >
 
         <span>
@@ -732,63 +1199,77 @@ body {
       </label>
 
 
+      <div class="ortho-status">
+        Orthophoto aktif · L15–L19
+      </div>
+
+
       <button
         class="autozoom-btn"
         id="autoZoomButton"
       >
-
         AUTO ZOOM TO LAYER
-
       </button>
+
 
     </div>
 
 
     <!-- =================================================
-         SISTEM KOORDINAT
+         KOORDINAT
     ================================================== -->
 
     <div class="section">
 
       <div class="section-title">
-        SISTEM KOORDINAT
+        Koordinat
       </div>
 
 
-      <div class="coordinate-box">
+      <div class="coordinate-row">
 
-        <div>
+        <span class="coordinate-label">
           Datum
-        </div>
+        </span>
 
-        <strong>
+        <strong class="coordinate-value">
           WGS 84
         </strong>
 
+      </div>
 
-        <div>
-          Coordinate System
-        </div>
 
-        <strong>
-          Geographic Coordinate System
+      <div class="coordinate-row">
+
+        <span class="coordinate-label">
+          Sistem
+        </span>
+
+        <strong class="coordinate-value">
+          GCS
         </strong>
 
+      </div>
 
-        <div>
+
+      <div class="coordinate-row">
+
+        <span class="coordinate-label">
           EPSG
-        </div>
+        </span>
 
-        <strong>
+        <strong class="coordinate-value">
           EPSG:4326
         </strong>
 
+      </div>
 
-        <div
-          style="margin-top:8px;"
-        >
+
+      <div class="coordinate-row">
+
+        <span class="coordinate-label">
           Latitude
-        </div>
+        </span>
 
         <span
           id="latitudeValue"
@@ -797,10 +1278,14 @@ body {
           -
         </span>
 
+      </div>
 
-        <div>
+
+      <div class="coordinate-row">
+
+        <span class="coordinate-label">
           Longitude
-        </div>
+        </span>
 
         <span
           id="longitudeValue"
@@ -811,6 +1296,7 @@ body {
 
       </div>
 
+
     </div>
 
 
@@ -820,21 +1306,69 @@ body {
 
 
 <!-- =======================================================
+     TOGGLE SIDEBAR
+======================================================= -->
+
+<button
+  id="sidebarToggle"
+  title="Buka/tutup panel"
+>
+  ‹
+</button>
+
+
+<!-- =======================================================
      LEGENDA
+     
+     URUTAN:
+     1. Batas Desa
+     2. Garis Pantai RTK
+     3. Garis Pantai
+     4. Garis Pantai Digitasi
+     5. Orthophoto
 ======================================================= -->
 
 <div class="legend">
 
+
   <div class="legend-title">
-    LEGENDA
+    Legenda
   </div>
 
+
+  <div class="legend-subtitle">
+    Unsur peta
+  </div>
+
+
+  <!-- =================================================
+       BATAS DESA
+  ================================================== -->
 
   <div class="legend-item">
 
     <span
-      class="legend-line"
-      style="background:#00ffff;"
+      class="legend-symbol legend-batas-desa"
+    ></span>
+
+    <span>
+      Batas Desa
+    </span>
+
+  </div>
+
+
+  <div class="legend-divider"></div>
+
+
+  <!-- =================================================
+       GARIS PANTAI RTK
+  ================================================== -->
+
+  <div class="legend-item">
+
+    <span
+      class="legend-symbol legend-rtk"
     ></span>
 
     <span>
@@ -844,11 +1378,12 @@ body {
   </div>
 
 
+  <!-- GARIS PANTAI -->
+
   <div class="legend-item">
 
     <span
-      class="legend-line"
-      style="background:#ffd700;"
+      class="legend-symbol legend-pantai"
     ></span>
 
     <span>
@@ -858,11 +1393,12 @@ body {
   </div>
 
 
+  <!-- DIGITASI -->
+
   <div class="legend-item">
 
     <span
-      class="legend-line"
-      style="background:red;"
+      class="legend-symbol legend-digitasi"
     ></span>
 
     <span>
@@ -872,17 +1408,20 @@ body {
   </div>
 
 
+  <!-- ORTHOPHOTO -->
+
   <div class="legend-item">
 
     <span
-      class="legend-batas-desa"
+      class="legend-symbol legend-ortho"
     ></span>
 
     <span>
-      Batas Desa
+      Orthophoto
     </span>
 
   </div>
+
 
 </div>
 
@@ -895,27 +1434,35 @@ body {
 ========================================================= */
 
 const map =
-  L.map("map", {
+  L.map(
+    "map",
+    {
 
-    center:
-      [-5.45, 105.30],
+      center:
+        [-5.55, 105.27],
 
-    zoom:
-      12,
+      /*
+         Karena orthophoto tersedia mulai L15,
+         langsung buka pada zoom 15.
+      */
 
-    minZoom:
-      3,
+      zoom:
+        15,
 
-    maxZoom:
-      24,
+      minZoom:
+        3,
 
-    zoomControl:
-      true,
+      maxZoom:
+        24,
 
-    attributionControl:
-      true
+      zoomControl:
+        true,
 
-  });
+      attributionControl:
+        true
+
+    }
+  );
 
 
 /* =========================================================
@@ -939,7 +1486,7 @@ const esriImagery =
         23,
 
       attribution:
-        "Tiles &copy; Esri"
+        "Tiles © Esri"
 
     }
 
@@ -963,16 +1510,20 @@ const esriStreet =
         20,
 
       attribution:
-        "Tiles &copy; Esri"
+        "Tiles © Esri"
 
     }
 
   );
 
 
-/* BASEMAP AWAL */
+/* =========================================================
+   BASEMAP AWAL
+========================================================= */
 
-esriImagery.addTo(map);
+esriImagery.addTo(
+  map
+);
 
 
 /* =========================================================
@@ -987,6 +1538,7 @@ document
     "change",
     function() {
 
+
       const selected =
         this.value;
 
@@ -996,6 +1548,7 @@ document
         "imagery"
       ) {
 
+
         if (
           map.hasLayer(
             esriStreet
@@ -1009,17 +1562,9 @@ document
         }
 
 
-        if (
-          !map.hasLayer(
-            esriImagery
-          )
-        ) {
-
-          esriImagery.addTo(
-            map
-          );
-
-        }
+        esriImagery.addTo(
+          map
+        );
 
       }
 
@@ -1029,6 +1574,7 @@ document
         "street"
       ) {
 
+
         if (
           map.hasLayer(
             esriImagery
@@ -1042,19 +1588,12 @@ document
         }
 
 
-        if (
-          !map.hasLayer(
-            esriStreet
-          )
-        ) {
-
-          esriStreet.addTo(
-            map
-          );
-
-        }
+        esriStreet.addTo(
+          map
+        );
 
       }
+
 
     }
   );
@@ -1071,7 +1610,7 @@ function styleRTK(
   return {
 
     color:
-      "#00ffff",
+      "#00d9ff",
 
     weight:
       3,
@@ -1091,7 +1630,7 @@ function stylePantai(
   return {
 
     color:
-      "#ffd700",
+      "#f2c600",
 
     weight:
       3,
@@ -1111,7 +1650,7 @@ function styleDigitasi(
   return {
 
     color:
-      "red",
+      "#e53935",
 
     weight:
       3,
@@ -1129,15 +1668,15 @@ function styleDigitasi(
 ========================================================= */
 
 /*
-   Menyesuaikan tampilan ArcMap pada data kamu:
+   Perka BIG No. 3 Tahun 2016:
+   Batas Kelurahan/Desa:
+   - garis utama hitam
+   - mask kuning
 
-   - Mask/background:
-       KUNING
-   - Garis utama:
-       HITAM
-   - Pola:
-       DOT - DOT - DASH
-   - Tidak ada fill polygon
+   Untuk tampilan WebGIS:
+   - mask kuning
+   - garis hitam dot-dot-dash
+   - tanpa fill area
 */
 
 
@@ -1148,10 +1687,10 @@ function styleBatasDesaMask(
   return {
 
     color:
-      "#FFD800",
+      "#FFD600",
 
     weight:
-      4,
+      5,
 
     opacity:
       1,
@@ -1180,7 +1719,7 @@ function styleBatasDesaCore(
       "#000000",
 
     weight:
-      1.15,
+      1.35,
 
     opacity:
       1,
@@ -1210,6 +1749,7 @@ function highlightFeature(
   e
 ) {
 
+
   const layer =
     e.target;
 
@@ -1219,13 +1759,14 @@ function highlightFeature(
     "BATAS_DESA"
   ) {
 
+
     layer.setStyle({
+
+      weight:
+        1.8,
 
       color:
         "#000000",
-
-      weight:
-        2,
 
       opacity:
         1,
@@ -1235,9 +1776,11 @@ function highlightFeature(
 
     });
 
+
   }
 
   else {
+
 
     layer.setStyle({
 
@@ -1245,9 +1788,10 @@ function highlightFeature(
         4,
 
       color:
-        "orange"
+        "#ff7a00"
 
     });
+
 
   }
 
@@ -1268,6 +1812,7 @@ function highlightFeature(
 function resetHighlight(
   e
 ) {
+
 
   const layer =
     e.target;
@@ -1335,6 +1880,7 @@ function onEachRTK(
   layer._layerType =
     "RTK";
 
+
   layer.on({
 
     mouseover:
@@ -1355,6 +1901,7 @@ function onEachPantai(
 
   layer._layerType =
     "PANTAI";
+
 
   layer.on({
 
@@ -1377,6 +1924,7 @@ function onEachDigitasi(
   layer._layerType =
     "DIGITASI";
 
+
   layer.on({
 
     mouseover:
@@ -1397,6 +1945,7 @@ function onEachBatasDesa(
 
   layer._layerType =
     "BATAS_DESA";
+
 
   layer.on({
 
@@ -1457,6 +2006,7 @@ function getFirstCoordinate(
   geojson
 ) {
 
+
   let result =
     null;
 
@@ -1464,6 +2014,7 @@ function getFirstCoordinate(
   function searchCoordinates(
     coords
   ) {
+
 
     if (
       !Array.isArray(
@@ -1498,6 +2049,7 @@ function getFirstCoordinate(
       i++
     ) {
 
+
       if (
         result
       ) {
@@ -1521,12 +2073,14 @@ function getFirstCoordinate(
     "FeatureCollection"
   ) {
 
+
     for (
       let i = 0;
       i <
       geojson.features.length;
       i++
     ) {
+
 
       if (
         result
@@ -1544,7 +2098,8 @@ function getFirstCoordinate(
 
         searchCoordinates(
 
-          geojson.features[i]
+          geojson
+            .features[i]
             .geometry
             .coordinates
 
@@ -1561,9 +2116,11 @@ function getFirstCoordinate(
     "Feature"
   ) {
 
+
     searchCoordinates(
 
-      geojson.geometry
+      geojson
+        .geometry
         .coordinates
 
     );
@@ -1573,6 +2130,7 @@ function getFirstCoordinate(
   else if (
     geojson.coordinates
   ) {
+
 
     searchCoordinates(
       geojson.coordinates
@@ -1593,6 +2151,7 @@ function getFirstCoordinate(
 function detectCRSFromCoordinates(
   geojson
 ) {
+
 
   const coord =
     getFirstCoordinate(
@@ -1635,20 +2194,32 @@ function detectGeoJSONCRS(
   geojson
 ) {
 
+
   if (
     geojson.crs &&
     geojson.crs.properties
   ) {
 
+
     const name =
-      geojson.crs.properties.name ||
-      geojson.crs.properties.href ||
+      geojson
+        .crs
+        .properties
+        .name ||
+      geojson
+        .crs
+        .properties
+        .href ||
       "";
 
 
     if (
-      name.includes("32748") ||
-      name.includes("UTM")
+      name.includes(
+        "32748"
+      ) ||
+      name.includes(
+        "UTM"
+      )
     ) {
 
       return "EPSG:32748";
@@ -1674,6 +2245,7 @@ function convertCoordinates(
   sourceCRS
 ) {
 
+
   if (
     !Array.isArray(
       coordinates
@@ -1693,10 +2265,12 @@ function convertCoordinates(
       "number"
   ) {
 
+
     if (
       sourceCRS ===
       "EPSG:32748"
     ) {
+
 
       const converted =
         proj4(
@@ -1714,8 +2288,7 @@ function convertCoordinates(
 
 
       if (
-        coordinates.length >
-        2
+        coordinates.length > 2
       ) {
 
         return [
@@ -1742,7 +2315,6 @@ function convertCoordinates(
 
 
   return coordinates.map(
-
     function(item) {
 
       return convertCoordinates(
@@ -1751,7 +2323,6 @@ function convertCoordinates(
       );
 
     }
-
   );
 
 }
@@ -1766,6 +2337,7 @@ function convertGeoJSONToWGS84(
   sourceCRS
 ) {
 
+
   const copy =
     JSON.parse(
       JSON.stringify(
@@ -1777,6 +2349,7 @@ function convertGeoJSONToWGS84(
   function processGeometry(
     geometry
   ) {
+
 
     if (
       !geometry
@@ -1790,6 +2363,7 @@ function convertGeoJSONToWGS84(
     if (
       geometry.coordinates
     ) {
+
 
       geometry.coordinates =
         convertCoordinates(
@@ -1810,8 +2384,8 @@ function convertGeoJSONToWGS84(
     "FeatureCollection"
   ) {
 
-    copy.features.forEach(
 
+    copy.features.forEach(
       function(feature) {
 
         processGeometry(
@@ -1819,7 +2393,6 @@ function convertGeoJSONToWGS84(
         );
 
       }
-
     );
 
   }
@@ -1829,6 +2402,7 @@ function convertGeoJSONToWGS84(
     "Feature"
   ) {
 
+
     processGeometry(
       copy.geometry
     );
@@ -1836,6 +2410,7 @@ function convertGeoJSONToWGS84(
   }
 
   else {
+
 
     processGeometry(
       copy
@@ -1879,6 +2454,7 @@ fetch(
 .then(
   function(response) {
 
+
     if (
       !response.ok
     ) {
@@ -1897,6 +2473,7 @@ fetch(
 
 .then(
   function(data) {
+
 
     const converted =
       convertRTKGeoJSONToWGS84(
@@ -1962,6 +2539,7 @@ fetch(
 .then(
   function(response) {
 
+
     if (
       !response.ok
     ) {
@@ -1980,6 +2558,7 @@ fetch(
 
 .then(
   function(data) {
+
 
     const sourceCRS =
       detectGeoJSONCRS(
@@ -2055,6 +2634,7 @@ fetch(
 .then(
   function(response) {
 
+
     if (
       !response.ok
     ) {
@@ -2073,6 +2653,7 @@ fetch(
 
 .then(
   function(data) {
+
 
     const sourceCRS =
       detectGeoJSONCRS(
@@ -2148,6 +2729,7 @@ fetch(
 .then(
   function(response) {
 
+
     if (
       !response.ok
     ) {
@@ -2167,6 +2749,7 @@ fetch(
 .then(
   function(data) {
 
+
     const sourceCRS =
       detectGeoJSONCRS(
         data
@@ -2183,9 +2766,9 @@ fetch(
       );
 
 
-    /* ================================================
+    /* ===================================================
        MASK KUNING
-    ================================================ */
+    =================================================== */
 
     const batasDesaMask =
       L.geoJSON(
@@ -2202,9 +2785,9 @@ fetch(
       );
 
 
-    /* ================================================
-       GARIS HITAM DOT-DOT-DASH
-    ================================================ */
+    /* ===================================================
+       GARIS HITAM
+    =================================================== */
 
     const batasDesaCore =
       L.geoJSON(
@@ -2224,9 +2807,9 @@ fetch(
       );
 
 
-    /* ================================================
-       GABUNGKAN
-    ================================================ */
+    /* ===================================================
+       GABUNG
+    =================================================== */
 
     batasDesaLayer =
       L.layerGroup([
@@ -2271,6 +2854,22 @@ fetch(
    ORTHOPHOTO TMS
 ========================================================= */
 
+/*
+   Folder:
+
+   TML/
+   ├── 15/
+   ├── 16/
+   ├── 17/
+   ├── 18/
+   └── 19/
+
+   L15 - L19 tersedia.
+
+   Zoom 20-24:
+   tetap memakai tile L19.
+*/
+
 const ORTHO_URL_BASE =
   "https://raw.githubusercontent.com/" +
   "rivaldo123230038-cloud/" +
@@ -2314,6 +2913,10 @@ orthophotoLayer =
       opacity:
         1,
 
+      /*
+         Global Mapper TMS
+      */
+
       tms:
         true,
 
@@ -2338,22 +2941,11 @@ orthophotoLayer =
 
 
 /* =========================================================
-   DEBUG ORTHOPHOTO
+   ORTHOPHOTO LANGSUNG ON
 ========================================================= */
 
-console.log(
-  "Orthophoto base URL:",
-  ORTHO_URL_BASE
-);
-
-console.log(
-  "Orthophoto native zoom:",
-  ORTHO_NATIVE_ZOOM
-);
-
-console.log(
-  "Orthophoto layer:",
-  orthophotoLayer
+orthophotoLayer.addTo(
+  map
 );
 
 
@@ -2368,6 +2960,7 @@ document
   .addEventListener(
     "change",
     function() {
+
 
       if (
         !rtkLayer
@@ -2412,6 +3005,7 @@ document
     "change",
     function() {
 
+
       if (
         !pantaiLayer
       ) {
@@ -2454,6 +3048,7 @@ document
   .addEventListener(
     "change",
     function() {
+
 
       if (
         !digitasiLayer
@@ -2498,6 +3093,7 @@ document
     "change",
     function() {
 
+
       if (
         !batasDesaLayer
       ) {
@@ -2541,6 +3137,7 @@ document
     "change",
     function() {
 
+
       if (
         this.checked
       ) {
@@ -2569,18 +3166,54 @@ document
 
 function updateAutoZoom() {
 
+
   let targetLayer =
     null;
 
 
-  /* RTK */
+  /* -----------------------------------------
+     PRIORITAS 1
+     BATAS DESA
+  ----------------------------------------- */
 
   if (
+    batasDesaLayer &&
+    map.hasLayer(
+      batasDesaLayer
+    )
+  ) {
+
+
+    const bounds =
+      batasDesaLayer.getBounds();
+
+
+    if (
+      bounds &&
+      bounds.isValid()
+    ) {
+
+      targetLayer =
+        batasDesaLayer;
+
+    }
+
+  }
+
+
+  /* -----------------------------------------
+     PRIORITAS 2
+     RTK
+  ----------------------------------------- */
+
+  if (
+    !targetLayer &&
     rtkLayer &&
     map.hasLayer(
       rtkLayer
     )
   ) {
+
 
     const bounds =
       rtkLayer.getBounds();
@@ -2599,7 +3232,10 @@ function updateAutoZoom() {
   }
 
 
-  /* GARIS PANTAI */
+  /* -----------------------------------------
+     PRIORITAS 3
+     GARIS PANTAI
+  ----------------------------------------- */
 
   if (
     !targetLayer &&
@@ -2608,6 +3244,7 @@ function updateAutoZoom() {
       pantaiLayer
     )
   ) {
+
 
     const bounds =
       pantaiLayer.getBounds();
@@ -2626,7 +3263,10 @@ function updateAutoZoom() {
   }
 
 
-  /* DIGITASI */
+  /* -----------------------------------------
+     PRIORITAS 4
+     DIGITASI
+  ----------------------------------------- */
 
   if (
     !targetLayer &&
@@ -2635,6 +3275,7 @@ function updateAutoZoom() {
       digitasiLayer
     )
   ) {
+
 
     const bounds =
       digitasiLayer.getBounds();
@@ -2647,33 +3288,6 @@ function updateAutoZoom() {
 
       targetLayer =
         digitasiLayer;
-
-    }
-
-  }
-
-
-  /* BATAS DESA */
-
-  if (
-    !targetLayer &&
-    batasDesaLayer &&
-    map.hasLayer(
-      batasDesaLayer
-    )
-  ) {
-
-    const bounds =
-      batasDesaLayer.getBounds();
-
-
-    if (
-      bounds &&
-      bounds.isValid()
-    ) {
-
-      targetLayer =
-        batasDesaLayer;
 
     }
 
@@ -2716,7 +3330,6 @@ function updateAutoZoom() {
     {
 
       paddingTopLeft:
-
         sidebarOpen
           ? [370, 40]
           : [40, 40],
@@ -2725,13 +3338,13 @@ function updateAutoZoom() {
         [40, 40],
 
       maxZoom:
-        18,
+        17,
 
       animate:
         true,
 
       duration:
-        0.8
+        0.7
 
     }
 
@@ -2741,7 +3354,7 @@ function updateAutoZoom() {
 
 
 /* =========================================================
-   BUTTON AUTO ZOOM
+   AUTO ZOOM BUTTON
 ========================================================= */
 
 document
@@ -2761,6 +3374,7 @@ document
 map.on(
   "mousemove",
   function(e) {
+
 
     document
       .getElementById(
@@ -2803,6 +3417,7 @@ sidebarToggle.addEventListener(
   "click",
   function() {
 
+
     sidebar.classList.toggle(
       "closed"
     );
@@ -2816,6 +3431,7 @@ sidebarToggle.addEventListener(
 
       sidebarToggle.textContent =
         "›";
+
 
     }
 
@@ -2834,8 +3450,7 @@ sidebarToggle.addEventListener(
 
       },
 
-      350
-
+      300
     );
 
   }
@@ -2843,125 +3458,26 @@ sidebarToggle.addEventListener(
 
 
 /* =========================================================
-   BACKGROUND GALLERY
-========================================================= */
-
-const backgroundGallery =
-  document.querySelector(
-    ".background-gallery"
-  );
-
-
-let photoOrder = [
-
-  "photo-1",
-
-  "photo-2",
-
-  "photo-3"
-
-];
-
-
-function rotateBackgroundPhotos() {
-
-  photoOrder.unshift(
-    photoOrder.pop()
-  );
-
-
-  const photos =
-    backgroundGallery
-      .querySelectorAll(
-        ".background-photo"
-      );
-
-
-  photos.forEach(
-    function(photo) {
-
-      const className =
-        Array
-          .from(
-            photo.classList
-          )
-          .find(
-            function(c) {
-
-              return c.indexOf(
-                "photo-"
-              ) === 0;
-
-            }
-          );
-
-
-      photo.style.order =
-        photoOrder.indexOf(
-          className
-        );
-
-    }
-  );
-
-}
-
-
-setInterval(
-  rotateBackgroundPhotos,
-  4000
-);
-
-
-/* =========================================================
-   INITIAL BACKGROUND ORDER
-========================================================= */
-
-document
-  .querySelector(
-    ".photo-1"
-  )
-  .style.order =
-    0;
-
-
-document
-  .querySelector(
-    ".photo-2"
-  )
-  .style.order =
-    1;
-
-
-document
-  .querySelector(
-    ".photo-3"
-  )
-  .style.order =
-    2;
-
-
-/* =========================================================
-   DEBUG
+   INIT
 ========================================================= */
 
 console.log(
-  "WebGIS loaded successfully."
+  "WebGIS Kelompok 1 aktif."
+);
+
+console.log(
+  "Orthophoto:",
+  ORTHO_URL_BASE
+);
+
+console.log(
+  "Native orthophoto zoom:",
+  ORTHO_NATIVE_ZOOM
 );
 
 console.log(
   "Batas Desa layer:",
   batasDesaLayer
-);
-
-console.log(
-  "Orthophoto base URL:",
-  ORTHO_URL_BASE
-);
-
-console.log(
-  "Orthophoto native zoom:",
-  ORTHO_NATIVE_ZOOM
 );
 
 
