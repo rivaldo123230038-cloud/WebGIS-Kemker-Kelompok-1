@@ -48,6 +48,7 @@ body {
   z-index: 1;
 }
 
+
 /* =========================================================
    BACKGROUND GALLERY
 ========================================================= */
@@ -91,6 +92,7 @@ body {
   background-image: url("bcg3.jpeg");
 }
 
+
 /* =========================================================
    SIDEBAR
 ========================================================= */
@@ -118,6 +120,7 @@ body {
 #sidebar.closed {
   transform: translateX(-350px);
 }
+
 
 /* =========================================================
    TOMBOL SIDEBAR
@@ -148,6 +151,7 @@ body {
   z-index: 1100;
 }
 
+
 /* =========================================================
    HEADER
 ========================================================= */
@@ -177,6 +181,7 @@ body {
   color: #555;
 }
 
+
 /* =========================================================
    LOGO
 ========================================================= */
@@ -200,6 +205,7 @@ body {
 
   object-fit: contain;
 }
+
 
 /* =========================================================
    SIDEBAR BODY
@@ -230,6 +236,7 @@ body {
 
   z-index: -1;
 }
+
 
 /* =========================================================
    SECTION
@@ -262,6 +269,7 @@ body {
   padding-bottom: 6px;
 }
 
+
 /* =========================================================
    BASEMAP
 ========================================================= */
@@ -281,6 +289,7 @@ body {
 
   cursor: pointer;
 }
+
 
 /* =========================================================
    CHECKBOX LAYER
@@ -306,6 +315,7 @@ body {
 
   cursor: pointer;
 }
+
 
 /* =========================================================
    BUTTON
@@ -335,6 +345,7 @@ body {
   background: #125da5;
 }
 
+
 /* =========================================================
    KOORDINAT
 ========================================================= */
@@ -358,6 +369,7 @@ body {
 
   margin-top: 3px;
 }
+
 
 /* =========================================================
    LEGENDA
@@ -409,6 +421,7 @@ body {
 
   display: inline-block;
 }
+
 
 /* =========================================================
    MOBILE
@@ -543,6 +556,8 @@ body {
       </div>
 
 
+      <!-- GARIS PANTAI RTK -->
+
       <label class="layer-item">
 
         <input
@@ -556,6 +571,8 @@ body {
 
       </label>
 
+
+      <!-- GARIS PANTAI -->
 
       <label class="layer-item">
 
@@ -571,6 +588,8 @@ body {
       </label>
 
 
+      <!-- GARIS PANTAI DIGITASI -->
+
       <label class="layer-item">
 
         <input
@@ -584,6 +603,24 @@ body {
 
       </label>
 
+
+      <!-- BATAS DESA -->
+
+      <label class="layer-item">
+
+        <input
+          type="checkbox"
+          id="checkBatasDesa"
+          checked>
+
+        <span>
+          Batas Administrasi Desa Sidodadi
+        </span>
+
+      </label>
+
+
+      <!-- ORTHOPHOTO -->
 
       <label class="layer-item">
 
@@ -732,6 +769,20 @@ body {
 
     <span>
       Garis Pantai Digitasi
+    </span>
+
+  </div>
+
+
+  <div class="legend-item">
+
+    <span
+      class="legend-line"
+      style="background:#0066ff;">
+    </span>
+
+    <span>
+      Batas Administrasi Desa
     </span>
 
   </div>
@@ -912,6 +963,29 @@ function styleDigitasi(feature) {
 
 
 /* =========================================================
+   STYLE BATAS ADMINISTRASI DESA
+========================================================= */
+
+function styleBatasDesa(feature) {
+
+  return {
+
+    color: "#0066ff",
+
+    weight: 3,
+
+    opacity: 1,
+
+    fillColor: "#3388ff",
+
+    fillOpacity: 0.06
+
+  };
+
+}
+
+
+/* =========================================================
    HOVER
 ========================================================= */
 
@@ -928,9 +1002,11 @@ function highlightFeature(e) {
   });
 
 
-  if (!L.Browser.ie &&
-      !L.Browser.opera &&
-      !L.Browser.edge) {
+  if (
+    !L.Browser.ie &&
+    !L.Browser.opera &&
+    !L.Browser.edge
+  ) {
 
     layer.bringToFront();
 
@@ -946,21 +1022,36 @@ function resetHighlight(e) {
 
   if (layer._layerType === "RTK") {
 
-    layer.setStyle(styleRTK());
+    layer.setStyle(
+      styleRTK()
+    );
 
   }
 
 
   if (layer._layerType === "PANTAI") {
 
-    layer.setStyle(stylePantai());
+    layer.setStyle(
+      stylePantai()
+    );
 
   }
 
 
   if (layer._layerType === "DIGITASI") {
 
-    layer.setStyle(styleDigitasi());
+    layer.setStyle(
+      styleDigitasi()
+    );
+
+  }
+
+
+  if (layer._layerType === "BATAS_DESA") {
+
+    layer.setStyle(
+      styleBatasDesa()
+    );
 
   }
 
@@ -971,45 +1062,84 @@ function resetHighlight(e) {
    ON EACH FEATURE
 ========================================================= */
 
-function onEachRTK(feature, layer) {
+function onEachRTK(
+  feature,
+  layer
+) {
 
-  layer._layerType = "RTK";
+  layer._layerType =
+    "RTK";
 
   layer.on({
 
-    mouseover: highlightFeature,
+    mouseover:
+      highlightFeature,
 
-    mouseout: resetHighlight
+    mouseout:
+      resetHighlight
 
   });
 
 }
 
 
-function onEachPantai(feature, layer) {
+function onEachPantai(
+  feature,
+  layer
+) {
 
-  layer._layerType = "PANTAI";
+  layer._layerType =
+    "PANTAI";
 
   layer.on({
 
-    mouseover: highlightFeature,
+    mouseover:
+      highlightFeature,
 
-    mouseout: resetHighlight
+    mouseout:
+      resetHighlight
 
   });
 
 }
 
 
-function onEachDigitasi(feature, layer) {
+function onEachDigitasi(
+  feature,
+  layer
+) {
 
-  layer._layerType = "DIGITASI";
+  layer._layerType =
+    "DIGITASI";
 
   layer.on({
 
-    mouseover: highlightFeature,
+    mouseover:
+      highlightFeature,
 
-    mouseout: resetHighlight
+    mouseout:
+      resetHighlight
+
+  });
+
+}
+
+
+function onEachBatasDesa(
+  feature,
+  layer
+) {
+
+  layer._layerType =
+    "BATAS_DESA";
+
+  layer.on({
+
+    mouseover:
+      highlightFeature,
+
+    mouseout:
+      resetHighlight
 
   });
 
@@ -1020,13 +1150,20 @@ function onEachDigitasi(feature, layer) {
    VARIABLE LAYER
 ========================================================= */
 
-let rtkLayer = null;
+let rtkLayer =
+  null;
 
-let pantaiLayer = null;
+let pantaiLayer =
+  null;
 
-let digitasiLayer = null;
+let digitasiLayer =
+  null;
 
-let orthophotoLayer = null;
+let batasDesaLayer =
+  null;
+
+let orthophotoLayer =
+  null;
 
 
 /* =========================================================
@@ -1051,14 +1188,21 @@ proj4.defs(
    AMBIL KOORDINAT PERTAMA
 ========================================================= */
 
-function getFirstCoordinate(geojson) {
+function getFirstCoordinate(
+  geojson
+) {
 
-  let result = null;
+  let result =
+    null;
 
 
-  function searchCoordinates(coords) {
+  function searchCoordinates(
+    coords
+  ) {
 
-    if (!Array.isArray(coords)) {
+    if (
+      !Array.isArray(coords)
+    ) {
 
       return;
 
@@ -1067,18 +1211,25 @@ function getFirstCoordinate(geojson) {
 
     if (
       coords.length >= 2 &&
-      typeof coords[0] === "number" &&
-      typeof coords[1] === "number"
+      typeof coords[0] ===
+        "number" &&
+      typeof coords[1] ===
+        "number"
     ) {
 
-      result = coords;
+      result =
+        coords;
 
       return;
 
     }
 
 
-    for (let i = 0; i < coords.length; i++) {
+    for (
+      let i = 0;
+      i < coords.length;
+      i++
+    ) {
 
       if (result) {
 
@@ -1086,14 +1237,20 @@ function getFirstCoordinate(geojson) {
 
       }
 
-      searchCoordinates(coords[i]);
+
+      searchCoordinates(
+        coords[i]
+      );
 
     }
 
   }
 
 
-  if (geojson.type === "FeatureCollection") {
+  if (
+    geojson.type ===
+      "FeatureCollection"
+  ) {
 
     for (
       let i = 0;
@@ -1107,14 +1264,18 @@ function getFirstCoordinate(geojson) {
 
       }
 
+
       if (
-        geojson.features[i].geometry
+        geojson.features[i]
+          .geometry
       ) {
 
         searchCoordinates(
+
           geojson.features[i]
             .geometry
             .coordinates
+
         );
 
       }
@@ -1124,11 +1285,15 @@ function getFirstCoordinate(geojson) {
   }
 
   else if (
-    geojson.type === "Feature"
+    geojson.type ===
+      "Feature"
   ) {
 
     searchCoordinates(
-      geojson.geometry.coordinates
+
+      geojson.geometry
+        .coordinates
+
     );
 
   }
@@ -1153,10 +1318,14 @@ function getFirstCoordinate(geojson) {
    DETEKSI CRS DARI KOORDINAT
 ========================================================= */
 
-function detectCRSFromCoordinates(geojson) {
+function detectCRSFromCoordinates(
+  geojson
+) {
 
   const coord =
-    getFirstCoordinate(geojson);
+    getFirstCoordinate(
+      geojson
+    );
 
 
   if (!coord) {
@@ -1166,19 +1335,20 @@ function detectCRSFromCoordinates(geojson) {
   }
 
 
-  const x = coord[0];
+  const x =
+    coord[0];
 
-  const y = coord[1];
+  const y =
+    coord[1];
 
 
   /*
-   UTM 48S:
-   Easting sekitar 100000 - 900000
-   Northing sekitar 0 - 10000000
+     UTM:
+     X/Y > 180
 
-   WGS84 geografis:
-   longitude sekitar -180 sampai 180
-   latitude sekitar -90 sampai 90
+     Geographic:
+     longitude -180..180
+     latitude  -90..90
   */
 
   if (
@@ -1200,7 +1370,9 @@ function detectCRSFromCoordinates(geojson) {
    DETEKSI CRS
 ========================================================= */
 
-function detectGeoJSONCRS(geojson) {
+function detectGeoJSONCRS(
+  geojson
+) {
 
   if (
     geojson.crs &&
@@ -1225,7 +1397,9 @@ function detectGeoJSONCRS(geojson) {
   }
 
 
-  return detectCRSFromCoordinates(geojson);
+  return detectCRSFromCoordinates(
+    geojson
+  );
 
 }
 
@@ -1239,7 +1413,11 @@ function convertCoordinates(
   sourceCRS
 ) {
 
-  if (!Array.isArray(coordinates)) {
+  if (
+    !Array.isArray(
+      coordinates
+    )
+  ) {
 
     return coordinates;
 
@@ -1248,31 +1426,45 @@ function convertCoordinates(
 
   if (
     coordinates.length >= 2 &&
-    typeof coordinates[0] === "number" &&
-    typeof coordinates[1] === "number"
+    typeof coordinates[0] ===
+      "number" &&
+    typeof coordinates[1] ===
+      "number"
   ) {
 
     if (
-      sourceCRS === "EPSG:32748"
+      sourceCRS ===
+        "EPSG:32748"
     ) {
 
       const converted =
         proj4(
+
           "EPSG:32748",
+
           "EPSG:4326",
+
           [
             coordinates[0],
             coordinates[1]
           ]
+
         );
 
 
-      if (coordinates.length > 2) {
+      if (
+        coordinates.length >
+        2
+      ) {
 
         return [
+
           converted[0],
+
           converted[1],
+
           coordinates[2]
+
         ];
 
       }
@@ -1289,6 +1481,7 @@ function convertCoordinates(
 
 
   return coordinates.map(
+
     function(item) {
 
       return convertCoordinates(
@@ -1297,6 +1490,7 @@ function convertCoordinates(
       );
 
     }
+
   );
 
 }
@@ -1313,7 +1507,9 @@ function convertGeoJSONToWGS84(
 
   const copy =
     JSON.parse(
-      JSON.stringify(geojson)
+      JSON.stringify(
+        geojson
+      )
     );
 
 
@@ -1328,12 +1524,17 @@ function convertGeoJSONToWGS84(
     }
 
 
-    if (geometry.coordinates) {
+    if (
+      geometry.coordinates
+    ) {
 
       geometry.coordinates =
         convertCoordinates(
+
           geometry.coordinates,
+
           sourceCRS
+
         );
 
     }
@@ -1342,23 +1543,29 @@ function convertGeoJSONToWGS84(
 
 
   if (
-    copy.type === "FeatureCollection"
+    copy.type ===
+      "FeatureCollection"
   ) {
 
     copy.features.forEach(
+
       function(feature) {
 
         processGeometry(
+
           feature.geometry
+
         );
 
       }
+
     );
 
   }
 
   else if (
-    copy.type === "Feature"
+    copy.type ===
+      "Feature"
   ) {
 
     processGeometry(
@@ -1369,7 +1576,9 @@ function convertGeoJSONToWGS84(
 
   else {
 
-    processGeometry(copy);
+    processGeometry(
+      copy
+    );
 
   }
 
@@ -1381,7 +1590,6 @@ function convertGeoJSONToWGS84(
 
 /* =========================================================
    KHUSUS RTK
-   RTK DIPASTIKAN UTM 48S
 ========================================================= */
 
 function convertRTKGeoJSONToWGS84(
@@ -1389,8 +1597,11 @@ function convertRTKGeoJSONToWGS84(
 ) {
 
   return convertGeoJSONToWGS84(
+
     geojson,
+
     "EPSG:32748"
+
   );
 
 }
@@ -1407,13 +1618,16 @@ fetch(
 .then(
   function(response) {
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
 
       throw new Error(
         "Garis_Pantai_RTK.geojson tidak ditemukan"
       );
 
     }
+
 
     return response.json();
 
@@ -1436,9 +1650,11 @@ fetch(
 
         {
 
-          style: styleRTK,
+          style:
+            styleRTK,
 
-          onEachFeature: onEachRTK
+          onEachFeature:
+            onEachRTK
 
         }
 
@@ -1447,11 +1663,15 @@ fetch(
 
     if (
       document
-        .getElementById("checkRTK")
+        .getElementById(
+          "checkRTK"
+        )
         .checked
     ) {
 
-      rtkLayer.addTo(map);
+      rtkLayer.addTo(
+        map
+      );
 
     }
 
@@ -1481,13 +1701,16 @@ fetch(
 .then(
   function(response) {
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
 
       throw new Error(
         "Garis_Pantai.geojson tidak ditemukan"
       );
 
     }
+
 
     return response.json();
 
@@ -1498,13 +1721,18 @@ fetch(
   function(data) {
 
     const sourceCRS =
-      detectGeoJSONCRS(data);
+      detectGeoJSONCRS(
+        data
+      );
 
 
     const converted =
       convertGeoJSONToWGS84(
+
         data,
+
         sourceCRS
+
       );
 
 
@@ -1515,7 +1743,8 @@ fetch(
 
         {
 
-          style: stylePantai,
+          style:
+            stylePantai,
 
           onEachFeature:
             onEachPantai
@@ -1527,11 +1756,15 @@ fetch(
 
     if (
       document
-        .getElementById("checkPantai")
+        .getElementById(
+          "checkPantai"
+        )
         .checked
     ) {
 
-      pantaiLayer.addTo(map);
+      pantaiLayer.addTo(
+        map
+      );
 
     }
 
@@ -1561,13 +1794,16 @@ fetch(
 .then(
   function(response) {
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
 
       throw new Error(
         "Garis_Pantai_Digitasi.geojson tidak ditemukan"
       );
 
     }
+
 
     return response.json();
 
@@ -1578,13 +1814,18 @@ fetch(
   function(data) {
 
     const sourceCRS =
-      detectGeoJSONCRS(data);
+      detectGeoJSONCRS(
+        data
+      );
 
 
     const converted =
       convertGeoJSONToWGS84(
+
         data,
+
         sourceCRS
+
       );
 
 
@@ -1595,7 +1836,8 @@ fetch(
 
         {
 
-          style: styleDigitasi,
+          style:
+            styleDigitasi,
 
           onEachFeature:
             onEachDigitasi
@@ -1607,11 +1849,15 @@ fetch(
 
     if (
       document
-        .getElementById("checkDigitasi")
+        .getElementById(
+          "checkDigitasi"
+        )
         .checked
     ) {
 
-      digitasiLayer.addTo(map);
+      digitasiLayer.addTo(
+        map
+      );
 
     }
 
@@ -1631,43 +1877,117 @@ fetch(
 
 
 /* =========================================================
+   LOAD BATAS ADMINISTRASI DESA SIDODADI
+========================================================= */
+
+fetch(
+  "Batas%20Administrasi%20Desa%20Sidodadi.geojson"
+)
+
+.then(
+  function(response) {
+
+    if (
+      !response.ok
+    ) {
+
+      throw new Error(
+        "Batas Administrasi Desa Sidodadi.geojson tidak ditemukan"
+      );
+
+    }
+
+
+    return response.json();
+
+  }
+)
+
+.then(
+  function(data) {
+
+    const sourceCRS =
+      detectGeoJSONCRS(
+        data
+      );
+
+
+    const converted =
+      convertGeoJSONToWGS84(
+
+        data,
+
+        sourceCRS
+
+      );
+
+
+    batasDesaLayer =
+      L.geoJSON(
+
+        converted,
+
+        {
+
+          style:
+            styleBatasDesa,
+
+          onEachFeature:
+            onEachBatasDesa
+
+        }
+
+      );
+
+
+    if (
+      document
+        .getElementById(
+          "checkBatasDesa"
+        )
+        .checked
+    ) {
+
+      batasDesaLayer.addTo(
+        map
+      );
+
+    }
+
+  }
+)
+
+.catch(
+  function(error) {
+
+    console.error(
+      "Error Batas Administrasi Desa:",
+      error
+    );
+
+  }
+);
+
+
+/* =========================================================
    ORTHOPHOTO - TMS GLOBAL MAPPER
 ========================================================= */
 
 /*
-   STRUKTUR TMS:
+   STRUKTUR:
 
    TML/
-      15/
-      16/
-      17/
-      18/
-      19/
+   ├── 15/
+   ├── 16/
+   ├── 17/
+   ├── 18/
+   └── 19/
 
-   Setiap level berisi tile:
-      X/
-         Y.png
+   Native zoom tertinggi = L19
 
-   L15-L19 tersedia.
-
-   Pada zoom 15:
-      menggunakan L15
-
-   Pada zoom 16:
-      menggunakan L16
-
-   Pada zoom 17:
-      menggunakan L17
-
-   Pada zoom 18:
-      menggunakan L18
-
-   Pada zoom 19:
-      menggunakan L19
-
-   Pada zoom 20-24:
-      tetap menggunakan tile L19
-      dan Leaflet memperbesar tile tersebut.
+   Zoom 20-24:
+   menggunakan L19
+   lalu Leaflet memperbesar tile.
 */
 
 
@@ -1679,13 +1999,12 @@ const ORTHO_URL_BASE =
   "TML/";
 
 
-/* =========================================================
-   LEVEL ORTHOPHOTO
-========================================================= */
+const ORTHO_MIN_NATIVE_ZOOM =
+  15;
 
-const ORTHO_MIN_NATIVE_ZOOM = 15;
 
-const ORTHO_NATIVE_ZOOM = 19;
+const ORTHO_NATIVE_ZOOM =
+  19;
 
 
 /* =========================================================
@@ -1700,73 +2019,35 @@ orthophotoLayer =
 
     {
 
-      /*
-         Orthophoto tersedia mulai L15.
-      */
-
       minZoom:
         ORTHO_MIN_NATIVE_ZOOM,
 
-
-      /*
-         WebGIS tetap dapat zoom sampai L24.
-      */
-
-      maxZoom: 24,
-
-
-      /*
-         Resolusi asli tertinggi orthophoto
-         yang tersedia adalah L19.
-
-         Zoom 20-24 akan menggunakan L19.
-      */
+      maxZoom:
+        24,
 
       maxNativeZoom:
         ORTHO_NATIVE_ZOOM,
 
+      tileSize:
+        256,
 
-      /*
-         Ukuran tile TMS Global Mapper.
-      */
+      opacity:
+        1,
 
-      tileSize: 256,
+      tms:
+        true,
 
+      keepBuffer:
+        4,
 
-      opacity: 1,
+      updateWhenZooming:
+        true,
 
+      updateWhenIdle:
+        false,
 
-      /*
-         Karena hasil export Global Mapper
-         adalah TMS.
-      */
-
-      tms: true,
-
-
-      /*
-         Agar tile di sekitar layar
-         tetap disiapkan.
-      */
-
-      keepBuffer: 4,
-
-
-      /*
-         Update ketika zoom.
-      */
-
-      updateWhenZooming: true,
-
-      updateWhenIdle: false,
-
-
-      /*
-         Tidak membungkus dunia.
-      */
-
-      noWrap: true,
-
+      noWrap:
+        true,
 
       attribution:
         "Orthophoto"
@@ -1781,23 +2062,18 @@ orthophotoLayer =
 ========================================================= */
 
 console.log(
-  "Orthophoto TMS base URL:",
+  "Orthophoto TMS:",
   ORTHO_URL_BASE
 );
 
 console.log(
-  "Orthophoto minimum zoom:",
+  "Orthophoto Minimum Zoom:",
   ORTHO_MIN_NATIVE_ZOOM
 );
 
 console.log(
-  "Orthophoto native zoom:",
+  "Orthophoto Native Zoom:",
   ORTHO_NATIVE_ZOOM
-);
-
-console.log(
-  "Orthophoto layer:",
-  orthophotoLayer
 );
 
 
@@ -1806,21 +2082,29 @@ console.log(
 ========================================================= */
 
 document
-  .getElementById("checkRTK")
+  .getElementById(
+    "checkRTK"
+  )
   .addEventListener(
     "change",
     function() {
 
-      if (!rtkLayer) {
+      if (
+        !rtkLayer
+      ) {
 
         return;
 
       }
 
 
-      if (this.checked) {
+      if (
+        this.checked
+      ) {
 
-        rtkLayer.addTo(map);
+        rtkLayer.addTo(
+          map
+        );
 
       }
 
@@ -1841,21 +2125,29 @@ document
 ========================================================= */
 
 document
-  .getElementById("checkPantai")
+  .getElementById(
+    "checkPantai"
+  )
   .addEventListener(
     "change",
     function() {
 
-      if (!pantaiLayer) {
+      if (
+        !pantaiLayer
+      ) {
 
         return;
 
       }
 
 
-      if (this.checked) {
+      if (
+        this.checked
+      ) {
 
-        pantaiLayer.addTo(map);
+        pantaiLayer.addTo(
+          map
+        );
 
       }
 
@@ -1876,21 +2168,29 @@ document
 ========================================================= */
 
 document
-  .getElementById("checkDigitasi")
+  .getElementById(
+    "checkDigitasi"
+  )
   .addEventListener(
     "change",
     function() {
 
-      if (!digitasiLayer) {
+      if (
+        !digitasiLayer
+      ) {
 
         return;
 
       }
 
 
-      if (this.checked) {
+      if (
+        this.checked
+      ) {
 
-        digitasiLayer.addTo(map);
+        digitasiLayer.addTo(
+          map
+        );
 
       }
 
@@ -1907,16 +2207,63 @@ document
 
 
 /* =========================================================
-   CHECKBOX ORTHOPHOTO
+   CHECKBOX BATAS DESA
 ========================================================= */
 
 document
-  .getElementById("checkOrthophoto")
+  .getElementById(
+    "checkBatasDesa"
+  )
   .addEventListener(
     "change",
     function() {
 
-      if (this.checked) {
+      if (
+        !batasDesaLayer
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        this.checked
+      ) {
+
+        batasDesaLayer.addTo(
+          map
+        );
+
+      }
+
+      else {
+
+        map.removeLayer(
+          batasDesaLayer
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   CHECKBOX ORTHOPHOTO
+========================================================= */
+
+document
+  .getElementById(
+    "checkOrthophoto"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      if (
+        this.checked
+      ) {
 
         orthophotoLayer.addTo(
           map
@@ -1942,19 +2289,20 @@ document
 
 function updateAutoZoom() {
 
-  let targetLayer = null;
-
-  let targetName = "";
+  let targetLayer =
+    null;
 
 
   /*
-     PRIORITAS 1
+     PRIORITAS 1:
      RTK
   */
 
   if (
     rtkLayer &&
-    map.hasLayer(rtkLayer)
+    map.hasLayer(
+      rtkLayer
+    )
   ) {
 
     const bounds =
@@ -1969,24 +2317,25 @@ function updateAutoZoom() {
       targetLayer =
         rtkLayer;
 
-      targetName =
-        "Garis Pantai RTK";
-
     }
 
   }
 
 
   /*
-     PRIORITAS 2
+     PRIORITAS 2:
      GARIS PANTAI
   */
 
-  if (!targetLayer) {
+  if (
+    !targetLayer
+  ) {
 
     if (
       pantaiLayer &&
-      map.hasLayer(pantaiLayer)
+      map.hasLayer(
+        pantaiLayer
+      )
     ) {
 
       const bounds =
@@ -2001,9 +2350,6 @@ function updateAutoZoom() {
         targetLayer =
           pantaiLayer;
 
-        targetName =
-          "Garis Pantai";
-
       }
 
     }
@@ -2012,15 +2358,19 @@ function updateAutoZoom() {
 
 
   /*
-     PRIORITAS 3
+     PRIORITAS 3:
      DIGITASI
   */
 
-  if (!targetLayer) {
+  if (
+    !targetLayer
+  ) {
 
     if (
       digitasiLayer &&
-      map.hasLayer(digitasiLayer)
+      map.hasLayer(
+        digitasiLayer
+      )
     ) {
 
       const bounds =
@@ -2035,8 +2385,40 @@ function updateAutoZoom() {
         targetLayer =
           digitasiLayer;
 
-        targetName =
-          "Garis Pantai Digitasi";
+      }
+
+    }
+
+  }
+
+
+  /*
+     PRIORITAS 4:
+     BATAS DESA
+  */
+
+  if (
+    !targetLayer
+  ) {
+
+    if (
+      batasDesaLayer &&
+      map.hasLayer(
+        batasDesaLayer
+      )
+    ) {
+
+      const bounds =
+        batasDesaLayer.getBounds();
+
+
+      if (
+        bounds &&
+        bounds.isValid()
+      ) {
+
+        targetLayer =
+          batasDesaLayer;
 
       }
 
@@ -2045,10 +2427,12 @@ function updateAutoZoom() {
   }
 
 
-  if (!targetLayer) {
+  if (
+    !targetLayer
+  ) {
 
     alert(
-      "Tidak ada layer garis pantai yang aktif."
+      "Tidak ada layer aktif untuk auto zoom."
     );
 
     return;
@@ -2059,10 +2443,6 @@ function updateAutoZoom() {
   const bounds =
     targetLayer.getBounds();
 
-
-  /*
-     Cek sidebar.
-  */
 
   const sidebar =
     document.getElementById(
@@ -2075,11 +2455,6 @@ function updateAutoZoom() {
       "closed"
     );
 
-
-  /*
-     Orthophoto tidak digunakan
-     untuk menentukan bounds.
-  */
 
   map.fitBounds(
 
@@ -2095,11 +2470,14 @@ function updateAutoZoom() {
       paddingBottomRight:
         [40, 40],
 
-      maxZoom: 18,
+      maxZoom:
+        18,
 
-      animate: true,
+      animate:
+        true,
 
-      duration: 0.8
+      duration:
+        0.8
 
     }
 
@@ -2135,6 +2513,7 @@ map.on(
         "latitudeValue"
       )
       .textContent =
+
         e.latlng.lat
           .toFixed(7);
 
@@ -2144,6 +2523,7 @@ map.on(
         "longitudeValue"
       )
       .textContent =
+
         e.latlng.lng
           .toFixed(7);
 
@@ -2218,11 +2598,12 @@ const backgroundGallery =
   );
 
 
-let photoOrder = [
-  "photo-1",
-  "photo-2",
-  "photo-3"
-];
+let photoOrder =
+  [
+    "photo-1",
+    "photo-2",
+    "photo-3"
+  ];
 
 
 function rotateBackgroundPhotos() {
@@ -2283,26 +2664,33 @@ document
   .querySelector(
     ".photo-1"
   )
-  .style.order = 0;
+  .style.order =
+    0;
 
 
 document
   .querySelector(
     ".photo-2"
   )
-  .style.order = 1;
+  .style.order =
+    1;
 
 
 document
   .querySelector(
     ".photo-3"
   )
-  .style.order = 2;
+  .style.order =
+    2;
 
 
 /* =========================================================
-   DEBUG ORTHOPHOTO
+   DEBUG
 ========================================================= */
+
+console.log(
+  "WebGIS loaded successfully."
+);
 
 console.log(
   "Orthophoto base URL:",
@@ -2315,8 +2703,8 @@ console.log(
 );
 
 console.log(
-  "Orthophoto layer:",
-  orthophotoLayer
+  "Boundary layer:",
+  batasDesaLayer
 );
 
 
