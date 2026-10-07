@@ -346,235 +346,278 @@ body {
    SIDEBAR BODY
 ========================================================= */
 
-.sidebar-body {
+<!-- =================================================
+     SIDEBAR BODY
+================================================== -->
 
-  padding:
-    12px;
+<div class="sidebar-body">
 
-  overflow-y:
-    auto;
 
-  scrollbar-width:
-    thin;
+  <!-- =================================================
+       TENTANG PETA
+  ================================================== -->
 
-  scrollbar-color:
-    #ccd4da
-    transparent;
-}
+  <div class="info-card">
 
+    <div class="info-title">
+      Tentang Peta
+    </div>
 
-/* =========================================================
-   INFO CARD
-========================================================= */
+    <p class="info-text">
 
-.info-card {
+      WebGIS ini menyajikan visualisasi
+      garis pantai Desa Sidodadi dengan
+      menggabungkan data hasil pengukuran,
+      digitasi, serta orthophoto.
 
-  margin-bottom:
-    9px;
+    </p>
 
-  padding:
-    12px;
+    <span class="reference-tag">
+      Wilayah studi · Desa Sidodadi
+    </span>
 
-  border:
-    1px solid #e7ecef;
+  </div>
 
-  border-radius:
-    9px;
 
-  background:
-    #ffffff;
-}
+  <!-- =================================================
+       SUMBER DATA GARIS PANTAI
+  ================================================== -->
 
-.info-card:last-child {
+  <div class="info-card">
 
-  margin-bottom:
-    0;
-}
+    <div class="info-title">
+      Sumber Data Garis Pantai
+    </div>
 
 
-/* =========================================================
-   INFO TITLE
-========================================================= */
+    <div class="data-item">
 
-.info-title {
+      <div class="data-name">
+        Garis Pantai RTK
+      </div>
 
-  margin-bottom:
-    7px;
+      <div class="data-desc">
+        Garis pantai hasil pengukuran
+        menggunakan GNSS RTK di lapangan.
+      </div>
 
-  font-size:
-    11px;
+    </div>
 
-  font-weight:
-    700;
 
-  color:
-    #3b5365;
+    <div class="data-item">
 
-  text-transform:
-    uppercase;
+      <div class="data-name">
+        Garis Pantai
+      </div>
 
-  letter-spacing:
-    0.65px;
-}
+      <div class="data-desc">
+        Data garis pantai pembanding
+        yang digunakan dalam WebGIS.
+      </div>
 
+    </div>
 
-/* =========================================================
-   INFO TEXT
-========================================================= */
 
-.info-text {
+    <div class="data-item">
 
-  margin:
-    0;
+      <div class="data-name">
+        Garis Pantai Digitasi
+      </div>
 
-  font-size:
-    11px;
+      <div class="data-desc">
+        Garis pantai yang diperoleh
+        melalui proses digitasi.
+      </div>
 
-  line-height:
-    1.65;
+    </div>
 
-  color:
-    #62717d;
-}
 
+    <div class="data-item">
 
-/* =========================================================
-   DATA ITEM
-========================================================= */
+      <div class="data-name">
+        Orthophoto
+      </div>
 
-.data-item {
+      <div class="data-desc">
+        Citra orthophoto yang digunakan
+        sebagai referensi visual
+        interpretasi garis pantai.
+      </div>
 
-  padding:
-    8px 0;
+    </div>
 
-  border-bottom:
-    1px solid #f0f2f4;
-}
+  </div>
 
-.data-item:last-child {
 
-  border-bottom:
-    none;
+  <!-- =================================================
+       INFORMASI PEMBUAT PETA
+  ================================================== -->
 
-  padding-bottom:
-    0;
-}
+  <div class="info-card">
 
-.data-name {
+    <div class="info-title">
+      Informasi Pembuat Peta
+    </div>
 
-  font-size:
-    11px;
 
-  font-weight:
-    700;
+    <div class="data-item">
 
-  color:
-    #344957;
-}
+      <div class="data-name">
+        Kelompok 1
+      </div>
 
-.data-desc {
+      <div class="data-desc">
+        Kemah Kerja Teknik Geomatika 2026
+      </div>
 
-  margin-top:
-    2px;
+    </div>
 
-  font-size:
-    10px;
 
-  line-height:
-    1.5;
+    <div class="data-item">
 
-  color:
-    #78858e;
-}
+      <div class="data-name">
+        Program Studi
+      </div>
 
+      <div class="data-desc">
+        Teknik Geomatika
+      </div>
 
-/* =========================================================
-   REFERENCE TAG
-========================================================= */
+    </div>
 
-.reference-tag {
 
-  display:
-    inline-block;
+    <div class="data-item">
 
-  margin-top:
-    6px;
+      <div class="data-name">
+        Institusi
+      </div>
 
-  padding:
-    4px 7px;
+      <div class="data-desc">
+        Institut Teknologi Sumatera
+      </div>
 
-  border-radius:
-    4px;
+    </div>
 
-  background:
-    #f0f3f5;
 
-  color:
-    #63727e;
+    <span class="reference-tag">
+      Kemah Kerja Teknik Geomatika 2026
+    </span>
 
-  font-size:
-    9px;
+  </div>
 
-  font-weight:
-    600;
-}
 
+  <!-- =================================================
+       SISTEM KOORDINAT
+  ================================================== -->
 
-/* =========================================================
-   KOORDINAT
-========================================================= */
+  <div class="info-card">
 
-.coordinate-row {
+    <div class="info-title">
+      Sistem Koordinat
+    </div>
 
-  display:
-    grid;
 
-  grid-template-columns:
-    75px 1fr;
+    <div class="coordinate-row">
 
-  min-height:
-    28px;
+      <span class="coordinate-label">
+        Datum
+      </span>
 
-  align-items:
-    center;
+      <strong class="coordinate-value">
+        WGS 84
+      </strong>
 
-  border-bottom:
-    1px solid #f0f2f4;
-}
+    </div>
 
-.coordinate-row:last-child {
 
-  border-bottom:
-    none;
-}
+    <div class="coordinate-row">
 
-.coordinate-label {
+      <span class="coordinate-label">
+        Sistem
+      </span>
 
-  font-size:
-    10px;
+      <strong class="coordinate-value">
+        GCS
+      </strong>
 
-  color:
-    #7a8791;
-}
+    </div>
 
-.coordinate-value {
 
-  font-family:
-    Consolas,
-    "Courier New",
-    monospace;
+    <div class="coordinate-row">
 
-  font-size:
-    10px;
+      <span class="coordinate-label">
+        EPSG
+      </span>
 
-  color:
-    #293b49;
+      <strong class="coordinate-value">
+        EPSG:4326
+      </strong>
 
-  text-align:
-    right;
-}
+    </div>
 
 
+    <div class="coordinate-row">
+
+      <span class="coordinate-label">
+        Satuan
+      </span>
+
+      <strong class="coordinate-value">
+        Derajat
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       POSISI KURSOR
+  ================================================== -->
+
+  <div class="info-card">
+
+    <div class="info-title">
+      Posisi Kursor
+    </div>
+
+
+    <div class="coordinate-row">
+
+      <span class="coordinate-label">
+        Latitude
+      </span>
+
+      <span
+        id="latitudeValue"
+        class="coordinate-value"
+      >
+        -
+      </span>
+
+    </div>
+
+
+    <div class="coordinate-row">
+
+      <span class="coordinate-label">
+        Longitude
+      </span>
+
+      <span
+        id="longitudeValue"
+        class="coordinate-value"
+      >
+        -
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+</div>
 /* =========================================================
    TOGGLE SIDEBAR
 ========================================================= */
