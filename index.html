@@ -602,7 +602,7 @@ body {
     2px 5px 3px;
 
   border:
-    1px solid var(--navy);
+    1px solid rgba(255,255,255,.92);
 
   border-top:
     none;
@@ -611,7 +611,7 @@ body {
     transparent !important;
 
   color:
-    var(--navy);
+    #ffffff;
 
   font-family:
     "Inter",
@@ -625,7 +625,8 @@ body {
     600;
 
   text-shadow:
-    0 1px 3px rgba(255,255,255,0.95);
+    0 1px 3px rgba(0,0,0,.55);
+
 
 }
 
@@ -1322,6 +1323,428 @@ body {
 
   background:
     var(--navy-dark);
+
+}
+
+
+/* =========================================================
+   MEASURE CONTROL
+========================================================= */
+
+.measure-control-wrapper {
+
+  position:
+    relative;
+
+}
+
+
+.measure-control-button {
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  margin-top:
+    8px;
+
+  border:
+    none;
+
+  border-radius:
+    9px;
+
+  background:
+    white;
+
+  color:
+    var(--navy);
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.17);
+
+  cursor:
+    pointer;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-size:
+    19px;
+
+  font-weight:
+    700;
+
+}
+
+
+.measure-control-button:hover {
+
+  background:
+    #f4f7f8;
+
+  color:
+    var(--orange);
+
+}
+
+
+.measure-panel {
+
+  position:
+    absolute;
+
+  top:
+    46px;
+
+  right:
+    0;
+
+  width:
+    235px;
+
+  padding:
+    13px;
+
+  background:
+    rgba(255,255,255,.98);
+
+  border:
+    1px solid #e1e7eb;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0 7px 22px rgba(16,44,69,.16);
+
+  display:
+    none;
+
+}
+
+
+.measure-panel.open {
+
+  display:
+    block;
+
+}
+
+
+.measure-title {
+
+  margin-bottom:
+    9px;
+
+  padding-bottom:
+    8px;
+
+  border-bottom:
+    1px solid #edf0f2;
+
+  color:
+    var(--navy);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.measure-buttons {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    7px;
+
+}
+
+
+.measure-tool-button {
+
+  height:
+    32px;
+
+  border:
+    1px solid #dce3e8;
+
+  border-radius:
+    7px;
+
+  background:
+    #f8fafb;
+
+  color:
+    var(--navy);
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+}
+
+
+.measure-tool-button:hover {
+
+  border-color:
+    #bfcbd4;
+
+  background:
+    #f0f4f6;
+
+}
+
+
+.measure-tool-button.active {
+
+  background:
+    var(--orange-light);
+
+  border-color:
+    var(--orange);
+
+  color:
+    #b96310;
+
+}
+
+
+.measure-clear-button {
+
+  width:
+    100%;
+
+  height:
+    30px;
+
+  margin-top:
+    7px;
+
+  border:
+    none;
+
+  border-radius:
+    7px;
+
+  background:
+    #eef1f3;
+
+  color:
+    #5a6872;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+}
+
+
+.measure-clear-button:hover {
+
+  background:
+    #e6eaed;
+
+}
+
+
+.measure-hint {
+
+  margin-top:
+    8px;
+
+  color:
+    #7d8992;
+
+  font-size:
+    8.5px;
+
+  line-height:
+    1.5;
+
+}
+
+
+#measureInfo {
+
+  position:
+    fixed;
+
+  left:
+    50%;
+
+  bottom:
+    47px;
+
+  transform:
+    translateX(-50%);
+
+  z-index:
+    1600;
+
+  min-width:
+    190px;
+
+  padding:
+    9px 13px;
+
+  border:
+    1px solid rgba(255,255,255,.75);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(16,44,69,.78);
+
+  color:
+    white;
+
+  backdrop-filter:
+    blur(3px);
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.18);
+
+  text-align:
+    center;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transition:
+    opacity .15s ease;
+
+}
+
+
+#measureInfo.visible {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+}
+
+
+.measure-info-title {
+
+  margin-bottom:
+    3px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .6px;
+
+}
+
+
+.measure-info-value {
+
+  color:
+    #ffffff;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+}
+
+
+.measure-info-sub {
+
+  margin-top:
+    2px;
+
+  color:
+    rgba(255,255,255,.78);
+
+  font-size:
+    8px;
+
+}
+
+
+.measure-line {
+
+  pointer-events:
+    none;
+
+}
+
+
+.measure-point {
+
+  background:
+    var(--orange);
+
+  border:
+    2px solid white;
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 1px 4px rgba(0,0,0,.25);
 
 }
 
@@ -2146,6 +2569,25 @@ body {
 
     width:
       235px;
+
+  }
+
+
+  .measure-panel {
+
+    width:
+      215px;
+
+  }
+
+
+  #measureInfo {
+
+    bottom:
+      38px;
+
+    min-width:
+      175px;
 
   }
 
@@ -4284,6 +4726,17 @@ const ORTHO_NATIVE_ZOOM =
   19;
 
 
+/*
+   Batas orthophoto.
+   Akan diisi apabila boundary raster diketahui.
+   Saat belum tersedia, Auto Zoom tetap bekerja
+   menggunakan layer vektor yang aktif.
+*/
+
+const ORTHO_BOUNDS =
+  null;
+
+
 orthophotoLayer =
 
   L.tileLayer(
@@ -4348,70 +4801,207 @@ orthophotoLayer.addTo(
    AUTO ZOOM
 ========================================================= */
 
-function updateAutoZoom() {
+function getLayerBoundsSafe(
+  layer
+) {
 
-
-  const candidates = [
-
-    batasDesaLayer,
-
-    rtkLayer,
-
-    pantaiLayer,
-
-    digitasiLayer
-
-  ];
-
-
-  let targetLayer =
-    null;
-
-
-  for (
-    const layer of
-      candidates
+  if (
+    !layer
   ) {
+
+    return null;
+
+  }
+
+
+  try {
+
+    const bounds =
+      layer.getBounds();
 
 
     if (
-      layer &&
-      map.hasLayer(
-        layer
-      )
+      bounds &&
+      bounds.isValid()
     ) {
 
-
-      const bounds =
-        layer.getBounds();
-
-
-      if (
-        bounds &&
-        bounds.isValid()
-      ) {
-
-
-        targetLayer =
-          layer;
-
-
-        break;
-
-      }
+      return bounds;
 
     }
 
   }
 
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Tidak dapat membaca bounds layer:",
+      error
+    );
+
+  }
+
+
+  return null;
+
+}
+
+
+function updateAutoZoom() {
+
+  /*
+     Auto zoom menggunakan SEMUA layer vektor
+     yang sedang aktif pada menu Layer.
+
+     Urutan layer tidak lagi menentukan hasil zoom.
+     Bounds semua layer aktif digabung sehingga
+     seluruh objek terlihat.
+
+  */
+
+  const bounds =
+    L.latLngBounds();
+
+
+  let foundLayer =
+    false;
+
+
+  const candidates = [
+
+    {
+      checkbox:
+        "layerBatasDesa",
+
+      layer:
+        batasDesaLayer
+
+    },
+
+    {
+      checkbox:
+        "layerRTK",
+
+      layer:
+        rtkLayer
+
+    },
+
+    {
+      checkbox:
+        "layerPantai",
+
+      layer:
+        pantaiLayer
+
+    },
+
+    {
+      checkbox:
+        "layerDigitasi",
+
+      layer:
+        digitasiLayer
+
+    }
+
+  ];
+
+
+  candidates.forEach(
+
+    function(item) {
+
+      const checkbox =
+        document
+          .getElementById(
+            item.checkbox
+          );
+
+
+      if (
+        !checkbox ||
+        !checkbox.checked
+      ) {
+
+        return;
+
+      }
+
+
+      const layerBounds =
+        getLayerBoundsSafe(
+          item.layer
+        );
+
+
+      if (
+        layerBounds
+      ) {
+
+        bounds.extend(
+          layerBounds
+        );
+
+        foundLayer =
+          true;
+
+      }
+
+    }
+
+  );
+
 
   if (
-    !targetLayer
+    !foundLayer ||
+    !bounds.isValid()
   ) {
+
+    /*
+       Jika tidak ada layer vektor aktif,
+       gunakan orthophoto sebagai referensi
+       apabila batas orthophoto sudah tersedia.
+    */
+
+    if (
+      typeof ORTHO_BOUNDS !==
+        "undefined" &&
+      ORTHO_BOUNDS &&
+      ORTHO_BOUNDS.isValid()
+    ) {
+
+      map.fitBounds(
+
+        ORTHO_BOUNDS,
+
+        {
+
+          padding:
+            [35,35],
+
+          maxZoom:
+            17,
+
+          animate:
+            true,
+
+          duration:
+            .7
+
+        }
+
+      );
+
+
+      return;
+
+    }
 
 
     alert(
-      "Tidak ada layer aktif."
+      "Tidak ada layer yang aktif untuk di-zoom."
     );
 
 
@@ -4422,7 +5012,7 @@ function updateAutoZoom() {
 
   map.fitBounds(
 
-    targetLayer.getBounds(),
+    bounds,
 
     {
 
@@ -4443,6 +5033,7 @@ function updateAutoZoom() {
   );
 
 }
+
 
 
 /* =========================================================
@@ -5009,6 +5600,1358 @@ const LayerControl =
 
 map.addControl(
   new LayerControl()
+);
+
+
+/* =========================================================
+   MEASUREMENT TOOLS
+========================================================= */
+
+let measureMode =
+  null;
+
+let measurePoints =
+  [];
+
+let measureLine =
+  null;
+
+let measurePolygon =
+  null;
+
+let measurePointMarkers =
+  [];
+
+let measurePreview =
+  null;
+
+let measurementEnabled =
+  false;
+
+
+const R_EARTH =
+  6371008.8;
+
+
+function haversineDistance(
+  pointA,
+  pointB
+) {
+
+  const lat1 =
+    pointA.lat *
+    Math.PI / 180;
+
+  const lat2 =
+    pointB.lat *
+    Math.PI / 180;
+
+  const dLat =
+    (pointB.lat -
+      pointA.lat) *
+    Math.PI / 180;
+
+  const dLon =
+    (pointB.lng -
+      pointA.lng) *
+    Math.PI / 180;
+
+
+  const a =
+    Math.sin(
+      dLat / 2
+    ) *
+    Math.sin(
+      dLat / 2
+    ) +
+
+    Math.cos(lat1) *
+    Math.cos(lat2) *
+
+    Math.sin(
+      dLon / 2
+    ) *
+    Math.sin(
+      dLon / 2
+    );
+
+
+  const c =
+    2 *
+    Math.atan2(
+
+      Math.sqrt(a),
+
+      Math.sqrt(
+        1 - a
+      )
+
+    );
+
+
+  return (
+    R_EARTH *
+    c
+  );
+
+}
+
+
+function calculateLineLength(
+  points
+) {
+
+  let total =
+    0;
+
+
+  for (
+    let i = 1;
+    i < points.length;
+    i++
+  ) {
+
+    total +=
+      haversineDistance(
+
+        points[i - 1],
+
+        points[i]
+
+      );
+
+  }
+
+
+  return total;
+
+}
+
+
+function calculatePolygonArea(
+  points
+) {
+
+  if (
+    points.length <
+    3
+  ) {
+
+    return 0;
+
+  }
+
+
+  let area =
+    0;
+
+
+  for (
+    let i = 0;
+    i < points.length;
+    i++
+  ) {
+
+    const point1 =
+      points[i];
+
+    const point2 =
+      points[
+        (i + 1) %
+        points.length
+      ];
+
+
+    const lon1 =
+      point1.lng *
+      Math.PI / 180;
+
+    const lon2 =
+      point2.lng *
+      Math.PI / 180;
+
+    const lat1 =
+      point1.lat *
+      Math.PI / 180;
+
+    const lat2 =
+      point2.lat *
+      Math.PI / 180;
+
+
+    area +=
+      (
+        lon2 -
+        lon1
+      ) *
+      (
+        2 +
+        Math.sin(lat1) +
+        Math.sin(lat2)
+      );
+
+  }
+
+
+  return Math.abs(
+    area *
+    R_EARTH *
+    R_EARTH /
+    2
+  );
+
+}
+
+
+function formatDistance(
+  meters
+) {
+
+  if (
+    meters >=
+    1000
+  ) {
+
+    return (
+
+      meters /
+      1000
+
+    ).toLocaleString(
+      "id-ID",
+      {
+        minimumFractionDigits:
+          2,
+        maximumFractionDigits:
+          2
+      }
+    ) +
+    " km";
+
+  }
+
+
+  return meters.toLocaleString(
+    "id-ID",
+    {
+      minimumFractionDigits:
+        2,
+      maximumFractionDigits:
+        2
+    }
+  ) +
+  " m";
+
+}
+
+
+function formatArea(
+  squareMeters
+) {
+
+  if (
+    squareMeters >=
+    1000000
+  ) {
+
+    return (
+
+      squareMeters /
+      1000000
+
+    ).toLocaleString(
+      "id-ID",
+      {
+        minimumFractionDigits:
+          2,
+        maximumFractionDigits:
+          2
+      }
+    ) +
+    " km²";
+
+  }
+
+
+  if (
+    squareMeters >=
+    10000
+  ) {
+
+    return (
+
+      squareMeters /
+      10000
+
+    ).toLocaleString(
+      "id-ID",
+      {
+        minimumFractionDigits:
+          2,
+        maximumFractionDigits:
+          2
+      }
+    ) +
+    " ha";
+
+  }
+
+
+  return squareMeters.toLocaleString(
+    "id-ID",
+    {
+      minimumFractionDigits:
+        2,
+      maximumFractionDigits:
+        2
+    }
+  ) +
+  " m²";
+
+}
+
+
+function updateMeasureInfo(
+  title,
+  value,
+  sub
+) {
+
+  const info =
+    document.getElementById(
+      "measureInfo"
+    );
+
+
+  if (
+    !info
+  ) {
+
+    return;
+
+  }
+
+
+  info.querySelector(
+    ".measure-info-title"
+  ).textContent =
+    title;
+
+
+  info.querySelector(
+    ".measure-info-value"
+  ).textContent =
+    value;
+
+
+  info.querySelector(
+    ".measure-info-sub"
+  ).textContent =
+    sub || "";
+
+
+  info.classList.add(
+    "visible"
+  );
+
+}
+
+
+function hideMeasureInfo() {
+
+  const info =
+    document.getElementById(
+      "measureInfo"
+    );
+
+
+  if (
+    info
+  ) {
+
+    info.classList.remove(
+      "visible"
+    );
+
+  }
+
+}
+
+
+function setMeasureButtonState(
+  mode
+) {
+
+  document
+    .querySelectorAll(
+      ".measure-tool-button"
+    )
+    .forEach(
+
+      function(button) {
+
+        button.classList.toggle(
+
+          "active",
+
+          button.dataset.mode ===
+            mode
+
+        );
+
+      }
+
+    );
+
+}
+
+
+function clearMeasurement() {
+
+  measurePoints =
+    [];
+
+
+  if (
+    measureLine
+  ) {
+
+    map.removeLayer(
+      measureLine
+    );
+
+    measureLine =
+      null;
+
+  }
+
+
+  if (
+    measurePolygon
+  ) {
+
+    map.removeLayer(
+      measurePolygon
+    );
+
+    measurePolygon =
+      null;
+
+  }
+
+
+  measurePointMarkers.forEach(
+
+    function(marker) {
+
+      map.removeLayer(
+        marker
+      );
+
+    }
+
+  );
+
+
+  measurePointMarkers =
+    [];
+
+
+  if (
+    measurePreview
+  ) {
+
+    map.removeLayer(
+      measurePreview
+    );
+
+    measurePreview =
+      null;
+
+  }
+
+
+  hideMeasureInfo();
+
+}
+
+
+function stopMeasurement() {
+
+  measurementEnabled =
+    false;
+
+
+  measureMode =
+    null;
+
+
+  map.off(
+    "click",
+    handleMeasureClick
+  );
+
+
+  map.off(
+    "mousemove",
+    handleMeasureMouseMove
+  );
+
+
+  map.off(
+    "dblclick",
+    finishMeasurement
+  );
+
+
+  map.doubleClickZoom.enable();
+
+  map.dragging.enable();
+
+
+  setMeasureButtonState(
+    null
+  );
+
+
+  if (
+    measurePreview
+  ) {
+
+    map.removeLayer(
+      measurePreview
+    );
+
+    measurePreview =
+      null;
+
+  }
+
+}
+
+
+function startMeasurement(
+  mode
+) {
+
+  clearMeasurement();
+
+
+  stopMeasurement();
+
+
+  measureMode =
+    mode;
+
+
+  measurementEnabled =
+    true;
+
+
+  map.dragging.disable();
+
+  map.doubleClickZoom.disable();
+
+
+  map.on(
+    "click",
+    handleMeasureClick
+  );
+
+
+  map.on(
+    "mousemove",
+    handleMeasureMouseMove
+  );
+
+
+  map.on(
+    "dblclick",
+    finishMeasurement
+  );
+
+
+  setMeasureButtonState(
+    mode
+  );
+
+
+  if (
+    mode ===
+    "line"
+  ) {
+
+    updateMeasureInfo(
+
+      "Ukur Garis",
+
+      "0.00 m",
+
+      "Klik beberapa titik pada peta"
+
+    );
+
+  }
+
+
+  if (
+    mode ===
+    "area"
+  ) {
+
+    updateMeasureInfo(
+
+      "Ukur Area",
+
+      "0.00 m²",
+
+      "Klik minimal 3 titik pada peta"
+
+    );
+
+  }
+
+}
+
+
+function addMeasurePoint(
+  latlng
+) {
+
+  measurePoints.push(
+    latlng
+  );
+
+
+  const marker =
+    L.circleMarker(
+
+      latlng,
+
+      {
+
+        radius:
+          4,
+
+        color:
+          "#ffffff",
+
+        weight:
+          2,
+
+        fillColor:
+          "#e98928",
+
+        fillOpacity:
+          1,
+
+        pane:
+          "vectorPane"
+
+      }
+
+    );
+
+
+  marker.addTo(
+    map
+  );
+
+
+  measurePointMarkers.push(
+    marker
+  );
+
+
+  if (
+    measureMode ===
+    "line"
+  ) {
+
+    if (
+      measureLine
+    ) {
+
+      map.removeLayer(
+        measureLine
+      );
+
+    }
+
+
+    measureLine =
+      L.polyline(
+
+        measurePoints,
+
+        {
+
+          color:
+            "#e98928",
+
+          weight:
+            3,
+
+          opacity:
+            .95,
+
+          dashArray:
+            "7 5",
+
+          pane:
+            "vectorPane"
+
+        }
+
+      ).addTo(
+        map
+      );
+
+
+    const total =
+      calculateLineLength(
+        measurePoints
+      );
+
+
+    updateMeasureInfo(
+
+      "Ukur Garis",
+
+      formatDistance(
+        total
+      ),
+
+      measurePoints.length +
+      " titik"
+
+    );
+
+  }
+
+
+  if (
+    measureMode ===
+    "area"
+  ) {
+
+    if (
+      measurePolygon
+    ) {
+
+      map.removeLayer(
+        measurePolygon
+      );
+
+    }
+
+
+    if (
+      measurePoints.length >=
+      2
+    ) {
+
+      measurePolygon =
+        L.polygon(
+
+          measurePoints,
+
+          {
+
+            color:
+              "#e98928",
+
+            weight:
+              3,
+
+            opacity:
+              .95,
+
+            dashArray:
+              "7 5",
+
+            fillColor:
+              "#e98928",
+
+            fillOpacity:
+              .12,
+
+            pane:
+              "vectorPane"
+
+          }
+
+        ).addTo(
+          map
+        );
+
+    }
+
+
+    const area =
+      calculatePolygonArea(
+        measurePoints
+      );
+
+
+    const perimeter =
+      calculateLineLength(
+        measurePoints
+      );
+
+
+    if (
+      measurePoints.length >=
+      3
+    ) {
+
+      updateMeasureInfo(
+
+        "Ukur Area",
+
+        formatArea(
+          area
+        ),
+
+        "Keliling " +
+        formatDistance(
+          perimeter
+        )
+
+      );
+
+    }
+
+    else {
+
+      updateMeasureInfo(
+
+        "Ukur Area",
+
+        formatArea(
+          area
+        ),
+
+        measurePoints.length +
+        " titik · minimal 3 titik"
+
+      );
+
+    }
+
+  }
+
+}
+
+
+function handleMeasureClick(
+  e
+) {
+
+  if (
+    !measurementEnabled
+  ) {
+
+    return;
+
+  }
+
+
+  addMeasurePoint(
+    e.latlng
+  );
+
+}
+
+
+function handleMeasureMouseMove(
+  e
+) {
+
+  if (
+    !measurementEnabled ||
+    measurePoints.length ===
+      0
+  ) {
+
+    return;
+
+  }
+
+
+  const previewPoints =
+    measurePoints.concat(
+      [e.latlng]
+    );
+
+
+  if (
+    measurePreview
+  ) {
+
+    map.removeLayer(
+      measurePreview
+    );
+
+  }
+
+
+  if (
+    measureMode ===
+    "line"
+  ) {
+
+    measurePreview =
+      L.polyline(
+
+        previewPoints,
+
+        {
+
+          color:
+            "#ffffff",
+
+          weight:
+            2,
+
+          opacity:
+            .9,
+
+          dashArray:
+            "4 5",
+
+          pane:
+            "vectorPane"
+
+        }
+
+      ).addTo(
+        map
+      );
+
+
+    const total =
+      calculateLineLength(
+        previewPoints
+      );
+
+
+    updateMeasureInfo(
+
+      "Ukur Garis",
+
+      formatDistance(
+        total
+      ),
+
+      measurePoints.length +
+      " titik · klik untuk menambah"
+
+    );
+
+  }
+
+
+  if (
+    measureMode ===
+    "area"
+  ) {
+
+    measurePreview =
+      L.polygon(
+
+        previewPoints,
+
+        {
+
+          color:
+            "#ffffff",
+
+          weight:
+            2,
+
+          opacity:
+            .9,
+
+          dashArray:
+            "4 5",
+
+          fillColor:
+            "#e98928",
+
+          fillOpacity:
+            .08,
+
+          pane:
+            "vectorPane"
+
+        }
+
+      ).addTo(
+        map
+      );
+
+
+    const area =
+      calculatePolygonArea(
+        previewPoints
+      );
+
+
+    updateMeasureInfo(
+
+      "Ukur Area",
+
+      formatArea(
+        area
+      ),
+
+      measurePoints.length +
+      " titik · klik untuk menambah"
+
+    );
+
+  }
+
+}
+
+
+function finishMeasurement() {
+
+  if (
+    !measurementEnabled
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    measureMode ===
+    "line" &&
+    measurePoints.length >=
+      2
+  ) {
+
+
+    const total =
+      calculateLineLength(
+        measurePoints
+      );
+
+
+    updateMeasureInfo(
+
+      "Jarak Total",
+
+      formatDistance(
+        total
+      ),
+
+      measurePoints.length +
+      " titik · pengukuran selesai"
+
+    );
+
+
+    stopMeasurement();
+
+
+    return;
+
+  }
+
+
+  if (
+    measureMode ===
+    "area" &&
+    measurePoints.length >=
+      3
+  ) {
+
+
+    const area =
+      calculatePolygonArea(
+        measurePoints
+      );
+
+
+    const perimeter =
+      calculateLineLength(
+        measurePoints.concat(
+          [measurePoints[0]]
+        )
+      );
+
+
+    updateMeasureInfo(
+
+      "Luas Area",
+
+      formatArea(
+        area
+      ),
+
+      "Keliling " +
+      formatDistance(
+        perimeter
+      )
+
+    );
+
+
+    stopMeasurement();
+
+  }
+
+}
+
+
+/* =========================================================
+   MEASURE CONTROL UI
+========================================================= */
+
+const MeasureControl =
+  L.Control.extend({
+
+    options: {
+
+      position:
+        "topright"
+
+    },
+
+
+    onAdd:
+      function(map) {
+
+
+        const container =
+          L.DomUtil.create(
+
+            "div",
+
+            "measure-control-wrapper"
+
+          );
+
+
+        L.DomEvent.disableClickPropagation(
+          container
+        );
+
+
+        const button =
+          L.DomUtil.create(
+
+            "button",
+
+            "measure-control-button",
+
+            container
+
+          );
+
+
+        button.type =
+          "button";
+
+        button.title =
+          "Pengukuran";
+
+        button.innerHTML =
+          "⌁";
+
+
+        const panel =
+          L.DomUtil.create(
+
+            "div",
+
+            "measure-panel",
+
+            container
+
+          );
+
+
+        panel.innerHTML = `
+
+          <div class="measure-title">
+            Pengukuran
+          </div>
+
+
+          <div class="measure-buttons">
+
+            <button
+              type="button"
+              class="measure-tool-button"
+              data-mode="line"
+              id="measureLineButton"
+            >
+              Ukur Garis
+            </button>
+
+
+            <button
+              type="button"
+              class="measure-tool-button"
+              data-mode="area"
+              id="measureAreaButton"
+            >
+              Ukur Area
+            </button>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="measure-clear-button"
+            id="measureClearButton"
+          >
+            Hapus Pengukuran
+          </button>
+
+
+          <div class="measure-hint">
+            Klik titik pada peta untuk mengukur.
+            Double-click untuk menyelesaikan pengukuran.
+          </div>
+
+        `;
+
+
+        button.addEventListener(
+
+          "click",
+
+          function(e) {
+
+            e.stopPropagation();
+
+
+            panel.classList.toggle(
+              "open"
+            );
+
+          }
+
+        );
+
+
+        panel
+          .querySelector(
+            "#measureLineButton"
+          )
+          .addEventListener(
+
+            "click",
+
+            function() {
+
+              startMeasurement(
+                "line"
+              );
+
+              panel.classList.remove(
+                "open"
+              );
+
+            }
+
+          );
+
+
+        panel
+          .querySelector(
+            "#measureAreaButton"
+          )
+          .addEventListener(
+
+            "click",
+
+            function() {
+
+              startMeasurement(
+                "area"
+              );
+
+              panel.classList.remove(
+                "open"
+              );
+
+            }
+
+          );
+
+
+        panel
+          .querySelector(
+            "#measureClearButton"
+          )
+          .addEventListener(
+
+            "click",
+
+            function() {
+
+              stopMeasurement();
+
+              clearMeasurement();
+
+            }
+
+          );
+
+
+        return container;
+
+      }
+
+  });
+
+
+map.addControl(
+  new MeasureControl()
+);
+
+
+/* =========================================================
+   MEASURE RESULT DISPLAY
+========================================================= */
+
+const measureInfo =
+  document.createElement(
+    "div"
+  );
+
+
+measureInfo.id =
+  "measureInfo";
+
+
+measureInfo.innerHTML = `
+
+  <div class="measure-info-title">
+    Pengukuran
+  </div>
+
+  <div class="measure-info-value">
+    0.00 m
+  </div>
+
+  <div class="measure-info-sub">
+    -
+  </div>
+
+`;
+
+
+document.body.appendChild(
+  measureInfo
 );
 
 
