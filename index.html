@@ -1,913 +1,2230 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WEBGIS KELOMPOK 1</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js"></script>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>WebGIS Kelompok 1</title>
+
+
+<!-- =======================================================
+     FONT
+======================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+
+<!-- =======================================================
+     LEAFLET
+======================================================= -->
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- =======================================================
+     PROJ4
+======================================================= -->
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.2/proj4.js">
+</script>
+
 
 <style>
-*{box-sizing:border-box}
 
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#eef1f3;
-  color:#263746
+/* =========================================================
+   ROOT / RESET
+========================================================= */
+
+:root {
+
+  --white:
+    #ffffff;
+
+  --navy:
+    #163a59;
+
+  --navy-dark:
+    #102c45;
+
+  --navy-soft:
+    #315a78;
+
+  --orange:
+    #e98928;
+
+  --orange-light:
+    #fff3e5;
+
+  --text:
+    #263746;
+
+  --muted:
+    #71808c;
+
+  --line:
+    #e3e8ec;
+
+  --soft:
+    #f5f7f8;
+
+  --shadow:
+    0 6px 24px rgba(16,44,69,0.13);
+
 }
 
-/* ========================= HEADER ========================= */
 
-#topHeader{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:76px;
-  z-index:2000;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 22px;
-
-  background:#fff;
-  border-bottom:1px solid #e4e9ed;
-  box-shadow:0 2px 12px rgba(0,0,0,.10)
+* {
+  box-sizing:
+    border-box;
 }
 
-.header-left{
-  display:flex;
-  align-items:center;
-  min-width:0
-}
 
-.header-logos{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin-right:18px;
-  padding-right:18px;
-  border-right:1px solid #e7ebee
-}
+html,
+body {
 
-.header-logos img{
-  height:40px;
-  width:auto;
-  object-fit:contain
-}
+  width:
+    100%;
 
-.header-title h1{
-  margin:0;
-  color:#1f3445;
-  font-size:22px;
-  line-height:1.1;
-  font-weight:700;
-  letter-spacing:-.3px
-}
+  height:
+    100%;
 
-.header-title p{
-  margin:4px 0 0;
-  color:#71808c;
-  font-size:12px
-}
+  margin:
+    0;
 
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:9px
-}
+  padding:
+    0;
 
-.header-badge{
-  padding:7px 10px;
-  border:1px solid #e1e6ea;
-  border-radius:7px;
-  color:#62717d;
-  background:#fafbfc;
-  font-size:10px;
-  white-space:nowrap
-}
+  overflow:
+    hidden;
 
-.feedback-button{
-  height:36px;
-  padding:0 13px;
-  border:0;
-  border-radius:8px;
-  background:#214b67;
-  color:#fff;
-  font-size:11px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(33,75,103,.20)
-}
+  font-family:
+    "Inter",
+    Arial,
+    Helvetica,
+    sans-serif;
 
-.feedback-button:hover{
-  background:#2b607f
-}
-
-/* ========================= MAP ========================= */
-
-#map{
-  position:fixed;
-  top:76px;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:1
-}
-
-.leaflet-control-zoom{
-  border:0!important;
-  border-radius:8px!important;
-  overflow:hidden;
-  box-shadow:0 3px 12px rgba(0,0,0,.18)!important
-}
-
-.leaflet-control-zoom a{
-  width:34px!important;
-  height:34px!important;
-  line-height:34px!important;
-  border:0!important;
-  background:rgba(255,255,255,.97)!important;
-  color:#263746!important;
-  font-size:18px!important
-}
-
-.leaflet-control-zoom a:hover{
-  background:#f1f4f6!important
-}
-
-/* ========================= SCALE ========================= */
-
-.leaflet-bottom.leaflet-left{
-  margin-left:330px;
-  margin-bottom:16px
-}
-
-.leaflet-control-scale{
-  margin:0!important
-}
-
-.leaflet-control-scale-line{
-  background:rgba(255,255,255,.92);
-  border:1px solid #374b59;
-  border-top:0;
-  color:#2f404d;
-  font-size:9px;
-  line-height:1.1;
-  padding:2px 4px
-}
-
-/* ========================= SIDEBAR ========================= */
-
-#sidebar{
-  position:fixed;
-  top:92px;
-  left:16px;
-  width:315px;
-  max-height:calc(100vh - 108px);
-  z-index:1200;
-
-  background:rgba(255,255,255,.97);
-
-  border:1px solid #e1e7eb;
-  border-radius:13px;
-
-  box-shadow:0 5px 22px rgba(0,0,0,.15);
-
-  overflow:hidden;
-
-  transition:transform .30s ease
-}
-
-#sidebar.closed{
-  transform:translateX(calc(-100% - 25px))
-}
-
-.sidebar-body{
-  padding:12px;
-  overflow-y:auto;
-  max-height:calc(100vh - 108px);
-  scrollbar-width:thin;
-  scrollbar-color:#cbd4da transparent
-}
-
-.info-card{
-  margin-bottom:9px;
-  padding:12px;
-  border:1px solid #e7ecef;
-  border-radius:9px;
-  background:#fff
-}
-
-.info-card:last-child{
-  margin-bottom:0
-}
-
-.info-title{
-  margin-bottom:7px;
-  font-size:11px;
-  font-weight:700;
-  color:#3b5365;
-  text-transform:uppercase;
-  letter-spacing:.65px
-}
-
-.info-text{
-  margin:0;
-  font-size:11px;
-  line-height:1.65;
-  color:#62717d
-}
-
-.data-item{
-  padding:8px 0;
-  border-bottom:1px solid #f0f2f4
-}
-
-.data-item:last-child{
-  border-bottom:0;
-  padding-bottom:0
-}
-
-.data-name{
-  font-size:11px;
-  font-weight:700;
-  color:#344957
-}
-
-.data-desc{
-  margin-top:2px;
-  font-size:10px;
-  line-height:1.5;
-  color:#78858e
-}
-
-.reference-tag{
-  display:inline-block;
-  margin-top:6px;
-  padding:4px 7px;
-  border-radius:4px;
-  background:#f0f3f5;
-  color:#63727e;
-  font-size:9px;
-  font-weight:600
-}
-
-.coordinate-row{
-  display:grid;
-  grid-template-columns:78px 1fr;
-  align-items:center;
-  min-height:29px;
-  border-bottom:1px solid #f0f2f4
-}
-
-.coordinate-row:last-child{
-  border-bottom:0
-}
-
-.coordinate-label{
-  font-size:10px;
-  color:#7a8791
-}
-
-.coordinate-value{
-  font-family:Consolas,"Courier New",monospace;
-  font-size:10px;
-  color:#293b49;
-  text-align:right
-}
-
-#sidebarToggle{
-  position:fixed;
-  left:316px;
-  top:50%;
-  transform:translateY(-50%);
-
-  width:30px;
-  height:50px;
-
-  z-index:1300;
-
-  border:0;
-  border-radius:0 8px 8px 0;
-
-  background:#fff;
-  color:#344957;
-
-  box-shadow:3px 2px 10px rgba(0,0,0,.14);
-
-  font-size:18px;
-  cursor:pointer;
-
-  transition:left .30s ease
-}
-
-#sidebarToggle:hover{
-  background:#f2f5f7
-}
-
-#sidebar.closed + #sidebarToggle{
-  left:0
-}
-
-/* ========================= LAYER CONTROL ========================= */
-
-.layer-control-wrapper{
-  position:relative
-}
-
-.layer-control-button{
-  width:38px;
-  height:38px;
-
-  border:0;
-  border-radius:8px;
-
-  background:#fff;
-  color:#263746;
-
-  box-shadow:0 3px 12px rgba(0,0,0,.18);
-
-  cursor:pointer;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:18px
-}
-
-.layer-control-button:hover{
-  background:#f3f6f8
-}
-
-.layer-panel{
-  position:absolute;
-  top:44px;
-  right:0;
-
-  width:255px;
-
-  padding:12px;
-
-  background:rgba(255,255,255,.98);
-
-  border:1px solid #e2e7eb;
-  border-radius:10px;
-
-  box-shadow:0 5px 18px rgba(0,0,0,.17);
-
-  display:none
-}
-
-.layer-panel.open{
-  display:block
-}
-
-.layer-panel-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  margin-bottom:8px;
-  padding-bottom:8px;
-
-  border-bottom:1px solid #edf0f2;
-
-  color:#314553;
-
-  font-size:11px;
-  font-weight:700;
-
-  text-transform:uppercase;
-  letter-spacing:.6px
-}
-
-.layer-group-title{
-  margin:9px 4px 3px;
-
-  color:#9aa5ad;
-
-  font-size:9px;
-  font-weight:700;
-
-  text-transform:uppercase;
-  letter-spacing:.6px
-}
-
-.layer-option{
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  min-height:31px;
-  padding:4px 5px;
-
-  border-radius:5px;
-
-  cursor:pointer;
-
-  color:#40515e;
-  font-size:11px
-}
-
-.layer-option:hover{
-  background:#f5f7f8
-}
-
-.layer-option input{
-  width:14px;
-  height:14px;
-  margin:0;
-  accent-color:#286b68;
-  cursor:pointer
-}
-
-.layer-autozoom{
-  width:100%;
-  height:32px;
-
-  margin-top:9px;
-
-  border:0;
-  border-radius:6px;
-
-  background:#203b53;
-  color:#fff;
-
-  font-size:10px;
-  font-weight:600;
-
-  cursor:pointer
-}
-
-.layer-autozoom:hover{
-  background:#2b526f
-}
-
-/* ========================= LEGENDA ========================= */
-
-.legend{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-
-  z-index:1100;
-
-  width:225px;
-
-  padding:13px 14px;
-
-  background:rgba(255,255,255,.96);
-
-  border:1px solid #e3e7ea;
-  border-radius:10px;
-
-  box-shadow:0 4px 15px rgba(0,0,0,.13)
-}
-
-.legend-title{
-  margin-bottom:8px;
-
-  color:#293d4c;
-
-  font-size:11px;
-  font-weight:700;
-
-  text-transform:uppercase;
-  letter-spacing:.6px
-}
-
-.legend-section{
-  margin-top:7px;
-  margin-bottom:5px;
-
-  color:#9ca6ad;
-
-  font-size:8px;
-  font-weight:700;
-
-  text-transform:uppercase;
-  letter-spacing:.7px
-}
-
-.legend-item{
-  display:flex;
-  align-items:center;
-
-  gap:8px;
-
-  min-height:25px;
-
-  color:#40515d;
-  font-size:10px
-}
-
-.legend-symbol{
-  position:relative;
-
-  width:34px;
-  height:10px;
-
-  flex-shrink:0;
-
-  display:inline-block
-}
-
-.legend-rtk::after{
-  content:"";
-
-  position:absolute;
-  left:0;
-  right:0;
-  top:3.5px;
-
-  height:3px;
-
-  background:#00d9ff;
-
-  border-radius:2px
-}
-
-.legend-pantai::after{
-  content:"";
-
-  position:absolute;
-  left:0;
-  right:0;
-  top:3.5px;
-
-  height:3px;
-
-  background:#f2c600;
-
-  border-radius:2px
-}
-
-.legend-digitasi::after{
-  content:"";
-
-  position:absolute;
-  left:0;
-  right:0;
-  top:3.5px;
-
-  height:3px;
-
-  background:#e53935;
-
-  border-radius:2px
-}
-
-.legend-batas-desa::before{
-  content:"";
-
-  position:absolute;
-  left:0;
-  right:0;
-  top:2px;
-
-  height:6px;
-
-  background:#ffd600
-}
-
-.legend-batas-desa::after{
-  content:"";
-
-  position:absolute;
-  left:0;
-  right:0;
-  top:4px;
-
-  height:2px;
+  color:
+    var(--text);
 
   background:
+    #edf1f4;
+
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+#map {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  z-index:
+    1;
+
+}
+
+
+/* =========================================================
+   HEADER PILL / LONJONG
+========================================================= */
+
+#topHeader {
+
+  position:
+    fixed;
+
+  top:
+    11px;
+
+  left:
+    12px;
+
+  right:
+    12px;
+
+  height:
+    66px;
+
+  z-index:
+    2000;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    0 18px 0 20px;
+
+  background:
+    var(--white);
+
+  border:
+    1px solid #e1e7eb;
+
+  border-radius:
+    999px;
+
+  box-shadow:
+    0 5px 20px rgba(16,44,69,0.14);
+
+}
+
+
+/* garis aksen orange */
+
+#topHeader::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    20px;
+
+  bottom:
+    5px;
+
+  width:
+    55px;
+
+  height:
+    3px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--orange);
+
+}
+
+
+/* =========================================================
+   HEADER LEFT
+========================================================= */
+
+.header-left {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  min-width:
+    0;
+
+}
+
+
+.header-logos {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  margin-right:
+    17px;
+
+  padding-right:
+    17px;
+
+  border-right:
+    1px solid #e7ebee;
+
+}
+
+
+.header-logos img {
+
+  width:
+    auto;
+
+  height:
+    39px;
+
+  object-fit:
+    contain;
+
+}
+
+
+/* =========================================================
+   HEADER TITLE
+========================================================= */
+
+.header-title {
+
+  min-width:
+    0;
+
+}
+
+
+.header-title h1 {
+
+  margin:
+    0;
+
+  color:
+    var(--navy-dark);
+
+  font-size:
+    20px;
+
+  line-height:
+    1.15;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    -0.5px;
+
+}
+
+
+.header-title p {
+
+  margin:
+    4px 0 0;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    500;
+
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.header-right {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+}
+
+
+.header-badge {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+
+  padding:
+    7px 10px;
+
+  color:
+    var(--navy-soft);
+
+  background:
+    #f5f8fa;
+
+  border:
+    1px solid #e1e8ed;
+
+  border-radius:
+    999px;
+
+  font-size:
+    9px;
+
+  font-weight:
+    600;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.header-badge::before {
+
+  content:
+    "";
+
+  width:
+    6px;
+
+  height:
+    6px;
+
+  border-radius:
+    50%;
+
+  background:
+    #2d8b6f;
+
+}
+
+
+.feedback-button {
+
+  height:
+    35px;
+
+  padding:
+    0 14px;
+
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--orange);
+
+  color:
+    white;
+
+  font-family:
+    inherit;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    .18s ease;
+
+}
+
+
+.feedback-button:hover {
+
+  background:
+    #d97817;
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* =========================================================
+   LEAFLET GENERAL
+========================================================= */
+
+.leaflet-top {
+
+  z-index:
+    1400 !important;
+
+}
+
+
+.leaflet-bottom {
+
+  z-index:
+    1200 !important;
+
+}
+
+
+.leaflet-control-zoom {
+
+  border:
+    none !important;
+
+  border-radius:
+    9px !important;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.17) !important;
+
+}
+
+
+.leaflet-control-zoom a {
+
+  width:
+    35px !important;
+
+  height:
+    35px !important;
+
+  line-height:
+    35px !important;
+
+  border:
+    none !important;
+
+  background:
+    rgba(255,255,255,0.97) !important;
+
+  color:
+    var(--navy) !important;
+
+  font-size:
+    18px !important;
+
+}
+
+
+.leaflet-control-zoom a:hover {
+
+  background:
+    #f3f6f8 !important;
+
+}
+
+
+/* =========================================================
+   POSISI ZOOM DI BAWAH HEADER
+========================================================= */
+
+.leaflet-top.leaflet-right {
+
+  top:
+    81px;
+
+  right:
+    17px;
+
+}
+
+
+.leaflet-top.leaflet-left {
+
+  top:
+    81px;
+
+}
+
+
+/* =========================================================
+   SCALE BAR
+   TRANSPARAN + CENTER
+========================================================= */
+
+.leaflet-bottom.leaflet-left {
+
+  left:
+    50% !important;
+
+  bottom:
+    15px !important;
+
+  margin:
+    0 !important;
+
+  transform:
+    translateX(-50%);
+
+}
+
+
+.leaflet-control-scale {
+
+  margin:
+    0 !important;
+
+  background:
+    transparent !important;
+
+}
+
+
+.leaflet-control-scale-line {
+
+  padding:
+    2px 5px 3px;
+
+  border:
+    1px solid var(--navy);
+
+  border-top:
+    none;
+
+  background:
+    transparent !important;
+
+  color:
+    var(--navy);
+
+  font-family:
+    "Inter",
+    Arial,
+    sans-serif;
+
+  font-size:
+    9px;
+
+  font-weight:
+    600;
+
+  text-shadow:
+    0 1px 3px rgba(255,255,255,0.95);
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+#sidebar {
+
+  position:
+    fixed;
+
+  top:
+    91px;
+
+  left:
+    16px;
+
+  width:
+    315px;
+
+  max-height:
+    calc(100vh - 107px);
+
+  z-index:
+    1200;
+
+  background:
+    rgba(255,255,255,0.97);
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    14px;
+
+  box-shadow:
+    var(--shadow);
+
+  overflow:
+    hidden;
+
+  transition:
+    transform .3s ease;
+
+}
+
+
+#sidebar.closed {
+
+  transform:
+    translateX(
+      calc(-100% - 28px)
+    );
+
+}
+
+
+/* =========================================================
+   SIDEBAR BODY
+========================================================= */
+
+.sidebar-body {
+
+  max-height:
+    calc(100vh - 107px);
+
+  padding:
+    12px;
+
+  overflow-y:
+    auto;
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    #cbd4da
+    transparent;
+
+}
+
+
+/* =========================================================
+   INFO CARD
+========================================================= */
+
+.info-card {
+
+  margin-bottom:
+    9px;
+
+  padding:
+    12px;
+
+  background:
+    var(--white);
+
+  border:
+    1px solid #e6ebef;
+
+  border-radius:
+    10px;
+
+}
+
+
+.info-card:last-child {
+
+  margin-bottom:
+    0;
+
+}
+
+
+/* =========================================================
+   ACCENT TITLE
+========================================================= */
+
+.info-title {
+
+  position:
+    relative;
+
+  margin-bottom:
+    8px;
+
+  padding-left:
+    9px;
+
+  color:
+    var(--navy);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.info-title::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  top:
+    1px;
+
+  width:
+    3px;
+
+  height:
+    12px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--orange);
+
+}
+
+
+/* =========================================================
+   INFO TEXT
+========================================================= */
+
+.info-text {
+
+  margin:
+    0;
+
+  color:
+    #64737e;
+
+  font-size:
+    10.5px;
+
+  line-height:
+    1.7;
+
+}
+
+
+.reference-tag {
+
+  display:
+    inline-block;
+
+  margin-top:
+    7px;
+
+  padding:
+    4px 7px;
+
+  border:
+    1px solid #e6eaed;
+
+  border-radius:
+    999px;
+
+  color:
+    var(--navy-soft);
+
+  background:
+    #f7f9fa;
+
+  font-size:
+    8px;
+
+  font-weight:
+    600;
+
+}
+
+
+/* =========================================================
+   DATA ITEM
+========================================================= */
+
+.data-item {
+
+  padding:
+    8px 0;
+
+  border-bottom:
+    1px solid #eef1f3;
+
+}
+
+
+.data-item:last-child {
+
+  border-bottom:
+    none;
+
+  padding-bottom:
+    0;
+
+}
+
+
+.data-name {
+
+  color:
+    #344b5c;
+
+  font-size:
+    10.5px;
+
+  font-weight:
+    700;
+
+}
+
+
+.data-desc {
+
+  margin-top:
+    2px;
+
+  color:
+    #78858e;
+
+  font-size:
+    9.5px;
+
+  line-height:
+    1.5;
+
+}
+
+
+/* =========================================================
+   COORDINATE
+========================================================= */
+
+.coordinate-row {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    76px 1fr;
+
+  align-items:
+    center;
+
+  min-height:
+    28px;
+
+  border-bottom:
+    1px solid #eef1f3;
+
+}
+
+
+.coordinate-row:last-child {
+
+  border-bottom:
+    none;
+
+}
+
+
+.coordinate-label {
+
+  color:
+    #7b8993;
+
+  font-size:
+    9px;
+
+}
+
+
+.coordinate-value {
+
+  color:
+    #2c4050;
+
+  font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+  font-size:
+    9px;
+
+  font-weight:
+    600;
+
+  text-align:
+    right;
+
+}
+
+
+/* =========================================================
+   SIDEBAR BUTTON
+========================================================= */
+
+#sidebarToggle {
+
+  position:
+    fixed;
+
+  left:
+    316px;
+
+  top:
+    50%;
+
+  transform:
+    translateY(-50%);
+
+  width:
+    30px;
+
+  height:
+    52px;
+
+  z-index:
+    1300;
+
+  border:
+    none;
+
+  border-radius:
+    0 9px 9px 0;
+
+  background:
+    white;
+
+  color:
+    var(--navy);
+
+  box-shadow:
+    3px 2px 10px rgba(0,0,0,.13);
+
+  font-size:
+    18px;
+
+  cursor:
+    pointer;
+
+  transition:
+    left .3s ease;
+
+}
+
+
+#sidebarToggle:hover {
+
+  color:
+    var(--orange);
+
+  background:
+    #f6f8f9;
+
+}
+
+
+#sidebar.closed + #sidebarToggle {
+
+  left:
+    0;
+
+}
+
+
+/* =========================================================
+   LAYER CONTROL
+========================================================= */
+
+.layer-control-wrapper {
+
+  position:
+    relative;
+
+}
+
+
+.layer-control-button {
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  border:
+    none;
+
+  border-radius:
+    9px;
+
+  background:
+    white;
+
+  color:
+    var(--navy);
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.17);
+
+  cursor:
+    pointer;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-size:
+    18px;
+
+}
+
+
+.layer-control-button:hover {
+
+  background:
+    #f4f7f8;
+
+  color:
+    var(--orange);
+
+}
+
+
+.layer-panel {
+
+  position:
+    absolute;
+
+  top:
+    44px;
+
+  right:
+    0;
+
+  width:
+    255px;
+
+  padding:
+    13px;
+
+  background:
+    rgba(255,255,255,.98);
+
+  border:
+    1px solid #e1e7eb;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0 7px 22px rgba(16,44,69,.16);
+
+  display:
+    none;
+
+}
+
+
+.layer-panel.open {
+
+  display:
+    block;
+
+}
+
+
+.layer-panel-title {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  margin-bottom:
+    8px;
+
+  padding-bottom:
+    8px;
+
+  border-bottom:
+    1px solid #edf0f2;
+
+  color:
+    var(--navy);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.layer-group-title {
+
+  margin:
+    9px 4px 3px;
+
+  color:
+    #9aa5ad;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .8px;
+
+}
+
+
+.layer-option {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  min-height:
+    31px;
+
+  padding:
+    4px 5px;
+
+  border-radius:
+    6px;
+
+  color:
+    #435462;
+
+  font-size:
+    10.5px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.layer-option:hover {
+
+  background:
+    #f5f7f8;
+
+}
+
+
+.layer-option input {
+
+  width:
+    14px;
+
+  height:
+    14px;
+
+  margin:
+    0;
+
+  accent-color:
+    var(--orange);
+
+  cursor:
+    pointer;
+
+}
+
+
+.layer-autozoom {
+
+  width:
+    100%;
+
+  height:
+    33px;
+
+  margin-top:
+    9px;
+
+  border:
+    none;
+
+  border-radius:
+    7px;
+
+  background:
+    var(--navy);
+
+  color:
+    white;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+}
+
+
+.layer-autozoom:hover {
+
+  background:
+    var(--navy-dark);
+
+}
+
+
+/* =========================================================
+   LEGENDA
+========================================================= */
+
+.legend {
+
+  position:
+    fixed;
+
+  right:
+    18px;
+
+  bottom:
+    17px;
+
+  z-index:
+    1100;
+
+  width:
+    225px;
+
+  padding:
+    13px 14px;
+
+  background:
+    rgba(255,255,255,.96);
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    11px;
+
+  box-shadow:
+    0 5px 17px rgba(0,0,0,.13);
+
+}
+
+
+.legend-title {
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--navy);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .6px;
+
+}
+
+
+.legend-section {
+
+  margin:
+    7px 0 5px;
+
+  color:
+    #9ba6ae;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.legend-item {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  min-height:
+    25px;
+
+  color:
+    #40515d;
+
+  font-size:
+    9.5px;
+
+}
+
+
+.legend-symbol {
+
+  position:
+    relative;
+
+  width:
+    34px;
+
+  height:
+    10px;
+
+  flex-shrink:
+    0;
+
+}
+
+
+.legend-rtk::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    3.5px;
+
+  height:
+    3px;
+
+  background:
+    #00d9ff;
+
+  border-radius:
+    2px;
+
+}
+
+
+.legend-pantai::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    3.5px;
+
+  height:
+    3px;
+
+  background:
+    #f2c600;
+
+  border-radius:
+    2px;
+
+}
+
+
+.legend-digitasi::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    3.5px;
+
+  height:
+    3px;
+
+  background:
+    #e53935;
+
+  border-radius:
+    2px;
+
+}
+
+
+.legend-batas-desa::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    2px;
+
+  height:
+    6px;
+
+  background:
+    #ffd600;
+
+}
+
+
+.legend-batas-desa::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    4px;
+
+  height:
+    2px;
+
+  background:
+
     repeating-linear-gradient(
+
       to right,
+
       #000 0,
       #000 1px,
+
       transparent 1px,
       transparent 4px,
+
       #000 4px,
       #000 5px,
+
       transparent 5px,
       transparent 8px,
+
       #000 8px,
       #000 15px,
+
       transparent 15px,
       transparent 19px
-    )
+
+    );
+
 }
 
-.legend-ortho{
-  height:12px;
 
-  border-radius:2px;
-  border:1px solid #aeb8bd;
+.legend-ortho {
+
+  display:
+    block;
+
+  height:
+    12px;
+
+  border:
+    1px solid #aeb8bd;
+
+  border-radius:
+    2px;
 
   background:
+
     linear-gradient(
+
       135deg,
+
       #698a52,
+
       #829a5b 40%,
+
       #4a8a93 72%,
+
       #396f79
-    )
+
+    );
+
 }
 
-/* ========================= FEEDBACK MODAL ========================= */
 
-.modal-backdrop{
-  position:fixed;
-  inset:0;
+/* =========================================================
+   FEEDBACK MODAL
+========================================================= */
 
-  z-index:3000;
+.modal-backdrop {
 
-  background:rgba(15,28,39,.42);
+  position:
+    fixed;
 
-  display:none;
+  inset:
+    0;
 
-  align-items:center;
-  justify-content:center;
+  z-index:
+    5000;
 
-  padding:18px
+  display:
+    none;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(11,36,56,.42);
+
 }
 
-.modal-backdrop.open{
-  display:flex
+
+.modal-backdrop.open {
+
+  display:
+    flex;
+
 }
 
-.feedback-modal{
-  width:min(460px,100%);
 
-  background:#fff;
+.feedback-modal {
 
-  border-radius:14px;
+  width:
+    min(455px,100%);
 
-  box-shadow:0 16px 45px rgba(0,0,0,.25);
+  overflow:
+    hidden;
 
-  overflow:hidden
+  background:
+    white;
+
+  border:
+    1px solid #e2e8ec;
+
+  border-radius:
+    16px;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.24);
+
 }
 
-.feedback-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
 
-  padding:15px 17px;
+.feedback-head {
 
-  border-bottom:1px solid #edf0f2
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  padding:
+    15px 17px;
+
+  border-bottom:
+    1px solid #edf0f2;
+
 }
 
-.feedback-head h2{
-  margin:0;
 
-  font-size:15px;
+.feedback-head h2 {
 
-  color:#273b4a
+  margin:
+    0;
+
+  color:
+    var(--navy-dark);
+
+  font-size:
+    15px;
+
+  font-weight:
+    800;
+
 }
 
-.feedback-head p{
-  margin:3px 0 0;
 
-  font-size:10px;
+.feedback-head p {
 
-  color:#7b8790
+  margin:
+    3px 0 0;
+
+  color:
+    #7c8992;
+
+  font-size:
+    9px;
+
 }
 
-.feedback-close{
-  width:30px;
-  height:30px;
 
-  border:0;
-  border-radius:7px;
+.feedback-close {
 
-  background:#f3f5f6;
+  width:
+    30px;
 
-  color:#52616b;
+  height:
+    30px;
 
-  font-size:18px;
+  border:
+    none;
 
-  cursor:pointer
+  border-radius:
+    50%;
+
+  background:
+    #f3f5f6;
+
+  color:
+    #53616b;
+
+  font-size:
+    18px;
+
+  cursor:
+    pointer;
+
 }
 
-.feedback-body{
-  padding:16px
+
+.feedback-close:hover {
+
+  color:
+    var(--orange);
+
 }
 
-.feedback-label{
-  display:block;
 
-  margin:0 0 5px;
+.feedback-body {
 
-  font-size:10px;
-  font-weight:700;
+  padding:
+    17px;
 
-  color:#52616b
 }
+
+
+.feedback-label {
+
+  display:
+    block;
+
+  margin:
+    0 0 5px;
+
+  color:
+    #52616b;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+}
+
 
 .feedback-input,
-.feedback-textarea{
-  width:100%;
+.feedback-textarea {
 
-  border:1px solid #d9e0e5;
+  width:
+    100%;
 
-  border-radius:7px;
+  margin-bottom:
+    11px;
 
-  padding:9px 10px;
+  padding:
+    9px 10px;
 
-  font:inherit;
-  font-size:11px;
+  border:
+    1px solid #d8e0e5;
 
-  color:#263746;
+  border-radius:
+    7px;
 
-  outline:none;
+  outline:
+    none;
 
-  background:#fbfcfd;
+  background:
+    #fbfcfd;
 
-  margin-bottom:11px
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    10.5px;
+
 }
+
 
 .feedback-input:focus,
-.feedback-textarea:focus{
-  border-color:#6c93ac;
+.feedback-textarea:focus {
 
-  background:#fff
+  border-color:
+    #6386a0;
+
+  background:
+    #fff;
+
 }
 
-.feedback-textarea{
-  min-height:120px;
 
-  resize:vertical
+.feedback-textarea {
+
+  min-height:
+    120px;
+
+  resize:
+    vertical;
+
 }
 
-.feedback-actions{
-  display:flex;
-  justify-content:flex-end;
 
-  gap:8px
+.feedback-actions {
+
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    8px;
+
 }
+
 
 .feedback-cancel,
-.feedback-send{
-  height:34px;
+.feedback-send {
 
-  padding:0 13px;
+  height:
+    34px;
 
-  border:0;
+  padding:
+    0 13px;
 
-  border-radius:7px;
+  border:
+    none;
 
-  cursor:pointer;
+  border-radius:
+    7px;
 
-  font-size:10px;
+  font-family:
+    inherit;
 
-  font-weight:700
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
 }
 
-.feedback-cancel{
-  background:#eef1f3;
-  color:#53616b
+
+.feedback-cancel {
+
+  background:
+    #eef1f3;
+
+  color:
+    #53616b;
+
 }
 
-.feedback-send{
-  background:#214b67;
-  color:#fff
+
+.feedback-send {
+
+  background:
+    var(--orange);
+
+  color:
+    white;
+
 }
 
-.feedback-note{
-  margin-top:9px;
 
-  font-size:9px;
+.feedback-send:hover {
 
-  line-height:1.5;
+  background:
+    #d97817;
 
-  color:#8a949c
 }
 
-/* ========================= MOBILE ========================= */
 
-@media(max-width:750px){
+.feedback-note {
 
-  #topHeader{
-    height:70px;
-    padding:0 12px
-  }
+  margin-top:
+    9px;
 
-  .header-logos{
-    gap:6px;
-    margin-right:10px;
-    padding-right:10px
-  }
+  color:
+    #8b959c;
 
-  .header-logos img{
-    height:29px
-  }
+  font-size:
+    8.5px;
 
-  .header-title h1{
-    font-size:16px
-  }
+  line-height:
+    1.5;
 
-  .header-title p{
-    font-size:9px
-  }
-
-  .header-badge{
-    display:none
-  }
-
-  .feedback-button{
-    height:32px;
-    padding:0 9px;
-    font-size:9px
-  }
-
-  #map{
-    top:70px
-  }
-
-  #sidebar{
-    top:84px;
-    left:10px;
-    width:290px;
-    max-height:calc(100vh - 94px)
-  }
-
-  .sidebar-body{
-    max-height:calc(100vh - 94px)
-  }
-
-  #sidebarToggle{
-    left:291px
-  }
-
-  .layer-panel{
-    width:235px
-  }
-
-  .legend{
-    right:10px;
-    bottom:10px;
-    width:195px
-  }
-
-  .leaflet-bottom.leaflet-left{
-    margin-left:8px;
-    margin-bottom:12px
-  }
 }
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:760px) {
+
+  #topHeader {
+
+    top:
+      8px;
+
+    left:
+      8px;
+
+    right:
+      8px;
+
+    height:
+      57px;
+
+    padding:
+      0 12px;
+
+  }
+
+
+  #topHeader::before {
+
+    left:
+      13px;
+
+    bottom:
+      4px;
+
+    width:
+      42px;
+
+  }
+
+
+  .header-logos {
+
+    gap:
+      5px;
+
+    margin-right:
+      9px;
+
+    padding-right:
+      9px;
+
+  }
+
+
+  .header-logos img {
+
+    height:
+      29px;
+
+  }
+
+
+  .header-title h1 {
+
+    font-size:
+      14px;
+
+  }
+
+
+  .header-title p {
+
+    font-size:
+      8px;
+
+  }
+
+
+  .header-badge {
+
+    display:
+      none;
+
+  }
+
+
+  .feedback-button {
+
+    height:
+      31px;
+
+    padding:
+      0 10px;
+
+    font-size:
+      8px;
+
+  }
+
+
+  .leaflet-top.leaflet-right {
+
+    top:
+      72px;
+
+    right:
+      9px;
+
+  }
+
+
+  #sidebar {
+
+    top:
+      75px;
+
+    left:
+      9px;
+
+    width:
+      290px;
+
+    max-height:
+      calc(100vh - 85px);
+
+  }
+
+
+  .sidebar-body {
+
+    max-height:
+      calc(100vh - 85px);
+
+  }
+
+
+  #sidebarToggle {
+
+    left:
+      290px;
+
+  }
+
+
+  .legend {
+
+    right:
+      9px;
+
+    bottom:
+      9px;
+
+    width:
+      195px;
+
+  }
+
+
+  .leaflet-bottom.leaflet-left {
+
+    bottom:
+      10px !important;
+
+  }
+
+
+  .layer-panel {
+
+    width:
+      235px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- ========================= HEADER ========================= -->
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
 <header id="topHeader">
 
+
   <div class="header-left">
+
 
     <div class="header-logos">
 
-      <img src="ITERA.png" alt="ITERA">
 
-      <img src="Logo_GT.png" alt="Geomatics">
+      <img
+        src="ITERA.png"
+        alt="ITERA"
+      >
 
-      <img src="LOGO_GT23.png" alt="GT23">
 
-      <img src="LOGO_KEMKER.png" alt="Kemah Kerja">
+      <img
+        src="Logo_GT.png"
+        alt="Teknik Geomatika"
+      >
+
+
+      <img
+        src="LOGO_GT23.png"
+        alt="GT23"
+      >
+
+
+      <img
+        src="LOGO_KEMKER.png"
+        alt="Kemah Kerja"
+      >
+
 
     </div>
 
+
     <div class="header-title">
+
 
       <h1>
         WEBGIS KELOMPOK 1
       </h1>
 
+
       <p>
         Pemetaan dan Visualisasi Garis Pantai
       </p>
 
+
     </div>
+
 
   </div>
 
 
   <div class="header-right">
 
+
     <div class="header-badge">
       WGS 84 · EPSG:4326
     </div>
+
 
     <button
       id="feedbackOpen"
@@ -917,19 +2234,26 @@ html,body{
       Kritik &amp; Saran
     </button>
 
+
   </div>
+
 
 </header>
 
 
-<!-- ========================= MAP ========================= -->
+<!-- =======================================================
+     MAP
+======================================================= -->
 
 <div id="map"></div>
 
 
-<!-- ========================= SIDEBAR ========================= -->
+<!-- =======================================================
+     SIDEBAR
+======================================================= -->
 
 <div id="sidebar">
+
 
   <div class="sidebar-body">
 
@@ -938,9 +2262,11 @@ html,body{
 
     <div class="info-card">
 
+
       <div class="info-title">
         Tentang Peta
       </div>
+
 
       <p class="info-text">
 
@@ -951,9 +2277,11 @@ html,body{
 
       </p>
 
+
       <span class="reference-tag">
         Wilayah studi · Desa Sidodadi
       </span>
+
 
     </div>
 
@@ -962,6 +2290,7 @@ html,body{
 
     <div class="info-card">
 
+
       <div class="info-title">
         Sumber Data Garis Pantai
       </div>
@@ -969,51 +2298,62 @@ html,body{
 
       <div class="data-item">
 
+
         <div class="data-name">
           Garis Pantai RTK
         </div>
+
 
         <div class="data-desc">
           Garis pantai hasil pengukuran
           menggunakan GNSS RTK di lapangan.
         </div>
 
+
       </div>
 
 
       <div class="data-item">
+
 
         <div class="data-name">
-          Garis Pantai Citra
+          Garis Pantai Ekstraksi Citra
         </div>
 
+
         <div class="data-desc">
-          Data garis pantai pembanding hasil esktraks citra
-          Sentinel 2A dengan menggunakan indeks (NDWI).
+          Data garis pantai pembanding hasil esktraksi 
+          citra Sentinel 2A dengan indeks NDWI.
         </div>
+
 
       </div>
 
 
       <div class="data-item">
+
 
         <div class="data-name">
           Garis Pantai Digitasi
         </div>
+
 
         <div class="data-desc">
           Garis pantai yang diperoleh
           melalui proses digitasi.
         </div>
 
+
       </div>
 
 
       <div class="data-item">
 
+
         <div class="data-name">
           Orthophoto
         </div>
+
 
         <div class="data-desc">
           Citra orthophoto yang digunakan
@@ -1021,7 +2361,9 @@ html,body{
           interpretasi garis pantai.
         </div>
 
+
       </div>
+
 
     </div>
 
@@ -1030,6 +2372,7 @@ html,body{
 
     <div class="info-card">
 
+
       <div class="info-title">
         Informasi Pembuat Peta
       </div>
@@ -1037,39 +2380,48 @@ html,body{
 
       <div class="data-item">
 
+
         <div class="data-name">
           Kelompok 1
         </div>
+
 
         <div class="data-desc">
           Kemah Kerja Teknik Geomatika 2026
         </div>
 
+
       </div>
 
 
       <div class="data-item">
+
 
         <div class="data-name">
           Program Studi
         </div>
 
+
         <div class="data-desc">
           Teknik Geomatika
         </div>
+
 
       </div>
 
 
       <div class="data-item">
 
+
         <div class="data-name">
           Institusi
         </div>
 
+
         <div class="data-desc">
           Institut Teknologi Sumatera
         </div>
+
 
       </div>
 
@@ -1078,12 +2430,14 @@ html,body{
         Kemah Kerja Teknik Geomatika 2026
       </span>
 
+
     </div>
 
 
     <!-- SISTEM KOORDINAT -->
 
     <div class="info-card">
+
 
       <div class="info-title">
         Sistem Koordinat
@@ -1092,54 +2446,67 @@ html,body{
 
       <div class="coordinate-row">
 
+
         <span class="coordinate-label">
           Datum
         </span>
+
 
         <strong class="coordinate-value">
           WGS 84
         </strong>
 
+
       </div>
 
 
       <div class="coordinate-row">
+
 
         <span class="coordinate-label">
           Sistem
         </span>
 
+
         <strong class="coordinate-value">
           Geographic
         </strong>
+
 
       </div>
 
 
       <div class="coordinate-row">
+
 
         <span class="coordinate-label">
           EPSG
         </span>
 
+
         <strong class="coordinate-value">
           4326
         </strong>
+
 
       </div>
 
 
       <div class="coordinate-row">
 
+
         <span class="coordinate-label">
           Satuan
         </span>
+
 
         <strong class="coordinate-value">
           Derajat
         </strong>
 
+
       </div>
+
 
     </div>
 
@@ -1148,6 +2515,7 @@ html,body{
 
     <div class="info-card">
 
+
       <div class="info-title">
         Posisi Kursor
       </div>
@@ -1155,9 +2523,11 @@ html,body{
 
       <div class="coordinate-row">
 
+
         <span class="coordinate-label">
           Latitude
         </span>
+
 
         <span
           id="latitudeValue"
@@ -1166,14 +2536,17 @@ html,body{
           -
         </span>
 
+
       </div>
 
 
       <div class="coordinate-row">
 
+
         <span class="coordinate-label">
           Longitude
         </span>
+
 
         <span
           id="longitudeValue"
@@ -1182,32 +2555,41 @@ html,body{
           -
         </span>
 
+
       </div>
+
 
     </div>
 
+
   </div>
+
 
 </div>
 
 
-<!-- SIDEBAR TOGGLE -->
+<!-- =======================================================
+     SIDEBAR TOGGLE
+======================================================= -->
 
 <button
   id="sidebarToggle"
-  title="Buka/tutup informasi"
+  title="Buka / tutup informasi"
   type="button"
 >
   ‹
 </button>
 
 
-<!-- ========================= LEGEND ========================= -->
+<!-- =======================================================
+     LEGEND
+======================================================= -->
 
 <div class="legend">
 
+
   <div class="legend-title">
-    KETERANGAN
+    Legenda
   </div>
 
 
@@ -1218,57 +2600,69 @@ html,body{
 
   <div class="legend-item">
 
+
     <span
       class="legend-symbol legend-batas-desa"
     ></span>
+
 
     <span>
       Batas Desa
     </span>
 
+
   </div>
 
 
   <div class="legend-section">
-    Garis Pantai Citra
+    Garis Pantai Ekstraksi Citra
   </div>
 
 
   <div class="legend-item">
+
 
     <span
       class="legend-symbol legend-rtk"
     ></span>
 
+
     <span>
       Garis Pantai RTK
     </span>
+
 
   </div>
 
 
   <div class="legend-item">
+
 
     <span
       class="legend-symbol legend-pantai"
     ></span>
 
+
     <span>
       Garis Pantai
     </span>
+
 
   </div>
 
 
   <div class="legend-item">
 
+
     <span
       class="legend-symbol legend-digitasi"
     ></span>
 
+
     <span>
       Garis Pantai Digitasi
     </span>
+
 
   </div>
 
@@ -1280,20 +2674,26 @@ html,body{
 
   <div class="legend-item">
 
+
     <span
       class="legend-symbol legend-ortho"
     ></span>
+
 
     <span>
       Orthophoto
     </span>
 
+
   </div>
+
 
 </div>
 
 
-<!-- ========================= FEEDBACK MODAL ========================= -->
+<!-- =======================================================
+     FEEDBACK MODAL
+======================================================= -->
 
 <div
   id="feedbackModal"
@@ -1301,24 +2701,29 @@ html,body{
   aria-hidden="true"
 >
 
+
   <div
     class="feedback-modal"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="feedbackTitle"
   >
+
 
     <div class="feedback-head">
 
+
       <div>
 
-        <h2 id="feedbackTitle">
+
+        <h2>
           Kritik &amp; Saran
         </h2>
 
+
         <p>
-          Sampaikan tanggapan untuk pengembangan WebGIS.
+          Bantu kami mengembangkan WebGIS ini.
         </p>
+
 
       </div>
 
@@ -1327,10 +2732,10 @@ html,body{
         id="feedbackClose"
         class="feedback-close"
         type="button"
-        aria-label="Tutup"
       >
         ×
       </button>
+
 
     </div>
 
@@ -1340,12 +2745,14 @@ html,body{
       class="feedback-body"
     >
 
+
       <label
         class="feedback-label"
         for="feedbackName"
       >
         Nama
       </label>
+
 
       <input
         id="feedbackName"
@@ -1362,6 +2769,7 @@ html,body{
         Email
       </label>
 
+
       <input
         id="feedbackEmail"
         class="feedback-input"
@@ -1377,6 +2785,7 @@ html,body{
         Kritik / Saran
       </label>
 
+
       <textarea
         id="feedbackMessage"
         class="feedback-textarea"
@@ -1386,6 +2795,7 @@ html,body{
 
 
       <div class="feedback-actions">
+
 
         <button
           id="feedbackCancel"
@@ -1403,34 +2813,37 @@ html,body{
           Kirim
         </button>
 
+
       </div>
 
 
       <div class="feedback-note">
 
-        Setelah menekan Kirim, perangkat akan membuka
-        aplikasi email untuk mengirimkan pesan ke alamat
-        kelompok yang ditentukan pada script.
+        Pesan akan dikirim ke email
+        kelompok melalui aplikasi email
+        pada perangkat pengguna.
 
       </div>
 
+
     </form>
 
+
   </div>
+
 
 </div>
 
 
 <script>
 
-/* =========================================================
-   KONFIGURASI FEEDBACK
 
-   GANTI alamat di bawah dengan email kelompok kalian.
+/* =========================================================
+   EMAIL KRITIK & SARAN
 ========================================================= */
 
 const FEEDBACK_EMAIL =
-  "EMAIL_KELOMPOK_ANDA@CONTOH.COM";
+  "rivaldo.123230038@student.itera.ac.id";
 
 
 /* =========================================================
@@ -1443,7 +2856,7 @@ const map =
     {
 
       center:
-        [-5.55, 105.27],
+        [-5.55,105.27],
 
       zoom:
         15,
@@ -1489,14 +2902,22 @@ map.getPane(
 
 
 /* =========================================================
-   ZOOM + SCALE
+   ZOOM
 ========================================================= */
 
 L.control.zoom({
+
   position:
     "topright"
-}).addTo(map);
 
+}).addTo(
+  map
+);
+
+
+/* =========================================================
+   SCALE
+========================================================= */
 
 L.control.scale({
 
@@ -1504,7 +2925,7 @@ L.control.scale({
     "bottomleft",
 
   maxWidth:
-    150,
+    130,
 
   metric:
     true,
@@ -1515,7 +2936,9 @@ L.control.scale({
   updateWhenIdle:
     false
 
-}).addTo(map);
+}).addTo(
+  map
+);
 
 
 /* =========================================================
@@ -1526,8 +2949,11 @@ const esriImagery =
   L.tileLayer(
 
     "https://server.arcgisonline.com/" +
+
     "ArcGIS/rest/services/" +
+
     "World_Imagery/MapServer/tile/" +
+
     "{z}/{y}/{x}",
 
     {
@@ -1550,8 +2976,11 @@ const esriStreet =
   L.tileLayer(
 
     "https://server.arcgisonline.com/" +
+
     "ArcGIS/rest/services/" +
+
     "World_Street_Map/MapServer/tile/" +
+
     "{z}/{y}/{x}",
 
     {
@@ -1579,11 +3008,13 @@ function setBasemap(
   type
 ) {
 
+
   if (
     type ===
     "imagery"
   ) {
 
+
     if (
       map.hasLayer(
         esriStreet
@@ -1597,25 +3028,15 @@ function setBasemap(
     }
 
 
-    if (
-      !map.hasLayer(
-        esriImagery
-      )
-    ) {
-
-      esriImagery.addTo(
-        map
-      );
-
-    }
+    esriImagery.addTo(
+      map
+    );
 
   }
 
 
-  else if (
-    type ===
-    "street"
-  ) {
+  else {
+
 
     if (
       map.hasLayer(
@@ -1630,17 +3051,9 @@ function setBasemap(
     }
 
 
-    if (
-      !map.hasLayer(
-        esriStreet
-      )
-    ) {
-
-      esriStreet.addTo(
-        map
-      );
-
-    }
+    esriStreet.addTo(
+      map
+    );
 
   }
 
@@ -1648,7 +3061,7 @@ function setBasemap(
 
 
 /* =========================================================
-   STYLE GARIS
+   STYLES
 ========================================================= */
 
 function styleRTK() {
@@ -1798,6 +3211,7 @@ function highlightFeature(
     "BATAS_DESA"
   ) {
 
+
     layer.setStyle({
 
       color:
@@ -1811,15 +3225,16 @@ function highlightFeature(
 
     });
 
+
   }
 
-
   else {
+
 
     layer.setStyle({
 
       color:
-        "#ff7800",
+        "#f28c28",
 
       weight:
         4
@@ -1893,7 +3308,7 @@ function resetHighlight(
 
 
 /* =========================================================
-   ON EACH FEATURE
+   FEATURE EVENTS
 ========================================================= */
 
 function onEachRTK(
@@ -1985,7 +3400,7 @@ function onEachBatasDesa(
 
 
 /* =========================================================
-   VARIABLE LAYER
+   LAYER VARIABLES
 ========================================================= */
 
 let rtkLayer =
@@ -2005,7 +3420,7 @@ let orthophotoLayer =
 
 
 /* =========================================================
-   CRS / PROJ4
+   PROJ4
 ========================================================= */
 
 proj4.defs(
@@ -2013,14 +3428,23 @@ proj4.defs(
   "EPSG:32748",
 
   "+proj=utm " +
+
   "+zone=48 " +
+
   "+south " +
+
   "+datum=WGS84 " +
+
   "+units=m " +
+
   "+no_defs"
 
 );
 
+
+/* =========================================================
+   GEOJSON CRS
+========================================================= */
 
 function getFirstCoordinate(
   geojson
@@ -2033,6 +3457,7 @@ function getFirstCoordinate(
   function searchCoordinates(
     coords
   ) {
+
 
     if (
       !Array.isArray(
@@ -2047,8 +3472,10 @@ function getFirstCoordinate(
 
     if (
       coords.length >= 2 &&
+
       typeof coords[0] ===
         "number" &&
+
       typeof coords[1] ===
         "number"
     ) {
@@ -2066,6 +3493,7 @@ function getFirstCoordinate(
       i < coords.length;
       i++
     ) {
+
 
       if (
         result
@@ -2090,12 +3518,16 @@ function getFirstCoordinate(
     "FeatureCollection"
   ) {
 
+
     for (
       let i = 0;
+
       i <
       geojson.features.length;
+
       i++
     ) {
+
 
       if (
         result
@@ -2110,6 +3542,7 @@ function getFirstCoordinate(
         geojson.features[i]
           .geometry
       ) {
+
 
         searchCoordinates(
 
@@ -2126,10 +3559,12 @@ function getFirstCoordinate(
 
   }
 
+
   else if (
     geojson.type ===
     "Feature"
   ) {
+
 
     searchCoordinates(
 
@@ -2141,9 +3576,11 @@ function getFirstCoordinate(
 
   }
 
+
   else if (
     geojson.coordinates
   ) {
+
 
     searchCoordinates(
       geojson.coordinates
@@ -2177,10 +3614,15 @@ function detectCRSFromCoordinates(
 
 
   if (
-    Math.abs(coord[0]) >
-      180 ||
-    Math.abs(coord[1]) >
-      90
+
+    Math.abs(
+      coord[0]
+    ) > 180 ||
+
+    Math.abs(
+      coord[1]
+    ) > 90
+
   ) {
 
     return "EPSG:32748";
@@ -2197,10 +3639,12 @@ function detectGeoJSONCRS(
   geojson
 ) {
 
+
   if (
     geojson.crs &&
     geojson.crs.properties
   ) {
+
 
     const name =
 
@@ -2218,12 +3662,15 @@ function detectGeoJSONCRS(
 
 
     if (
+
       name.includes(
         "32748"
       ) ||
+
       name.includes(
         "UTM"
       )
+
     ) {
 
       return "EPSG:32748";
@@ -2240,10 +3687,15 @@ function detectGeoJSONCRS(
 }
 
 
+/* =========================================================
+   CONVERT COORDINATES
+========================================================= */
+
 function convertCoordinates(
   coordinates,
   sourceCRS
 ) {
+
 
   if (
     !Array.isArray(
@@ -2257,19 +3709,26 @@ function convertCoordinates(
 
 
   if (
+
     coordinates.length >= 2 &&
+
     typeof coordinates[0] ===
       "number" &&
+
     typeof coordinates[1] ===
       "number"
+
   ) {
+
 
     if (
       sourceCRS ===
       "EPSG:32748"
     ) {
 
+
       const converted =
+
         proj4(
 
           "EPSG:32748",
@@ -2287,20 +3746,26 @@ function convertCoordinates(
         );
 
 
-      return coordinates.length >
+      if (
+        coordinates.length >
         2
+      ) {
 
-        ? [
 
-            converted[0],
+        return [
 
-            converted[1],
+          converted[0],
 
-            coordinates[2]
+          converted[1],
 
-          ]
+          coordinates[2]
 
-        : converted;
+        ];
+
+      }
+
+
+      return converted;
 
     }
 
@@ -2313,9 +3778,13 @@ function convertCoordinates(
   return coordinates.map(
 
     item =>
+
       convertCoordinates(
+
         item,
+
         sourceCRS
+
       )
 
   );
@@ -2328,17 +3797,22 @@ function convertGeoJSONToWGS84(
   sourceCRS
 ) {
 
+
   const copy =
+
     JSON.parse(
+
       JSON.stringify(
         geojson
       )
+
     );
 
 
   function processGeometry(
     geometry
   ) {
+
 
     if (
       !geometry
@@ -2353,7 +3827,9 @@ function convertGeoJSONToWGS84(
       geometry.coordinates
     ) {
 
+
       geometry.coordinates =
+
         convertCoordinates(
 
           geometry.coordinates,
@@ -2372,9 +3848,11 @@ function convertGeoJSONToWGS84(
     "FeatureCollection"
   ) {
 
+
     copy.features.forEach(
 
       feature =>
+
         processGeometry(
           feature.geometry
         )
@@ -2389,6 +3867,7 @@ function convertGeoJSONToWGS84(
     "Feature"
   ) {
 
+
     processGeometry(
       copy.geometry
     );
@@ -2398,6 +3877,7 @@ function convertGeoJSONToWGS84(
 
   else {
 
+
     processGeometry(
       copy
     );
@@ -2406,22 +3886,6 @@ function convertGeoJSONToWGS84(
 
 
   return copy;
-
-}
-
-
-function layerShouldBeChecked(
-  id
-) {
-
-  const element =
-    document.getElementById(
-      id
-    );
-
-
-  return !element ||
-    element.checked;
 
 }
 
@@ -2437,9 +3901,11 @@ fetch(
 .then(
   response => {
 
+
     if (
       !response.ok
     ) {
+
 
       throw new Error(
         "Garis_Pantai_RTK.geojson tidak ditemukan"
@@ -2456,7 +3922,9 @@ fetch(
 .then(
   data => {
 
+
     const converted =
+
       convertGeoJSONToWGS84(
 
         data,
@@ -2467,6 +3935,7 @@ fetch(
 
 
     rtkLayer =
+
       L.geoJSON(
 
         converted,
@@ -2484,23 +3953,16 @@ fetch(
       );
 
 
-    if (
-      layerShouldBeChecked(
-        "layerRTK"
-      )
-    ) {
-
-      rtkLayer.addTo(
-        map
-      );
-
-    }
+    rtkLayer.addTo(
+      map
+    );
 
   }
 )
 
 .catch(
   error =>
+
     console.error(
       "Error RTK:",
       error
@@ -2519,9 +3981,11 @@ fetch(
 .then(
   response => {
 
+
     if (
       !response.ok
     ) {
+
 
       throw new Error(
         "Garis_Pantai.geojson tidak ditemukan"
@@ -2538,13 +4002,16 @@ fetch(
 .then(
   data => {
 
+
     const sourceCRS =
+
       detectGeoJSONCRS(
         data
       );
 
 
     const converted =
+
       convertGeoJSONToWGS84(
 
         data,
@@ -2555,6 +4022,7 @@ fetch(
 
 
     pantaiLayer =
+
       L.geoJSON(
 
         converted,
@@ -2572,23 +4040,16 @@ fetch(
       );
 
 
-    if (
-      layerShouldBeChecked(
-        "layerPantai"
-      )
-    ) {
-
-      pantaiLayer.addTo(
-        map
-      );
-
-    }
+    pantaiLayer.addTo(
+      map
+    );
 
   }
 )
 
 .catch(
   error =>
+
     console.error(
       "Error Garis Pantai:",
       error
@@ -2607,9 +4068,11 @@ fetch(
 .then(
   response => {
 
+
     if (
       !response.ok
     ) {
+
 
       throw new Error(
         "Garis_Pantai_Digitasi.geojson tidak ditemukan"
@@ -2626,13 +4089,16 @@ fetch(
 .then(
   data => {
 
+
     const sourceCRS =
+
       detectGeoJSONCRS(
         data
       );
 
 
     const converted =
+
       convertGeoJSONToWGS84(
 
         data,
@@ -2643,6 +4109,7 @@ fetch(
 
 
     digitasiLayer =
+
       L.geoJSON(
 
         converted,
@@ -2660,23 +4127,16 @@ fetch(
       );
 
 
-    if (
-      layerShouldBeChecked(
-        "layerDigitasi"
-      )
-    ) {
-
-      digitasiLayer.addTo(
-        map
-      );
-
-    }
+    digitasiLayer.addTo(
+      map
+    );
 
   }
 )
 
 .catch(
   error =>
+
     console.error(
       "Error Digitasi:",
       error
@@ -2695,9 +4155,11 @@ fetch(
 .then(
   response => {
 
+
     if (
       !response.ok
     ) {
+
 
       throw new Error(
         "Batas Administrasi Desa Sidodadi.geojson tidak ditemukan"
@@ -2714,13 +4176,16 @@ fetch(
 .then(
   data => {
 
+
     const sourceCRS =
+
       detectGeoJSONCRS(
         data
       );
 
 
     const converted =
+
       convertGeoJSONToWGS84(
 
         data,
@@ -2731,6 +4196,7 @@ fetch(
 
 
     const batasDesaMask =
+
       L.geoJSON(
 
         converted,
@@ -2746,6 +4212,7 @@ fetch(
 
 
     const batasDesaCore =
+
       L.geoJSON(
 
         converted,
@@ -2764,6 +4231,7 @@ fetch(
 
 
     batasDesaLayer =
+
       L.layerGroup([
 
         batasDesaMask,
@@ -2773,23 +4241,16 @@ fetch(
       ]);
 
 
-    if (
-      layerShouldBeChecked(
-        "layerBatasDesa"
-      )
-    ) {
-
-      batasDesaLayer.addTo(
-        map
-      );
-
-    }
+    batasDesaLayer.addTo(
+      map
+    );
 
   }
 )
 
 .catch(
   error =>
+
     console.error(
       "Error Batas Desa:",
       error
@@ -2798,7 +4259,9 @@ fetch(
 
 
 /* =========================================================
-   ORTHOPHOTO TMS L15-L19
+   ORTHOPHOTO TMS
+   L15 - L19
+   ZOOM > 19 MENGGUNAKAN L19
 ========================================================= */
 
 const ORTHO_URL_BASE =
@@ -2823,9 +4286,11 @@ const ORTHO_NATIVE_ZOOM =
 
 
 orthophotoLayer =
+
   L.tileLayer(
 
     ORTHO_URL_BASE +
+
     "{z}/{x}/{y}.png",
 
     {
@@ -2872,7 +4337,7 @@ orthophotoLayer =
 
 
 /* =========================================================
-   ORTHOPHOTO OTOMATIS ON
+   ORTHOPHOTO OTOMATIS AKTIF
 ========================================================= */
 
 orthophotoLayer.addTo(
@@ -2885,9 +4350,6 @@ orthophotoLayer.addTo(
 ========================================================= */
 
 function updateAutoZoom() {
-
-  let targetLayer =
-    null;
 
 
   const candidates = [
@@ -2903,10 +4365,15 @@ function updateAutoZoom() {
   ];
 
 
+  let targetLayer =
+    null;
+
+
   for (
     const layer of
       candidates
   ) {
+
 
     if (
       layer &&
@@ -2914,6 +4381,7 @@ function updateAutoZoom() {
         layer
       )
     ) {
+
 
       const bounds =
         layer.getBounds();
@@ -2924,8 +4392,10 @@ function updateAutoZoom() {
         bounds.isValid()
       ) {
 
+
         targetLayer =
           layer;
+
 
         break;
 
@@ -2940,9 +4410,11 @@ function updateAutoZoom() {
     !targetLayer
   ) {
 
+
     alert(
       "Tidak ada layer aktif."
     );
+
 
     return;
 
@@ -2955,11 +4427,8 @@ function updateAutoZoom() {
 
     {
 
-      paddingTopLeft:
-        [30,30],
-
-      paddingBottomRight:
-        [30,30],
+      padding:
+        [35,35],
 
       maxZoom:
         17,
@@ -2968,7 +4437,7 @@ function updateAutoZoom() {
         true,
 
       duration:
-        0.7
+        .7
 
     }
 
@@ -2978,26 +4447,33 @@ function updateAutoZoom() {
 
 
 /* =========================================================
-   CUSTOM LAYER CONTROL
+   LAYER CONTROL
 ========================================================= */
 
 const LayerControl =
+
   L.Control.extend({
 
-    options:
-      {
-        position:
-          "topright"
-      },
+    options: {
+
+      position:
+        "topright"
+
+    },
 
 
     onAdd:
       function(map) {
 
+
         const container =
+
           L.DomUtil.create(
+
             "div",
+
             "layer-control-wrapper"
+
           );
 
 
@@ -3007,32 +4483,45 @@ const LayerControl =
 
 
         const button =
+
           L.DomUtil.create(
+
             "button",
+
             "layer-control-button",
+
             container
+
           );
 
 
         button.type =
           "button";
 
+
         button.title =
           "Layer";
+
 
         button.innerHTML =
           "☷";
 
 
         const panel =
+
           L.DomUtil.create(
+
             "div",
+
             "layer-panel",
+
             container
+
           );
 
 
         panel.innerHTML = `
+
 
           <div class="layer-panel-title">
 
@@ -3181,14 +4670,20 @@ const LayerControl =
             AUTO ZOOM TO LAYER
           </button>
 
+
         `;
 
+
+        /* =====================================================
+           OPEN PANEL
+        ===================================================== */
 
         button.addEventListener(
 
           "click",
 
           function(e) {
+
 
             e.stopPropagation();
 
@@ -3202,6 +4697,10 @@ const LayerControl =
         );
 
 
+        /* =====================================================
+           BASEMAP
+        ===================================================== */
+
         panel
           .querySelector(
             "#baseImagery"
@@ -3210,10 +4709,13 @@ const LayerControl =
 
             "change",
 
-            () =>
+            function() {
+
               setBasemap(
                 "imagery"
-              )
+              );
+
+            }
 
           );
 
@@ -3226,13 +4728,20 @@ const LayerControl =
 
             "change",
 
-            () =>
+            function() {
+
               setBasemap(
                 "street"
-              )
+              );
+
+            }
 
           );
 
+
+        /* =====================================================
+           BATAS DESA
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3244,6 +4753,7 @@ const LayerControl =
 
             function() {
 
+
               if (
                 !batasDesaLayer
               ) {
@@ -3253,18 +4763,32 @@ const LayerControl =
               }
 
 
-              this.checked
+              if (
+                this.checked
+              ) {
 
-                ? batasDesaLayer.addTo(map)
+                batasDesaLayer.addTo(
+                  map
+                );
 
-                : map.removeLayer(
-                    batasDesaLayer
-                  );
+              }
+
+              else {
+
+                map.removeLayer(
+                  batasDesaLayer
+                );
+
+              }
 
             }
 
           );
 
+
+        /* =====================================================
+           RTK
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3276,6 +4800,7 @@ const LayerControl =
 
             function() {
 
+
               if (
                 !rtkLayer
               ) {
@@ -3285,18 +4810,32 @@ const LayerControl =
               }
 
 
-              this.checked
+              if (
+                this.checked
+              ) {
 
-                ? rtkLayer.addTo(map)
+                rtkLayer.addTo(
+                  map
+                );
 
-                : map.removeLayer(
-                    rtkLayer
-                  );
+              }
+
+              else {
+
+                map.removeLayer(
+                  rtkLayer
+                );
+
+              }
 
             }
 
           );
 
+
+        /* =====================================================
+           PANTAI
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3308,6 +4847,7 @@ const LayerControl =
 
             function() {
 
+
               if (
                 !pantaiLayer
               ) {
@@ -3317,18 +4857,32 @@ const LayerControl =
               }
 
 
-              this.checked
+              if (
+                this.checked
+              ) {
 
-                ? pantaiLayer.addTo(map)
+                pantaiLayer.addTo(
+                  map
+                );
 
-                : map.removeLayer(
-                    pantaiLayer
-                  );
+              }
+
+              else {
+
+                map.removeLayer(
+                  pantaiLayer
+                );
+
+              }
 
             }
 
           );
 
+
+        /* =====================================================
+           DIGITASI
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3340,6 +4894,7 @@ const LayerControl =
 
             function() {
 
+
               if (
                 !digitasiLayer
               ) {
@@ -3349,18 +4904,32 @@ const LayerControl =
               }
 
 
-              this.checked
+              if (
+                this.checked
+              ) {
 
-                ? digitasiLayer.addTo(map)
+                digitasiLayer.addTo(
+                  map
+                );
 
-                : map.removeLayer(
-                    digitasiLayer
-                  );
+              }
+
+              else {
+
+                map.removeLayer(
+                  digitasiLayer
+                );
+
+              }
 
             }
 
           );
 
+
+        /* =====================================================
+           ORTHOPHOTO
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3372,6 +4941,7 @@ const LayerControl =
 
             function() {
 
+
               if (
                 !orthophotoLayer
               ) {
@@ -3381,18 +4951,32 @@ const LayerControl =
               }
 
 
-              this.checked
+              if (
+                this.checked
+              ) {
 
-                ? orthophotoLayer.addTo(map)
+                orthophotoLayer.addTo(
+                  map
+                );
 
-                : map.removeLayer(
-                    orthophotoLayer
-                  );
+              }
+
+              else {
+
+                map.removeLayer(
+                  orthophotoLayer
+                );
+
+              }
 
             }
 
           );
 
+
+        /* =====================================================
+           AUTO ZOOM
+        ===================================================== */
 
         panel
           .querySelector(
@@ -3403,6 +4987,7 @@ const LayerControl =
             "click",
 
             function() {
+
 
               updateAutoZoom();
 
@@ -3429,7 +5014,7 @@ map.addControl(
 
 
 /* =========================================================
-   KOORDINAT KURSOR
+   CURSOR COORDINATE
 ========================================================= */
 
 map.on(
@@ -3437,6 +5022,7 @@ map.on(
   "mousemove",
 
   function(e) {
+
 
     document
       .getElementById(
@@ -3467,12 +5053,14 @@ map.on(
 ========================================================= */
 
 const sidebar =
+
   document.getElementById(
     "sidebar"
   );
 
 
 const sidebarToggle =
+
   document.getElementById(
     "sidebarToggle"
   );
@@ -3484,25 +5072,38 @@ sidebarToggle.addEventListener(
 
   function() {
 
+
     sidebar.classList.toggle(
       "closed"
     );
 
 
-    sidebarToggle.textContent =
-
+    if (
       sidebar.classList.contains(
         "closed"
       )
+    ) {
 
-        ? "›"
-        : "‹";
+      sidebarToggle.textContent =
+        "›";
+
+    }
+
+    else {
+
+      sidebarToggle.textContent =
+        "‹";
+
+    }
 
 
     setTimeout(
 
-      () =>
-        map.invalidateSize(),
+      function() {
+
+        map.invalidateSize();
+
+      },
 
       300
 
@@ -3518,30 +5119,35 @@ sidebarToggle.addEventListener(
 ========================================================= */
 
 const feedbackModal =
+
   document.getElementById(
     "feedbackModal"
   );
 
 
 const feedbackOpen =
+
   document.getElementById(
     "feedbackOpen"
   );
 
 
 const feedbackClose =
+
   document.getElementById(
     "feedbackClose"
   );
 
 
 const feedbackCancel =
+
   document.getElementById(
     "feedbackCancel"
   );
 
 
 const feedbackForm =
+
   document.getElementById(
     "feedbackForm"
   );
@@ -3549,9 +5155,11 @@ const feedbackForm =
 
 function openFeedback() {
 
+
   feedbackModal.classList.add(
     "open"
   );
+
 
   feedbackModal.setAttribute(
     "aria-hidden",
@@ -3561,12 +5169,15 @@ function openFeedback() {
 
   setTimeout(
 
-    () =>
+    function() {
+
       document
         .getElementById(
           "feedbackMessage"
         )
-        .focus(),
+        .focus();
+
+    },
 
     50
 
@@ -3577,9 +5188,11 @@ function openFeedback() {
 
 function closeFeedback() {
 
+
   feedbackModal.classList.remove(
     "open"
   );
+
 
   feedbackModal.setAttribute(
     "aria-hidden",
@@ -3590,20 +5203,29 @@ function closeFeedback() {
 
 
 feedbackOpen.addEventListener(
+
   "click",
+
   openFeedback
+
 );
 
 
 feedbackClose.addEventListener(
+
   "click",
+
   closeFeedback
+
 );
 
 
 feedbackCancel.addEventListener(
+
   "click",
+
   closeFeedback
+
 );
 
 
@@ -3613,10 +5235,12 @@ feedbackModal.addEventListener(
 
   function(e) {
 
+
     if (
       e.target ===
       feedbackModal
     ) {
+
 
       closeFeedback();
 
@@ -3633,10 +5257,12 @@ document.addEventListener(
 
   function(e) {
 
+
     if (
       e.key ===
       "Escape"
     ) {
+
 
       closeFeedback();
 
@@ -3648,7 +5274,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   KIRIM KRITIK / SARAN
+   KIRIM KRITIK & SARAN
 ========================================================= */
 
 feedbackForm.addEventListener(
@@ -3656,6 +5282,7 @@ feedbackForm.addEventListener(
   "submit",
 
   function(e) {
+
 
     e.preventDefault();
 
@@ -3698,23 +5325,11 @@ feedbackForm.addEventListener(
       !message
     ) {
 
-      return;
-
-    }
-
-
-    if (
-      FEEDBACK_EMAIL.includes(
-        "CONTOH.COM"
-      )
-    ) {
 
       alert(
-
-        "Ganti FEEDBACK_EMAIL pada " +
-        "script dengan email kelompok kalian terlebih dahulu."
-
+        "Silakan tuliskan kritik atau saran terlebih dahulu."
       );
+
 
       return;
 
@@ -3765,6 +5380,7 @@ feedbackForm.addEventListener(
 
       body;
 
+
   }
 
 );
@@ -3775,17 +5391,22 @@ feedbackForm.addEventListener(
 ========================================================= */
 
 console.log(
-  "WebGIS Kelompok 1 aktif."
+  "WebGIS Kelompok 1 aktif"
 );
 
 console.log(
-  "Orthophoto URL:",
+  "Orthophoto:",
   ORTHO_URL_BASE
 );
 
 console.log(
-  "Orthophoto native zoom:",
+  "Native zoom:",
   ORTHO_NATIVE_ZOOM
+);
+
+console.log(
+  "Feedback email:",
+  FEEDBACK_EMAIL
 );
 
 </script>
