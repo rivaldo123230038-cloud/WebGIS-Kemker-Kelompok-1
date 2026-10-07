@@ -1750,22 +1750,86 @@ body {
 
 
 /* =========================================================
-   LEGENDA
+   LEGEND CONTROL
+   MUNCUL DI KANAN ATAS SETELAH MEASURE
 ========================================================= */
 
-.legend {
+.legend-control-wrapper {
 
   position:
-    fixed;
+    relative;
 
-  right:
+}
+
+
+.legend-control-button {
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  margin-top:
+    8px;
+
+  border:
+    none;
+
+  border-radius:
+    9px;
+
+  background:
+    white;
+
+  color:
+    var(--navy);
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.17);
+
+  cursor:
+    pointer;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-size:
     18px;
 
-  bottom:
-    17px;
+  font-weight:
+    700;
 
-  z-index:
-    1100;
+}
+
+
+.legend-control-button:hover {
+
+  background:
+    #f4f7f8;
+
+  color:
+    var(--orange);
+
+}
+
+
+.legend-panel {
+
+  position:
+    absolute;
+
+  top:
+    46px;
+
+  right:
+    0;
 
   width:
     225px;
@@ -1774,7 +1838,7 @@ body {
     13px 14px;
 
   background:
-    rgba(255,255,255,.96);
+    rgba(255,255,255,.97);
 
   border:
     1px solid var(--line);
@@ -1783,7 +1847,18 @@ body {
     11px;
 
   box-shadow:
-    0 5px 17px rgba(0,0,0,.13);
+    0 7px 22px rgba(16,44,69,.16);
+
+  display:
+    none;
+
+}
+
+
+.legend-panel.open {
+
+  display:
+    block;
 
 }
 
@@ -2581,6 +2656,14 @@ body {
   }
 
 
+  .legend-panel {
+
+    width:
+      215px;
+
+  }
+
+
   #measureInfo {
 
     bottom:
@@ -3021,116 +3104,6 @@ body {
 >
   ‹
 </button>
-
-
-<!-- =======================================================
-     LEGEND
-======================================================= -->
-
-<div class="legend">
-
-
-  <div class="legend-title">
-    KETERANGAN
-  </div>
-
-
-  <div class="legend-section">
-    Administrasi
-  </div>
-
-
-  <div class="legend-item">
-
-
-    <span
-      class="legend-symbol legend-batas-desa"
-    ></span>
-
-
-    <span>
-      Batas Desa
-    </span>
-
-
-  </div>
-
-
-  <div class="legend-section">
-    Garis Pantai Ekstraksi Citra
-  </div>
-
-
-  <div class="legend-item">
-
-
-    <span
-      class="legend-symbol legend-rtk"
-    ></span>
-
-
-    <span>
-      Garis Pantai RTK
-    </span>
-
-
-  </div>
-
-
-  <div class="legend-item">
-
-
-    <span
-      class="legend-symbol legend-pantai"
-    ></span>
-
-
-    <span>
-      Garis Pantai
-    </span>
-
-
-  </div>
-
-
-  <div class="legend-item">
-
-
-    <span
-      class="legend-symbol legend-digitasi"
-    ></span>
-
-
-    <span>
-      Garis Pantai Digitasi
-    </span>
-
-
-  </div>
-
-
-  <div class="legend-section">
-    Citra
-  </div>
-
-
-  <div class="legend-item">
-
-
-    <span
-      class="legend-symbol legend-ortho"
-    ></span>
-
-
-    <span>
-      Orthophoto
-    </span>
-
-
-  </div>
-
-
-</div>
 
 
 <!-- =======================================================
@@ -6916,6 +6889,183 @@ const MeasureControl =
 
 map.addControl(
   new MeasureControl()
+);
+
+
+/* =========================================================
+   LEGEND CONTROL UI
+   DIKANAN ATAS, SETELAH MEASURE
+========================================================= */
+
+const LegendControl =
+  L.Control.extend({
+
+    options: {
+
+      position:
+        "topright"
+
+    },
+
+
+    onAdd:
+      function(map) {
+
+
+        const container =
+          L.DomUtil.create(
+            "div",
+            "legend-control-wrapper"
+          );
+
+
+        L.DomEvent.disableClickPropagation(
+          container
+        );
+
+
+        const button =
+          L.DomUtil.create(
+            "button",
+            "legend-control-button",
+            container
+          );
+
+
+        button.type =
+          "button";
+
+        button.title =
+          "KETERANGAN";
+
+        button.innerHTML =
+          "▤";
+
+
+        const panel =
+          L.DomUtil.create(
+            "div",
+            "legend-panel",
+            container
+          );
+
+
+        panel.innerHTML = `
+
+          <div class="legend-title">
+            KETERANGAN
+          </div>
+
+
+          <div class="legend-section">
+            Administrasi
+          </div>
+
+
+          <div class="legend-item">
+
+            <span
+              class="legend-symbol legend-batas-desa"
+            ></span>
+
+            <span>
+              Batas Desa
+            </span>
+
+          </div>
+
+
+          <div class="legend-section">
+            Garis Pantai Ekstraksi Citra
+          </div>
+
+
+          <div class="legend-item">
+
+            <span
+              class="legend-symbol legend-rtk"
+            ></span>
+
+            <span>
+              Garis Pantai RTK
+            </span>
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span
+              class="legend-symbol legend-pantai"
+            ></span>
+
+            <span>
+              Garis Pantai
+            </span>
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span
+              class="legend-symbol legend-digitasi"
+            ></span>
+
+            <span>
+              Garis Pantai Digitasi
+            </span>
+
+          </div>
+
+
+          <div class="legend-section">
+            Citra
+          </div>
+
+
+          <div class="legend-item">
+
+            <span
+              class="legend-symbol legend-ortho"
+            ></span>
+
+            <span>
+              Orthophoto
+            </span>
+
+          </div>
+
+        `;
+
+
+        button.addEventListener(
+
+          "click",
+
+          function(e) {
+
+            e.stopPropagation();
+
+
+            panel.classList.toggle(
+              "open"
+            );
+
+          }
+
+        );
+
+
+        return container;
+
+      }
+
+  });
+
+
+map.addControl(
+  new LegendControl()
 );
 
 
