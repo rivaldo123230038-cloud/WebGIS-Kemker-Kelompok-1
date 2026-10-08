@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
   rel="stylesheet"
 >
 
@@ -2474,11 +2474,427 @@ body {
 }
 
 
+
+/* =========================================================
+   WELCOME POPUP
+   Clean academic / modern style
+========================================================= */
+
+.welcome-backdrop {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    6000;
+
+  display:
+    none;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(11,36,56,.34);
+
+  backdrop-filter:
+    blur(2px);
+
+}
+
+
+.welcome-backdrop.open {
+
+  display:
+    flex;
+
+}
+
+
+.welcome-modal {
+
+  width:
+    min(520px, 100%);
+
+  overflow:
+    hidden;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid #dfe7ec;
+
+  border-radius:
+    14px;
+
+  box-shadow:
+    0 18px 48px rgba(16,44,69,.20);
+
+  font-family:
+    "DM Sans",
+    "Inter",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  animation:
+    welcomeIn .24s ease-out;
+
+}
+
+
+@keyframes welcomeIn {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(8px);
+
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+.welcome-top {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    16px;
+
+  padding:
+    20px 24px;
+
+  background:
+    #163a59;
+
+  color:
+    #ffffff;
+
+  border-bottom:
+    3px solid #e98928;
+
+}
+
+
+.welcome-logo-wrap {
+
+  width:
+    58px;
+
+  height:
+    58px;
+
+  flex: 0 0 58px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  background:
+    #ffffff;
+
+  border-radius:
+    12px;
+
+  border:
+    1px solid rgba(255,255,255,.72);
+
+}
+
+
+.welcome-logo {
+
+  width:
+    45px;
+
+  height:
+    45px;
+
+  object-fit:
+    contain;
+
+}
+
+
+.welcome-heading {
+
+  min-width:
+    0;
+
+}
+
+
+.welcome-kicker {
+
+  margin-bottom:
+    5px;
+
+  font-size:
+    8.5px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
+  color:
+    rgba(255,255,255,.72);
+
+}
+
+
+.welcome-title {
+
+  margin:
+    0;
+
+  font-size:
+    21px;
+
+  line-height:
+    1.25;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    -.25px;
+
+  color:
+    #ffffff;
+
+}
+
+
+.welcome-body {
+
+  padding:
+    21px 24px 22px;
+
+}
+
+
+.welcome-text {
+
+  margin:
+    0;
+
+  color:
+    #5f6f7a;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.75;
+
+}
+
+
+.welcome-note {
+
+  margin-top:
+    13px;
+
+  padding:
+    10px 12px;
+
+  border-left:
+    3px solid #e98928;
+
+  border-top:
+    1px solid #e8edf0;
+
+  border-right:
+    1px solid #e8edf0;
+
+  border-bottom:
+    1px solid #e8edf0;
+
+  border-radius:
+    7px;
+
+  background:
+    #f7f9fa;
+
+  color:
+    #52616c;
+
+  font-size:
+    9.5px;
+
+  line-height:
+    1.6;
+
+}
+
+
+.welcome-actions {
+
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+  margin-top:
+    17px;
+
+}
+
+
+.welcome-start {
+
+  height:
+    36px;
+
+  padding:
+    0 16px;
+
+  border:
+    none;
+
+  border-radius:
+    7px;
+
+  background:
+    #e98928;
+
+  color:
+    #ffffff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    background .18s ease,
+    transform .18s ease;
+
+}
+
+
+.welcome-start:hover {
+
+  background:
+    #d97817;
+
+  transform:
+    translateY(-1px);
+
+}
+
+
 /* =========================================================
    MOBILE
 ========================================================= */
 
 @media(max-width:760px) {
+
+  .welcome-modal {
+
+    width:
+      min(430px, 100%);
+
+  }
+
+
+  .welcome-top {
+
+    gap:
+      12px;
+
+    padding:
+      18px 18px;
+
+  }
+
+
+  .welcome-logo-wrap {
+
+    width:
+      50px;
+
+    height:
+      50px;
+
+    flex-basis:
+      50px;
+
+  }
+
+
+  .welcome-logo {
+
+    width:
+      39px;
+
+    height:
+      39px;
+
+  }
+
+
+  .welcome-body {
+
+    padding:
+      18px 20px 20px;
+
+  }
+
+
+  .welcome-title {
+
+    font-size:
+      17px;
+
+  }
+
 
   #topHeader {
 
@@ -2771,6 +3187,97 @@ body {
 ======================================================= -->
 
 <div id="map"></div>
+
+
+<!-- =======================================================
+     WELCOME POPUP
+======================================================= -->
+
+<div
+  id="welcomeModal"
+  class="welcome-backdrop"
+  aria-hidden="true"
+>
+
+  <div
+    class="welcome-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="welcomeTitle"
+  >
+
+    <div class="welcome-top">
+
+      <div class="welcome-logo-wrap">
+
+        <img
+          src="LOGO_KEMKER.png"
+          alt="Kemah Kerja"
+          class="welcome-logo"
+        >
+
+      </div>
+
+
+      <div class="welcome-heading">
+
+        <div class="welcome-kicker">
+          WEBGIS KELOMPOK 1
+        </div>
+
+
+        <h2
+          id="welcomeTitle"
+          class="welcome-title"
+        >
+          Selamat Datang di WebGIS Kelompok 1
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="welcome-body">
+
+      <p class="welcome-text">
+
+        Selamat datang dan selamat menjelajahi
+        WebGIS Kelompok 1. Peta ini menyajikan
+        visualisasi garis pantai Desa Sidodadi
+        melalui integrasi data pengukuran lapangan,
+        ekstraksi citra, digitasi, dan orthophoto.
+
+      </p>
+
+
+      <div class="welcome-note">
+
+        Gunakan menu Layer untuk mengatur tampilan
+        data, Measure untuk melakukan pengukuran,
+        serta Legenda untuk memahami simbologi
+        yang ditampilkan pada peta.
+
+      </div>
+
+
+      <div class="welcome-actions">
+
+        <button
+          id="welcomeStart"
+          class="welcome-start"
+          type="button"
+        >
+          Mulai Menjelajah
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <!-- =======================================================
@@ -3553,7 +4060,7 @@ function styleBatasDesaMask() {
       "#FFD600",
 
     weight:
-      5,
+      3,
 
     opacity:
       1,
@@ -3583,7 +4090,7 @@ function styleBatasDesaCore() {
       "#000000",
 
     weight:
-      1.25,
+      0.85,
 
     opacity:
       1,
@@ -3592,7 +4099,7 @@ function styleBatasDesaCore() {
       false,
 
     dashArray:
-      "1 4 1 4 8 4",
+      "1 3 1 3 6 3",
 
     lineCap:
       "round",
@@ -7198,6 +7705,123 @@ sidebarToggle.addEventListener(
       },
 
       300
+
+    );
+
+  }
+
+);
+
+
+/* =========================================================
+   WELCOME POPUP
+========================================================= */
+
+const welcomeModal =
+  document.getElementById(
+    "welcomeModal"
+  );
+
+
+const welcomeStart =
+  document.getElementById(
+    "welcomeStart"
+  );
+
+
+function closeWelcome() {
+
+  welcomeModal.classList.remove(
+    "open"
+  );
+
+  welcomeModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+welcomeStart.addEventListener(
+
+  "click",
+
+  closeWelcome
+
+);
+
+
+welcomeModal.addEventListener(
+
+  "click",
+
+  function(e) {
+
+    if (
+      e.target ===
+      welcomeModal
+    ) {
+
+      closeWelcome();
+
+    }
+
+  }
+
+);
+
+
+document.addEventListener(
+
+  "keydown",
+
+  function(e) {
+
+    if (
+      e.key ===
+      "Escape" &&
+
+      welcomeModal.classList.contains(
+        "open"
+      )
+    ) {
+
+      closeWelcome();
+
+    }
+
+  }
+
+);
+
+
+/* =========================================================
+   TAMPILKAN WELCOME POPUP SAAT WEBGIS DIBUKA
+========================================================= */
+
+window.addEventListener(
+
+  "load",
+
+  function() {
+
+    setTimeout(
+
+      function() {
+
+        welcomeModal.classList.add(
+          "open"
+        );
+
+        welcomeModal.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+      },
+
+      350
 
     );
 
