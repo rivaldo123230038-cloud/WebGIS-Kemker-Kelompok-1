@@ -818,10 +818,10 @@ body {
     #64737e;
 
   font-size:
-    10.5px;
+    11.2px;
 
   line-height:
-    1.7;
+    1.75;
 
 }
 
@@ -850,7 +850,7 @@ body {
     #f7f9fa;
 
   font-size:
-    8px;
+    8.5px;
 
   font-weight:
     600;
@@ -890,7 +890,7 @@ body {
     #344b5c;
 
   font-size:
-    10.5px;
+    11px;
 
   font-weight:
     700;
@@ -907,10 +907,10 @@ body {
     #78858e;
 
   font-size:
-    9.5px;
+    10.2px;
 
   line-height:
-    1.5;
+    1.6;
 
 }
 
@@ -953,7 +953,7 @@ body {
     #7b8993;
 
   font-size:
-    9px;
+    9.5px;
 
 }
 
@@ -969,7 +969,7 @@ body {
     monospace;
 
   font-size:
-    9px;
+    9.5px;
 
   font-weight:
     600;
@@ -2007,7 +2007,7 @@ body {
 }
 
 
-.legend-digitasi::after {
+.legend-integrasi::after {
 
   content:
     "";
@@ -2147,6 +2147,46 @@ body {
 /* =========================================================
    FEEDBACK MODAL
 ========================================================= */
+
+
+
+/* =========================================================
+   NORTH ARROW / PENUNJUK ARAH UTARA
+   Map furniture; tidak mengubah simbologi layer
+========================================================= */
+
+.north-arrow-control {
+
+  width: 38px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: rgba(255,255,255,.96);
+  border: 1px solid #e1e7eb;
+  border-radius: 9px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.17);
+  color: var(--navy);
+  user-select: none;
+}
+
+.north-arrow-n {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 9px;
+  line-height: 11px;
+  font-weight: 800;
+  letter-spacing: .4px;
+  color: var(--navy);
+}
+
+.north-arrow-control svg {
+  display: block;
+  width: 20px;
+  height: 23px;
+}
+
 
 .modal-backdrop {
 
@@ -3080,6 +3120,12 @@ body {
   }
 
 
+  .north-arrow-control {
+    width: 35px;
+    height: 39px;
+  }
+
+
   #measureInfo {
 
     bottom:
@@ -3246,7 +3292,7 @@ body {
         WebGIS Kelompok 1. Peta ini menyajikan
         visualisasi garis pantai Desa Sidodadi
         melalui integrasi data pengukuran lapangan,
-        ekstraksi citra, digitasi, dan orthophoto.
+        ekstraksi citra, integrasi data, dan orthophoto.
 
       </p>
 
@@ -3305,7 +3351,7 @@ body {
         WebGIS ini menyajikan visualisasi
         garis pantai Desa Sidodadi dengan
         menggabungkan data hasil pengukuran,
-        digitasi, serta orthophoto.
+        ekstraksi citra, serta orthophoto.
 
       </p>
 
@@ -3354,7 +3400,7 @@ body {
 
 
         <div class="data-desc">
-          Data garis pantai pembanding hasil esktraksi 
+          Data garis pantai pembanding hasil ekstraksi 
           citra Sentinel 2A dengan indeks NDWI.
         </div>
 
@@ -3366,13 +3412,13 @@ body {
 
 
         <div class="data-name">
-          Garis Pantai Digitasi
+          Garis Pantai Integrasi
         </div>
 
 
         <div class="data-desc">
-          Garis pantai yang diperoleh
-          melalui proses digitasi.
+          Garis pantai hasil integrasi data
+          RTK dan ekstraksi citra.
         </div>
 
 
@@ -3454,6 +3500,19 @@ body {
           Institut Teknologi Sumatera
         </div>
 
+
+      </div>
+
+
+      <div class="data-item">
+
+        <div class="data-name">
+          Pembaruan Antarmuka
+        </div>
+
+        <div class="data-desc">
+          9 Oktober 2026
+        </div>
 
       </div>
 
@@ -3886,7 +3945,7 @@ const esriImagery =
         23,
 
       attribution:
-        "Tiles © Esri"
+        "Tiles © Esri — World Imagery"
 
     }
 
@@ -3913,7 +3972,7 @@ const esriStreet =
         20,
 
       attribution:
-        "Tiles © Esri"
+        "Tiles © Esri — World Street Map"
 
     }
 
@@ -4027,7 +4086,7 @@ function stylePantai() {
 }
 
 
-function styleDigitasi() {
+function styleIntegrasi() {
 
   return {
 
@@ -4204,11 +4263,11 @@ function resetHighlight(
 
   if (
     layer._layerType ===
-    "DIGITASI"
+    "INTEGRASI"
   ) {
 
     layer.setStyle(
-      styleDigitasi()
+      styleIntegrasi()
     );
 
   }
@@ -4276,13 +4335,13 @@ function onEachPantai(
 }
 
 
-function onEachDigitasi(
+function onEachIntegrasi(
   feature,
   layer
 ) {
 
   layer._layerType =
-    "DIGITASI";
+    "INTEGRASI";
 
 
   layer.on({
@@ -4330,7 +4389,7 @@ let rtkLayer =
 let pantaiLayer =
   null;
 
-let digitasiLayer =
+let integrasiLayer =
   null;
 
 let batasDesaLayer =
@@ -4979,11 +5038,11 @@ fetch(
 
 
 /* =========================================================
-   LOAD DIGITASI
+   LOAD GARIS PANTAI INTEGRASI
 ========================================================= */
 
 fetch(
-  "Garis_Pantai_Digitasi.geojson"
+  "Integrasi_RTK_NDWI.geojson"
 )
 
 .then(
@@ -4996,7 +5055,7 @@ fetch(
 
 
       throw new Error(
-        "Garis_Pantai_Digitasi.geojson tidak ditemukan"
+        "Integrasi_RTK_NDWI.geojson tidak ditemukan"
       );
 
     }
@@ -5029,7 +5088,7 @@ fetch(
       );
 
 
-    digitasiLayer =
+    integrasiLayer =
 
       L.geoJSON(
 
@@ -5038,17 +5097,17 @@ fetch(
         {
 
           style:
-            styleDigitasi,
+            styleIntegrasi,
 
           onEachFeature:
-            onEachDigitasi
+            onEachIntegrasi
 
         }
 
       );
 
 
-    digitasiLayer.addTo(
+    integrasiLayer.addTo(
       map
     );
 
@@ -5059,7 +5118,7 @@ fetch(
   error =>
 
     console.error(
-      "Error Digitasi:",
+      "Error Garis Pantai Integrasi:",
       error
     )
 );
@@ -5261,7 +5320,7 @@ orthophotoLayer =
         true,
 
       attribution:
-        "Orthophoto"
+        "Orthophoto: data pemetaan Desa Sidodadi"
 
     }
 
@@ -5379,10 +5438,10 @@ function updateAutoZoom() {
 
     {
       checkbox:
-        "layerDigitasi",
+        "layerIntegrasi",
 
       layer:
-        digitasiLayer
+        integrasiLayer
 
     }
 
@@ -5691,7 +5750,7 @@ const LayerControl =
             >
 
             <span>
-              Garis Pantai
+              Garis Pantai Ekstraksi Citra
             </span>
 
           </label>
@@ -5701,12 +5760,12 @@ const LayerControl =
 
             <input
               type="checkbox"
-              id="layerDigitasi"
+              id="layerIntegrasi"
               checked
             >
 
             <span>
-              Garis Pantai Digitasi
+              Garis Pantai Integrasi
             </span>
 
           </label>
@@ -5951,12 +6010,12 @@ const LayerControl =
 
 
         /* =====================================================
-           DIGITASI
+           GARIS PANTAI INTEGRASI
         ===================================================== */
 
         panel
           .querySelector(
-            "#layerDigitasi"
+            "#layerIntegrasi"
           )
           .addEventListener(
 
@@ -5966,7 +6025,7 @@ const LayerControl =
 
 
               if (
-                !digitasiLayer
+                !integrasiLayer
               ) {
 
                 return;
@@ -5978,7 +6037,7 @@ const LayerControl =
                 this.checked
               ) {
 
-                digitasiLayer.addTo(
+                integrasiLayer.addTo(
                   map
                 );
 
@@ -5987,7 +6046,7 @@ const LayerControl =
               else {
 
                 map.removeLayer(
-                  digitasiLayer
+                  integrasiLayer
                 );
 
               }
@@ -7483,7 +7542,7 @@ const LegendControl =
 
 
           <div class="legend-section">
-            Garis Pantai Ekstraksi Citra
+            Garis Pantai
           </div>
 
 
@@ -7507,7 +7566,7 @@ const LegendControl =
             ></span>
 
             <span>
-              Garis Pantai
+              Garis Pantai Ekstraksi Citra
             </span>
 
           </div>
@@ -7516,11 +7575,11 @@ const LegendControl =
           <div class="legend-item">
 
             <span
-              class="legend-symbol legend-digitasi"
+              class="legend-symbol legend-integrasi"
             ></span>
 
             <span>
-              Garis Pantai Digitasi
+              Garis Pantai Integrasi
             </span>
 
           </div>
@@ -7573,6 +7632,48 @@ const LegendControl =
 
 map.addControl(
   new LegendControl()
+);
+
+
+/* =========================================================
+   NORTH ARROW CONTROL
+========================================================= */
+
+const NorthArrowControl =
+  L.Control.extend({
+
+    options: {
+      position: "topright"
+    },
+
+    onAdd: function() {
+
+      const container =
+        L.DomUtil.create(
+          "div",
+          "north-arrow-control"
+        );
+
+      container.title = "Arah utara";
+      container.setAttribute("aria-label", "Arah utara peta");
+      container.innerHTML = `
+        <div class="north-arrow-n">N</div>
+        <svg viewBox="0 0 24 28" aria-hidden="true">
+          <path d="M12 1 L22 26 L12 20 L2 26 Z" fill="#163a59"></path>
+          <path d="M12 1 L12 20 L2 26 Z" fill="#e98928"></path>
+        </svg>
+      `;
+
+      L.DomEvent.disableClickPropagation(container);
+      L.DomEvent.disableScrollPropagation(container);
+      return container;
+
+    }
+
+  });
+
+map.addControl(
+  new NorthArrowControl()
 );
 
 
