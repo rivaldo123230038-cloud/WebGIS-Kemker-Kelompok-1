@@ -4408,6 +4408,25 @@ let orthophotoLayer =
 
 
 /* =========================================================
+   ORTHOPHOTO CLIPPING STATE
+   Boundary GeoJSON is loaded and used as a polygon mask
+   for each orthophoto tile directly in the browser.
+========================================================= */
+
+let orthophotoClipGeoJSON = null;
+
+let orthophotoClipPolygons = [];
+
+let orthophotoClipBounds = null;
+
+let resolveOrthophotoBoundaryReady = null;
+
+const orthophotoBoundaryReady = new Promise(resolve => {
+  resolveOrthophotoBoundaryReady = resolve;
+});
+
+
+/* =========================================================
    PROJ4
 ========================================================= */
 
@@ -5133,7 +5152,72 @@ fetch(
 
 
 /* =========================================================
+   FUNGSI UNTUK ORTHOPHOTO CLIPPING
+   Clip hanya bekerja jika GeoJSON batas desa mengandung
+   geometri Polygon atau MultiPolygon.
+========================================================= */
+
+function collectPolygonCoordinates(geojson) {
+
+  const polygons = [];
+
+  function visitGeometry(geometry) {
+
+    if (!geometry) {
+      return;
+    }
+
+    if (geometry.type === "Polygon") {
+      polygons.push(geometry.coordinates);
+      return;
+    }
+
+    if (geometry.type === "MultiPolygon") {
+      geometry.coordinates.forEach(polygon => {
+        polygons.push(polygon);
+      });
+      return;
+    }
+
+    if (geometry.type === "GeometryCollection") {
+      (geometry.geometries || []).forEach(visitGeometry);
+    }
+  }
+
+  function visitObject(object) {
+
+    if (!object) {
+      return;
+    }
+
+    if (object.type === "FeatureCollection") {
+      (object.features || []).forEach(visitObject);
+      return;
+    }
+
+    if (object.type === "Feature") {
+      visitGeometry(object.geometry);
+      return;
+    }
+
+    visitGeometry(object);
+  }
+
+  visitObject(geojson);
+  return polygons;
+}
+
+
+function hasPolygonGeometry(geojson) {
+  return collectPolygonCoordinates(geojson).length > 0;
+}
+
+
+/* =========================================================
    LOAD BATAS DESA
+   GeoJSON ini dipakai untuk:
+   1. Menggambar garis batas administrasi seperti sebelumnya.
+   2. Menjadi masker clip orthophoto di sisi browser.
 ========================================================= */
 
 fetch(
@@ -5143,125 +5227,171 @@ fetch(
 .then(
   response => {
 
-
-    if (
-      !response.ok
-    ) {
-
-
+    if (!response.ok) {
       throw new Error(
         "Batas Administrasi Desa Sidodadi.geojson tidak ditemukan"
       );
-
     }
 
-
     return response.json();
-
   }
 )
 
 .then(
   data => {
 
-
     const sourceCRS =
-
-      detectGeoJSONCRS(
-        data
-      );
-
+      detectGeoJSONCRS(data);
 
     const converted =
-
       convertGeoJSONToWGS84(
-
         data,
-
         sourceCRS
-
       );
 
 
+    /* =====================================================
+       SIAPKAN GEOMETRI MASKER ORTHOPHOTO
+    ====================================================== */
+
+    orthophotoClipPolygons =
+      collectPolygonCoordinates(converted);
+
+    if (orthophotoClipPolygons.length > 0) {
+
+      orthophotoClipGeoJSON = converted;
+
+      try {
+        orthophotoClipBounds =
+          L.geoJSON(converted).getBounds();
+
+        if (
+          !orthophotoClipBounds ||
+          !orthophotoClipBounds.isValid()
+        ) {
+          orthophotoClipBounds = null;
+          orthophotoClipGeoJSON = null;
+          orthophotoClipPolygons = [];
+        }
+      }
+
+      catch (error) {
+        console.warn(
+          "Tidak dapat membaca bounds batas desa untuk clipping orthophoto:",
+          error
+        );
+
+        orthophotoClipBounds = null;
+        orthophotoClipGeoJSON = null;
+        orthophotoClipPolygons = [];
+      }
+
+    }
+
+    else {
+
+      orthophotoClipGeoJSON = null;
+      orthophotoClipBounds = null;
+      orthophotoClipPolygons = [];
+
+      console.warn(
+        "GeoJSON batas desa tidak memiliki Polygon/MultiPolygon. Orthophoto ditampilkan tanpa clipping. Jika file hanya berupa garis, ekspor atau konversikan batas desa menjadi poligon."
+      );
+
+    }
+
+
+    if (resolveOrthophotoBoundaryReady) {
+      resolveOrthophotoBoundaryReady(
+        orthophotoClipGeoJSON
+      );
+    }
+
+
+    /* =====================================================
+       GARIS BATAS DESA — SIMBOLOGI TETAP DIPERTAHANKAN
+    ====================================================== */
+
     const batasDesaMask =
-
       L.geoJSON(
-
         converted,
-
         {
-
           style:
             styleBatasDesaMask
-
         }
-
       );
 
 
     const batasDesaCore =
-
       L.geoJSON(
-
         converted,
-
         {
-
           style:
             styleBatasDesaCore,
 
           onEachFeature:
             onEachBatasDesa
-
         }
-
       );
 
 
     batasDesaLayer =
-
       L.layerGroup([
-
         batasDesaMask,
-
         batasDesaCore
-
       ]);
 
 
-    batasDesaLayer.addTo(
-      map
+    batasDesaLayer.addTo(map);
+
+
+    console.log(
+      "Batas desa berhasil dimuat. Polygon untuk clipping:",
+      orthophotoClipPolygons.length
     );
 
   }
 )
 
 .catch(
-  error =>
+  error => {
 
     console.error(
       "Error Batas Desa:",
       error
-    )
+    );
+
+    orthophotoClipGeoJSON = null;
+    orthophotoClipBounds = null;
+    orthophotoClipPolygons = [];
+
+    /* Resolve promise supaya tile tidak menunggu selamanya.
+       Jika boundary gagal dimuat, orthophoto tetap ditampilkan
+       tanpa clip sebagai fallback. */
+    if (resolveOrthophotoBoundaryReady) {
+      resolveOrthophotoBoundaryReady(null);
+    }
+
+  }
 );
 
 
 /* =========================================================
-   ORTHOPHOTO TMS
+   ORTHOPHOTO TMS DENGAN CLIPPING OTOMATIS DI BROWSER
    L15 - L19
-   ZOOM > 19 MENGGUNAKAN L19
+   Zoom > 19 tetap menggunakan native tiles L19.
+   Tidak perlu ekspor ulang dari Global Mapper.
+
+   Tile dimuat dari repository GitHub seperti sebelumnya.
+   Setelah tile masuk ke canvas, bagian di luar Polygon batas
+   desa dibuat transparan menggunakan compositing canvas.
 ========================================================= */
 
 const ORTHO_URL_BASE =
-
   "https://raw.githubusercontent.com/" +
-
   "rivaldo123230038-cloud/" +
-
   "WebGIS-Kemker-Kelompok-1/" +
-
   "main/" +
-
   "TML/";
 
 
@@ -5273,23 +5403,326 @@ const ORTHO_NATIVE_ZOOM =
   19;
 
 
-/*
-   Batas orthophoto.
-   Akan diisi apabila boundary raster diketahui.
-   Saat belum tersedia, Auto Zoom tetap bekerja
-   menggunakan layer vektor yang aktif.
-*/
+/* =========================================================
+   CUSTOM TILE LAYER DENGAN MASK POLYGON BATAS DESA
+========================================================= */
 
-const ORTHO_BOUNDS =
-  null;
+const ClippedOrthophotoTileLayer =
+  L.TileLayer.extend({
 
+    createTile: function(coords, done) {
+
+      const tile =
+        document.createElement("canvas");
+
+      const tileSize =
+        this.getTileSize().x || 256;
+
+      tile.width = tileSize;
+      tile.height = tileSize;
+
+      tile.className = "leaflet-tile";
+
+      const ctx =
+        tile.getContext("2d");
+
+      const tileLayer = this;
+
+      let completed = false;
+
+      function finish(error) {
+        if (completed) {
+          return;
+        }
+
+        completed = true;
+        done(error || null, tile);
+      }
+
+
+      /* -----------------------------------------------------
+         Buat jalur clip dalam koordinat piksel tile.
+         GeoJSON boundary sudah dikonversi ke WGS84.
+      ------------------------------------------------------ */
+
+      function drawBoundaryMask() {
+
+        if (
+          !tileLayer._map ||
+          !orthophotoClipPolygons.length
+        ) {
+          return false;
+        }
+
+        ctx.beginPath();
+
+        orthophotoClipPolygons.forEach(polygonRings => {
+
+          if (!Array.isArray(polygonRings)) {
+            return;
+          }
+
+          polygonRings.forEach(ring => {
+
+            if (
+              !Array.isArray(ring) ||
+              ring.length < 3
+            ) {
+              return;
+            }
+
+            let started = false;
+
+            ring.forEach(coordinate => {
+
+              if (
+                !Array.isArray(coordinate) ||
+                coordinate.length < 2
+              ) {
+                return;
+              }
+
+              const longitude = coordinate[0];
+              const latitude = coordinate[1];
+
+              const worldPoint =
+                tileLayer._map.project(
+                  L.latLng(latitude, longitude),
+                  coords.z
+                );
+
+              const localX =
+                worldPoint.x - coords.x * tileSize;
+
+              const localY =
+                worldPoint.y - coords.y * tileSize;
+
+              if (!started) {
+                ctx.moveTo(localX, localY);
+                started = true;
+              }
+
+              else {
+                ctx.lineTo(localX, localY);
+              }
+
+            });
+
+            if (started) {
+              ctx.closePath();
+            }
+
+          });
+
+        });
+
+        return true;
+      }
+
+
+      /* -----------------------------------------------------
+         Jika tile benar-benar berada di luar bounding box
+         batas desa, kirim tile kosong transparan tanpa
+         mengunduh gambar dari GitHub.
+      ------------------------------------------------------ */
+
+      function tileIntersectsBoundaryBounds() {
+
+        if (
+          !tileLayer._map ||
+          !orthophotoClipBounds ||
+          !orthophotoClipBounds.isValid()
+        ) {
+          return true;
+        }
+
+        const northWest =
+          tileLayer._map.unproject(
+            L.point(
+              coords.x * tileSize,
+              coords.y * tileSize
+            ),
+            coords.z
+          );
+
+        const southEast =
+          tileLayer._map.unproject(
+            L.point(
+              (coords.x + 1) * tileSize,
+              (coords.y + 1) * tileSize
+            ),
+            coords.z
+          );
+
+        const tileBounds =
+          L.latLngBounds(
+            northWest,
+            southEast
+          );
+
+        return orthophotoClipBounds.intersects(
+          tileBounds
+        );
+      }
+
+
+      /* -----------------------------------------------------
+         Tunggu boundary selesai dimuat sebelum membuat tile.
+      ------------------------------------------------------ */
+
+      orthophotoBoundaryReady
+
+        .then(() => {
+
+          if (!tileIntersectsBoundaryBounds()) {
+            ctx.clearRect(
+              0,
+              0,
+              tileSize,
+              tileSize
+            );
+
+            finish(null);
+            return;
+          }
+
+
+          const image =
+            new Image();
+
+
+          image.onload = function() {
+
+            try {
+
+              ctx.clearRect(
+                0,
+                0,
+                tileSize,
+                tileSize
+              );
+
+
+              /* Gambar orthophoto asli ke canvas. */
+
+              ctx.globalCompositeOperation =
+                "source-over";
+
+              ctx.drawImage(
+                image,
+                0,
+                0,
+                tileSize,
+                tileSize
+              );
+
+
+              /* -------------------------------------------
+                 Terapkan mask hanya jika geometri Polygon
+                 tersedia. Area di luar polygon transparan.
+              -------------------------------------------- */
+
+              if (
+                orthophotoClipGeoJSON &&
+                orthophotoClipPolygons.length > 0
+              ) {
+
+                const pathCreated =
+                  drawBoundaryMask();
+
+                if (pathCreated) {
+
+                  ctx.globalCompositeOperation =
+                    "destination-in";
+
+                  ctx.fillStyle =
+                    "#ffffff";
+
+                  try {
+                    ctx.fill("evenodd");
+                  }
+
+                  catch (fillRuleError) {
+                    /* Fallback browser lama. */
+                    ctx.fill();
+                  }
+
+                  ctx.globalCompositeOperation =
+                    "source-over";
+
+                }
+
+              }
+
+
+              finish(null);
+
+            }
+
+            catch (error) {
+
+              console.error(
+                "Gagal melakukan clipping orthophoto:",
+                error
+              );
+
+              /* Saat proses mask gagal, gambar tetap
+                 dikembalikan agar tile tidak kosong. */
+              finish(null);
+
+            }
+
+          };
+
+
+          image.onerror = function() {
+
+            finish(
+              new Error(
+                "Tile orthophoto gagal dimuat: " +
+                tileLayer.getTileUrl(coords)
+              )
+            );
+
+          };
+
+
+          /* Gunakan getTileUrl Leaflet agar opsi TMS
+             dan alamat tile tetap mengikuti konfigurasi
+             yang sebelumnya digunakan. */
+
+          image.src =
+            tileLayer.getTileUrl(coords);
+
+        })
+
+        .catch(error => {
+
+          console.error(
+            "Error saat menunggu batas desa untuk clipping:",
+            error
+          );
+
+          finish(error);
+
+        });
+
+
+      return tile;
+
+    }
+
+  });
+
+
+/* =========================================================
+   INISIALISASI LAYER ORTHOPHOTO
+========================================================= */
 
 orthophotoLayer =
-
-  L.tileLayer(
+  new ClippedOrthophotoTileLayer(
 
     ORTHO_URL_BASE +
-
     "{z}/{x}/{y}.png",
 
     {
