@@ -2517,8 +2517,7 @@ body {
 
 /* =========================================================
    WELCOME POPUP
-   Layout lebih besar, foto tim menyatu dengan gradasi header,
-   dan konten dapat di-scroll pada layar pendek.
+   Tampilan sederhana dan formal; teks serta isi tetap.
 ========================================================= */
 
 .welcome-backdrop {
@@ -2529,8 +2528,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: rgba(11,36,56,.48);
-  backdrop-filter: blur(3px);
+  background: rgba(18, 31, 42, .48);
 }
 
 .welcome-backdrop.open {
@@ -2538,36 +2536,35 @@ body {
 }
 
 .welcome-modal {
-  width: min(820px, 100%);
+  width: min(780px, 100%);
   max-height: calc(100vh - 36px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #dfe7ec;
-  border-radius: 18px;
-  box-shadow: 0 22px 60px rgba(16,44,69,.28);
+  background: #fff;
+  border: 1px solid #d9e0e5;
+  border-radius: 10px;
+  box-shadow: 0 14px 38px rgba(10, 28, 42, .24);
   font-family: "DM Sans", "Inter", Arial, Helvetica, sans-serif;
-  animation: welcomeIn .24s ease-out;
+  animation: welcomeIn .18s ease-out;
 }
 
 @keyframes welcomeIn {
-  from { opacity: 0; transform: translateY(9px) scale(.99); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .welcome-top {
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
-  min-height: 145px;
+  min-height: 132px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 24px 27px;
+  padding: 22px 25px;
   overflow: hidden;
-  background: linear-gradient(115deg, #102c45 0%, #163a59 54%, #315a78 100%);
-  color: #ffffff;
+  background: #163a59;
+  color: #fff;
   border-bottom: 3px solid #e98928;
 }
 
@@ -2577,9 +2574,8 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 44%;
+  width: 37%;
   overflow: hidden;
-  opacity: .9;
   pointer-events: none;
 }
 
@@ -2588,20 +2584,18 @@ body {
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center;
+  object-position: center 38%;
 }
 
 .welcome-team-photo-wrap::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg,
-      #163a59 0%,
-      rgba(22,58,89,.88) 15%,
-      rgba(22,58,89,.43) 48%,
-      rgba(16,44,69,.12) 100%),
-    linear-gradient(0deg, rgba(16,44,69,.3), rgba(16,44,69,.08));
+  background: linear-gradient(90deg,
+    #163a59 0%,
+    rgba(22, 58, 89, .94) 18%,
+    rgba(22, 58, 89, .60) 55%,
+    rgba(22, 58, 89, .18) 100%);
 }
 
 .welcome-top-content {
@@ -2609,27 +2603,26 @@ body {
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 16px;
-  max-width: 74%;
+  gap: 14px;
+  max-width: 78%;
   min-width: 0;
 }
 
 .welcome-logo-wrap {
-  width: 64px;
-  height: 64px;
-  flex: 0 0 64px;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.72);
-  box-shadow: 0 5px 15px rgba(0,0,0,.13);
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.7);
 }
 
 .welcome-logo {
-  width: 49px;
-  height: 49px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
@@ -2638,30 +2631,29 @@ body {
 }
 
 .welcome-kicker {
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: .8px;
   text-transform: uppercase;
-  color: rgba(255,255,255,.78);
+  color: rgba(255,255,255,.82);
 }
 
 .welcome-title {
   margin: 0;
-  font-size: clamp(20px, 2.5vw, 27px);
-  line-height: 1.22;
+  font-size: clamp(20px, 2.4vw, 25px);
+  line-height: 1.25;
   font-weight: 700;
-  letter-spacing: -.45px;
-  color: #ffffff;
-  text-wrap: balance;
+  letter-spacing: -.3px;
+  color: #fff;
 }
 
 .welcome-subtitle {
-  margin-top: 7px;
+  margin-top: 6px;
   font-size: 10px;
   line-height: 1.5;
-  font-weight: 500;
-  color: rgba(255,255,255,.82);
+  font-weight: 400;
+  color: rgba(255,255,255,.84);
 }
 
 .welcome-body {
@@ -2669,51 +2661,51 @@ body {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 23px 27px 24px;
+  padding: 21px 25px 22px;
   scrollbar-width: thin;
   scrollbar-color: #c5d0d8 transparent;
 }
 
 .welcome-text {
   margin: 0;
-  color: #5f6f7a;
+  color: #536570;
   font-size: 12px;
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
 .welcome-note {
-  margin-top: 14px;
-  padding: 11px 13px;
+  margin-top: 13px;
+  padding: 10px 12px;
   border-left: 3px solid #e98928;
   border-top: 1px solid #e8edf0;
   border-right: 1px solid #e8edf0;
   border-bottom: 1px solid #e8edf0;
-  border-radius: 8px;
-  background: #f7f9fa;
+  border-radius: 4px;
+  background: #f7f8f9;
   color: #52616c;
   font-size: 10px;
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 .welcome-group-info {
-  margin-top: 22px;
+  margin-top: 19px;
 }
 
 .welcome-section-kicker {
-  color: #d97817;
+  color: #b66a1c;
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: .55px;
   text-transform: uppercase;
 }
 
 .welcome-section-title {
   margin: 5px 0 7px;
   color: #163a59;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.3;
   font-weight: 700;
-  letter-spacing: -.25px;
+  letter-spacing: -.15px;
 }
 
 .welcome-group-description {
@@ -2728,31 +2720,32 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin: 20px 0 10px;
+  margin: 18px 0 8px;
 }
 
 .welcome-members-heading h3 {
   margin: 0;
   color: #163a59;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .welcome-member-count {
   flex-shrink: 0;
-  padding: 5px 8px;
-  border: 1px solid #e4eaf0;
-  border-radius: 999px;
-  background: #f6f8fa;
+  padding: 4px 7px;
+  border: 1px solid #e1e7eb;
+  border-radius: 4px;
+  background: #fafbfc;
   color: #536c7f;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .welcome-members-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  column-gap: 18px;
+  row-gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2761,26 +2754,27 @@ body {
 .welcome-member {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 9px;
   min-width: 0;
-  padding: 11px 12px;
-  border: 1px solid #e6ebef;
-  border-radius: 10px;
-  background: #ffffff;
+  padding: 10px 2px;
+  border: 0;
+  border-bottom: 1px solid #e9edf0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .welcome-member-number {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: #fff3e5;
-  color: #b96310;
+  width: 22px;
+  height: auto;
+  flex: 0 0 22px;
+  display: block;
+  padding-top: 1px;
+  border-radius: 0;
+  background: transparent;
+  color: #c67523;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .welcome-member-details {
@@ -2791,7 +2785,7 @@ body {
 .welcome-member-name {
   color: #30495b;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -2806,28 +2800,27 @@ body {
 .welcome-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 21px;
-  padding-top: 15px;
-  border-top: 1px solid #edf0f2;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid #e9edf0;
 }
 
 .welcome-start {
-  min-height: 38px;
-  padding: 0 18px;
+  min-height: 36px;
+  padding: 0 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   background: #e98928;
-  color: #ffffff;
+  color: #fff;
   font-family: inherit;
   font-size: 10px;
   font-weight: 700;
   cursor: pointer;
-  transition: background .18s ease, transform .18s ease;
+  transition: background .15s ease;
 }
 
 .welcome-start:hover {
   background: #d97817;
-  transform: translateY(-1px);
 }
 
 /* =========================================================
