@@ -3081,6 +3081,198 @@ body {
 
 }
 
+
+
+/* =========================================================
+   QR POSTER - KARTU AKSES DI KANAN BAWAH
+   Menggunakan file repository: QR Poster.png
+========================================================= */
+
+.poster-qr-button {
+  position: fixed;
+  right: 18px;
+  bottom: 29px;
+  z-index: 2200;
+  width: 108px;
+  padding: 9px 9px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #dfe6eb;
+  border-radius: 10px;
+  background: rgba(255,255,255,.97);
+  color: #263746;
+  box-shadow: 0 4px 16px rgba(16,44,69,.16);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: box-shadow .16s ease, transform .16s ease;
+}
+
+.poster-qr-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #e98928;
+}
+
+.poster-qr-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(16,44,69,.2);
+}
+
+.poster-qr-thumb {
+  display: block;
+  width: 76px;
+  height: 76px;
+  margin-top: 2px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid #edf0f2;
+  border-radius: 4px;
+}
+
+.poster-qr-label {
+  display: block;
+  color: #163a59;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.poster-qr-caption {
+  display: block;
+  color: #71808c;
+  font-size: 8px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.poster-qr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 7100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(15,31,43,.58);
+}
+
+.poster-qr-modal-backdrop.open {
+  display: flex;
+}
+
+.poster-qr-modal {
+  width: min(370px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  padding: 18px;
+  border: 1px solid #dfe6eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 16px 42px rgba(0,0,0,.24);
+  text-align: center;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.poster-qr-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #e8edf0;
+  text-align: left;
+}
+
+.poster-qr-modal-title {
+  margin: 0;
+  color: #163a59;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.poster-qr-modal-subtitle {
+  margin-top: 3px;
+  color: #71808c;
+  font-size: 10px;
+}
+
+.poster-qr-close {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e1e7eb;
+  border-radius: 7px;
+  background: #f7f9fa;
+  color: #344b5c;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.poster-qr-close:hover {
+  background: #fff3e5;
+  color: #b96310;
+}
+
+.poster-qr-large {
+  display: block;
+  width: min(270px, 100%);
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  margin: 0 auto;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #e7ecef;
+  border-radius: 6px;
+}
+
+.poster-qr-modal-note {
+  margin: 12px 0 0;
+  color: #71808c;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.poster-qr-error {
+  display: none;
+  padding: 20px 10px;
+  color: #6e7c86;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .poster-qr-button {
+    right: 9px;
+    bottom: 25px;
+    width: 88px;
+    padding: 7px 7px 6px;
+    gap: 5px;
+  }
+
+  .poster-qr-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  .poster-qr-label {
+    font-size: 10px;
+  }
+
+  .poster-qr-caption {
+    font-size: 7px;
+  }
+}
+
 </style>
 
 </head>
@@ -3176,6 +3368,72 @@ body {
 ======================================================= -->
 
 <div id="map"></div>
+
+<!-- =======================================================
+     QR POSTER - KANAN BAWAH
+     File gambar harus berada satu folder dengan index.html:
+     QR Poster.png
+======================================================= -->
+
+<button
+  id="posterQrOpen"
+  class="poster-qr-button"
+  type="button"
+  aria-label="Buka QR Poster"
+  title="Buka QR Poster"
+>
+  <img
+    class="poster-qr-thumb"
+    src="QR%20Poster.png"
+    alt="QR Poster"
+    loading="eager"
+  >
+  <span class="poster-qr-label">Poster</span>
+  <span class="poster-qr-caption">Klik untuk memperbesar QR</span>
+</button>
+
+<div
+  id="posterQrModal"
+  class="poster-qr-modal-backdrop"
+  aria-hidden="true"
+>
+  <div
+    class="poster-qr-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="posterQrTitle"
+  >
+    <div class="poster-qr-modal-header">
+      <div>
+        <h2 id="posterQrTitle" class="poster-qr-modal-title">Poster</h2>
+        <div class="poster-qr-modal-subtitle">QR Poster Kelompok 1</div>
+      </div>
+      <button
+        id="posterQrClose"
+        class="poster-qr-close"
+        type="button"
+        aria-label="Tutup QR Poster"
+      >
+        &times;
+      </button>
+    </div>
+
+    <img
+      id="posterQrLargeImage"
+      class="poster-qr-large"
+      src="QR%20Poster.png"
+      alt="QR code untuk Poster Kelompok 1"
+    >
+    <div id="posterQrError" class="poster-qr-error">
+      Gambar QR tidak ditemukan. Pastikan file <strong>QR Poster.png</strong>
+      berada di folder yang sama dengan <strong>index.html</strong> pada repository GitHub.
+    </div>
+    <p class="poster-qr-modal-note">
+      Pindai QR untuk membuka poster Kelompok 1.
+    </p>
+  </div>
+</div>
+
 
 
 <!-- =======================================================
@@ -8717,6 +8975,56 @@ feedbackForm.addEventListener(
   }
 
 );
+
+
+
+
+/* =========================================================
+   QR POSTER - OPEN / CLOSE
+========================================================= */
+
+const posterQrOpen = document.getElementById("posterQrOpen");
+const posterQrModal = document.getElementById("posterQrModal");
+const posterQrClose = document.getElementById("posterQrClose");
+const posterQrThumb = document.querySelector(".poster-qr-thumb");
+const posterQrLargeImage = document.getElementById("posterQrLargeImage");
+const posterQrError = document.getElementById("posterQrError");
+
+function openPosterQr() {
+  posterQrModal.classList.add("open");
+  posterQrModal.setAttribute("aria-hidden", "false");
+}
+
+function closePosterQr() {
+  posterQrModal.classList.remove("open");
+  posterQrModal.setAttribute("aria-hidden", "true");
+}
+
+posterQrOpen.addEventListener("click", openPosterQr);
+posterQrClose.addEventListener("click", closePosterQr);
+
+posterQrModal.addEventListener("click", function (event) {
+  if (event.target === posterQrModal) {
+    closePosterQr();
+  }
+});
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && posterQrModal.classList.contains("open")) {
+    closePosterQr();
+  }
+});
+
+function showPosterQrError() {
+  posterQrError.style.display = "block";
+  posterQrLargeImage.style.display = "none";
+  if (posterQrThumb) {
+    posterQrThumb.style.visibility = "hidden";
+  }
+}
+
+posterQrThumb.addEventListener("error", showPosterQrError);
+posterQrLargeImage.addEventListener("error", showPosterQrError);
 
 
 /* =========================================================
